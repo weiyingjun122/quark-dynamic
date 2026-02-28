@@ -943,9 +943,13 @@ const CATEGORY_KEYWORDS = {
     study: ['学习', '资料', '教程', '课程', '电子书', 'pdf', '文档', '课件', '教案']
 };
 
-// 获取今天日期
+// 获取今天日期（使用本地时间）
 function getTodayDate() {
-    return new Date().toISOString().slice(0, 10);
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
 // 加载今日更新
