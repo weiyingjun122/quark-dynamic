@@ -22,6 +22,7 @@ for idx, row in df.iterrows():
     keywords_str = str(row.get("keywords", "") or "")
     search_aliases_str = str(row.get("search_aliases", "") or "")
     share_link = str(row.get("share_link", "") or "")
+    resource_type = str(row.get("type", "") or "")  # 新增：读取type字段
 
     keywords = [k.strip() for k in keywords_str.split(",") if k.strip() and k.strip().lower() != 'nan']
     search_aliases = [alias.strip() for alias in search_aliases_str.split(",") if alias.strip() and alias.strip().lower() != 'nan']
@@ -31,14 +32,20 @@ for idx, row in df.iterrows():
     img = qrcode.make(share_link)
     img.save(qr_path)
 
-    data.append({
+    item_data = {
         "id": item_id,
         "title": title,
         "keywords": keywords,
         "search_aliases": search_aliases,
         "share_link": share_link,
         "qrcode": f"static/qrcode/{item_id}.png"
-    })
+    }
+    
+    # 如果有type字段则添加
+    if resource_type and resource_type.lower() != 'nan':
+        item_data["type"] = resource_type
+    
+    data.append(item_data)
 
 # 写入 JSON
 with open(output_json, "w", encoding="utf-8") as f:

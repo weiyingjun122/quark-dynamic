@@ -58,6 +58,32 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .type-filter-btn:hover { background: #e0e0e0; }
 .type-filter-btn.active { background: #1e90ff; color: #fff; }
 
+/* 分类热搜模块 */
+.section-title { display: flex; align-items: center; margin: 15px 0 10px 0; }
+.section-title h2 { margin: 0; font-size: 16px; color: #333; }
+.section-title .more { margin-left: auto; font-size: 12px; color: #999; }
+
+.hot-row { display: flex; gap: 12px; width: 100%; max-width: 900px; margin-bottom: 10px; flex-wrap: wrap; }
+.hot-row .hot-section { flex: 1; min-width: 250px; }
+
+.hot-section .card { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.hot-section .item { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
+.hot-section .item:last-child { border-bottom: none; }
+.hot-section .rank { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #666; margin-right: 10px; flex-shrink: 0; }
+.hot-section .rank.top3 { background: #ff4d4f; color: #fff; }
+.hot-section .rank.gold { background: #faad14; color: #fff; }
+.hot-section .rank.silver { background: #8c8c8c; color: #fff; }
+.hot-section .rank.bronze { background: #d46b08; color: #fff; }
+.hot-section .name { flex: 1; font-size: 14px; color: #333; cursor: pointer; }
+.hot-section .name:hover { color: #1e90ff; }
+.hot-section .tag { font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-left: 8px; }
+.hot-section .tag-new { background: #fff7e6; color: #fa8c16; }
+
+/* 今日更新样式 */
+.today-update { display: flex; flex-wrap: wrap; gap: 8px; max-height: 200px; overflow-y: auto; }
+.today-update .update-item { background: #f0f6ff; padding: 6px 12px; border-radius: 15px; font-size: 13px; color: #1e90ff; cursor: pointer; transition: all 0.2s; }
+.today-update .update-item:hover { background: #1e90ff; color: #fff; }
+
 /* 免责声明 */
 .site-disclaimer {
     margin: 30px auto;
@@ -146,26 +172,68 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <button id="searchBtn">搜索</button>
 </div>
 
-<!-- Tab切换 -->
-<div class="tabs">
-    <div class="tab-buttons">
-        <button class="tab-btn active" onclick="switchTab('updated')">🆕 已更新资源</button>
-        <button class="tab-btn" onclick="switchTab('hot')">🔥 全网实时热搜</button>
+<!-- 第一排：今日更新 剧本杀热搜 剧集热搜 -->
+<div class="hot-row">
+    <!-- 今日更新 -->
+    <div class="hot-section">
+        <div class="section-title">
+            <h2>🆕 今日更新</h2>
+        </div>
+        <div class="card">
+            <div id="todayUpdate" class="today-update" style="color: #999;">正在加载...</div>
+        </div>
     </div>
-    
-    <!-- 已更新资源 -->
-    <div id="tab-updated" class="tab-content active">
-        <h3 style="margin-top:0; margin-bottom:15px; font-size:16px; color:#666; border-bottom:1px solid #eee; padding-bottom:10px;">🆕 已更新资源</h3>
-        <div id="typeFilter" style="margin-bottom:15px;"></div>
-        <div id="updatedList" style="font-size:14px; color:#666; line-height:1.8;"></div>
+
+    <!-- 剧本杀热搜 -->
+    <div class="hot-section">
+        <div class="section-title">
+            <h2>🔪 剧本杀热搜</h2>
+        </div>
+        <div class="card">
+            <div id="jubenHot" style="color: #999;">正在加载...</div>
+        </div>
     </div>
-    
-    <!-- 全网实时热搜 -->
-    <div id="tab-hot" class="tab-content">
-        <div id="recommend">
-            <div class="recommend-card">
-                <h3>🔥 正在加载实时热搜...</h3>
-            </div>
+
+    <!-- 剧集热搜 -->
+    <div class="hot-section">
+        <div class="section-title">
+            <h2>📺 剧集热搜</h2>
+        </div>
+        <div class="card">
+            <div id="jujiHot" style="color: #999;">正在加载...</div>
+        </div>
+    </div>
+</div>
+
+<!-- 第二排：电影热搜 动漫热搜 学习资料 -->
+<div class="hot-row">
+    <!-- 电影热搜 -->
+    <div class="hot-section">
+        <div class="section-title">
+            <h2>🎬 电影热搜</h2>
+        </div>
+        <div class="card">
+            <div id="movieHot" style="color: #999;">正在加载...</div>
+        </div>
+    </div>
+
+    <!-- 动漫热搜 -->
+    <div class="hot-section">
+        <div class="section-title">
+            <h2>🎨 动漫热搜</h2>
+        </div>
+        <div class="card">
+            <div id="animeHot" style="color: #999;">正在加载...</div>
+        </div>
+    </div>
+
+    <!-- 学习资料热搜 -->
+    <div class="hot-section">
+        <div class="section-title">
+            <h2>📚 学习资料热搜</h2>
+        </div>
+        <div class="card">
+            <div id="studyHot" style="color: #999;">正在加载...</div>
         </div>
     </div>
 </div>
@@ -872,6 +940,103 @@ async function loadHotKeywords(retryCount = 0) {
     }
 }
 
+// 分类关键词配置
+const CATEGORY_KEYWORDS = {
+    juben: ['剧本杀', '剧本', '杀', '凶手', '推理', '硬核', '情感', '恐怖', '欢乐'],
+    juji: ['电视剧', '剧集', '综艺', '美剧', '韩剧', '日剧', '国产剧', 'TV'],
+    movie: ['电影', '影片', '蓝光', '4K', '高清'],
+    anime: ['动漫', '动画片', '卡通', '番剧', '日漫', '国漫'],
+    study: ['学习', '资料', '教程', '课程', '电子书', 'pdf', '文档', '课件', '教案']
+};
+
+// 获取今天日期
+function getTodayDate() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+// 加载今日更新
+async function loadTodayUpdate() {
+    try {
+        const res = await fetch('update.json?t=' + Date.now());
+        const data = await res.json();
+        
+        const today = getTodayDate();
+        const todayData = data.filter(item => item.date === today);
+        
+        if (todayData.length === 0) {
+            // 如果今天没有，取最近3天的
+            const recentData = data.slice(0, 10);
+            renderTodayUpdate(recentData, true);
+        } else {
+            renderTodayUpdate(todayData.slice(0, 10), false);
+        }
+    } catch (e) {
+        console.error('加载今日更新失败:', e);
+        document.getElementById('todayUpdate').innerHTML = '加载失败';
+    }
+}
+
+function renderTodayUpdate(data, isRecent) {
+    const container = document.getElementById('todayUpdate');
+    if (data.length === 0) {
+        container.innerHTML = '暂无更新';
+        return;
+    }
+    
+    const html = data.map(item => {
+        const safeName = item.name.replace(/'/g, "\\'");
+        return `<span class="update-item" onclick="doSearch('${safeName}')">${item.name}</span>`;
+    }).join('');
+    
+    container.innerHTML = isRecent ? html + '<p style="width:100%;font-size:12px;color:#999;margin-top:10px;">以下为最近更新</p>' : html;
+}
+
+// 加载分类热搜
+async function loadCategoryHot(containerId, keywords) {
+    try {
+        const res = await fetch('/api/hot');
+        const hotList = await res.json();
+        
+        // 过滤并按搜索次数降序排序，然后取前10条
+        const filtered = hotList.filter(item => {
+            const word = item.word || '';
+            return keywords.some(k => word.includes(k));
+        }).sort((a, b) => (b.count || 0) - (a.count || 0)).slice(0, 10);
+        
+        renderHotList(containerId, filtered);
+    } catch (e) {
+        console.error('加载分类热搜失败:', e);
+        document.getElementById(containerId).innerHTML = '加载失败';
+    }
+}
+
+function renderHotList(containerId, data) {
+    const container = document.getElementById(containerId);
+    if (data.length === 0) {
+        container.innerHTML = '暂无热搜';
+        return;
+    }
+    
+    const html = data.map((item, index) => {
+        const rankClass = index === 0 ? 'gold top3' : index === 1 ? 'silver top3' : index === 2 ? 'bronze top3' : '';
+        const safeWord = (item.word || '').replace(/'/g, "\\'");
+        return `
+            <div class="item">
+                <span class="rank ${rankClass}">${index + 1}</span>
+                <span class="name" onclick="doSearch('${safeWord}')">${item.word}</span>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = html;
+}
+
+// 执行搜索的便捷函数
+function doSearch(keyword) {
+    document.getElementById('searchInput').value = keyword;
+    document.getElementById('searchBtn').click();
+}
+
 // 页面初始化
 window.addEventListener('DOMContentLoaded', () => {
     // 获取DOM元素
@@ -887,14 +1052,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
     updateUserPanel(); // 检查并更新用户登录状态
     loadData();        // 1. 预加载资源数据
-    loadHotKeywords(); // 2. 加载热搜榜
-    loadUpdatedResources(); // 3. 加载已更新资源
+    
+    // 加载各模块
+    loadTodayUpdate(); // 今日更新
+    loadCategoryHot('jubenHot', CATEGORY_KEYWORDS.juben); // 剧本杀热搜
+    loadCategoryHot('jujiHot', CATEGORY_KEYWORDS.juji); // 剧集热搜
+    loadCategoryHot('movieHot', CATEGORY_KEYWORDS.movie); // 电影热搜
+    loadCategoryHot('animeHot', CATEGORY_KEYWORDS.anime); // 动漫热搜
+    loadCategoryHot('studyHot', CATEGORY_KEYWORDS.study); // 学习资料热搜
 
-    // 4. 事件绑定
+    // 事件绑定
     document.getElementById('searchBtn').addEventListener('click', () => performSearch(document.getElementById('searchInput').value.trim()));
     document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') document.getElementById('searchBtn').click(); });
 
-    // 5. 检查 URL 是否带参数 (例如 ?q=剧本杀)
+    // 检查 URL 是否带参数 (例如 ?q=剧本杀)
     const params = new URLSearchParams(location.search);
     const q = params.get('q');
     if(q){
