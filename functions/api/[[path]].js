@@ -627,7 +627,7 @@ async function handlePing(corsHeaders) {
   = *=========================================================== */
 
 const RATE_LIMIT = {
-    MAX_REQUESTS: 3,
+    MAX_REQUESTS: 2,
     WINDOW_MS: 60 * 60 * 1000
 };
 
@@ -1057,7 +1057,7 @@ async function handleCheckView(request, env, corsHeaders) {
         return new Response(JSON.stringify({
             success: false,
             allowed: false,
-            error: `今天已查看过资源了，每天只能查看1次，明天再来吧！`,
+            error: `今天已查看过资源了，每天只能查看${TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY}次，明天再来吧！`,
             remaining: 0,
             maxPerDay: TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY
         }), {
