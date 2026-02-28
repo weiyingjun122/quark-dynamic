@@ -73,6 +73,8 @@ export async function onRequest(context) {
             return await handlePing(corsHeaders);
         case 'request':
             return await handleRequest(request, env, corsHeaders);
+        case 'clear-stats':
+            return await handleClearStats(request, env, corsHeaders);
         default:
             return new Response(JSON.stringify({
                 error: "Endpoint not found",
@@ -1285,6 +1287,30 @@ async function handleRequest(request, env, corsHeaders) {
             headers: { "Content-Type": "application/json; charset=utf-8", ...corsHeaders }
         });
     }
+}
+
+
+// 清除统计数据
+async function handleClearStats(request, env, corsHeaders) {
+    const url = new URL(request.url);
+    const secret = url.searchParams.get("secret");
+    
+    if (secret !== "debug123") {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
+    await env.SEARCH_STATS.delete("stats");
+    
+    return new Response(JSON.stringify({
+        success: true,
+        message: "统计数据已清除"
+    }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+    });
+}
 }
 
 
