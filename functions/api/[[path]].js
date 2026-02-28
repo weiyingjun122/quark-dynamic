@@ -241,7 +241,7 @@ async function handleHot(env, corsHeaders) {
         stats = {};
     }
 
-    const THRESHOLD = 10;
+    const THRESHOLD = 1;
     const hotList = Object.entries(stats)
     .filter(([_, count]) => count >= THRESHOLD)
     .sort((a, b) => b[1] - a[1])

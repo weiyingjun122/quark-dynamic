@@ -59,30 +59,24 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .type-filter-btn.active { background: #1e90ff; color: #fff; }
 
 /* 分类热搜模块 */
-.section-title { display: flex; align-items: center; margin: 15px 0 10px 0; }
-.section-title h2 { margin: 0; font-size: 16px; color: #333; }
-.section-title .more { margin-left: auto; font-size: 12px; color: #999; }
+.section-title { display: flex; align-items: center; justify-content: space-between; margin: 15px 0 8px 0; }
+.section-title h2 { margin: 0; font-size: 15px; color: #333; font-weight: 600; }
+.section-title .more { font-size: 12px; color: #999; cursor: pointer; }
 
 .hot-row { display: flex; gap: 12px; width: 100%; max-width: 900px; margin-bottom: 10px; flex-wrap: wrap; }
 .hot-row .hot-section { flex: 1; min-width: 250px; }
 
-.hot-section .card { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-.hot-section .item { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
+.hot-section .card { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); max-height: 320px; overflow-y: auto; }
+.hot-section .item { display: flex; padding: 5px 0; border-bottom: 1px solid #f8f8f8; font-size: 13px; color: #333; cursor: pointer; }
+.hot-section .item:hover { color: #1e90ff; }
 .hot-section .item:last-child { border-bottom: none; }
-.hot-section .rank { width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #666; margin-right: 10px; flex-shrink: 0; }
-.hot-section .rank.top3 { background: #ff4d4f; color: #fff; }
-.hot-section .rank.gold { background: #faad14; color: #fff; }
-.hot-section .rank.silver { background: #8c8c8c; color: #fff; }
-.hot-section .rank.bronze { background: #d46b08; color: #fff; }
-.hot-section .name { flex: 1; font-size: 14px; color: #333; cursor: pointer; }
-.hot-section .name:hover { color: #1e90ff; }
+.hot-section .item .rank-num { color: #999; margin-right: 4px; min-width: 20px; }
+.hot-section .item .rank-num.top3 { color: #ff4d4f; font-weight: bold; }
+.hot-section .item .name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hot-section .tag { font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-left: 8px; }
 .hot-section .tag-new { background: #fff7e6; color: #fa8c16; }
 
-/* 今日更新样式 */
-.today-update { display: flex; flex-wrap: wrap; gap: 8px; max-height: 200px; overflow-y: auto; }
-.today-update .update-item { background: #f0f6ff; padding: 6px 12px; border-radius: 15px; font-size: 13px; color: #1e90ff; cursor: pointer; transition: all 0.2s; }
-.today-update .update-item:hover { background: #1e90ff; color: #fff; }
+/* 今日更新样式 - 使用统一样式 */
 
 /* 免责声明 */
 .site-disclaimer {
@@ -180,7 +174,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
             <h2>🆕 今日更新</h2>
         </div>
         <div class="card">
-            <div id="todayUpdate" class="today-update" style="color: #999;">正在加载...</div>
+            <div id="todayUpdate" style="color: #999;">正在加载...</div>
         </div>
     </div>
 
@@ -979,16 +973,22 @@ async function loadTodayUpdate() {
 function renderTodayUpdate(data, isRecent) {
     const container = document.getElementById('todayUpdate');
     if (data.length === 0) {
-        container.innerHTML = '暂无更新';
+        container.innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">暂无更新</div>';
         return;
     }
     
-    const html = data.map(item => {
+    const html = data.map((item, index) => {
         const safeName = item.name.replace(/'/g, "\\'");
-        return `<span class="update-item" onclick="doSearch('${safeName}')">${item.name}</span>`;
+        const rankClass = index < 3 ? 'top3' : '';
+        return `
+            <div class="item" onclick="doSearch('${safeName}')">
+                <span class="rank-num ${rankClass}">${index + 1}、</span>
+                <span class="name">${item.name}</span>
+            </div>
+        `;
     }).join('');
     
-    container.innerHTML = isRecent ? html + '<p style="width:100%;font-size:12px;color:#999;margin-top:10px;">以下为最近更新</p>' : html;
+    container.innerHTML = html;
 }
 
 // 加载分类热搜
@@ -1013,17 +1013,17 @@ async function loadCategoryHot(containerId, keywords) {
 function renderHotList(containerId, data) {
     const container = document.getElementById(containerId);
     if (data.length === 0) {
-        container.innerHTML = '暂无热搜';
+        container.innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">暂无热搜</div>';
         return;
     }
     
     const html = data.map((item, index) => {
-        const rankClass = index === 0 ? 'gold top3' : index === 1 ? 'silver top3' : index === 2 ? 'bronze top3' : '';
+        const rankClass = index < 3 ? 'top3' : '';
         const safeWord = (item.word || '').replace(/'/g, "\\'");
         return `
-            <div class="item">
-                <span class="rank ${rankClass}">${index + 1}</span>
-                <span class="name" onclick="doSearch('${safeWord}')">${item.word}</span>
+            <div class="item" onclick="doSearch('${safeWord}')">
+                <span class="rank-num ${rankClass}">${index + 1}、</span>
+                <span class="name">${item.word}</span>
             </div>
         `;
     }).join('');
