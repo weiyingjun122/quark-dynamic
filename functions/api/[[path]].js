@@ -633,7 +633,7 @@ const RATE_LIMIT = {
 
 // 用户转存/查看配置
 const TRANSFER_CONFIG = {
-    MAX_TRANSFERS_PER_DAY: 3,  // 可修改：每个用户每天最大查看/转存次数
+    MAX_TRANSFERS_PER_DAY: 1,  // 可修改：每个用户每天最大查看/转存次数
     TOKEN_EXPIRY_DAYS: 7        // token有效期天数
 };
 
