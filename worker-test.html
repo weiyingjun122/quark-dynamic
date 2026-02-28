@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Worker 统计测试（增强版）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .button { background: #007bff; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; }
+        .button:hover { background: #0056b3; }
+        .log { background: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 20px; max-height: 400px; overflow-y: auto; }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>📱 Worker 统计测试（手机专用）</h1>
+
+    <div>
+        <button class="button" onclick="testWithFetch()">使用 Fetch 测试</button>
+        <button class="button" onclick="testWithXHR()">使用 XHR 测试</button>
+        <button class="button" onclick="testWithBeacon()">使用 sendBeacon 测试</button>
+        <button class="button" onclick="testWithJSONP()">使用 JSONP 测试</button>
+        <button class="button" onclick="testWithImage()">使用 Image Ping 测试</button>
+        <button class="button" onclick="openDirectLink()">直接打开链接</button>
+    </div>
+
+    <div>
+        <h3>设备信息</h3>
+        <div id="deviceInfo"></div>
+    </div>
+
+    <div>
+        <h3>网络诊断</h3>
+        <button class="button" onclick="testNetwork()">测试网络连通性</button>
+        <button class="button" onclick="clearCache()">清除缓存</button>
+        <div id="networkStatus"></div>
+    </div>
+
+    <div>
+        <h3>测试日志</h3>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        const WORKER_URL = 'https://quark-search-api.weiyingjun122.workers.dev';
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
+            const color = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+
+            const logItem = document.createElement('div');
+            logItem.className = color;
+            logItem.innerHTML = `<strong>[${time}] ${prefix}</strong> ${message}`;
+            logDiv.appendChild(logItem);
+            logDiv.scrollTop = logDiv.scrollHeight;
+
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        // 显示设备信息
+        function showDeviceInfo() {
+            const deviceInfo = document.getElementById('deviceInfo');
+            const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+
+            deviceInfo.innerHTML = `
+                <p><strong>设备类型:</strong> ${isMobile ? '📱 手机' : '💻 电脑'}</p>
+                <p><strong>浏览器:</strong> ${navigator.userAgent}</p>
+                <p><strong>在线状态:</strong> ${navigator.onLine ? '✅ 在线' : '❌ 离线'}</p>
+                <p><strong>语言:</strong> ${navigator.language}</p>
+                <p><strong>平台:</strong> ${navigator.platform}</p>
+                <p><strong>Worker URL:</strong> ${WORKER_URL}</p>
+            `;
+
+            log(`设备类型: ${isMobile ? '手机' : '电脑'}`);
+            log(`浏览器: ${navigator.userAgent.split(' ').pop()}`);
+            log(`在线状态: ${navigator.onLine ? '在线' : '离线'}`);
+        }
+
+        // 方法1: 使用 Fetch API（标准方法）
+        async function testWithFetch() {
+            const keyword = 'fetch测试_' + Date.now();
+            log(`📤 使用 Fetch 发送: "${keyword}"`);
+
+            try {
+                const startTime = Date.now();
+                const response = await fetch(`${WORKER_URL}/record?q=${encodeURIComponent(keyword)}`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    cache: 'no-store'
+                });
+                const endTime = Date.now();
+
+                log(`📥 响应时间: ${endTime - startTime}ms`);
+                log(`📥 状态码: ${response.status} ${response.statusText}`);
+                log(`📥 响应头: ${JSON.stringify(Object.fromEntries(response.headers))}`);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Fetch 成功: ${JSON.stringify(data)}`, 'success');
+                } else {
+                    const text = await response.text();
+                    log(`❌ Fetch 失败: ${text}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Fetch 错误: ${error.message}`, 'error');
+                log(`📋 错误详情: ${error.stack}`, 'error');
+            }
+        }
+
+        // 方法2: 使用 XMLHttpRequest（老式方法）
+        function testWithXHR() {
+            const keyword = 'xhr测试_' + Date.now();
+            log(`📤 使用 XHR 发送: "${keyword}"`);
+
+            const xhr = new XMLHttpRequest();
+            const url = `${WORKER_URL}/record?q=${encodeURIComponent(keyword)}`;
+
+            xhr.open('GET', url, true);
+            xhr.timeout = 10000; // 10秒超时
+
+            xhr.onload = function() {
+                log(`📥 XHR 状态: ${xhr.status} ${xhr.statusText}`);
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        log(`✅ XHR 成功: ${JSON.stringify(data)}`, 'success');
+                    } catch (e) {
+                        log(`❌ XHR 解析失败: ${e.message}`, 'error');
+                    }
+                } else {
+                    log(`❌ XHR 失败: ${xhr.statusText}`, 'error');
+                }
+            };
+
+            xhr.onerror = function() {
+                log(`❌ XHR 网络错误`, 'error');
+            };
+
+            xhr.ontimeout = function() {
+                log(`❌ XHR 请求超时`, 'error');
+            };
+
+            xhr.send();
+        }
+
+        // 方法3: 使用 sendBeacon（最可靠，但只能发送少量数据）
+        function testWithBeacon() {
+            const keyword = 'beacon测试_' + Date.now();
+            log(`📤 使用 sendBeacon 发送: "${keyword}"`);
+
+            const data = new URLSearchParams();
+            data.append('q', keyword);
+
+            const blob = new Blob([data.toString()], {type: 'application/x-www-form-urlencoded'});
+            const success = navigator.sendBeacon(`${WORKER_URL}/record`, blob);
+
+            if (success) {
+                log(`✅ sendBeacon 发送成功`, 'success');
+            } else {
+                log(`❌ sendBeacon 发送失败`, 'error');
+            }
+        }
+
+        // 方法4: 使用 JSONP（绕过 CORS）
+        function testWithJSONP() {
+            const keyword = 'jsonp测试_' + Date.now();
+            log(`📤 使用 JSONP 发送: "${keyword}"`);
+
+            const callbackName = 'jsonp_callback_' + Date.now();
+            const script = document.createElement('script');
+
+            window[callbackName] = function(data) {
+                log(`✅ JSONP 成功: ${JSON.stringify(data)}`, 'success');
+                delete window[callbackName];
+                document.body.removeChild(script);
+            };
+
+            script.src = `${WORKER_URL}/record?q=${encodeURIComponent(keyword)}&callback=${callbackName}`;
+            script.onerror = function() {
+                log(`❌ JSONP 加载失败`, 'error');
+                delete window[callbackName];
+                document.body.removeChild(script);
+            };
+
+            document.body.appendChild(script);
+        }
+
+        // 方法5: 使用 Image Ping（最简单）
+        function testWithImage() {
+            const keyword = 'image测试_' + Date.now();
+            log(`📤 使用 Image Ping 发送: "${keyword}"`);
+
+            const img = new Image();
+            img.src = `${WORKER_URL}/record?q=${encodeURIComponent(keyword)}&_ping=1&_=${Date.now()}`;
+
+            img.onload = function() {
+                log(`✅ Image Ping 成功`, 'success');
+            };
+
+            img.onerror = function() {
+                log(`❌ Image Ping 失败`, 'error');
+            };
+        }
+
+        // 方法6: 直接打开链接（用户手动点击）
+        function openDirectLink() {
+            const keyword = 'direct测试_' + new Date().toLocaleTimeString();
+            const url = `${WORKER_URL}/record?q=${encodeURIComponent(keyword)}`;
+
+            log(`🔗 打开链接: ${url}`);
+
+            // 在新标签页打开
+            window.open(url, '_blank');
+
+            // 同时在后台测试
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    log(`✅ 后台测试成功: ${JSON.stringify(data)}`, 'success');
+                })
+                .catch(e => {
+                    log(`❌ 后台测试失败: ${e.message}`, 'error');
+                });
+        }
+
+        // 网络诊断
+        async function testNetwork() {
+            log('🔍 开始网络诊断...');
+
+            // 测试 DNS 解析
+            try {
+                await fetch('https://dns.google/resolve?name=quark-search-api.weiyingjun122.workers.dev&type=A', {
+                    mode: 'no-cors'
+                });
+                log('✅ DNS 解析正常', 'success');
+            } catch (e) {
+                log(`❌ DNS 解析可能有问题`, 'warning');
+            }
+
+            // 测试 Worker 根路径
+            try {
+                const response = await fetch(WORKER_URL, { mode: 'no-cors' });
+                log('✅ Worker 根路径可访问', 'success');
+            } catch (e) {
+                log(`❌ Worker 根路径无法访问`, 'error');
+            }
+
+            // 测试其他 CDN（对比）
+            try {
+                await fetch('https://httpbin.org/get', { mode: 'no-cors' });
+                log('✅ 外部网络正常', 'success');
+            } catch (e) {
+                log(`❌ 外部网络可能有问题`, 'warning');
+            }
+        }
+
+        // 清除缓存
+        function clearCache() {
+            if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                    cacheNames.forEach(function(cacheName) {
+                        caches.delete(cacheName);
+                    });
+                    log('✅ 缓存已清除', 'success');
+                });
+            } else {
+                log('ℹ️ 浏览器不支持 Cache API');
+            }
+
+            // 清除 localStorage
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                log('✅ Storage 已清除', 'success');
+            } catch (e) {
+                log(`ℹ️ Storage 清除失败: ${e.message}`);
+            }
+        }
+
+        // 页面加载完成
+        window.onload = function() {
+            showDeviceInfo();
+            log('🟢 测试页面已加载');
+            log('📱 请点击上方按钮测试不同方法');
+
+            // 自动运行一个简单测试
+            setTimeout(() => {
+                log('⚡ 自动运行快速测试...');
+                testWithImage(); // 用最简单的方法先试
+            }, 1000);
+        };
+
+        // 监听网络状态
+        window.addEventListener('online', () => {
+            log('🌐 网络已连接', 'success');
+        });
+
+        window.addEventListener('offline', () => {
+            log('🌐 网络已断开', 'error');
+        });
+    </script>
+</body>
+</html>

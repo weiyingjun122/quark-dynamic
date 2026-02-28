@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>夸克网盘热搜资源榜｜每日更新</title>
+
+<meta name="description" content="夸克网盘热门资源搜索榜，实时统计大家都在搜什么，学习资料、影视资源、考试资料一站直达。">
+<meta name="keywords" content="夸克网盘,夸克资源,夸克搜索,网盘资源,热搜榜">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f6f7fb;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 720px;
+    margin: auto;
+}
+h1 {
+    text-align: center;
+}
+.hot-list {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+.hot-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+.hot-item:last-child {
+    border-bottom: none;
+}
+.hot-item a {
+    color: #1e90ff;
+    text-decoration: none;
+    font-size: 16px;
+}
+.hot-item a:hover {
+    text-decoration: underline;
+}
+.count {
+    color: #999;
+}
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>🔥 夸克网盘热搜资源榜</h1>
+    <p style="text-align:center;color:#666">
+        实时统计大家最常搜索的资源关键词
+    </p>
+
+    <div class="hot-list" id="hotList">
+        <p style="text-align:center">加载中...</p>
+    </div>
+
+    <div class="footer">
+        <a href="/" style="color:#1e90ff">返回搜索首页</a>
+    </div>
+</div>
+
+<script>
+/*
+  ⚠️ 说明：
+  1. 这里仍然使用 localStorage（单用户）
+  2. 后面升级 Worker 时，这里只换数据源
+  3. 可以配置 FILTER_KEYWORDS 来过滤不需要展示的关键词
+ */
+
+const FILTER_KEYWORDS = [
+    // 在这里添加需要过滤的关键词
+    // 例如：'敏感词', '广告', '不需要的关键词'
+];
+
+function getHotList(limit = 50) {
+    try {
+        const map = JSON.parse(localStorage.getItem('search_keywords')) || {};
+        return Object.entries(map)
+            .filter(([kw]) => !FILTER_KEYWORDS.includes(kw))
+            .sort((a, b) => b[1].count - a[1].count)
+            .slice(0, limit);
+    } catch {
+        return [];
+    }
+}
+
+function render() {
+    const hot = getHotList();
+    const box = document.getElementById('hotList');
+
+    if (!hot.length) {
+        box.innerHTML = '<p style="text-align:center">暂无热搜数据</p>';
+        return;
+    }
+
+    let html = '';
+    hot.forEach(([kw, v], i) => {
+        html += `
+        <div class="hot-item">
+            <a href="/?q=${encodeURIComponent(kw)}" title="${kw} 夸克网盘资源">
+                ${i + 1}. ${kw}
+            </a>
+            <span class="count">${v.count} 次</span>
+        </div>
+        `;
+    });
+
+    box.innerHTML = html;
+}
+
+render();
+</script>
+
+</body>
+</html>

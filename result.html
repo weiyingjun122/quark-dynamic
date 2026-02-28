@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>资源访问</title>
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  background: #f7f8fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* 弹窗卡片 */
+.card {
+  background: #fff;
+  width: 90%;
+  max-width: 360px;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  text-align: center;
+}
+
+.card h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: #1677ff;
+}
+
+/* 手机端按钮 */
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 22px;
+  background: linear-gradient(90deg,#4c9aff,#1677ff);
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0,103,255,0.3);
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg,#1677ff,#0056d4);
+  box-shadow: 0 6px 16px rgba(0,103,255,0.4);
+}
+
+/* 二维码 */
+img.qr {
+  width: 220px;
+  height: 220px;
+  margin-top: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.1);
+}
+
+.tip {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.countdown {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #999;
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+
+  <!-- 手机端 -->
+  <div id="mobile" style="display:none;">
+    <h2>即将跳转资源</h2>
+    <a id="mobile-link" class="btn" target="_blank">立即打开夸克网盘</a>
+    <div class="countdown">
+      <span id="sec">3</span> 秒后自动跳转
+    </div>
+    <p class="tip">建议在夸克网盘 App 内打开</p>
+  </div>
+
+  <!-- PC 端 -->
+  <div id="pc" style="display:none;">
+    <h2>请使用手机扫码</h2>
+    <img id="qr-img" class="qr" />
+    <p class="tip">使用夸克网盘 App 扫码访问</p>
+  </div>
+
+</div>
+
+<script>
+// 设备判断
+function isMobile() {
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
+
+// 获取 url 参数
+const params = new URLSearchParams(location.search);
+const url = params.get("url");
+const id  = params.get("id");
+
+if (isMobile()) {
+  // 手机端显示按钮 + 自动跳转
+  document.getElementById("mobile").style.display = "block";
+  const link = document.getElementById("mobile-link");
+  link.href = url;
+
+  let sec = 3;
+  const el = document.getElementById("sec");
+  const timer = setInterval(() => {
+    sec--;
+    el.textContent = sec;
+    if (sec <= 0) {
+      clearInterval(timer);
+      location.href = url;
+    }
+  }, 1000);
+
+} else {
+  // 电脑端显示二维码
+  document.getElementById("pc").style.display = "block";
+  document.getElementById("qr-img").src = `/static/qrcode/${id}.png`;
+}
+</script>
+</body>
+</html>

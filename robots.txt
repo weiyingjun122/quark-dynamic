@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# 禁止抓取接口
+Disallow: /api/
+
+# 禁止参数搜索页，防重复收录
+Disallow: /*?q=
+
+# 正确的 Sitemap 地址（重要）
+Sitemap: https://www.weiyingjun.top/search/sitemap.xml

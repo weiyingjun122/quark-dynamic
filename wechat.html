@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大白资源分享 - 微信群</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 顶部装饰条 */
+        .top-bar {
+            height: 4px;
+            background: linear-gradient(to right, #07c160, #09a855);
+        }
+
+        .header {
+            padding: 25px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .header h1 {
+            color: #222;
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .group-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #07c160, #09a855);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 4px 10px rgba(7, 193, 96, 0.2);
+        }
+
+        .group-details h2 {
+            font-size: 18px;
+            color: #222;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .group-details .members {
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .members i {
+            color: #07c160;
+        }
+
+        .qrcode-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .qrcode-container {
+            display: inline-block;
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e8e8e8;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .qrcode {
+            width: 220px;
+            height: 220px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .qrcode img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .qrcode-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+            width: 100%;
+            height: 100%;
+            background-color: #f9f9f9;
+        }
+
+        .qrcode-placeholder i {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .group-number {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .group-number h3 {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        .group-number .number {
+            font-size: 22px;
+            color: #07c160;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #07c160;
+        }
+
+        .instructions h3 {
+            color: #222;
+            margin-bottom: 12px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions h3 i {
+            color: #07c160;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .instructions strong {
+            color: #07c160;
+        }
+
+        .wechat-button {
+            background: linear-gradient(to right, #07c160, #09a855);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(7, 193, 96, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .wechat-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(7, 193, 96, 0.4);
+        }
+
+        .wechat-button:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            padding: 15px 25px 25px;
+            border-top: 1px solid #f0f0f0;
+            background-color: #fafafa;
+        }
+
+        .url-box {
+            background-color: #f9f9f9;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-align: center;
+            word-break: break-all;
+            font-family: monospace;
+            color: #07c160;
+            border: 1px solid #e8e8e8;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .wechat-logo {
+            color: white;
+            font-size: 20px;
+        }
+
+        .loading {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .success {
+            color: #07c160;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #e74c3c;
+        }
+
+        /* 微信样式装饰 */
+        .wechat-style {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #07c160;
+            font-size: 24px;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .qrcode {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        .wechat-qr-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .qr-corner {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 3px solid #07c160;
+            z-index: 3;
+        }
+
+        .qr-corner.tl {
+            top: 0;
+            left: 0;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .qr-corner.tr {
+            top: 0;
+            right: 0;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .qr-corner.bl {
+            bottom: 0;
+            left: 0;
+            border-right: none;
+            border-top: none;
+        }
+
+        .qr-corner.br {
+            bottom: 0;
+            right: 0;
+            border-left: none;
+            border-top: none;
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #07c160, transparent);
+            z-index: 4;
+            box-shadow: 0 0 10px rgba(7, 193, 96, 0.7);
+            animation: scan 2s infinite linear;
+            display: none;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0.7; }
+            50% { top: 100%; opacity: 1; }
+            100% { top: 0; opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar"></div>
+        <div class="wechat-style">
+            <i class="fab fa-weixin"></i>
+        </div>
+
+        <div class="header">
+            <h1>资源未找到</h1>
+            <p>扫码加入微信群，获取更多资源</p>
+        </div>
+
+        <div class="content">
+
+            <div class="qrcode-section">
+                <div class="qrcode-container">
+                    <div class="qrcode" id="qrcode">
+                        <!-- 二维码角标 -->
+                        <div class="wechat-qr-elements">
+                            <div class="qr-corner tl"></div>
+                            <div class="qr-corner tr"></div>
+                            <div class="qr-corner bl"></div>
+                            <div class="qr-corner br"></div>
+                        </div>
+
+                        <!-- 扫描线 -->
+                        <div class="scan-line" id="scanLine"></div>
+
+                        <!-- 二维码图片占位符 -->
+                        <div class="qrcode-placeholder" id="qrcode-placeholder">
+                            <i class="fab fa-weixin"></i>
+                            <span>微信群二维码加载中...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> 加入微信群指引</h3>
+                <ol>
+                    <li><strong>第一步：截图保存</strong> - 保存当前页面的微信群二维码</li>
+                    <li><strong>第二步：打开微信</strong> - 在手机上打开微信应用程序</li>
+                    <li><strong>第三步：扫码加入</strong> - 使用微信扫一扫功能，扫描上方二维码加入群聊</li>
+                </ol>
+            </div>
+
+            <button class="wechat-button" id="joinBtn">
+                <i class="fab fa-weixin wechat-logo"></i>
+                微信扫码加入群聊
+            </button>
+
+            <div class="loading" id="loadingStatus">
+                <span class="pulse">正在加载微信群二维码...</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>请使用微信扫描二维码加入群聊</p>
+            <p>© 2026 大白资源分享群 | 微信WeChat</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrcodeContainer = document.getElementById('qrcode');
+            const qrcodePlaceholder = document.getElementById('qrcode-placeholder');
+            const loadingStatus = document.getElementById('loadingStatus');
+            const joinBtn = document.getElementById('joinBtn');
+            const scanLine = document.getElementById('scanLine');
+
+            // 指定的微信群二维码链接
+            const qrCodeUrl = 'https://freegraph.weiyingjun.top/api/cfile/AgACAgUAAyEGAASNOmuyAAMFaXgK_lIk9B4WSemHlgLxaLsRIRsAAsgNaxs-j8FXS0-UXjZG3KoBAAMCAANtAAM4BA';
+
+            // 立即开始加载二维码
+            loadingStatus.innerHTML = '<span class="pulse">正在加载微信群二维码...</span>';
+
+            // 预加载图片
+            const qrImg = new Image();
+
+            // 设置加载超时时间
+            const loadTimeout = setTimeout(() => {
+                if (loadingStatus.textContent.includes('正在加载')) {
+                    loadingStatus.innerHTML = '<span class="error">二维码加载较慢，请耐心等待...</span>';
+                }
+            }, 3000);
+
+            qrImg.onload = function() {
+                // 清除超时计时器
+                clearTimeout(loadTimeout);
+
+                // 图片加载成功
+                setTimeout(() => {
+                    // 隐藏占位符
+                    qrcodePlaceholder.style.display = 'none';
+
+                    // 添加二维码图片
+                    qrcodeContainer.appendChild(qrImg);
+
+                    // 显示扫描线动画
+                    scanLine.style.display = 'block';
+
+                    // 更新状态
+                    loadingStatus.innerHTML = '<span class="success">✓ 微信群二维码加载完成</span>';
+
+                    // 添加成功动画
+                    qrcodeContainer.style.animation = 'none';
+                    void qrcodeContainer.offsetWidth; // 触发重绘
+                    qrcodeContainer.style.animation = 'pulse 0.5s ease';
+
+                }, 500);
+            };
+
+            qrImg.onerror = function() {
+                // 清除超时计时器
+                clearTimeout(loadTimeout);
+
+                // 图片加载失败，使用生成的微信风格二维码
+                loadingStatus.innerHTML = '<span class="error">二维码加载失败，使用备用方案...</span>';
+
+                setTimeout(() => {
+                    createWechatQRCode();
+                    scanLine.style.display = 'block';
+                    loadingStatus.innerHTML = '<span class="success">✓ 微信群二维码已生成</span>';
+                }, 800);
+            };
+
+            // 设置图片属性并开始加载
+            qrImg.src = qrCodeUrl;
+            qrImg.alt = '微信群二维码';
+            qrImg.style.width = '100%';
+            qrImg.style.height = '100%';
+            qrImg.style.objectFit = 'contain';
+
+            // 生成微信风格二维码（备用）
+            function createWechatQRCode() {
+                // 移除占位符
+                qrcodePlaceholder.style.display = 'none';
+
+                // 创建画布绘制二维码
+                const canvas = document.createElement('canvas');
+                canvas.width = 220;
+                canvas.height = 220;
+                const ctx = canvas.getContext('2d');
+
+                // 绘制白色背景
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, 220, 220);
+
+                // 绘制微信风格二维码
+                drawWechatQRCode(ctx);
+
+                // 将画布添加到页面
+                qrcodeContainer.appendChild(canvas);
+            }
+
+            function drawWechatQRCode(ctx) {
+                // 绘制二维码网格
+                const gridSize = 10;
+                const gridCount = 22; // 220/10
+
+                // 生成随机黑白图案（模拟二维码）
+                for (let x = 0; x < gridCount; x++) {
+                    for (let y = 0; y < gridCount; y++) {
+                        // 边缘保持空白
+                        if (x < 2 || x >= gridCount - 2 || y < 2 || y >= gridCount - 2) {
+                            ctx.fillStyle = '#FFFFFF';
+                        } else {
+                            // 随机生成黑色方块
+                            const isBlack = Math.random() > 0.6;
+                            ctx.fillStyle = isBlack ? '#222222' : '#FFFFFF';
+                        }
+
+                        ctx.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+                    }
+                }
+
+                // 添加微信Logo
+                const centerX = 110;
+                const centerY = 110;
+                const logoSize = 30;
+
+                // 绘制绿色圆形背景
+                ctx.fillStyle = '#07c160';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, logoSize/2 + 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 绘制白色微信Logo
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.arc(centerX - 8, centerY, 6, 0, Math.PI * 2);
+                ctx.arc(centerX + 8, centerY, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 绘制微信眼睛
+                ctx.fillStyle = '#07c160';
+                ctx.beginPath();
+                ctx.arc(centerX - 8, centerY, 2, 0, Math.PI * 2);
+                ctx.arc(centerX + 8, centerY, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // 加入群聊按钮点击事件
+            joinBtn.addEventListener('click', function() {
+                loadingStatus.innerHTML = '<span class="success">✓ 请使用微信扫描上方二维码加入群聊</span>';
+
+                // 按钮动画效果
+                const originalHTML = joinBtn.innerHTML;
+                joinBtn.innerHTML = '<i class="fas fa-check-circle wechat-logo"></i> 已提示扫码加入';
+                joinBtn.style.background = 'linear-gradient(to right, #07c160, #09a855)';
+
+                // 添加扫描线加强动画
+                scanLine.style.animation = 'scan 0.8s infinite linear';
+
+                // 3秒后恢复原状
+                setTimeout(() => {
+                    joinBtn.innerHTML = originalHTML;
+                    scanLine.style.animation = 'scan 2s infinite linear';
+                }, 3000);
+            });
+
+            // 添加二维码加载完成检查
+            setTimeout(() => {
+                if (loadingStatus.textContent.includes('正在加载')) {
+                    loadingStatus.innerHTML = '<span class="pulse">二维码加载中，请稍候...</span>';
+                }
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

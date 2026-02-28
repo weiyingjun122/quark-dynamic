@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雪乡资源下载 - 夸克网盘资源搜索</title>
+    <meta name="description" content="免费提供雪乡相关资源下载，共2个雪乡相关资源。">
+    <meta name="keywords" content="雪乡,夸克网盘,雪乡下载,雪乡资源">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.weiyingjun.top/search/雪乡.html">
+    
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        /* 头部样式 */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .keyword-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .stats {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        /* 资源项样式 */
+        .resource-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .resource-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .resource-index {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .resource-title {
+            font-size: 20px;
+            color: #333;
+            flex-grow: 1;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+            background: #ffebee;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        /* 内容区域样式 - 关键修改 */
+        .resource-content {
+            display: none; /* 默认都隐藏 */
+        }
+        
+        /* 设备检测后的显示控制 */
+        .mobile .mobile-content {
+            display: block !important;
+        }
+        
+        .mobile .desktop-content {
+            display: none !important;
+        }
+        
+        .desktop .mobile-content {
+            display: none !important;
+        }
+        
+        .desktop .desktop-content {
+            display: block !important;
+        }
+        
+        /* 手机端内容 */
+        .mobile-download {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .device-tip {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .download-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+        
+        .download-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .link-info {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+            word-break: break-all;
+        }
+        
+        /* 电脑端内容 */
+        .desktop-download {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .qrcode-container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin: 10px 0;
+        }
+        
+        .qrcode-img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+        
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.secondary {
+            background: #6c757d;
+        }
+        
+        .action-btn.secondary:hover {
+            background: #545b62;
+        }
+        
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            margin-top: 10px;
+        }
+        
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 设备指示器 */
+        .device-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            z-index: 1000;
+            display: none; /* 开发环境可显示 */
+        }
+    </style>
+    
+    <script>
+        // 设备检测函数
+        function detectDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent.toLowerCase());
+            
+            // 在body上添加设备类名
+            if (isMobile) {
+                document.body.classList.add('mobile');
+                document.body.classList.remove('desktop');
+            } else {
+                document.body.classList.add('desktop');
+                document.body.classList.remove('mobile');
+            }
+            
+            // 显示设备指示器（仅开发环境）
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                const indicator = document.getElementById('device-indicator');
+                if (indicator) {
+                    indicator.textContent = isMobile ? '📱 手机模式' : '💻 电脑模式';
+                    indicator.style.display = 'block';
+                }
+            }
+            
+            console.log('设备检测:', isMobile ? '手机' : '电脑');
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检测设备并设置对应类名
+            detectDevice();
+            
+            // 监听窗口大小变化（处理设备旋转等）
+            window.addEventListener('resize', detectDevice);
+            
+            // 二维码图片加载失败处理
+            const qrcodeImages = document.querySelectorAll('.qrcode-img');
+            qrcodeImages.forEach(img => {
+                img.onerror = function() {
+                    this.onerror = null;
+                    // 替换为默认二维码或显示错误信息
+                    const container = this.parentNode;
+                    container.innerHTML = '<div style="padding:20px;color:#999;">二维码加载失败，请尝试其他资源</div>';
+                };
+            });
+            
+            // 添加手动切换按钮（仅开发环境）
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                const switchBtn = document.createElement('button');
+                switchBtn.innerHTML = '🔄 切换设备';
+                switchBtn.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: #6c757d;
+                    color: white;
+                    border: none;
+                    padding: 8px 15px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    z-index: 1000;
+                    opacity: 0.8;
+                `;
+                switchBtn.onclick = function() {
+                    const isMobile = document.body.classList.contains('mobile');
+                    if (isMobile) {
+                        document.body.classList.remove('mobile');
+                        document.body.classList.add('desktop');
+                    } else {
+                        document.body.classList.remove('desktop');
+                        document.body.classList.add('mobile');
+                    }
+                    
+                    // 更新指示器
+                    const indicator = document.getElementById('device-indicator');
+                    if (indicator) {
+                        indicator.textContent = !isMobile ? '📱 手机模式' : '💻 电脑模式';
+                    }
+                };
+                document.body.appendChild(switchBtn);
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- 设备指示器（开发环境显示） -->
+    <div class="device-indicator" id="device-indicator"></div>
+    
+    <!-- 头部信息 -->
+    <div class="header">
+        <h1 class="keyword-title">"雪乡" 资源免费下载</h1>
+        <div class="stats">
+            🔥 搜索热度: 23次 | 📁 相关资源: 2个
+        </div>
+    </div>
+    
+    <!-- 资源列表 -->
+    <div class="resources-container">
+        <h2 style="text-align: center; margin: 20px 0; color: #444;">📚 相关资源列表</h2>
+        
+        <div class="resource-item">
+            <div class="resource-header">
+                <span class="resource-index">1.</span>
+                <h3 class="resource-title"><span class="highlight">雪乡</span>连环杀人事件</h3>
+            </div>
+            
+            <!-- 手机端内容（默认显示，电脑隐藏） -->
+            <div class="resource-content mobile-content">
+                <div class="mobile-download">
+                    <p class="device-tip">📱 手机用户可直接下载</p>
+                    <a href="https://pan.quark.cn/s/cd96eb3e7191" class="download-link" target="_blank" rel="nofollow">
+                        打开夸克APP保存
+                    </a>
+                    <div class="link-info">
+                        <small>下载链接: https://pan.quark.cn/s/cd96eb3e7191...</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电脑端内容（默认隐藏，手机隐藏） -->
+            <div class="resource-content desktop-content">
+                <div class="desktop-download">
+                    <p class="device-tip">💻 电脑用户请使用夸克或微信扫描二维码下载</p>
+                    <div class="qrcode-container">
+                        <img src="/static/qrcode/199.png" alt="下载二维码" class="qrcode-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resource-item">
+            <div class="resource-header">
+                <span class="resource-index">2.</span>
+                <h3 class="resource-title"><span class="highlight">雪乡</span>连环杀人事件2</h3>
+            </div>
+            
+            <!-- 手机端内容（默认显示，电脑隐藏） -->
+            <div class="resource-content mobile-content">
+                <div class="mobile-download">
+                    <p class="device-tip">📱 手机用户可直接下载</p>
+                    <a href="https://pan.quark.cn/s/5d694cff834e" class="download-link" target="_blank" rel="nofollow">
+                        打开夸克APP保存
+                    </a>
+                    <div class="link-info">
+                        <small>下载链接: https://pan.quark.cn/s/5d694cff834e...</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 电脑端内容（默认隐藏，手机隐藏） -->
+            <div class="resource-content desktop-content">
+                <div class="desktop-download">
+                    <p class="device-tip">💻 电脑用户请使用夸克或微信扫描二维码下载</p>
+                    <div class="qrcode-container">
+                        <img src="/static/qrcode/453.png" alt="下载二维码" class="qrcode-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="action-buttons">
+        <a href="/?q=%E9%9B%AA%E4%B9%A1" class="action-btn">
+            🔍 搜索更多"雪乡"资源
+        </a>
+        <a href="/search/" class="action-btn secondary">
+            📊 查看所有热门关键词
+        </a>
+        <a href="/" class="action-btn secondary">
+            🏠 返回首页
+        </a>
+    </div>
+    
+    <!-- 页脚 -->
+    <div class="footer">
+        <p>© 2026 夸克网盘资源搜索 | 生成时间: 2026-02-27 16:23</p>
+        <div class="footer-links">
+            <a href="/search/">所有热门关键词</a>
+            <a href="/">返回首页</a>
+        </div>
+        <p style="margin-top: 10px; font-size: 12px; color: #999;">
+            自动适配设备类型，手机显示下载链接，电脑显示二维码
+        </p>
+    </div>
+</body>
+</html>
