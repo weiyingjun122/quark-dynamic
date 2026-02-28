@@ -1287,7 +1287,6 @@ async function handleRequest(request, env, corsHeaders) {
             headers: { "Content-Type": "application/json; charset=utf-8", ...corsHeaders }
         });
     }
-    }
 }
 
 
