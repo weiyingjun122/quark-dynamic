@@ -98,3 +98,5 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           projectName: 'quark-dynamic'
           directory: '.'
+          # KV命名空间绑定 - 重要！
+          kvNamespaceId: ${{ secrets.KV_NAMESPACE_ID_DYNAMIC }}
