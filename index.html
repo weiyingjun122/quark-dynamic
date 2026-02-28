@@ -332,8 +332,9 @@ async function updateTransferStatus() {
         if (data.success) {
             const countEl = document.getElementById('transferCount');
             if (countEl) {
-                countEl.textContent = `今日剩余: ${data.remaining}次`;
-                if (data.remaining === 0) {
+                const remaining = Math.max(0, data.remaining);
+                countEl.textContent = `今日剩余: ${remaining}次`;
+                if (remaining === 0) {
                     countEl.style.background = '#ffe0e0';
                     countEl.style.color = '#e74c3c';
                 }
