@@ -5493,5 +5493,16 @@
     "share_link": "https://pan.quark.cn/s/74291074815b",
     "qrcode": "static/qrcode/481.png",
     "type": "剧本杀"
+  },
+  {
+    "id": "482",
+    "title": "花牌情缘",
+    "keywords": [
+      "动漫"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/e53c5370ea1c",
+    "qrcode": "static/qrcode/482.png",
+    "type": "动漫"
   }
 ]
