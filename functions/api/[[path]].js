@@ -578,6 +578,21 @@ function getTodayDate() {
     return new Date().toISOString().slice(0, 10);
 }
 
+// 检查用户是否是VIP
+async function checkIsVip(env, username) {
+    if (!username) return false;
+    
+    const vipUsersStr = await env.SEARCH_STATS.get('vip_users');
+    if (!vipUsersStr) return false;
+    
+    try {
+        const vipUsers = JSON.parse(vipUsersStr);
+        return vipUsers.includes(username.toLowerCase());
+    } catch {
+        return false;
+    }
+}
+
 async function handleAuthRegister(request, env, corsHeaders) {
     if (request.method !== 'POST') {
         return new Response(JSON.stringify({
@@ -731,9 +746,14 @@ async function handleAuthLogin(request, env, corsHeaders) {
 
     const token = generateToken();
     const tokenKey = `token:${token}`;
+    
+    // 检查是否是VIP用户
+    const isVip = await checkIsVip(env, username.toLowerCase());
+    
     const tokenData = {
         userId: userData.userId,
         username: userData.username,
+        isVip: isVip,
         expiresAt: new Date(Date.now() + TRANSFER_CONFIG.TOKEN_EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString()
     };
 
@@ -744,7 +764,8 @@ async function handleAuthLogin(request, env, corsHeaders) {
         message: '登录成功',
         token,
         userId: userData.userId,
-        username: userData.username
+        username: userData.username,
+        isVip: isVip
     }), {
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
@@ -915,6 +936,20 @@ async function handleCheckView(request, env, corsHeaders) {
             error: '未登录，请先登录'
         }), {
             status: 401,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+    }
+
+    // 检查是否是VIP用户
+    const isVip = await checkIsVip(env, userData.username);
+    if (isVip) {
+        return new Response(JSON.stringify({
+            success: true,
+            allowed: true,
+            isVip: true,
+            remaining: '无限',
+            message: 'VIP用户无限次数'
+        }), {
             headers: { 'Content-Type': 'application/json', ...corsHeaders }
         });
     }

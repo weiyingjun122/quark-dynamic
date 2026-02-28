@@ -238,14 +238,21 @@ function updateUserPanel() {
     const auth = getStoredAuth();
     if (auth && auth.user) {
         currentUser = auth.user;
+        const isVip = auth.user.isVip;
+        const vipTag = isVip ? '<span style="background:gold;color:#333;padding:2px 8px;border-radius:10px;font-size:12px;margin-left:5px;">VIP</span>' : '';
+        const transferInfo = isVip ? '<span class="transfer-count" style="background:gold;color:#333;">VIP无限次数</span>' : '<span class="transfer-count" id="transferCount">今日剩余: --</span>';
+        
         userPanel.innerHTML = `
             <div class="user-info">
-                <span class="username">${auth.user.username}</span>
-                <span class="transfer-count" id="transferCount">今日剩余: --</span>
+                <span class="username">${auth.user.username}</span>${vipTag}
+                ${transferInfo}
                 <button class="logout-btn" onclick="handleLogout()">登出</button>
             </div>
         `;
-        updateTransferStatus();
+        
+        if (!isVip) {
+            updateTransferStatus();
+        }
     } else {
         userPanel.innerHTML = `<button class="user-btn" id="userBtn" onclick="showAuthModal()">登录/注册</button>`;
     }
@@ -371,7 +378,7 @@ async function handleLogin() {
         const data = await res.json();
 
         if (data.success) {
-            saveAuth(data.token, { userId: data.userId, username: data.username });
+            saveAuth(data.token, { userId: data.userId, username: data.username, isVip: data.isVip });
             authModal.style.display = 'none';
             updateUserPanel();
         } else {
