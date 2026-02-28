@@ -1336,6 +1336,8 @@ async function handleSetStats(request, env, corsHeaders) {
         "亢奋": 10,
         "黑袍纠察队": 10,
         "大西洋帝国": 10,
+        "奇幻沼泽": 20,
+        "猫头鹰魔法社": 18,
         "飞出个未来": 10,
         "怪诞小镇": 10,
         "探险活宝": 10,
