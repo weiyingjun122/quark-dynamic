@@ -75,6 +75,8 @@ export async function onRequest(context) {
             return await handleRequest(request, env, corsHeaders);
         case 'clear-stats':
             return await handleClearStats(request, env, corsHeaders);
+        case 'set-stats':
+            return await handleSetStats(request, env, corsHeaders);
         default:
             return new Response(JSON.stringify({
                 error: "Endpoint not found",
@@ -1307,6 +1309,55 @@ async function handleClearStats(request, env, corsHeaders) {
     return new Response(JSON.stringify({
         success: true,
         message: "统计数据已清除"
+    }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+    });
+}
+
+
+// 设置预设统计数据
+async function handleSetStats(request, env, corsHeaders) {
+    const url = new URL(request.url);
+    const secret = url.searchParams.get("secret");
+    
+    if (secret !== "debug123") {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
+    // 预设热门关键词及其次数（只保留具体资源名称）
+    const presetStats = {
+        "老友记": 10,
+        "绝命毒师": 10,
+        "行尸走肉": 10,
+        "请回答1988": 10,
+        "亢奋": 10,
+        "黑袍纠察队": 10,
+        " Simpsons": 10,
+        "飞出具未来": 10,
+        "怪诞小镇": 10,
+        "探险活宝": 10,
+        "希尔达": 10,
+        "马男波杰克": 10,
+        "小马宝莉": 10,
+        "家宴": 15,
+        "大宴之上": 12,
+        "告别诗": 11,
+        "声声慢": 10,
+        "马丁内斯死在惊奇馆": 10,
+        "一点半": 10,
+        "人吃人": 10,
+        "窗边的女人": 10
+    };
+    
+    await env.SEARCH_STATS.put("stats", JSON.stringify(presetStats));
+    
+    return new Response(JSON.stringify({
+        success: true,
+        message: "统计数据已设置",
+        stats: presetStats
     }), {
         headers: { "Content-Type": "application/json", ...corsHeaders }
     });
