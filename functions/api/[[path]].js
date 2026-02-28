@@ -59,6 +59,8 @@ export async function onRequest(context) {
             return await handleRecord(request, env, url, corsHeaders);
         case 'hot':
             return await handleHot(env, corsHeaders);
+        case 'hot-by-type':
+            return await handleHotByType(request, env, corsHeaders);
         case 'sync':
             return await handleSync(request, env, url, corsHeaders);
         case 'gap':
@@ -256,6 +258,90 @@ async function handleHot(env, corsHeaders) {
     return new Response(JSON.stringify(hotList), {
         headers: { "Content-Type": "application/json", ...corsHeaders }
     });
+}
+
+// 按类型返回热搜
+async function handleHotByType(request, env, corsHeaders) {
+    try {
+        // 获取搜索统计
+        let stats = {};
+        try {
+            const statsData = await env.SEARCH_STATS.get("stats");
+            if (statsData) {
+                stats = JSON.parse(statsData);
+            }
+        } catch (e) {
+            stats = {};
+        }
+
+        // 获取资源数据（包含type）
+        let resources = [];
+        try {
+            const resourcesRes = await fetch("https://quark-dynamic.pages.dev/data.json");
+            resources = await resourcesRes.json();
+        } catch (e) {
+            console.error("获取资源数据失败:", e);
+        }
+
+        // 建立 word -> type 的映射
+        const wordToType = {};
+        resources.forEach(item => {
+            const type = item.type || '其他';
+            // 从title和keywords提取关键词
+            if (item.title) {
+                wordToType[item.title.toLowerCase()] = type;
+            }
+            if (item.keywords) {
+                item.keywords.forEach(k => {
+                    wordToType[k.toLowerCase()] = type;
+                });
+            }
+            if (item.search_aliases) {
+                item.search_aliases.forEach(a => {
+                    wordToType[a.toLowerCase()] = type;
+                });
+            }
+        });
+
+        // 按type分组统计
+        const typeStats = {};
+        Object.entries(stats).forEach(([word, count]) => {
+            const wordLower = word.toLowerCase();
+            let type = '其他';
+            
+            // 尝试匹配
+            for (const [key, t] of Object.entries(wordToType)) {
+                if (wordLower.includes(key) || key.includes(wordLower)) {
+                    type = t;
+                    break;
+                }
+            }
+            
+            if (!typeStats[type]) {
+                typeStats[type] = [];
+            }
+            typeStats[type].push({ word, count });
+        });
+
+        // 每个type取前10条
+        const result = {};
+        Object.entries(typeStats).forEach(([type, list]) => {
+            result[type] = list
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 10)
+                .map(item => ({ word: item.word, count: item.count }));
+        });
+
+        return new Response(JSON.stringify(result), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+
+    } catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), {
+            status: 500,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
 }
 
 // 修改handleSync函数，添加错误处理

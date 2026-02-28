@@ -991,23 +991,37 @@ function renderTodayUpdate(data, isRecent) {
     container.innerHTML = html;
 }
 
+// 分类热搜映射
+const TYPE_MAPPING = {
+    jubenHot: '剧本杀',
+    jujiHot: '剧集',
+    movieHot: '电影',
+    animeHot: '动漫',
+    studyHot: '学习资料'
+};
+
 // 加载分类热搜
-async function loadCategoryHot(containerId, keywords) {
+async function loadCategoryHot(containerId, typeName) {
     try {
-        const res = await fetch('/api/hot');
-        const hotList = await res.json();
+        const res = await fetch('/api/hot-by-type');
+        const data = await res.json();
         
-        // 过滤并按搜索次数降序排序，然后取前10条
-        const filtered = hotList.filter(item => {
-            const word = item.word || '';
-            return keywords.some(k => word.includes(k));
-        }).sort((a, b) => (b.count || 0) - (a.count || 0)).slice(0, 10);
-        
-        renderHotList(containerId, filtered);
+        const list = data[typeName] || [];
+        renderHotList(containerId, list);
     } catch (e) {
         console.error('加载分类热搜失败:', e);
-        document.getElementById(containerId).innerHTML = '加载失败';
+        document.getElementById(containerId).innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">加载失败</div>';
     }
+}
+
+// 页面初始化时调用
+function initCategoryHot() {
+    loadCategoryHot('jubenHot', '剧本杀');
+    loadCategoryHot('jujiHot', '剧集');
+    loadCategoryHot('movieHot', '电影');
+    loadCategoryHot('animeHot', '动漫');
+    loadCategoryHot('studyHot', '学习资料');
+}
 }
 
 function renderHotList(containerId, data) {
@@ -1055,11 +1069,7 @@ window.addEventListener('DOMContentLoaded', () => {
     
     // 加载各模块
     loadTodayUpdate(); // 今日更新
-    loadCategoryHot('jubenHot', CATEGORY_KEYWORDS.juben); // 剧本杀热搜
-    loadCategoryHot('jujiHot', CATEGORY_KEYWORDS.juji); // 剧集热搜
-    loadCategoryHot('movieHot', CATEGORY_KEYWORDS.movie); // 电影热搜
-    loadCategoryHot('animeHot', CATEGORY_KEYWORDS.anime); // 动漫热搜
-    loadCategoryHot('studyHot', CATEGORY_KEYWORDS.study); // 学习资料热搜
+    initCategoryHot(); // 分类热搜
 
     // 事件绑定
     document.getElementById('searchBtn').addEventListener('click', () => performSearch(document.getElementById('searchInput').value.trim()));
