@@ -413,13 +413,16 @@
   },
   {
     "id": "33",
-    "title": "机智医生生活",
+    "title": "机智的医生生活",
     "keywords": [
       "剧集",
       "韩剧",
       "机智医生生活"
     ],
-    "search_aliases": [],
+    "search_aliases": [
+      "机智的医生生活",
+      "机智医生生活"
+    ],
     "share_link": "https://pan.quark.cn/s/215166a7f55d",
     "qrcode": "static/qrcode/33.png",
     "type": "剧集"
