@@ -1344,6 +1344,7 @@ async function handleSetStats(request, env, corsHeaders) {
         "希尔达": 10,
         "马男波杰克": 10,
         "小马宝莉": 10,
+        "外星也难民": 10,
         "一座城": 15,
         "中彩票": 12,
         "告别诗": 11,
@@ -1355,7 +1356,9 @@ async function handleSetStats(request, env, corsHeaders) {
         "离婚吧！赶紧的": 10,
         "归途": 10,
         "越狱": 10,
-        "机智的医生生活": 15
+        "机智的医生生活": 15,
+        "SSS儿歌": 15,
+        "亲子情境英语学习资料包": 10
     };
     
     await env.SEARCH_STATS.put("stats", JSON.stringify(presetStats));
