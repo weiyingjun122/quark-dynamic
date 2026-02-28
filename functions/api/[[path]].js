@@ -1311,7 +1311,7 @@ async function handleClearStats(request, env, corsHeaders) {
         headers: { "Content-Type": "application/json", ...corsHeaders }
     });
 }
-}
+
 
 
 // 辅助函数
