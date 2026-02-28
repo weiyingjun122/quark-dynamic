@@ -73,6 +73,8 @@ export async function onRequest(context) {
             return await handlePing(corsHeaders);
         case 'request':
             return await handleRequest(request, env, corsHeaders);
+        case 'set-stats':
+            return await handleSetStats(request, env, corsHeaders);
         default:
             return new Response(JSON.stringify({
                 error: "Endpoint not found",
@@ -243,7 +245,7 @@ async function handleHot(env, corsHeaders) {
         stats = {};
     }
 
-    const THRESHOLD = 1;
+    const THRESHOLD = 10;
     const hotList = Object.entries(stats)
     .filter(([_, count]) => count >= THRESHOLD)
     .sort((a, b) => b[1] - a[1])
@@ -631,7 +633,7 @@ const RATE_LIMIT = {
 
 // 用户转存/查看配置
 const TRANSFER_CONFIG = {
-    MAX_TRANSFERS_PER_DAY: 1,  // 可修改：每个用户每天最大查看/转存次数
+    MAX_TRANSFERS_PER_DAY: 3,  // 可修改：每个用户每天最大查看/转存次数
     TOKEN_EXPIRY_DAYS: 7        // token有效期天数
 };
 
@@ -1285,9 +1287,64 @@ async function handleRequest(request, env, corsHeaders) {
             headers: { "Content-Type": "application/json; charset=utf-8", ...corsHeaders }
         });
     }
+    }
 }
 
 
+// 设置统计数据的接口（仅用于调试）
+async function handleSetStats(request, env, corsHeaders) {
+    const url = new URL(request.url);
+    const secret = url.searchParams.get("secret");
+    
+    if (secret !== "debug123") {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
+    // 预设热门关键词及其次数
+    const presetStats = {
+        "剧本杀": 20,
+        "电影": 15,
+        "动漫": 12,
+        "电视剧": 18,
+        "美剧": 11,
+        "韩剧": 10,
+        "学习资料": 10,
+        "老友记": 10,
+        "绝命毒师": 10,
+        "行尸走肉": 10,
+        "请回答1988": 10,
+        "亢奋": 10,
+        "黑袍纠察队": 10,
+        " Simpsons": 10,
+        "飞出具未来": 10,
+        "怪诞小镇": 10,
+        "探险活宝": 10,
+        "希尔达": 10,
+        "马男波杰克": 10,
+        "小马宝莉": 10,
+        "家宴": 15,
+        "大宴之上": 12,
+        "告别诗": 11,
+        "声声慢": 10,
+        "马丁内斯死在惊奇馆": 10,
+        "一点半": 10,
+        "人吃人": 10,
+        "窗边的女人": 10
+    };
+    
+    await env.SEARCH_STATS.put("stats", JSON.stringify(presetStats));
+    
+    return new Response(JSON.stringify({
+        success: true,
+        message: "统计数据已设置",
+        stats: presetStats
+    }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+    });
+}
 
 
 // 辅助函数
