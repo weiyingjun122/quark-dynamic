@@ -78,7 +78,7 @@ export async function onRequest(context) {
         default:
             return new Response(JSON.stringify({
                 error: "Endpoint not found",
-                available: ["/api/record", "/api/hot", "/api/sync", "/api/debug", "/api/health", "/api/ping", "/api/request"]
+                available: ["/api/record", "/api/hot", "/api/hot-by-type", "/api/sync", "/api/debug", "/api/health", "/api/ping", "/api/request", "/api/auth/*", "/api/clear-stats"]
             }), {
                 status: 404,
                 headers: { "Content-Type": "application/json", ...corsHeaders }
