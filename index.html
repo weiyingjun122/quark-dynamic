@@ -166,10 +166,10 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <button id="searchBtn">搜索</button>
 </div>
 
-<!-- 第一排：今日更新 剧本杀热搜 剧集热搜 -->
+<!-- 第一排：今日更新 -->
 <div class="hot-row">
     <!-- 今日更新 -->
-    <div class="hot-section">
+    <div class="hot-section" style="flex: 1;">
         <div class="section-title">
             <h2>🆕 今日更新</h2>
         </div>
@@ -178,56 +178,13 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
         </div>
     </div>
 
-    <!-- 剧本杀热搜 -->
-    <div class="hot-section">
-        <div class="section-title">
-            <h2>🔪 剧本杀热搜</h2>
-        </div>
-        <div class="card">
-            <div id="jubenHot" style="color: #999;">正在加载...</div>
-        </div>
-    </div>
-
-    <!-- 剧集热搜 -->
-    <div class="hot-section">
-        <div class="section-title">
-            <h2>📺 剧集热搜</h2>
-        </div>
-        <div class="card">
-            <div id="jujiHot" style="color: #999;">正在加载...</div>
-        </div>
-    </div>
-</div>
-
-<!-- 第二排：电影热搜 动漫热搜 学习资料 -->
-<div class="hot-row">
-    <!-- 电影热搜 -->
-    <div class="hot-section">
-        <div class="section-title">
-            <h2>🎬 电影热搜</h2>
-        </div>
-        <div class="card">
-            <div id="movieHot" style="color: #999;">正在加载...</div>
-        </div>
-    </div>
-
     <!-- 动漫热搜 -->
-    <div class="hot-section">
+    <div class="hot-section" style="flex: 1;">
         <div class="section-title">
             <h2>🎨 动漫热搜</h2>
         </div>
         <div class="card">
             <div id="animeHot" style="color: #999;">正在加载...</div>
-        </div>
-    </div>
-
-    <!-- 学习资料热搜 -->
-    <div class="hot-section">
-        <div class="section-title">
-            <h2>📚 学习资料热搜</h2>
-        </div>
-        <div class="card">
-            <div id="studyHot" style="color: #999;">正在加载...</div>
         </div>
     </div>
 </div>
@@ -1020,11 +977,7 @@ async function loadCategoryHot(containerId, typeName) {
 
 // 页面初始化时调用
 function initCategoryHot() {
-    loadCategoryHot('jubenHot', '剧本杀');
-    loadCategoryHot('jujiHot', '剧集');
-    loadCategoryHot('movieHot', '电影');
     loadCategoryHot('animeHot', '动漫');
-    loadCategoryHot('studyHot', '学习资料');
 }
 
 function renderHotList(containerId, data) {
