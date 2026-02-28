@@ -151,12 +151,12 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/人皮灯笼.html</loc>
+        <loc>https://www.weiyingjun.top/search/一座城.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/一座城.html</loc>
+        <loc>https://www.weiyingjun.top/search/人皮灯笼.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -181,12 +181,12 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/剧本.html</loc>
+        <loc>https://www.weiyingjun.top/search/精神病院4.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/精神病院4.html</loc>
+        <loc>https://www.weiyingjun.top/search/剧本.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -221,6 +221,11 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://www.weiyingjun.top/search/最后的晚餐.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://www.weiyingjun.top/search/群星落幕时.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -237,11 +242,6 @@
     </url>
     <url>
         <loc>https://www.weiyingjun.top/search/猫岛.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://www.weiyingjun.top/search/最后的晚餐.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
