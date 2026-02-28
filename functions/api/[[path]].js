@@ -38,12 +38,14 @@ export async function onRequest(context) {
                 return await handleTransfer(request, env, corsHeaders);
             case 'status':
                 return await handleTransferStatus(request, env, corsHeaders);
+            case 'check':
+                return await handleCheckView(request, env, corsHeaders);
             case 'logout':
                 return await handleLogout(request, env, corsHeaders);
             default:
                 return new Response(JSON.stringify({
                     error: "Auth endpoint not found",
-                    available: ["/api/auth/register", "/api/auth/login", "/api/auth/transfer", "/api/auth/status", "/api/auth/logout"]
+                    available: ["/api/auth/register", "/api/auth/login", "/api/auth/transfer", "/api/auth/status", "/api/auth/check", "/api/auth/logout"]
                 }), {
                     status: 404,
                     headers: { "Content-Type": "application/json", ...corsHeaders }
@@ -541,9 +543,9 @@ const RATE_LIMIT = {
     WINDOW_MS: 60 * 60 * 1000
 };
 
-// 用户转存配置
+// 用户转存/查看配置
 const TRANSFER_CONFIG = {
-    MAX_TRANSFERS_PER_DAY: 1,  // 可修改：每个用户每天最大转存次数
+    MAX_TRANSFERS_PER_DAY: 1,  // 可修改：每个用户每天最大查看/转存次数
     TOKEN_EXPIRY_DAYS: 7        // token有效期天数
 };
 
@@ -888,6 +890,71 @@ async function handleTransferStatus(request, env, corsHeaders) {
         maxPerDay: TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY,
         remaining: TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY - transferCount,
         canTransfer: transferCount < TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY
+    }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+    });
+}
+
+// 检查并消耗每日查看次数
+async function handleCheckView(request, env, corsHeaders) {
+    if (request.method !== 'POST') {
+        return new Response(JSON.stringify({
+            success: false,
+            error: 'Method not allowed'
+        }), {
+            status: 405,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+    }
+
+    const userData = await verifyToken(request, env);
+
+    if (!userData) {
+        return new Response(JSON.stringify({
+            success: false,
+            error: '未登录，请先登录'
+        }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+    }
+
+    const today = getTodayDate();
+    const transferKey = `transfer:${userData.userId}:${today}`;
+    const transferDataStr = await env.SEARCH_STATS.get(transferKey);
+
+    let transferCount = 0;
+    if (transferDataStr) {
+        const transferData = JSON.parse(transferDataStr);
+        transferCount = transferData.count;
+    }
+
+    // 检查今天是否已经用过
+    if (transferCount >= TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY) {
+        return new Response(JSON.stringify({
+            success: false,
+            allowed: false,
+            error: `今天已查看过资源了，每天只能查看1次，明天再来吧！`,
+            remaining: 0,
+            maxPerDay: TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY
+        }), {
+            status: 403,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+    }
+
+    // 消耗一次查看次数
+    const newTransferData = {
+        count: transferCount + 1,
+        lastView: new Date().toISOString()
+    };
+    await env.SEARCH_STATS.put(transferKey, JSON.stringify(newTransferData));
+
+    return new Response(JSON.stringify({
+        success: true,
+        allowed: true,
+        remaining: TRANSFER_CONFIG.MAX_TRANSFERS_PER_DAY - transferCount - 1,
+        message: '可以查看资源'
     }), {
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });

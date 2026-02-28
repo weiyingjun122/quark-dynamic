@@ -569,6 +569,31 @@ async function performSearch(keyword) {
 
     if (item) {
         // 找到资源 - 需要登录后才能查看
+        // 先检查是否还能查看（已登录用户）
+        if (isLoggedIn) {
+            const auth = getStoredAuth();
+            try {
+                const checkRes = await fetch('/api/auth/check', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${auth.token}`
+                    }
+                });
+                const checkData = await checkRes.json();
+                
+                if (!checkData.allowed) {
+                    // 今日次数已用完
+                    alert(checkData.error || '今天已用过1次了，明天再来吧！');
+                    updateTransferStatus();
+                    modal.style.display = 'none';
+                    return;
+                }
+            } catch (e) {
+                console.warn('检查查看次数失败:', e);
+            }
+        }
+
         html = `<h3>✅ 找到资源：${highlight(item.title, keyword)}</h3>`;
 
         if (!isLoggedIn) {
@@ -596,6 +621,11 @@ async function performSearch(keyword) {
 
     modalBody.innerHTML = html;
     modal.style.display = 'flex';
+
+    // 更新用户面板的剩余次数
+    if (item && isLoggedIn) {
+        updateTransferStatus();
+    }
 
     // 绑定转存按钮事件（仅当按钮存在时）
     if (item && isLoggedIn) {
