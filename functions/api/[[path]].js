@@ -77,6 +77,8 @@ export async function onRequest(context) {
             return await handleClearStats(request, env, corsHeaders);
         case 'set-stats':
             return await handleSetStats(request, env, corsHeaders);
+        case 'del-stat':
+            return await handleDelStat(request, env, corsHeaders);
         default:
             return new Response(JSON.stringify({
                 error: "Endpoint not found",
@@ -1370,6 +1372,60 @@ async function handleSetStats(request, env, corsHeaders) {
     }), {
         headers: { "Content-Type": "application/json", ...corsHeaders }
     });
+}
+
+
+// 删除单个预设关键词
+async function handleDelStat(request, env, corsHeaders) {
+    const url = new URL(request.url);
+    const secret = url.searchParams.get("secret");
+    const keyword = url.searchParams.get("keyword");
+    
+    if (secret !== "debug123") {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
+    if (!keyword) {
+        return new Response(JSON.stringify({ error: "缺少keyword参数" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
+    // 获取当前stats
+    let stats = {};
+    try {
+        const statsData = await env.SEARCH_STATS.get("stats");
+        if (statsData) {
+            stats = JSON.parse(statsData);
+        }
+    } catch (e) {
+        stats = {};
+    }
+    
+    // 删除指定关键词
+    if (stats[keyword]) {
+        delete stats[keyword];
+        await env.SEARCH_STATS.put("stats", JSON.stringify(stats));
+        return new Response(JSON.stringify({
+            success: true,
+            message: `已删除关键词: ${keyword}`,
+            remaining: Object.keys(stats)
+        }), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    } else {
+        return new Response(JSON.stringify({
+            success: false,
+            error: `关键词不存在: ${keyword}`
+        }), {
+            status: 404,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
 }
 
 
