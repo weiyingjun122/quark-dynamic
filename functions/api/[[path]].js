@@ -773,7 +773,7 @@ async function handleAuthRegister(request, env, corsHeaders) {
         if (ipReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_IP_DAY) {
             return new Response(JSON.stringify({
                 success: false,
-                error: '该IP今日注册次数已达上限，请明天再来'
+                error: '该IP注册次数已达上限，请明天再来'
             }), {
                 status: 403,
                 headers: { 'Content-Type': 'application/json', ...corsHeaders }
@@ -790,7 +790,7 @@ async function handleAuthRegister(request, env, corsHeaders) {
             if (deviceReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_DEVICE_DAY) {
                 return new Response(JSON.stringify({
                     success: false,
-                    error: '该设备今日注册次数已达上限，请明天再来'
+                    error: '该设备注册次数已达上限，请明天再来'
                 }), {
                     status: 403,
                     headers: { 'Content-Type': 'application/json', ...corsHeaders }
