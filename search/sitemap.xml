@@ -86,12 +86,12 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/消失的学号.html</loc>
+        <loc>https://www.weiyingjun.top/search/宇宙奇点.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/宇宙奇点.html</loc>
+        <loc>https://www.weiyingjun.top/search/消失的学号.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -171,6 +171,11 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://www.weiyingjun.top/search/最后的晚餐.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://www.weiyingjun.top/search/精神病院4.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -181,7 +186,7 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/最后的晚餐.html</loc>
+        <loc>https://www.weiyingjun.top/search/双生探案.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -191,17 +196,17 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/剧本.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://www.weiyingjun.top/search/双生探案.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
         <loc>https://www.weiyingjun.top/search/家宴.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.weiyingjun.top/search/牛鬼蛇神.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.weiyingjun.top/search/剧本.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -212,11 +217,6 @@
     </url>
     <url>
         <loc>https://www.weiyingjun.top/search/窗边的女人.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://www.weiyingjun.top/search/牛鬼蛇神.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
