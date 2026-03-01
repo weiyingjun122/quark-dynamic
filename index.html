@@ -403,10 +403,20 @@ async function handleRegister() {
         return;
     }
 
+    // 获取或生成设备ID
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        deviceId = 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('device_id', deviceId);
+    }
+
     try {
         const res = await fetch('/api/auth/register', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'X-Device-ID': deviceId
+            },
             body: JSON.stringify({ username, password })
         });
         const data = await res.json();
