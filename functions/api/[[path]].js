@@ -79,6 +79,8 @@ export async function onRequest(context) {
             return await handleSetStats(request, env, corsHeaders);
         case 'del-stat':
             return await handleDelStat(request, env, corsHeaders);
+        case 'ip-whitelist':
+            return await handleIpWhitelist(request, env, corsHeaders);
         default:
             return new Response(JSON.stringify({
                 error: "Endpoint not found",
@@ -837,56 +839,64 @@ async function handleAuthRegister(request, env, corsHeaders) {
     const clientIP = getClientIP(request);
     const deviceId = request.headers.get('X-Device-ID') || request.headers.get('x-device-id') || '';
 
-    // 检查IP注册限制（永久）
-    const ipRegKey = `ip_reg:${clientIP}`;
-    const ipRegData = await env.SEARCH_STATS.get(ipRegKey);
-    if (ipRegData) {
-        const ipReg = JSON.parse(ipRegData);
-        if (ipReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_IP_DAY) {
-            return new Response(JSON.stringify({
-                success: false,
-                error: '该IP注册次数已达上限'
-            }), {
-                status: 403,
-                headers: { 'Content-Type': 'application/json', ...corsHeaders }
-            });
-        }
-    }
+    // 检查IP是否在白名单中
+    const whitelistKey = 'ip_whitelist';
+    const whitelistData = await env.SEARCH_STATS.get(whitelistKey);
+    const whitelist = whitelistData ? JSON.parse(whitelistData) : [];
+    const isWhitelisted = whitelist.includes(clientIP);
 
-    // 检查设备注册限制（永久）
-    if (deviceId) {
-        const deviceRegKey = `device_reg:${deviceId}`;
-        const deviceRegData = await env.SEARCH_STATS.get(deviceRegKey);
-        if (deviceRegData) {
-            const deviceReg = JSON.parse(deviceRegData);
-            if (deviceReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_DEVICE_DAY) {
+    // 检查IP注册限制（永久），白名单IP跳过
+    if (!isWhitelisted) {
+        const ipRegKey = `ip_reg:${clientIP}`;
+        const ipRegData = await env.SEARCH_STATS.get(ipRegKey);
+        if (ipRegData) {
+            const ipReg = JSON.parse(ipRegData);
+            if (ipReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_IP_DAY) {
                 return new Response(JSON.stringify({
                     success: false,
-                    error: '该设备注册次数已达上限'
+                    error: '该IP注册次数已达上限'
                 }), {
                     status: 403,
                     headers: { 'Content-Type': 'application/json', ...corsHeaders }
                 });
             }
         }
-    }
 
-    // 记录IP注册
-    let ipRegCount = 1;
-    if (ipRegData) {
-        const ipReg = JSON.parse(ipRegData);
-        ipRegCount = ipReg.count + 1;
-    }
-    await env.SEARCH_STATS.put(ipRegKey, JSON.stringify({ count: ipRegCount, lastReg: new Date().toISOString() }));
-
-    // 记录设备注册
-    if (deviceId) {
-        let deviceRegCount = 1;
-        if (deviceRegData) {
-            const deviceReg = JSON.parse(deviceRegData);
-            deviceRegCount = deviceReg.count + 1;
+        // 检查设备注册限制（永久），白名单IP跳过
+        if (deviceId) {
+            const deviceRegKey = `device_reg:${deviceId}`;
+            const deviceRegData = await env.SEARCH_STATS.get(deviceRegKey);
+            if (deviceRegData) {
+                const deviceReg = JSON.parse(deviceRegData);
+                if (deviceReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_DEVICE_DAY) {
+                    return new Response(JSON.stringify({
+                        success: false,
+                        error: '该设备注册次数已达上限'
+                    }), {
+                        status: 403,
+                        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                    });
+                }
+            }
         }
-        await env.SEARCH_STATS.put(deviceRegKey, JSON.stringify({ count: deviceRegCount, lastReg: new Date().toISOString() }));
+
+        // 记录IP注册
+        let ipRegCount = 1;
+        if (ipRegData) {
+            const ipReg = JSON.parse(ipRegData);
+            ipRegCount = ipReg.count + 1;
+        }
+        await env.SEARCH_STATS.put(ipRegKey, JSON.stringify({ count: ipRegCount, lastReg: new Date().toISOString() }));
+
+        // 记录设备注册
+        if (deviceId) {
+            let deviceRegCount = 1;
+            if (deviceRegData) {
+                const deviceReg = JSON.parse(deviceRegData);
+                deviceRegCount = deviceReg.count + 1;
+            }
+            await env.SEARCH_STATS.put(deviceRegKey, JSON.stringify({ count: deviceRegCount, lastReg: new Date().toISOString() }));
+        }
     }
 
     const userId = generateToken();
@@ -1648,4 +1658,61 @@ function getHotLevel(count) {
     if (count >= 20) return "🔥";
     if (count >= 10) return "👍";
     return "📊";
+}
+
+// IP白名单管理
+async function handleIpWhitelist(request, env, corsHeaders) {
+    const url = new URL(request.url);
+    const action = url.searchParams.get('action');
+    
+    // 获取客户端IP
+    const clientIP = request.headers.get('CF-Connecting-IP') || 
+                     request.headers.get('X-Real-IP') || 
+                     'unknown';
+    
+    if (action === 'add') {
+        // 添加当前IP到白名单
+        const whitelistKey = 'ip_whitelist';
+        let whitelist = [];
+        const existing = await env.SEARCH_STATS.get(whitelistKey);
+        if (existing) {
+            whitelist = JSON.parse(existing);
+        }
+        
+        if (!whitelist.includes(clientIP)) {
+            whitelist.push(clientIP);
+            await env.SEARCH_STATS.put(whitelistKey, JSON.stringify(whitelist));
+        }
+        
+        return new Response(JSON.stringify({
+            success: true,
+            message: 'IP已添加到白名单',
+            ip: clientIP,
+            whitelist: whitelist
+        }), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
+    if (action === 'list') {
+        // 查看白名单
+        const whitelistKey = 'ip_whitelist';
+        const existing = await env.SEARCH_STATS.get(whitelistKey);
+        const whitelist = existing ? JSON.parse(existing) : [];
+        
+        return new Response(JSON.stringify({
+            whitelist: whitelist,
+            currentIP: clientIP
+        }), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
+    // 默认返回当前IP
+    return new Response(JSON.stringify({
+        currentIP: clientIP,
+        message: '访问 /api/ip-whitelist?action=add 将当前IP加入白名单'
+    }), {
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+    });
 }
