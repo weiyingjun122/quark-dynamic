@@ -166,7 +166,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <button id="searchBtn">搜索</button>
 </div>
 
-<!-- 第一排：今日更新 剧本杀热搜 剧集热搜 -->
+<!-- 第一排：今日更新 剧本杀热搜 剧本杀人数 -->
 <div class="hot-row">
     <!-- 今日更新 -->
     <div class="hot-section">
@@ -188,6 +188,19 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
         </div>
     </div>
 
+    <!-- 剧本杀人数 -->
+    <div class="hot-section">
+        <div class="section-title">
+            <h2>👥 剧本杀人数</h2>
+        </div>
+        <div class="card">
+            <div id="jubenCount" style="color: #999;">正在加载...</div>
+        </div>
+    </div>
+</div>
+
+<!-- 第二排：剧集热搜 电影热搜 动漫热搜 -->
+<div class="hot-row">
     <!-- 剧集热搜 -->
     <div class="hot-section">
         <div class="section-title">
@@ -197,10 +210,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
             <div id="jujiHot" style="color: #999;">正在加载...</div>
         </div>
     </div>
-</div>
 
-<!-- 第二排：电影热搜 动漫热搜 学习资料 -->
-<div class="hot-row">
     <!-- 电影热搜 -->
     <div class="hot-section">
         <div class="section-title">
@@ -218,16 +228,6 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
         </div>
         <div class="card">
             <div id="animeHot" style="color: #999;">正在加载...</div>
-        </div>
-    </div>
-
-    <!-- 学习资料热搜 -->
-    <div class="hot-section">
-        <div class="section-title">
-            <h2>📚 学习资料热搜</h2>
-        </div>
-        <div class="card">
-            <div id="studyHot" style="color: #999;">正在加载...</div>
         </div>
     </div>
 </div>
@@ -1048,6 +1048,111 @@ function initCategoryHot() {
     loadCategoryHot('movieHot', '电影');
     loadCategoryHot('animeHot', '动漫');
     loadCategoryHot('studyHot', '学习资料');
+    loadJubenCount(); // 加载剧本杀人数
+}
+
+// 加载剧本杀人数模块
+async function loadJubenCount() {
+    try {
+        const res = await fetch('data.json?t=' + Date.now());
+        const data = await res.json();
+        
+        // 筛选剧本杀类型并统计各人数
+        const jubenList = data.filter(item => item.type && item.type.includes('剧本杀'));
+        
+        const countStats = {};
+        for (let i = 1; i <= 10; i++) {
+            countStats[i] = jubenList.filter(item => item.count === i).length;
+        }
+        
+        const container = document.getElementById('jubenCount');
+        let html = '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;">';
+        
+        for (let i = 1; i <= 10; i++) {
+            const count = countStats[i];
+            if (count > 0) {
+                html += `<span class="hot-keyword" onclick="showJubenByCount(${i})">${i}人本 (${count})</span>`;
+            }
+        }
+        
+        html += '</div>';
+        
+        if (countStats[1] === 0 && countStats[2] === 0 && countStats[3] === 0 && countStats[4] === 0 && countStats[5] === 0 && countStats[6] === 0 && countStats[7] === 0 && countStats[8] === 0 && countStats[9] === 0 && countStats[10] === 0) {
+            container.innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">暂无数据</div>';
+        } else {
+            container.innerHTML = html;
+        }
+    } catch (e) {
+        console.error('加载剧本杀人数失败:', e);
+        document.getElementById('jubenCount').innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">加载失败</div>';
+    }
+}
+
+// 显示指定人数的剧本杀
+async function showJubenByCount(count) {
+    try {
+        const res = await fetch('data.json?t=' + Date.now());
+        const data = await res.json();
+        
+        // 筛选剧本杀类型且人数等于count的资源
+        const jubenList = data.filter(item => 
+            item.type && item.type.includes('剧本杀') && Math.floor(item.count) === count
+        );
+        
+        if (jubenList.length === 0) {
+            alert('暂无' + count + '人本');
+            return;
+        }
+        
+        // 判断是手机还是电脑
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        let modalHtml = `<h3 style="margin-bottom:15px;">${count}人本 (共${jubenList.length}个)</h3>`;
+        
+        // 显示资源列表
+        modalHtml += '<div style="max-height:300px;overflow-y:auto;text-align:left;margin-bottom:15px;">';
+        
+        for (let i = 0; i < Math.min(jubenList.length, 20); i++) {
+            const item = jubenList[i];
+            const title = item.title || '未命名';
+            modalHtml += `<div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;">${i+1}. ${title}</div>`;
+        }
+        
+        if (jubenList.length > 20) {
+            modalHtml += `<div style="padding:8px 0;color:#999;font-size:12px;">还有${jubenList.length - 20}个...</div>`;
+        }
+        
+        modalHtml += '</div>';
+        
+        // 跳转链接 - 构造搜索URL
+        const searchUrl = '/?search=' + encodeURIComponent(count + '人本');
+        
+        if (isMobile) {
+            // 手机端显示按钮
+            modalHtml += `<a href="${searchUrl}" class="btn" style="display:block;width:100%;text-align:center;">查看更多</a>`;
+        } else {
+            // 电脑端显示二维码
+            const qrApi = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(window.location.origin + searchUrl);
+            modalHtml += `<div style="margin-top:15px;"><img src="${qrApi}" alt="二维码" style="width:150px;height:150px;"></div>`;
+            modalHtml += `<p style="margin-top:10px;font-size:12px;color:#666;">手机扫码查看</p>`;
+            modalHtml += `<a href="${searchUrl}" class="btn" style="display:inline-block;margin-top:10px;">查看完整列表</a>`;
+        }
+        
+        // 显示弹窗
+        showModal(modalHtml);
+        
+    } catch (e) {
+        console.error('加载剧本杀列表失败:', e);
+        alert('加载失败，请重试');
+    }
+}
+
+// 显示弹窗的通用函数
+function showModal(content) {
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modalBody');
+    modalBody.innerHTML = content;
+    modal.style.display = 'flex';
 }
 
 function renderHotList(containerId, data) {

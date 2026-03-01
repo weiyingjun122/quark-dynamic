@@ -23,6 +23,7 @@ for idx, row in df.iterrows():
     search_aliases_str = str(row.get("search_aliases", "") or "")
     share_link = str(row.get("share_link", "") or "")
     resource_type = str(row.get("type", "") or "")  # 新增：读取type字段
+    count = row.get("count")  # 读取人数字段
 
     keywords = [k.strip() for k in keywords_str.split(",") if k.strip() and k.strip().lower() != 'nan']
     search_aliases = [alias.strip() for alias in search_aliases_str.split(",") if alias.strip() and alias.strip().lower() != 'nan']
@@ -44,6 +45,10 @@ for idx, row in df.iterrows():
     # 如果有type字段则添加
     if resource_type and resource_type.lower() != 'nan':
         item_data["type"] = resource_type
+    
+    # 如果有人数字段则添加
+    if pd.notna(count):
+        item_data["count"] = int(count)
     
     data.append(item_data)
 
