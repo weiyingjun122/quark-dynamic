@@ -641,6 +641,12 @@ const TRANSFER_CONFIG = {
     TOKEN_EXPIRY_DAYS: 7        // token有效期天数
 };
 
+// 防多账号注册配置
+const ANTI_MULTI_ACCOUNT = {
+    MAX_ACCOUNTS_PER_IP_DAY: 3,    // 每个IP每天最多注册3个账号
+    MAX_ACCOUNTS_PER_DEVICE_DAY: 3 // 每个设备每天最多注册3个账号
+};
+
 function getClientIP(request) {
     return request.headers.get('CF-Connecting-IP') || 
            request.headers.get('X-Forwarded-For') || 
@@ -752,6 +758,63 @@ async function handleAuthRegister(request, env, corsHeaders) {
             status: 400,
             headers: { 'Content-Type': 'application/json', ...corsHeaders }
         });
+    }
+
+    // 检查设备指纹和IP注册限制
+    const clientIP = getClientIP(request);
+    const deviceId = request.headers.get('X-Device-ID') || request.headers.get('x-device-id') || '';
+    const today = getTodayDate();
+
+    // 检查IP注册限制
+    const ipRegKey = `ip_reg:${clientIP}:${today}`;
+    const ipRegData = await env.SEARCH_STATS.get(ipRegKey);
+    if (ipRegData) {
+        const ipReg = JSON.parse(ipRegData);
+        if (ipReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_IP_DAY) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: '该IP今日注册次数已达上限，请明天再来'
+            }), {
+                status: 403,
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+    }
+
+    // 检查设备注册限制
+    if (deviceId) {
+        const deviceRegKey = `device_reg:${deviceId}:${today}`;
+        const deviceRegData = await env.SEARCH_STATS.get(deviceRegKey);
+        if (deviceRegData) {
+            const deviceReg = JSON.parse(deviceRegData);
+            if (deviceReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_DEVICE_DAY) {
+                return new Response(JSON.stringify({
+                    success: false,
+                    error: '该设备今日注册次数已达上限，请明天再来'
+                }), {
+                    status: 403,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+    }
+
+    // 记录IP注册
+    let ipRegCount = 1;
+    if (ipRegData) {
+        const ipReg = JSON.parse(ipRegData);
+        ipRegCount = ipReg.count + 1;
+    }
+    await env.SEARCH_STATS.put(ipRegKey, JSON.stringify({ count: ipRegCount, lastReg: new Date().toISOString() }));
+
+    // 记录设备注册
+    if (deviceId) {
+        let deviceRegCount = 1;
+        if (deviceRegData) {
+            const deviceReg = JSON.parse(deviceRegData);
+            deviceRegCount = deviceReg.count + 1;
+        }
+        await env.SEARCH_STATS.put(deviceRegKey, JSON.stringify({ count: deviceRegCount, lastReg: new Date().toISOString() }));
     }
 
     const userId = generateToken();
