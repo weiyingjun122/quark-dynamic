@@ -1106,13 +1106,14 @@ async function showJubenByCount(count) {
         
         let modalHtml = `<h3 style="margin-bottom:15px;">${count}人本 (共${jubenList.length}个)</h3>`;
         
-        // 显示全部资源列表
+        // 显示全部资源列表，点击剧名触发搜索
         modalHtml += '<div style="max-height:400px;overflow-y:auto;text-align:left;margin-bottom:15px;">';
         
         for (let i = 0; i < jubenList.length; i++) {
             const item = jubenList[i];
             const title = item.title || '未命名';
-            modalHtml += `<div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;">${i+1}. ${title}</div>`;
+            // 点击剧名触发搜索
+            modalHtml += `<div onclick="performSearch('${title.replace(/'/g, "\\'")}')" style="padding:10px 0;border-bottom:1px solid #eee;font-size:14px;cursor:pointer;color:#1e90ff;">${i+1}. ${title}</div>`;
         }
         
         modalHtml += '</div>';
