@@ -1708,10 +1708,44 @@ async function handleIpWhitelist(request, env, corsHeaders) {
         });
     }
     
+    if (action === 'remove') {
+        // 删除指定IP或当前IP
+        const ipToRemove = url.searchParams.get('ip') || clientIP;
+        const whitelistKey = 'ip_whitelist';
+        let whitelist = [];
+        const existing = await env.SEARCH_STATS.get(whitelistKey);
+        if (existing) {
+            whitelist = JSON.parse(existing);
+        }
+        
+        const index = whitelist.indexOf(ipToRemove);
+        if (index > -1) {
+            whitelist.splice(index, 1);
+            await env.SEARCH_STATS.put(whitelistKey, JSON.stringify(whitelist));
+            return new Response(JSON.stringify({
+                success: true,
+                message: 'IP已从白名单移除',
+                removedIP: ipToRemove,
+                whitelist: whitelist
+            }), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        }
+        
+        return new Response(JSON.stringify({
+            success: false,
+            error: 'IP不在白名单中',
+            ip: ipToRemove
+        }), {
+            status: 404,
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+    
     // 默认返回当前IP
     return new Response(JSON.stringify({
         currentIP: clientIP,
-        message: '访问 /api/ip-whitelist?action=add 将当前IP加入白名单'
+        message: '访问 /api/ip-whitelist?action=add 将当前IP加入白名单，action=remove 删除白名单IP'
     }), {
         headers: { "Content-Type": "application/json", ...corsHeaders }
     });
