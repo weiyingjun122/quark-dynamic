@@ -1068,11 +1068,10 @@ async function loadJubenCount() {
         const container = document.getElementById('jubenCount');
         let html = '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;">';
         
+        // 按顺序显示1-10人本
         for (let i = 1; i <= 10; i++) {
             const count = countStats[i];
-            if (count > 0) {
-                html += `<span class="hot-keyword" onclick="showJubenByCount(${i})">${i}人本 (${count})</span>`;
-            }
+            html += `<span class="hot-keyword" onclick="showJubenByCount(${i})">${i}人本</span>`;
         }
         
         html += '</div>';
@@ -1109,17 +1108,13 @@ async function showJubenByCount(count) {
         
         let modalHtml = `<h3 style="margin-bottom:15px;">${count}人本 (共${jubenList.length}个)</h3>`;
         
-        // 显示资源列表
-        modalHtml += '<div style="max-height:300px;overflow-y:auto;text-align:left;margin-bottom:15px;">';
+        // 显示全部资源列表
+        modalHtml += '<div style="max-height:400px;overflow-y:auto;text-align:left;margin-bottom:15px;">';
         
-        for (let i = 0; i < Math.min(jubenList.length, 20); i++) {
+        for (let i = 0; i < jubenList.length; i++) {
             const item = jubenList[i];
             const title = item.title || '未命名';
             modalHtml += `<div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;">${i+1}. ${title}</div>`;
-        }
-        
-        if (jubenList.length > 20) {
-            modalHtml += `<div style="padding:8px 0;color:#999;font-size:12px;">还有${jubenList.length - 20}个...</div>`;
         }
         
         modalHtml += '</div>';
