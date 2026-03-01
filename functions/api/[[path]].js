@@ -643,7 +643,7 @@ const TRANSFER_CONFIG = {
 
 // 防多账号注册配置
 const ANTI_MULTI_ACCOUNT = {
-    MAX_ACCOUNTS_PER_IP_DAY: 1,    // 每个IP每天最多注册1个账号
+    MAX_ACCOUNTS_PER_IP_DAY: 3,    // 每个IP每天最多注册3个账号
     MAX_ACCOUNTS_PER_DEVICE_DAY: 1 // 每个设备每天最多注册1个账号
 };
 
