@@ -285,7 +285,7 @@ async function handleHotByType(request, env, corsHeaders) {
         // 获取资源数据（包含type）
         let resources = [];
         try {
-            const resourcesRes = await fetch("https://quark-dynamic.pages.dev/data.json");
+            const resourcesRes = await fetch("https://www.weiyingjun.top/data.json");
             resources = await resourcesRes.json();
         } catch (e) {
             console.error("获取资源数据失败:", e);
