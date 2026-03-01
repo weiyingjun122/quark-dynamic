@@ -424,6 +424,10 @@ async function handleRegister() {
         if (data.success) {
             alert('注册成功，请登录');
             showAuthModal();
+            // 如果有关键词，保存下来等登录后重新执行
+            if (lastSearchKeyword) {
+                // 下次登录后会自动重新搜索
+            }
         } else {
             alert(data.error || '注册失败');
         }
@@ -454,6 +458,10 @@ async function handleLogin() {
             saveAuth(data.token, { userId: data.userId, username: data.username, isVip: data.isVip });
             authModal.style.display = 'none';
             updateUserPanel();
+            // 如果有关键词，重新执行搜索
+            if (lastSearchKeyword) {
+                performSearch(lastSearchKeyword);
+            }
         } else {
             alert(data.error || '登录失败');
         }
@@ -546,7 +554,13 @@ function highlight(text, keyword) {
 }
 
 // 核心搜索功能
+// 保存最后一次搜索的 keyword，用于登录后重新显示
+let lastSearchKeyword = '';
+
 async function performSearch(keyword) {
+    // 保存最后一次搜索的 keyword
+    lastSearchKeyword = keyword;
+    
     // === 严格的参数验证 ===
     console.group('🔍 performSearch 参数验证');
     console.log('原始参数:', keyword);
