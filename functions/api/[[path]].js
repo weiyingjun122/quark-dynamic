@@ -639,6 +639,7 @@ const RATE_LIMIT = {
 const TRANSFER_CONFIG = {
     MAX_TRANSFERS_PER_DAY: 2,  // 每个用户每天最大查看/转存次数
     MAX_DEVICE_TRANSFERS_PER_DAY: 2,  // 每个设备每天最大转存次数
+    MAX_DEVICES_PER_IP_DAY: 2,  // 每个IP每天最多2个设备转存
     TOKEN_EXPIRY_DAYS: 7        // token有效期天数
 };
 
@@ -1018,6 +1019,35 @@ async function handleTransfer(request, env, corsHeaders) {
                     headers: { 'Content-Type': 'application/json', ...corsHeaders }
                 });
             }
+        }
+    }
+
+    // 检查IP设备数量限制（每个IP每天最多2个设备转存）
+    if (clientIP && clientIP !== 'unknown') {
+        const ipDeviceKey = `ip_device:${clientIP}:${today}`;
+        let ipDevices = [];
+        const ipDeviceStr = await env.SEARCH_STATS.get(ipDeviceKey);
+        if (ipDeviceStr) {
+            ipDevices = JSON.parse(ipDeviceStr);
+        }
+        
+        // 如果当前设备不在列表中，检查是否超限
+        if (!ipDevices.includes(deviceId) && ipDevices.length >= TRANSFER_CONFIG.MAX_DEVICES_PER_IP_DAY) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: `该IP今日设备数已达上限（最多${TRANSFER_CONFIG.MAX_DEVICES_PER_IP_DAY}个设备）`,
+                remaining: 0,
+                isIPLimit: true
+            }), {
+                status: 429,
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+        
+        // 添加当前设备到列表
+        if (!ipDevices.includes(deviceId)) {
+            ipDevices.push(deviceId);
+            await env.SEARCH_STATS.put(ipDeviceKey, JSON.stringify(ipDevices));
         }
     }
 
