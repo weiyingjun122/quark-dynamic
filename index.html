@@ -1066,12 +1066,13 @@ async function loadJubenCount() {
         }
         
         const container = document.getElementById('jubenCount');
-        let html = '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;">';
+        // 使用纵向排列
+        let html = '<div style="display:flex;flex-direction:column;gap:4px;padding:8px;">';
         
         // 按顺序显示1-10人本
         for (let i = 1; i <= 10; i++) {
             const count = countStats[i];
-            html += `<span class="hot-keyword" onclick="showJubenByCount(${i})">${i}人本</span>`;
+            html += `<div class="hot-keyword" onclick="showJubenByCount(${i})" style="text-align:center;padding:6px 12px;">${i}人本</div>`;
         }
         
         html += '</div>';
@@ -1103,9 +1104,6 @@ async function showJubenByCount(count) {
             return;
         }
         
-        // 判断是手机还是电脑
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
         let modalHtml = `<h3 style="margin-bottom:15px;">${count}人本 (共${jubenList.length}个)</h3>`;
         
         // 显示全部资源列表
@@ -1119,19 +1117,8 @@ async function showJubenByCount(count) {
         
         modalHtml += '</div>';
         
-        // 跳转链接 - 构造搜索URL
-        const searchUrl = '/?search=' + encodeURIComponent(count + '人本');
-        
-        if (isMobile) {
-            // 手机端显示按钮
-            modalHtml += `<a href="${searchUrl}" class="btn" style="display:block;width:100%;text-align:center;">查看更多</a>`;
-        } else {
-            // 电脑端显示二维码
-            const qrApi = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(window.location.origin + searchUrl);
-            modalHtml += `<div style="margin-top:15px;"><img src="${qrApi}" alt="二维码" style="width:150px;height:150px;"></div>`;
-            modalHtml += `<p style="margin-top:10px;font-size:12px;color:#666;">手机扫码查看</p>`;
-            modalHtml += `<a href="${searchUrl}" class="btn" style="display:inline-block;margin-top:10px;">查看完整列表</a>`;
-        }
+        // 关闭按钮
+        modalHtml += `<button class="btn" onclick="document.getElementById('modal').style.display='none'" style="display:block;width:100%;text-align:center;background:#666;">点击关闭窗口</button>`;
         
         // 显示弹窗
         showModal(modalHtml);
