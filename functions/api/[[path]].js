@@ -763,17 +763,16 @@ async function handleAuthRegister(request, env, corsHeaders) {
     // 检查设备指纹和IP注册限制
     const clientIP = getClientIP(request);
     const deviceId = request.headers.get('X-Device-ID') || request.headers.get('x-device-id') || '';
-    const today = getTodayDate();
 
-    // 检查IP注册限制
-    const ipRegKey = `ip_reg:${clientIP}:${today}`;
+    // 检查IP注册限制（永久）
+    const ipRegKey = `ip_reg:${clientIP}`;
     const ipRegData = await env.SEARCH_STATS.get(ipRegKey);
     if (ipRegData) {
         const ipReg = JSON.parse(ipRegData);
         if (ipReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_IP_DAY) {
             return new Response(JSON.stringify({
                 success: false,
-                error: '该IP注册次数已达上限，请明天再来'
+                error: '该IP注册次数已达上限'
             }), {
                 status: 403,
                 headers: { 'Content-Type': 'application/json', ...corsHeaders }
@@ -781,16 +780,16 @@ async function handleAuthRegister(request, env, corsHeaders) {
         }
     }
 
-    // 检查设备注册限制
+    // 检查设备注册限制（永久）
     if (deviceId) {
-        const deviceRegKey = `device_reg:${deviceId}:${today}`;
+        const deviceRegKey = `device_reg:${deviceId}`;
         const deviceRegData = await env.SEARCH_STATS.get(deviceRegKey);
         if (deviceRegData) {
             const deviceReg = JSON.parse(deviceRegData);
             if (deviceReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_DEVICE_DAY) {
                 return new Response(JSON.stringify({
                     success: false,
-                    error: '该设备注册次数已达上限，请明天再来'
+                    error: '该设备注册次数已达上限'
                 }), {
                     status: 403,
                     headers: { 'Content-Type': 'application/json', ...corsHeaders }
