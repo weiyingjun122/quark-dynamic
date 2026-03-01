@@ -693,10 +693,9 @@ async function performSearch(keyword) {
             html += `<p style="color:#666;margin:15px 0;">请先登录后再查看资源</p>
                      <button onclick="showAuthModal()" class="btn" style="background:#1e90ff;">🔐 登录/注册</button>`;
         } else if (isMobile) {
-            // 手机端已登录：显示跳转按钮 + 转存按钮
+            // 手机端已登录：显示跳转按钮
             html += `<p style="color:#666;margin:15px 0;">资源已准备好，请点击下方按钮访问资源</p>
-                     <a href="${item.share_link}" target="_blank" class="btn">打开夸克APP保存</a>
-                     <button id="transferBtn" class="btn" style="background:#28a745;margin-top:10px;">📥 转存到我的网盘</button>`;
+                     <a href="${item.share_link}" target="_blank" class="btn">打开夸克APP保存</a>`;
         } else {
             // 电脑端已登录：显示二维码（需手机扫码）
             html += `<p style="color:#666;">请使用夸克或微信扫描下方二维码用手机访问资源</p>
