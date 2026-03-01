@@ -487,13 +487,25 @@ async function handleTransfer(keyword) {
         return;
     }
 
+    // 获取设备ID
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        deviceId = 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('device_id', deviceId);
+    }
+
+    const headers = { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${auth.token}`
+    };
+    if (deviceId) {
+        headers['X-Device-ID'] = deviceId;
+    }
+
     try {
         const res = await fetch('/api/auth/transfer', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${auth.token}`
-            },
+            headers: headers,
             body: JSON.stringify({ keyword })
         });
         const data = await res.json();

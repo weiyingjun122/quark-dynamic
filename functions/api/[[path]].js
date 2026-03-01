@@ -637,7 +637,8 @@ const RATE_LIMIT = {
 
 // 用户转存/查看配置
 const TRANSFER_CONFIG = {
-    MAX_TRANSFERS_PER_DAY: 2,  // 可修改：每个用户每天最大查看/转存次数
+    MAX_TRANSFERS_PER_DAY: 2,  // 每个用户每天最大查看/转存次数
+    MAX_DEVICE_TRANSFERS_PER_DAY: 2,  // 每个设备每天最大转存次数
     TOKEN_EXPIRY_DAYS: 7        // token有效期天数
 };
 
@@ -995,7 +996,31 @@ async function handleTransfer(request, env, corsHeaders) {
         });
     }
 
+    // 获取设备指纹
+    const clientIP = getClientIP(request);
+    const deviceId = request.headers.get('X-Device-ID') || request.headers.get('x-device-id') || '';
     const today = getTodayDate();
+
+    // 检查设备转存限制（不管用哪个账号，每个设备每天最多2次）
+    if (deviceId) {
+        const deviceTransferKey = `device_transfer:${deviceId}:${today}`;
+        const deviceTransferStr = await env.SEARCH_STATS.get(deviceTransferKey);
+        if (deviceTransferStr) {
+            const deviceTransfer = JSON.parse(deviceTransferStr);
+            if (deviceTransfer.count >= TRANSFER_CONFIG.MAX_DEVICE_TRANSFERS_PER_DAY) {
+                return new Response(JSON.stringify({
+                    success: false,
+                    error: `该设备今日转存次数已达上限（每日限制${TRANSFER_CONFIG.MAX_DEVICE_TRANSFERS_PER_DAY}次）`,
+                    remaining: 0,
+                    isDeviceLimit: true
+                }), {
+                    status: 429,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+    }
+
     const transferKey = `transfer:${userData.userId}:${today}`;
     const transferDataStr = await env.SEARCH_STATS.get(transferKey);
 
@@ -1023,6 +1048,21 @@ async function handleTransfer(request, env, corsHeaders) {
         keyword
     };
     await env.SEARCH_STATS.put(transferKey, JSON.stringify(newTransferData));
+
+    // 记录设备转存次数
+    if (deviceId) {
+        const deviceTransferKey = `device_transfer:${deviceId}:${today}`;
+        let deviceTransferCount = 0;
+        const deviceTransferStr = await env.SEARCH_STATS.get(deviceTransferKey);
+        if (deviceTransferStr) {
+            const deviceTransfer = JSON.parse(deviceTransferStr);
+            deviceTransferCount = deviceTransfer.count;
+        }
+        await env.SEARCH_STATS.put(deviceTransferKey, JSON.stringify({
+            count: deviceTransferCount + 1,
+            lastTransfer: new Date().toISOString()
+        }));
+    }
 
     return new Response(JSON.stringify({
         success: true,
