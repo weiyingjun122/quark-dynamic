@@ -557,6 +557,77 @@ async function handleGap(env, corsHeaders) {
 
 // 处理调试
 async function handleDebug(request, env, corsHeaders) {
+    const url = new URL(request.url);
+    const type = url.searchParams.get('type');
+
+    // 列出所有注册用户
+    if (type === 'users') {
+        const list = await env.SEARCH_STATS.list({ prefix: 'user:' });
+        const users = [];
+        for (const key of list.keys) {
+            const userData = await env.SEARCH_STATS.get(key.name);
+            if (userData) {
+                const user = JSON.parse(userData);
+                users.push({
+                    username: user.username,
+                    userId: user.userId,
+                    createdAt: user.createdAt
+                });
+            }
+        }
+        return new Response(JSON.stringify({
+            type: 'users',
+            total: users.length,
+            users: users
+        }, null, 2), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+
+    // 列出所有设备注册记录
+    if (type === 'devices') {
+        const list = await env.SEARCH_STATS.list({ prefix: 'device_reg:' });
+        const devices = [];
+        for (const key of list.keys) {
+            const data = await env.SEARCH_STATS.get(key.name);
+            if (data) {
+                devices.push({
+                    key: key.name,
+                    ...JSON.parse(data)
+                });
+            }
+        }
+        return new Response(JSON.stringify({
+            type: 'devices',
+            total: devices.length,
+            devices: devices
+        }, null, 2), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+
+    // 列出所有IP注册记录
+    if (type === 'ips') {
+        const list = await env.SEARCH_STATS.list({ prefix: 'ip_reg:' });
+        const ips = [];
+        for (const key of list.keys) {
+            const data = await env.SEARCH_STATS.get(key.name);
+            if (data) {
+                ips.push({
+                    key: key.name,
+                    ...JSON.parse(data)
+                });
+            }
+        }
+        return new Response(JSON.stringify({
+            type: 'ips',
+            total: ips.length,
+            ips: ips
+        }, null, 2), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+
     let stats = {};
     try {
         const statsData = await env.SEARCH_STATS.get("stats");
