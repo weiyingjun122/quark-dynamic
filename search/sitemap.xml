@@ -21,6 +21,11 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://www.weiyingjun.top/search/一座城.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://www.weiyingjun.top/search/F1：狂飙飞车.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -31,7 +36,7 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/一座城.html</loc>
+        <loc>https://www.weiyingjun.top/search/马丁内斯死在惊奇馆.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -51,12 +56,17 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/马丁内斯死在惊奇馆.html</loc>
+        <loc>https://www.weiyingjun.top/search/告别诗.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://www.weiyingjun.top/search/悬崖绝壁.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.weiyingjun.top/search/嫌疑人x没有现身.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -76,12 +86,17 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/告别诗.html</loc>
+        <loc>https://www.weiyingjun.top/search/归途.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://www.weiyingjun.top/search/侏罗纪世界：重生.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.weiyingjun.top/search/致命圣诞节5人封闭.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -171,11 +186,6 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/归途.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
         <loc>https://www.weiyingjun.top/search/匿杀.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -201,7 +211,12 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/嫌疑人x没有现身.html</loc>
+        <loc>https://www.weiyingjun.top/search/家宴.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.weiyingjun.top/search/熊家餐厅.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
