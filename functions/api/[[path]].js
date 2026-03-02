@@ -754,7 +754,8 @@ function hashPassword(password) {
 }
 
 function getTodayDate() {
-    return new Date().toISOString().slice(0, 10);
+    // 使用北京时间 (UTC+8)
+    return new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }
 
 // 检查用户是否是VIP
