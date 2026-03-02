@@ -718,14 +718,19 @@ const TRANSFER_CONFIG = {
 
 // 防多账号注册配置
 const ANTI_MULTI_ACCOUNT = {
-    MAX_ACCOUNTS_PER_IP_DAY: 3,    // 每个IP每天最多注册3个账号
-    MAX_ACCOUNTS_PER_DEVICE_DAY: 1 // 每个设备每天最多注册1个账号
+    MAX_ACCOUNTS_PER_IP: 3,    // 每个IP永久最多注册3个账号
+    MAX_ACCOUNTS_PER_DEVICE: 1 // 每个设备永久最多注册1个账号
 };
 
 function getClientIP(request) {
-    return request.headers.get('CF-Connecting-IP') || 
-           request.headers.get('X-Forwarded-For') || 
-           'unknown';
+    const cfIP = request.headers.get('CF-Connecting-IP');
+    if (cfIP) return cfIP;
+    
+    const forwarded = request.headers.get('X-Forwarded-For');
+    if (forwarded) {
+        return forwarded.split(',')[0].trim();
+    }
+    return 'unknown';
 }
 
 function generateToken() {
@@ -851,7 +856,7 @@ async function handleAuthRegister(request, env, corsHeaders) {
         const ipRegData = await env.SEARCH_STATS.get(ipRegKey);
         if (ipRegData) {
             const ipReg = JSON.parse(ipRegData);
-            if (ipReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_IP_DAY) {
+            if (ipReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_IP) {
                 return new Response(JSON.stringify({
                     success: false,
                     error: '该IP注册次数已达上限'
@@ -868,7 +873,7 @@ async function handleAuthRegister(request, env, corsHeaders) {
             const deviceRegData = await env.SEARCH_STATS.get(deviceRegKey);
             if (deviceRegData) {
                 const deviceReg = JSON.parse(deviceRegData);
-                if (deviceReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_DEVICE_DAY) {
+                if (deviceReg.count >= ANTI_MULTI_ACCOUNT.MAX_ACCOUNTS_PER_DEVICE) {
                     return new Response(JSON.stringify({
                         success: false,
                         error: '该设备注册次数已达上限'
@@ -880,7 +885,7 @@ async function handleAuthRegister(request, env, corsHeaders) {
             }
         }
 
-        // 记录IP注册
+        // 记录IP注册（永久存储）
         let ipRegCount = 1;
         if (ipRegData) {
             const ipReg = JSON.parse(ipRegData);
@@ -888,7 +893,7 @@ async function handleAuthRegister(request, env, corsHeaders) {
         }
         await env.SEARCH_STATS.put(ipRegKey, JSON.stringify({ count: ipRegCount, lastReg: new Date().toISOString() }));
 
-        // 记录设备注册
+        // 记录设备注册（永久存储）
         if (deviceId) {
             let deviceRegCount = 1;
             if (deviceRegData) {
