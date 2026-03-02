@@ -13,10 +13,11 @@ export async function onRequest(context) {
     const corsHeaders = {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With, Accept, Origin",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With, Accept, Origin, X-Device-ID",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Max-Age": "86400",
-        "Vary": "Origin, Accept-Encoding"
+        "Vary": "Origin, Accept-Encoding",
+        "Security-Header": "api-request"
     };
 
     // 处理 OPTIONS 预检请求
@@ -849,7 +850,7 @@ async function handleAuthRegister(request, env, corsHeaders) {
     const whitelistData = await env.SEARCH_STATS.get(whitelistKey);
     const whitelist = whitelistData ? JSON.parse(whitelistData) : [];
     const isWhitelisted = whitelist.includes(clientIP);
-
+   
     // 检查IP注册限制（永久），白名单IP跳过
     if (!isWhitelisted) {
         const ipRegKey = `ip_reg:${clientIP}`;
@@ -883,6 +884,14 @@ async function handleAuthRegister(request, env, corsHeaders) {
                     });
                 }
             }
+
+            // 记录设备注册（永久存储）
+            let deviceRegCount = 1;
+            if (deviceRegData) {
+                const deviceReg = JSON.parse(deviceRegData);
+                deviceRegCount = deviceReg.count + 1;
+            }
+            await env.SEARCH_STATS.put(deviceRegKey, JSON.stringify({ count: deviceRegCount, lastReg: new Date().toISOString() }));
         }
 
         // 记录IP注册（永久存储）
@@ -892,18 +901,8 @@ async function handleAuthRegister(request, env, corsHeaders) {
             ipRegCount = ipReg.count + 1;
         }
         await env.SEARCH_STATS.put(ipRegKey, JSON.stringify({ count: ipRegCount, lastReg: new Date().toISOString() }));
-
-        // 记录设备注册（永久存储）
-        if (deviceId) {
-            let deviceRegCount = 1;
-            if (deviceRegData) {
-                const deviceReg = JSON.parse(deviceRegData);
-                deviceRegCount = deviceReg.count + 1;
-            }
-            await env.SEARCH_STATS.put(deviceRegKey, JSON.stringify({ count: deviceRegCount, lastReg: new Date().toISOString() }));
-        }
     }
-
+    
     const userId = generateToken();
     const passwordHash = hashPassword(password);
     const userData = {

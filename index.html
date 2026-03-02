@@ -389,9 +389,22 @@ function showRegister() {
 }
 
 async function handleRegister() {
-    const username = document.getElementById('regUsername').value.trim();
-    const password = document.getElementById('regPassword').value;
-    const confirmPassword = document.getElementById('regConfirmPassword').value;
+    const usernameEl = document.getElementById('regUsername');
+    const passwordEl = document.getElementById('regPassword');
+    const confirmEl = document.getElementById('regConfirmPassword');
+    
+    console.log('usernameEl:', usernameEl);
+    console.log('passwordEl:', passwordEl);
+    console.log('confirmEl:', confirmEl);
+    
+    if (!usernameEl || !passwordEl || !confirmEl) {
+        alert('注册表单未找到，请刷新页面');
+        return;
+    }
+    
+    const username = usernameEl.value.trim();
+    const password = passwordEl.value;
+    const confirmPassword = confirmEl.value;
 
     if (!username || !password) {
         alert('请填写完整信息');
@@ -411,15 +424,24 @@ async function handleRegister() {
     }
 
     try {
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch('/api/auth/register?t=' + Date.now(), {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 'X-Device-ID': deviceId
             },
             body: JSON.stringify({ username, password })
         });
-        const data = await res.json();
+        const text = await res.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch(e) {
+            alert('服务器错误: ' + text.substring(0, 200));
+            console.error('Response:', text);
+            return;
+        }
 
         if (data.success) {
             alert('注册成功，请登录');
@@ -433,7 +455,7 @@ async function handleRegister() {
         }
     } catch (e) {
         console.error('注册错误:', e);
-        alert('网络错误（需部署到Cloudflare Pages）：' + e.message);
+        alert('网络错误: ' + e.message + '\n类型: ' + e.name);
     }
 }
 
@@ -1153,6 +1175,7 @@ function showModal(content) {
 
 function renderHotList(containerId, data) {
     const container = document.getElementById(containerId);
+    if (!container) return;
     if (data.length === 0) {
         container.innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">暂无热搜</div>';
         return;
