@@ -5920,5 +5920,17 @@
     "qrcode": "static/qrcode/496.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "497",
+    "title": "江湖夜雨十年灯",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/13554a561c72",
+    "qrcode": "static/qrcode/497.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
