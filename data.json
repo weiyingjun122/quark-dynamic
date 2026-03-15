@@ -5944,5 +5944,20 @@
     "qrcode": "static/qrcode/498.png",
     "type": "剧本杀",
     "count": 7
+  },
+  {
+    "id": "499",
+    "title": "立方馆谋杀始末",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [
+      "立方馆谋杀始末",
+      "立方馆杀人事件始末"
+    ],
+    "share_link": "https://pan.quark.cn/s/c6ef2550a3da",
+    "qrcode": "static/qrcode/499.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
