@@ -5959,5 +5959,16 @@
     "qrcode": "static/qrcode/499.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "500",
+    "title": "安闲领主的愉快领地防卫",
+    "keywords": [
+      "动漫"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/8d6b85a61cd8",
+    "qrcode": "static/qrcode/500.png",
+    "type": "动漫"
   }
 ]
