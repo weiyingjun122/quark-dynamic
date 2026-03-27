@@ -6009,5 +6009,17 @@
     "qrcode": "static/qrcode/503.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "504",
+    "title": "天启诡案",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/7d325a5e9c3d",
+    "qrcode": "static/qrcode/504.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
