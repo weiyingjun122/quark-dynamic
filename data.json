@@ -6021,5 +6021,29 @@
     "qrcode": "static/qrcode/504.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "505",
+    "title": "祝福",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/a0c50ac4062d",
+    "qrcode": "static/qrcode/505.png",
+    "type": "剧本杀",
+    "count": 6
+  },
+  {
+    "id": "506",
+    "title": "尸乐园",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/28d6b6a2f072",
+    "qrcode": "static/qrcode/506.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
