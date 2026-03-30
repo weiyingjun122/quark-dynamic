@@ -6045,5 +6045,17 @@
     "qrcode": "static/qrcode/506.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "507",
+    "title": "洗劫伦敦所有的玫瑰",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/f7774ffd6157",
+    "qrcode": "static/qrcode/507.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
