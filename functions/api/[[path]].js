@@ -631,6 +631,61 @@ async function handleDebug(request, env, corsHeaders) {
         });
     }
 
+    // 重置用户密码
+    if (type === 'reset-password') {
+        const secret = url.searchParams.get('secret');
+        const username = url.searchParams.get('username');
+        const newPassword = url.searchParams.get('password');
+
+        if (secret !== 'debug123') {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'Unauthorized: invalid secret'
+            }), {
+                status: 401,
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        }
+
+        if (!username || !newPassword) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'Missing username or password parameter'
+            }), {
+                status: 400,
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        }
+
+        const userKey = `user:${username.toLowerCase()}`;
+        const userDataStr = await env.SEARCH_STATS.get(userKey);
+
+        if (!userDataStr) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'User not found'
+            }), {
+                status: 404,
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        }
+
+        const userData = JSON.parse(userDataStr);
+        const newPasswordHash = hashPassword(newPassword);
+        userData.passwordHash = newPasswordHash;
+
+        await env.SEARCH_STATS.put(userKey, JSON.stringify(userData));
+
+        return new Response(JSON.stringify({
+            success: true,
+            message: 'Password reset successfully',
+            username: username.toLowerCase(),
+            newPasswordHash: newPasswordHash
+        }), {
+            headers: { "Content-Type": "application/json", ...corsHeaders }
+        });
+    }
+
     let stats = {};
     try {
         const statsData = await env.SEARCH_STATS.get("stats");
