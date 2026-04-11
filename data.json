@@ -6069,5 +6069,29 @@
     "qrcode": "static/qrcode/508.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "509",
+    "title": "王不见王",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/990b7177392f",
+    "qrcode": "static/qrcode/509.png",
+    "type": "剧本杀",
+    "count": 6
+  },
+  {
+    "id": "510",
+    "title": "因火成烟",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/8001e90b0b96",
+    "qrcode": "static/qrcode/510.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
