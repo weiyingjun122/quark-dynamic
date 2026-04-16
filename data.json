@@ -344,7 +344,10 @@
       "美剧",
       "熊家餐厅"
     ],
-    "search_aliases": [],
+    "search_aliases": [
+      "熊家餐厅",
+      "熊家餐馆"
+    ],
     "share_link": "https://pan.quark.cn/s/2d8fe11a64f6",
     "qrcode": "static/qrcode/27.png",
     "type": "剧集"
