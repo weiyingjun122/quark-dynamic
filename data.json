@@ -6132,5 +6132,20 @@
     "qrcode": "static/qrcode/513.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "514",
+    "title": "大楼里只有谋杀",
+    "keywords": [
+      "剧集"
+    ],
+    "search_aliases": [
+      "大楼里只有谋杀",
+      "Only Murders",
+      "only murder"
+    ],
+    "share_link": "https://pan.quark.cn/s/b88785d069e4",
+    "qrcode": "static/qrcode/514.png",
+    "type": "剧集"
   }
 ]
