@@ -6158,5 +6158,17 @@
     "share_link": "https://pan.quark.cn/s/c3b675d8cc79",
     "qrcode": "static/qrcode/515.png",
     "type": "动漫"
+  },
+  {
+    "id": "516",
+    "title": "阿依达",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/3cb81ddaf501",
+    "qrcode": "static/qrcode/516.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
