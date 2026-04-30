@@ -6170,5 +6170,44 @@
     "qrcode": "static/qrcode/516.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "517",
+    "title": "决战洗剪吹",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/90d96d395a84",
+    "qrcode": "static/qrcode/517.png",
+    "type": "剧本杀",
+    "count": 6
+  },
+  {
+    "id": "518",
+    "title": "动物监友会",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/256b6bee5294",
+    "qrcode": "static/qrcode/518.png",
+    "type": "剧本杀",
+    "count": 5
+  },
+  {
+    "id": "519",
+    "title": "人脑不宜食用",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [
+      "人脑",
+      "人脑不宜食用"
+    ],
+    "share_link": "https://pan.quark.cn/s/0b145b0c3c73",
+    "qrcode": "static/qrcode/519.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
