@@ -6252,5 +6252,17 @@
     "qrcode": "static/qrcode/522.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "523",
+    "title": "甜蜜的家",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/bf8609aea9c7",
+    "qrcode": "static/qrcode/523.png",
+    "type": "剧本杀",
+    "count": 5
   }
 ]
