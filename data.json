@@ -6276,5 +6276,29 @@
     "qrcode": "static/qrcode/524.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "525",
+    "title": "如故",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/2acbaeeee408",
+    "qrcode": "static/qrcode/525.png",
+    "type": "剧本杀",
+    "count": 6
+  },
+  {
+    "id": "526",
+    "title": "野菩萨",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/0c8001b09ec5",
+    "qrcode": "static/qrcode/526.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
