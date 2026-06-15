@@ -6324,5 +6324,16 @@
     "qrcode": "static/qrcode/528.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "529",
+    "title": "老鼠记者",
+    "keywords": [
+      "动漫"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/17ad7974e3b7",
+    "qrcode": "static/qrcode/529.png",
+    "type": "动漫"
   }
 ]
