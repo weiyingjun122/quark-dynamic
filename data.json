@@ -6350,5 +6350,41 @@
     "qrcode": "static/qrcode/530.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "531",
+    "title": "血色唐人街",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/090f5f5206c5",
+    "qrcode": "static/qrcode/531.png",
+    "type": "剧本杀",
+    "count": 6
+  },
+  {
+    "id": "532",
+    "title": "再见苏西",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/c5d5fff3ec00",
+    "qrcode": "static/qrcode/532.png",
+    "type": "剧本杀",
+    "count": 5
+  },
+  {
+    "id": "533",
+    "title": "女帝攻略",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/4bc5ec8b5dee",
+    "qrcode": "static/qrcode/533.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
