@@ -6410,5 +6410,29 @@
     "qrcode": "static/qrcode/535.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "536",
+    "title": "游轮谜影",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/cbec5b40475d",
+    "qrcode": "static/qrcode/536.png",
+    "type": "剧本杀",
+    "count": 6
+  },
+  {
+    "id": "537",
+    "title": "疯人塔",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/f8d67521cedd",
+    "qrcode": "static/qrcode/537.png",
+    "type": "剧本杀",
+    "count": 5
   }
 ]
