@@ -6469,5 +6469,17 @@
     "share_link": "https://pan.quark.cn/s/3afdca922c20",
     "qrcode": "static/qrcode/540.png",
     "type": "动漫"
+  },
+  {
+    "id": "541",
+    "title": "窃云台",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/8d60329b9400",
+    "qrcode": "static/qrcode/541.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
