@@ -48,7 +48,7 @@
         projects.forEach(p => {
             const card = document.createElement('a');
             card.className = 'project-card';
-            card.href = `/mumuy/${p.path}/`;
+            card.href = `/mumuy/${p.path}${p.path.includes('.')?'':'/'}`;
             card.innerHTML = `
                 <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none'">
                 <div class="project-info">
