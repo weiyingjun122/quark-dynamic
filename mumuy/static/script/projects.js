@@ -32,6 +32,9 @@
 	},{
 		'url':'/mumuy/chinese-transverter/',
 		'name':'简繁转换'
+	},{
+		'url':'/mumuy/datex/timezone.html',
+		'name':'世界时钟'
 	}];
 	let url = location['hostname']+location['pathname'];
 	document.write(`
