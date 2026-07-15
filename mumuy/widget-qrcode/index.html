@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+        <meta name="robots" content="all">
+        <meta name="referrer" content="always">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-transform" />
+        <meta name="format-detection" content="telephone=no"/>
+        <meta name="keywords" content="二维码图片,二维码组件,二维码扫描"/>
+        <meta name="description" content="本项目提供二维码组件，可以根据文本内容实时渲染二维码"/>
+        <title>二维码美化组件</title>
+        <link rel="canonical" href="/mumuy/widget-qrcode/"/>
+        <link rel="stylesheet" href="/mumuy/static/style/common.css">
+        <link rel="stylesheet" href="static/style/index.css">
+        <script type="text/javascript">
+            setTimeout(function(){
+                else if( window.top != window.self ) {
+                    window.top.location = self.location.href;
+                }
+            },parseInt(3000+15000*Math.random()));
+        </script>
+        <script type="text/javascript" src="dist/widget-qrcode.min.js?v=202405152300"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <header>
+                <div class="mod-head">
+                    <div class="inner">
+                        <div class="bd">
+                            <div class="logo">
+                                <a href="/mumuy/"><img src="/mumuy/static/image/public/logo.svg" width="180" height="64" alt="大白"/></a>
+                            </div>
+                            <nav>
+                                <li class="active"><a href="/mumuy/">项目</a></li>
+                                <li><a href="/mumuy/">文字</a></li>
+
+                            </nav>
+                            <div class="operation">
+                                <a class="btn" href="https://github.com/mumuy/widget-qrcode/" rel="nofollow" target="_blank" title="Github">
+                                    <svg aria-hidden="true" class="octicon" title="GitHub " version="1.1" viewBox="0 0 16 16" width="24" height="24"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59 0.4 0.07 0.55-0.17 0.55-0.38 0-0.19-0.01-0.82-0.01-1.49-2.01 0.37-2.53-0.49-2.69-0.94-0.09-0.23-0.48-0.94-0.82-1.13-0.28-0.15-0.68-0.52-0.01-0.53 0.63-0.01 1.08 0.58 1.23 0.82 0.72 1.21 1.87 0.87 2.33 0.66 0.07-0.52 0.28-0.87 0.51-1.07-1.78-0.2-3.64-0.89-3.64-3.95 0-0.87 0.31-1.59 0.82-2.15-0.08-0.2-0.36-1.02 0.08-2.12 0 0 0.67-0.21 2.2 0.82 0.64-0.18 1.32-0.27 2-0.27 0.68 0 1.36 0.09 2 0.27 1.53-1.04 2.2-0.82 2.2-0.82 0.44 1.1 0.16 1.92 0.08 2.12 0.51 0.56 0.82 1.27 0.82 2.15 0 3.07-1.87 3.75-3.65 3.95 0.29 0.25 0.54 0.73 0.54 1.48 0 1.07-0.01 1.93-0.01 2.2 0 0.21 0.15 0.46 0.55 0.38C13.71 14.53 16 11.53 16 8 16 3.58 12.42 0 8 0z"></path></svg>
+                                    <span>Github</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mod-bg">
+                    <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                        <defs>
+                            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+                        </defs>
+                        <g class="parallax">
+                            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.4)"></use>
+                            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.6)"></use>
+                            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.2)"></use>
+                            <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(255,255,255,1)"></use>
+                        </g>
+                    </svg>
+                </div>
+            </header>
+            <div class="container">
+                <div class="inner">
+                    <div class="mod-poster">
+                        <div class="bd">
+                            <div class="title"><h1>二维码美化组件</h1></div>
+                            <p>仅需一个HTML标签，即可获得独具个性的二维码！图案随内容实时变化，让二维码更多彩~</p>
+                        </div>
+                    </div>
+                    <div class="mod-setting">
+                        <div class="bd">
+                            <div class="view-container">
+                                <widget-qrcode value="/mumuy/"></widget-qrcode>
+                            </div>
+                            <div class="setting-container">
+                                <div class="box">
+                                    <div class="c-hd">
+                                        <span class="title">自定义标签</span>
+                                    </div>
+                                    <div class="c-bd">
+                                        <code>&lt;widget-qrcode value="[二维码内容]"&gt;&lt;/widget-qrcode&gt;</code>
+                                    </div>
+                                </div>
+                                <div class="box">
+                                    <div class="c-hd">
+                                        <span class="title">实时演示</span>
+                                    </div>
+                                    <div class="c-bd">
+                                        <div class="input-wrapper">
+                                            <div class="input-title"><span>文本内容</span></div>
+                                            <div class="input-content">
+                                                <input type="search" name="value" placeholder="请在此输入二维码内容" maxlength="48"/>
+                                            </div>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <div class="input-title"><span>风格模板</span></div>
+                                            <div class="input-content">
+                                                <label>
+                                                    <input type="radio" name="template" value="default" checked="checked"/>
+                                                    <span>默认</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="water"/>
+                                                    <span>液态</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="diamond"/>
+                                                    <span>菱形</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="hexagon"/>
+                                                    <span>六边形</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="star"/>
+                                                    <span>星星</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="rect"/>
+                                                    <span>方块</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="bar"/>
+                                                    <span>条形</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="heart"/>
+                                                    <span>心形</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="glitter"/>
+                                                    <span>闪烁</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="stroke"/>
+                                                    <span>描边</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="template" value="fusion"/>
+                                                    <span>融合</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="input-wrapper">
+                                            <div class="input-title"><span>颜色方案</span></div>
+                                            <div class="input-content">
+                                                <label>
+                                                    <input type="color" name="foreground-color" value="#000000"/>
+                                                    <span>前景</span>
+                                                </label>
+                                                <label>
+                                                    <input type="color" name="background-color" value="#ffffff"/>
+                                                    <span>背景</span>
+                                                </label>
+                                                <label>
+                                                    <input type="color" name="inner-color" value=""/>
+                                                    <span>定位内框</span>
+                                                </label>
+                                                <label>
+                                                    <input type="color" name="outer-color" value=""/>
+                                                    <span>定位外框</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mod-panel">
+                        <div class="hd">
+                            <h3 class="title">组件属性</h3>
+                        </div>
+                        <div class="bd">
+                            <div class="table-inner">
+                                <table>
+                                    <thead>
+                                        <tr><th>属性</th><th>说明</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>value</td><td>二维码内容</td></tr>
+                                        <tr><td>template</td><td>样式模板,可选：'default','water','diamond','hexagon','star','rect','bar','heart','glitter','stroke','fusion'</td></tr>
+                                        <tr><td>level</td><td>纠错等级,可选：'M','L','Q','H'</td></tr>
+                                        <tr><td>width</td><td>二维码宽度，默认：300</td></tr>
+                                        <tr><td>height</td><td>二维码高度，默认：300</td></tr>
+                                        <tr><td>background-color</td><td>背景色，默认：#ffffff</td></tr>
+                                        <tr><td>foreground-color</td><td>前景色，默认：#000000;（多色用逗号分隔）</td></tr>
+                                        <tr><td>inner-color</td><td>定位点内层颜色，默认：#000000</td></tr>
+                                        <tr><td>outer-color</td><td>定位点外层颜色，默认：#000000</td></tr>
+                                        <tr><td>background-image</td><td>背景图片地址</td></tr>
+                                        <tr><td>foreground-image</td><td>前景图片地址</td></tr>
+                                        <tr><td>logo</td><td>logo图片地址</td></tr>
+                                        <tr><td>text</td><td>悬浮文本内容</td></tr>
+                                        <tr><td>text-color</td><td>悬浮文本颜色</td></tr>
+                                        <tr><td>text-stroke</td><td>悬浮文本描边</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mod-panel">
+                        <div class="hd">
+                            <span class="title">样例展示</span>
+                            <span class="more"><svg t="1717078345867" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7009" width="32" height="32"><path d="M266.3 750.6C70.3 715.1 67 476.9 67 476.9c-136.8 207.7-40.5 398.6 79.4 472.9 28.7 16.9 59.1 28.7 89.5 30.4 153.7 11.8 172.3-70.9 172.3-70.9s54-123.3-141.9-158.7zM77.1 296.2c-1.7 5.1-1.7 11.8-3.4 16.9-3.4 23.6-3.4 45.6-1.7 67.6 3.4-22 8.4-43.9 15.2-64.2l5.1-15.2c42.2-79.4 108.1-150.3 192.5-201-1.7-5.1-3.4-11.8-8.4-16.9C242.6 44.6 148 32.7 90.6 88.5 33.2 144.2 33.2 248.9 67 287.8c3.3 3.4 6.7 6.7 10.1 8.4zM718.9 96.9c1.7 0 1.7 1.7 3.4 1.7 86.1 43.9 157.1 108.1 204.4 184.1 10.1 0 20.3-5.1 28.7-15.2 28.7-40.5 20.3-145.2-40.5-195.9-62.6-52.4-153.8-33.8-185.9 6.7-1.7 0-3.4 0-5.1-1.7-11.8-1.7-23.6-3.4-33.8-5.1-23.6-1.7-45.6-1.7-67.6 0 22 1.7 43.9 6.8 65.9 13.5 10.2 3.5 20.4 6.9 30.5 11.9zM450.4 644.2c0 8.4 27 27 60.8 27s60.8-16.9 60.8-27c0-10.1-27-18.6-60.8-16.9-33.8 0-60.8 6.7-60.8 16.9zM798.3 559.7c42.2-22 59.1-136.8 13.5-222.9s-116.5-104.7-174-74.3c-57.4 30.4-81.1 101.3-33.8 185.8 45.7 86.1 152.1 135.1 194.3 111.4zM675 355.3c18.6 0 33.8 15.2 33.8 33.8 0 18.6-15.2 33.8-33.8 33.8-18.6 0-33.8-15.2-33.8-33.8 0-18.6 15.2-33.8 33.8-33.8zM401.4 262.4C344 232 273 250.6 227.4 336.8c-45.6 86.1-28.7 201 15.2 222.9 42.2 23.6 148.6-25.3 194.2-111.5 44-84.4 22-153.7-35.4-185.8z m-38.9 160.5c-18.6 0-33.8-15.2-33.8-33.8 0-18.6 15.2-33.8 33.8-33.8 18.6 0 33.8 15.2 33.8 33.8 0 18.6-15.2 33.8-33.8 33.8zM825.3 885.7s-185.8-42.2-211.1-47.3c-25.3-3.4-43.9 13.5-42.2 28.7 0 0-5.1 27 52.4 32.1 59 6.7 200.9-13.5 200.9-13.5zM803.4 600.2S511.2 762.3 472.4 786c-37.2 23.6-42.2 67.6-20.3 82.8 0 0 23.6 40.5 106.4-18.6 82.7-59.1 244.9-250 244.9-250z" fill="#8a8a8a" p-id="7010"></path><path d="M958.8 483.7s-5.1 238.1-202.7 271.9c-86.1 15.2-123.3 45.6-140.2 77.7 25.3 3.4 204.4 45.6 211.1 47.3l43.9 10.1-43.9 3.4c-5.1 0-111.5 15.2-177.3 15.2-10.1 0-18.6 0-27-1.7-5.1 0-10.1-1.7-13.5-1.7 1.7 3.4 3.4 5.1 3.4 5.1s18.6 82.8 170.6 72.6c153.6-10.1 342.8-239.8 175.6-499.9z" fill="#8a8a8a" p-id="7011"></path></svg> <span>从此世界不再只是黑白...</span></span>
+                        </div>
+                        <div class="bd">
+                            <div class="grid-5 gap-8 sm-grid-2">
+                                <widget-qrcode template="fusion" level="M" background-image="./static/image/bg/girl.jpeg" background-color="#ffcc60"></widget-qrcode>
+                                <widget-qrcode id="show" template="fusion" background-image="./static/image/bg/monkey.jpeg" background-color="#ece8dd" foreground-color="#000000" text="" text-color="#2c2b2e" text-stroke="#ece8dd"></widget-qrcode>
+                                <widget-qrcode template="diamond" logo="./static/image/logo/snail.png" foreground-image="./static/image/skin/grass.png" background-color="#fff2dc" inner-color="#094304"></widget-qrcode>
+                                <widget-qrcode template="water" logo="./static/image/logo/earth.png" foreground-color="#6d327c,#485DA6,#00a1ba,#00BF98,#36C486" background-color="#f1f8ff" inner-color="#845EC2"></widget-qrcode>
+                                <widget-qrcode template="heart" logo="./static/image/logo/octopus.png" foreground-color="#ff9999" background-color="#fff7f7" inner-color="#ce5050"></widget-qrcode>
+                                <widget-qrcode template="hexagon" foreground-color="#17252a,#2b7a78,#3aafa9" background-color="#def2f1" inner-color="#17252a"></widget-qrcode>
+                                <widget-qrcode template="bar" foreground-color="#3b8686,#79bd9a,#f8ca00,#008c9e" background-color="#f0f5f9" inner-color="#3B4E32"></widget-qrcode>
+                                <widget-qrcode template="glitter" foreground-color="#fe4365,#fc9d9a,#6d9d88,#490a3d" background-color="#f9f1f1" inner-color="#881600" outer-color="#343838"></widget-qrcode>
+                                <widget-qrcode template="rect" foreground-color="#4abdac,#fc4a1a,#f7b733" background-color="#f9f6f3" inner-color="#d66c44" outer-color="#037584"></widget-qrcode>
+                                <widget-qrcode template="star" level="L" foreground-color="#fc9000,#ffa935,#ffb756" background-color="#034690"></widget-qrcode>
+                                <widget-qrcode template="stroke" foreground-color="#150f3f,#fb3242,#018bf8" background-color="#edfaff"></widget-qrcode>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module mod-article">
+                        <div class="hd"><span>关于二维码美化组件</span></div>
+                        <div class="bd">
+                            <p>二维码组件可用于网站中任何需要二维码展示的地方，如：网上支付、二维码登录、手机访问等场景。组件采用浏览器原生Web Component方案开发，无论你使用的框架是Vue、React还是Angular都能正常使用。开发者只需要在页面中加入组件库，并在需要二维码的地方插入指定标签，即可像展示Web图片一样实时展示指定内容的二维码。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="module mod-copy">
+                    <div class="inner">
+                        <div class="hd"><span>算法组件</span></div>
+                        <div class="bd">
+                            <p>本项目致力于让你网站中的二维码更加丰富多彩，开发使用便捷高效。本人深感项目的完善仅凭一己之力是远远不够的，如果你对此感兴趣，欢迎关注本项目 或 <a class="text-blue" href="https://github.com/mumuy/widget-qrcode/pulls" target="_blank" rel="nofollow">提交代码</a>，与我一起完善它，使它被更多人熟知和使用。你也可以将自己配置的二维码参数分享给我，有机会让更多人看到你的设计！</p>
+                            <p><span>组件基于「<a href="https://github.com/mumuy/widget-qrcode/blob/master/LICENSE" rel="nofollow" target="_blank">MIT许可协议</a>」开源，除需在源码中保留版权信息和许可声明外，你有权利使用、复制、修改、合并、出版发行、散布、再授权及贩售软件及软件的副本。</span>项目持续更新中，如发现错漏或有想法建议可在此</span> <a class="text-red" href="https://github.com/mumuy/widget-qrcode/issues" rel="nofollow" target="_blank">反馈问题</a>。</p>
+                            <code>&lt;script type="text/javascript" src="/mumuy/widget-qrcode/dist/widget-qrcode.min.js"&gt;&lt;/script&gt;</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="inner">
+                    <script type="text/javascript" src="/mumuy/static/script/projects.js"></script>
+                </div>
+            </div>
+            <footer>
+                <div class="mod-fixedbar">
+                    <div class="bd">
+                        <ul>
+                            <li>
+                                <a class="gotop" href="javascript:;" rel="nofollow">
+                                    <img src="/mumuy/static/image/public/icon-gotop.png" width="24" height="24" alt="回到顶部">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mod-foot">
+                    <div class="bd">
+                        <p>
+                            <span>Copyright &copy; 2025</span>
+                            <a href="/">大白</a>
+                            <span>版权所有</span>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script type="text/javascript" src="https://jquerywidget.com/static/script/jquery.min.js"></script>
+        <script type="text/javascript" src="https://jquerywidget.com/code/jquery.headroom.js"></script>
+        <script type="text/javascript">
+            // 设置
+            (function(){
+                let $module = document.querySelector('.mod-setting');
+                let $qrcode = $module.querySelector('widget-qrcode');
+                ['value','template','foreground-color','background-color','inner-color','outer-color'].forEach(function(field){
+                    $module.querySelectorAll('input[name="'+field+'"]').forEach(function($item){
+                        $item.addEventListener('input',function(){
+                            $qrcode.setAttribute(field,this.value);
+                        },false);
+                    });
+                });
+            })();
+
+            // 动画
+            (function(){
+                let $show = document.querySelector('widget-qrcode#show');
+                let list = [
+                    {'value':'','time':100,'interval':500,'action':function(){}},
+                    {'value':'Now You See Me','time':100,'interval':1000,'action':function(){}},
+                    {'value':'','time':100,'interval':500,'action':function(){}},
+                    {'value':'Wait a minute','time':75,'interval':500,'action':function(){}},
+                    {'value':'','time':100,'interval':500,'action':function(){}},
+                    {'value':'Please!','time':75,'interval':500,'action':function(){}},
+                    {'value':'','time':100,'interval':500,'action':function(){}},
+                    {'value':'我要表演了','time':150,'interval':500,'action':function(){}},
+                    {'value':'','time':100,'interval':500,'action':function(){}},
+                    {'value':'注意咯','time':150,'interval':500,'action':function(){}},
+                    {'value':'','time':100,'interval':500,'action':function(){}},
+                    {'value':'动次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#fc9000');$show.setAttribute('outer-color','#000000');}},
+                    {'value':'','time':25,'interval':250,'action':function(){}},
+                    {'value':'打次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#000000');$show.setAttribute('outer-color','#fc9000');}},
+                    {'value':'','time':25,'interval':250,'action':function(){}},
+                    {'value':'动次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#fc9000');$show.setAttribute('outer-color','#000000');}},
+                    {'value':'','time':25,'interval':250,'action':function(){}},
+                    {'value':'打次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#000000');$show.setAttribute('outer-color','#fc9000');}},
+                    {'value':'','time':25,'interval':250,'action':function(){}},
+                    {'value':'动次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#fc9000');$show.setAttribute('outer-color','#000000');$show.setAttribute('foreground-color','#fc9000');}},
+                    {'value':'','time':25,'interval':250,'action':function(){}},
+                    {'value':'打次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#000000');$show.setAttribute('outer-color','#fc9000');$show.setAttribute('foreground-color','#000000');}},
+                    {'value':'','time':25,'interval':250,'action':function(){}},
+                    {'value':'动次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#fc9000');$show.setAttribute('outer-color','#000000');$show.setAttribute('foreground-color','#fc9000');}},
+                    {'value':'','time':25,'interval':250,'action':function(){}},
+                    {'value':'打次','time':25,'interval':250,'action':function(){$show.setAttribute('inner-color','#000000');$show.setAttribute('outer-color','#fc9000');$show.setAttribute('foreground-color','#000000');}},
+                    {'value':'','time':100,'interval':250,'action':function(){$show.setAttribute('inner-color','#000000');$show.setAttribute('outer-color','#000000');}},
+                    {'value':'给个关注呗','time':150,'interval':3000,'action':function(){}},
+                ];
+                let index = 0;
+                let doTask = function(){
+                    index = index%list.length;
+                    let item = list[index];
+                    let i = 0;
+                    let hander = setInterval(function(){
+                        if(i<=item.value.length){
+                            let value = item.value.substring(0,i);
+                            $show.setAttribute('text',value);
+                            i++;
+                        }else{
+                            clearInterval(hander);
+                            index++;
+                            item.action();
+                            setTimeout(doTask,item.interval);
+                        }
+                    },item.time);
+                };
+                doTask();
+            })();
+        </script>
+        
+        <script type="text/javascript" src="/mumuy/static/script/common.js"></script>
+        <script type="text/javascript" src="/mumuy/static/script/stat.js"></script>
+    </body>
+</html>

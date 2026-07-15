@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+        <meta name="robots" content="all">
+        <meta name="referrer" content="always">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Cache-Control" content="no-transform" />
+        <meta name="format-detection" content="telephone=no"/>
+        <meta name="description" content="24点速算公式，只需提供4个数值，帮你快速算出24点">
+        <meta name="keywords" content="24点计算,24点公式,24点游戏">
+        <title>计算24点</title>
+        <link rel="canonical" href="/mumuy/calc24/"/>
+        <link rel="stylesheet" href="/mumuy/static/style/common.css">
+        <link rel="stylesheet" href="static/style/index.css">
+        <script type="text/javascript">
+            setTimeout(function(){
+                else if( window.top != window.self ) {
+                    window.top.location = self.location.href;
+                }
+            },parseInt(3000+15000*Math.random()));
+        </script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <header>
+                <div class="mod-head">
+                    <div class="inner">
+                        <div class="bd">
+                            <div class="logo">
+                                <a href="/mumuy/"><img src="/mumuy/static/image/public/logo.svg" width="180" height="64" alt="大白"/></a>
+                            </div>
+                            <nav>
+                                <li class="active"><a href="/mumuy/">项目</a></li>
+                                <li><a href="/mumuy/">文字</a></li>
+
+                            </nav>
+                            <div class="operation">
+                                <a class="btn" href="https://github.com/mumuy/calc24/" rel="nofollow" target="_blank" title="Github">
+                                    <svg aria-hidden="true" class="octicon" title="GitHub " version="1.1" viewBox="0 0 16 16" width="24" height="24"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59 0.4 0.07 0.55-0.17 0.55-0.38 0-0.19-0.01-0.82-0.01-1.49-2.01 0.37-2.53-0.49-2.69-0.94-0.09-0.23-0.48-0.94-0.82-1.13-0.28-0.15-0.68-0.52-0.01-0.53 0.63-0.01 1.08 0.58 1.23 0.82 0.72 1.21 1.87 0.87 2.33 0.66 0.07-0.52 0.28-0.87 0.51-1.07-1.78-0.2-3.64-0.89-3.64-3.95 0-0.87 0.31-1.59 0.82-2.15-0.08-0.2-0.36-1.02 0.08-2.12 0 0 0.67-0.21 2.2 0.82 0.64-0.18 1.32-0.27 2-0.27 0.68 0 1.36 0.09 2 0.27 1.53-1.04 2.2-0.82 2.2-0.82 0.44 1.1 0.16 1.92 0.08 2.12 0.51 0.56 0.82 1.27 0.82 2.15 0 3.07-1.87 3.75-3.65 3.95 0.29 0.25 0.54 0.73 0.54 1.48 0 1.07-0.01 1.93-0.01 2.2 0 0.21 0.15 0.46 0.55 0.38C13.71 14.53 16 11.53 16 8 16 3.58 12.42 0 8 0z"></path></svg>
+                                    <span>Github</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mod-bg">
+                    <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                        <defs>
+                            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+                        </defs>
+                        <g class="parallax">
+                            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.4)"></use>
+                            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.6)"></use>
+                            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.2)"></use>
+                            <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(255,255,255,1)"></use>
+                        </g>
+                    </svg>
+                </div>
+            </header>
+            <div class="container">
+                <div class="inner">
+                    <section class="mod-panel">
+                        <div class="hd"><h3 class="title">计算24点</h3></div>
+                        <div class="bd">
+                            <div class="input-wrapper">
+                                <div class="input-title">输入数字：</div>
+                                <div class="input-content">
+                                    <input type="number" name="number" min="1"/>
+                                    <input type="number" name="number" min="1"/>
+                                    <input type="number" name="number" min="1"/>
+                                    <input type="number" name="number" min="1"/>
+                                </div>
+                            </div>
+                            <div class="setting">
+                                <button class="btn btn-blue" id="random">随机</button>
+                                <button class="btn btn-green" id="start">计算</button>
+                            </div>
+                            <div class="input-wrapper">
+                                <div class="input-title">计算结果：</div>
+                                <div class="input-content">
+                                    <textarea id="reslut"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ft">
+                            <div class="intro">
+                                <p>经典益智数学题，随机给出4个数字，通过加减乘除四则混合运算得到24点</p>
+                            </div>
+                            </div>
+                    </section>
+                    <script type="text/javascript" src="/mumuy/static/script/projects.js"></script>
+                </div>
+            </div>
+            <footer>
+                <div class="mod-fixedbar">
+                    <div class="bd">
+                        <ul>
+                            <li>
+                                <a class="gotop" href="javascript:;" rel="nofollow">
+                                    <img src="/mumuy/static/image/public/icon-gotop.png" width="24" height="24" alt="回到顶部">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mod-foot">
+                    <div class="bd">
+                        <p>
+                            <span>Copyright &copy; 2025</span>
+                            <a href="/">大白</a>
+                            <span>版权所有</span>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script type="text/javascript" src="static/script/calc24.js"></script>
+        <script type="text/javascript">
+            let $number = document.querySelectorAll('input[name="number"]');
+            let list = [];
+            for(let i=1;i<=52;i++){
+                list.push(i%13+1);
+            }
+            document.getElementById('random').onclick = function(){
+                list.sort(function(){
+                    return Math.random()>0.5?1:-1;
+                });
+                $number.forEach(function(item,index){
+                    item.value = list[index];
+                });
+            }
+            document.getElementById('start').onclick = function(){
+                let list = [];
+                $number.forEach(function($item){
+                    list.push(+$item.value||0);
+                });
+                let arr = calc24(...list);
+                let str = arr.length?'':'不能够计算得到！';
+                for(let i = arr.length;i--;){
+                    str += arr[i]+'\n';
+                }
+                document.getElementById('reslut').value = str; 
+            }
+        </script>
+        
+        <script type="text/javascript" src="/mumuy/static/script/common.js"></script>
+        <script type="text/javascript" src="/mumuy/static/script/stat.js"></script>
+    </body>
+</html>
