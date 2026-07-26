@@ -6523,5 +6523,17 @@
     "qrcode": "static/qrcode/544.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "545",
+    "title": "流芳",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/fa0b8ca2c1c2",
+    "qrcode": "static/qrcode/545.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
