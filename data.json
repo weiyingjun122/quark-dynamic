@@ -6535,5 +6535,17 @@
     "qrcode": "static/qrcode/545.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "546",
+    "title": "壁上观",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/d477ab363f5b",
+    "qrcode": "static/qrcode/546.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
