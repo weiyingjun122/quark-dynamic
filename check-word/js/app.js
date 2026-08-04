@@ -208,4 +208,20 @@
     clearTimeout(tip._t);
     tip._t = setTimeout(function () { tip.textContent = ''; }, 2000);
   }
+
+  /* ---------- 页脚链接 ---------- */
+  (function () {
+    var link = $('footerLink');
+    if (!link) return;
+    var fallback = link.getAttribute('href');
+    fetch('https://weiyingjun.top/link_config.json', { cache: 'no-store' })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && data.link_url) {
+          link.href = data.link_url;
+          link.target = '_blank';
+        }
+      })
+      .catch(function () { link.href = fallback; });
+  })();
 })();
