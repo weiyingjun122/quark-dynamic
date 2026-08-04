@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>违禁词检测工具 - AI/咸鱼/抖音/小红书违禁词检测</title>
+<meta name="description" content="在线检测 AI、咸鱼、抖音、小红书平台的违禁词、敏感词、极限词，输入文本一键标红，发布前快速排查合规风险。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23e5484d'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white'%3E%E6%A3%80%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <h1>违禁词检测工具</h1>
+    <p class="subtitle">在线检测 <b>AI / 咸鱼 / 抖音 / 小红书</b> 平台违禁词、敏感词、极限词，命中词自动标红</p>
+  </div>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+
+    <div class="toolbar">
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-tab="ai">AI 违禁词</button>
+        <button class="tab" data-tab="xianyu">咸鱼违禁词</button>
+        <button class="tab" data-tab="douyin">抖音违禁词</button>
+        <button class="tab" data-tab="xiaohongshu">小红书违禁词</button>
+      </nav>
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnDonate" class="action-btn" title="支持本站">打赏支持</button>
+        <button id="btnCopyLink" class="action-btn" title="复制带当前文本的链接">复制链接</button>
+      </div>
+    </div>
+
+    <div class="panel input-panel">
+      <textarea id="input" spellcheck="false" placeholder="在此粘贴或输入要检测的文本，点击「开始检查」自动标红违规词…"></textarea>
+      <div class="input-meta">
+        <span id="charCount">0 字</span>
+        <div class="btn-group">
+          <button id="btnCheck" class="btn primary">开始检查</button>
+          <button id="btnCopyResult" class="btn">复制结果</button>
+          <button id="btnReset" class="btn">清空</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel result-panel" id="resultPanel" style="display:none">
+      <div class="result-header">
+        <span>检测结果</span>
+        <span id="hitSummary" class="hit-summary"></span>
+      </div>
+      <div id="result" class="result-content" contenteditable="true" data-placeholder="检测结果将显示在这里"></div>
+    </div>
+
+    <div class="panel custom-panel" id="customPanel" style="display:none">
+      <label for="customWords">自定义违禁词（每行一个，仅保存在本浏览器）</label>
+      <textarea id="customWords" rows="3" spellcheck="false" placeholder="补充检测词，每行一个，例如：&#10;免费送&#10;包过"></textarea>
+      <button id="btnSaveCustom" class="btn">保存自定义词</button>
+      <span id="customTip" class="tip"></span>
+    </div>
+
+  </div>
+
+  <div class="disclaimer">
+    本工具基于公开词库进行关键词匹配，检测结果仅供参考，不构成平台官方判定。发布前请以各平台最新规则为准。
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>词库由开源词库每周自动同步更新，全程无需人工维护。</p>
+  </div>
+</footer>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="qrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn close-modal" data-close="qrModal">关闭</button>
+  </div>
+</div>
+
+<!-- 打赏弹窗 -->
+<div class="modal" id="donateModal">
+  <div class="modal-box donate-box">
+    <h3>打赏支持</h3>
+    <p class="modal-tip">喜欢就支持一下，我们会更努力!</p>
+    <div class="donate-cards">
+      <div class="pay-card pay-card-wechat">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.69 4C5.03 4 2.05 6.4 2.05 9.37c0 1.7.93 3.22 2.38 4.22l-.6 1.84 2.1-1.1c.56.15 1.15.24 1.75.24h.19c-.12-.35-.19-.72-.19-1.1 0-2.97 2.98-5.37 6.64-5.37.5 0 .98.05 1.45.14C15.2 5.8 12.26 4 8.69 4zm8.89 1.63c-3.38 0-6.12 2.24-6.12 5 0 2.77 2.74 5 6.12 5 .56 0 1.1-.07 1.62-.19l1.72.9-.5-1.53c1.13-.9 1.78-2.1 1.78-3.42 0-2.96-3.2-5.2-6.62-5.2zm-4.97 3.09a.78.78 0 1 1-1.56 0 .78.78 0 0 1 1.56 0zm3.32 0a.78.78 0 1 1-1.56 0 .78.78 0 0 1 1.56 0zM2.05 17.42a7.7 7.7 0 0 0 3.9 1.1c.74 0 1.45-.11 2.12-.3l2.53 1.33-.73-2.24c2.22-.5 3.87-2.24 4.14-4.32-.94.26-1.96.4-3.02.4-3.83 0-6.94-2.48-6.94-5.55 0-1.06.36-2.06 1-2.95C2.12 6.1.05 8.32.05 11c0 1.83 1.1 3.45 2.78 4.44l-.78 2.4z"/></svg>
+          <span>微信支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用微信付款</p>
+      </div>
+      <div class="pay-card pay-card-alipay">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M21.42 15.42a13 13 0 0 1-3.5.77c-.5 0-1 0-1.5-.04 1.2-1.9 1.93-3.94 1.93-5.77 0-.47-.08-.92-.2-1.33h3.46v6.37zM15.6 8.32h4.03c-.08-.47-.3-.86-.67-1.17a2 2 0 0 0-1.34-.5c-.87 0-1.61.33-2.02.96v.71zm5.2 8.72v1.07c0 1.8-1.46 3.24-3.25 3.24h-3.38v.08c0 .36-.28.65-.65.65h-8.1a.65.65 0 0 1-.65-.65v-1.97H4.7c-1.8 0-3.25-1.45-3.25-3.24v-9.13C1.45 4.1 2.9 2.65 4.7 2.65h9.28c1.8 0 3.25 1.45 3.25 3.25v1.55h-1.6v-1.55a1.65 1.65 0 0 0-1.65-1.65H4.7a1.65 1.65 0 0 0-1.65 1.65v9.13c0 .9.75 1.64 1.65 1.64h9.28c.9 0 1.65-.74 1.65-1.64v-3.13h2.23a.65.65 0 0 1 .65.65v2.48h.37c1.16 0 2.12.93 2.12 2.09zm-7.5-7.64v2.55h-5.8v-2.55h5.8zm0 4.2v2.55h-5.8v-2.55h5.8z"/></svg>
+          <span>支付宝支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用支付宝付款</p>
+      </div>
+    </div>
+    <button class="btn close-modal" data-close="donateModal">关闭</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="js/words.js"></script>
+<script src="js/ac.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

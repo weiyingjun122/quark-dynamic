@@ -10,10 +10,6 @@ on:
       - 'scripts/**'
       - 'index.html'
       - 'worker-test.html'
-      - 'check-word/**'
-  schedule:
-    # 每天 03:00 UTC = 北京时间 11:00 自动同步违禁词库并部署
-    - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       description:
@@ -40,12 +36,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      # 2️⃣ 设置 Node (用于同步 uutool 违禁词库)
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       # 3️⃣ 安装依赖
       - name: Install dependencies
@@ -78,21 +68,7 @@ jobs:
           cd ..
           echo "SEO 页面生成完成"
 
-      # 7️⃣ 同步违禁词库（uutool + 开源词库 -> check-word/js/words.js）
-      - name: Sync check-word library (uutool)
-        run: |
-          cd check-word
-          node scripts/sync_uutool.js
-          cd ..
-
-      # 8️⃣ 更新违禁词库
-      - name: Update check-word library
-        run: |
-          cd check-word
-          python scripts/update_words.py
-          cd ..
-
-      # 9️⃣ 提交更新
+      # 7️⃣ 提交更新
       - name: Commit & Push changes
         env:
             GH_PAT: ${{ secrets.GH_PAT }}
@@ -105,7 +81,6 @@ jobs:
             git add static/status.json 2>/dev/null || true
             git add static/qrcode/* 2>/dev/null || true
             git add search/ 2>/dev/null || true
-            git add check-word/ 2>/dev/null || true
 
             if ! git diff --cached --quiet; then
                 echo "有变更，提交并推送..."
