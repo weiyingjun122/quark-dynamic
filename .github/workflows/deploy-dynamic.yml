@@ -11,9 +11,10 @@ on:
       - 'index.html'
       - 'worker-test.html'
       - 'check-word/**'
-  schedule:
-    # 每天 03:00 UTC = 北京时间 11:00 自动同步违禁词库并部署
-    - cron: '0 3 * * *'
+  # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
+  # schedule:
+  #   # 每天 03:00 UTC = 北京时间 11:00 自动同步违禁词库并部署
+  #   - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       description:
