@@ -11,6 +11,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
@@ -131,6 +132,25 @@ body {
 }
 .btn.primary:hover { background: var(--primary-dark); }
 
+/* 自定义违禁词库切换按钮 */
+.badge {
+  display: inline-block;
+  min-width: 18px;
+  margin-left: 6px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+#btnCustom.active {
+  border-color: var(--primary);
+  background: #fff3f3;
+  color: var(--primary);
+}
+
 /* Result */
 .result-header {
   display: flex;
@@ -171,7 +191,36 @@ mark.hit {
 }
 
 /* Custom */
-.custom-panel label { font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px; }
+.custom-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.custom-head label { font-size: 14px; font-weight: 600; }
+.custom-count {
+  font-size: 12px;
+  color: var(--muted);
+  background: #f0f1f3;
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+.link-btn {
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.link-btn:hover { color: var(--primary); background: #f5f5f5; }
+.custom-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
 #customWords {
   width: 100%;
   padding: 10px;
@@ -183,7 +232,8 @@ mark.hit {
   outline: none;
 }
 #customWords:focus { border-color: var(--primary); }
-.custom-panel .btn { margin-top: 8px; }
+.custom-actions { display: flex; align-items: center; margin-top: 10px; }
+.custom-actions .btn { margin-top: 0; }
 .tip { margin-left: 12px; font-size: 13px; color: #28a745; }
 
 /* Disclaimer & footer */
@@ -195,6 +245,130 @@ mark.hit {
   padding: 0 16px;
 }
 .site-footer { text-align: center; padding: 24px 0 40px; font-size: 13px; color: var(--muted); }
+
+/* 工具说明 */
+.tool-desc {
+  background: linear-gradient(180deg, #fff 0%, #fdf4f4 100%);
+  border: 1px solid #f0d8d8;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(230, 59, 59, .08);
+  padding: 26px 26px 24px;
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.tool-desc::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff8a8a, var(--primary), var(--primary-dark));
+}
+.tool-desc h2,
+.tool-desc h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 20px 0 12px;
+}
+.tool-desc h2 { margin-top: 6px; }
+.tool-desc h2::before,
+.tool-desc h3::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+.tool-desc p {
+  font-size: 14px;
+  color: #5a5f69;
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+
+/* 工具优势卡片 */
+.td-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 4px 0 2px;
+}
+.td-card {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: all .2s;
+}
+.td-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 10px rgba(230, 59, 59, .08);
+  transform: translateY(-2px);
+}
+.td-ico {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #fff0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.td-card b {
+  display: block;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.td-card p {
+  font-size: 13px;
+  color: #5a5f69;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* 使用步骤 */
+.td-steps {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.td-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 14px;
+  color: #555a63;
+  line-height: 1.7;
+}
+.td-steps li:last-child { border-bottom: none; }
+.td-step-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3px;
+}
 
 /* Modal */
 .modal {
@@ -301,4 +475,6 @@ mark.hit {
   .actions { justify-content: center; }
   .site-header h1 { font-size: 21px; }
   #input, .result-content { min-height: 160px; }
+  .tool-desc { padding: 20px 16px; }
+  .td-grid { grid-template-columns: 1fr; }
 }

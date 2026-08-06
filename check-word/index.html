@@ -6,7 +6,7 @@
 <title>违禁词检测工具 - AI/咸鱼/抖音/小红书违禁词检测</title>
 <meta name="description" content="在线检测 AI、咸鱼、抖音、小红书平台的违禁词、敏感词、极限词，输入文本一键标红，发布前快速排查合规风险。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23e5484d'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white'%3E%E6%A3%80%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 <header class="site-header">
@@ -38,10 +38,25 @@
       <div class="input-meta">
         <span id="charCount">0 字</span>
         <div class="btn-group">
+          <button id="btnCustom" class="btn" title="根据特定平台的特殊规定，添加自定义违禁词库">自定义违禁词库<span id="customBadge" class="badge" hidden></span></button>
           <button id="btnCheck" class="btn primary">开始检查</button>
           <button id="btnCopyResult" class="btn">复制结果</button>
           <button id="btnReset" class="btn">清空</button>
         </div>
+      </div>
+    </div>
+
+    <div class="panel custom-panel" id="customPanel" hidden>
+      <div class="custom-head">
+        <label for="customWords">自定义违禁词库</label>
+        <span id="customCount" class="custom-count"></span>
+        <button id="btnClearCustom" class="link-btn" type="button">清空词库</button>
+      </div>
+      <p class="custom-desc">根据特定平台的特殊规定，自行添加需要规避的词汇，每行一个词，仅保存在本浏览器。</p>
+      <textarea id="customWords" rows="4" spellcheck="false" placeholder="补充检测词，每行一个，例如：&#10;免费送&#10;包过"></textarea>
+      <div class="custom-actions">
+        <button id="btnSaveCustom" class="btn primary">保存并生效</button>
+        <span id="customTip" class="tip"></span>
       </div>
     </div>
 
@@ -53,17 +68,56 @@
       <div id="result" class="result-content" contenteditable="true" data-placeholder="检测结果将显示在这里"></div>
     </div>
 
-    <div class="panel custom-panel" id="customPanel" style="display:none">
-      <label for="customWords">自定义违禁词（每行一个，仅保存在本浏览器）</label>
-      <textarea id="customWords" rows="3" spellcheck="false" placeholder="补充检测词，每行一个，例如：&#10;免费送&#10;包过"></textarea>
-      <button id="btnSaveCustom" class="btn">保存自定义词</button>
-      <span id="customTip" class="tip"></span>
-    </div>
-
   </div>
 
   <div class="disclaimer">
     本工具基于公开词库进行关键词匹配，检测结果仅供参考，不构成平台官方判定。发布前请以各平台最新规则为准。
+  </div>
+
+  <div class="tool-desc">
+    <h2>工具简介</h2>
+    <p>违禁词检测工具是一款在线违禁词、敏感词、极限词合规检测神器，专为自媒体创作者、电商卖家、运营推广及文案策划人员打造。在抖音、小红书、闲鱼等平台发布内容或投放广告时，文案中如果不慎使用了违反新广告法的“极限词”或平台禁止的敏感词，极易导致内容限流、商品下架、扣分甚至面临高额罚款。</p>
+    <p>本工具内置了详尽的各平台违禁词库（涵盖“第一”、“最高”、“极品”等数百种常见违规词汇，词库由开源词库每天自动同步更新），您只需将文案粘贴进来，点击「开始检查」，系统便会智能比对并自动将违规内容标红显示，帮您轻松避开广告法雷区，大幅降低违规风险。</p>
+
+    <h3>工具优势</h3>
+    <div class="td-grid">
+      <div class="td-card">
+        <span class="td-ico">📚</span>
+        <div>
+          <b>海量词库</b>
+          <p>涵盖各类极限词、虚假宣传用语、违规医疗用语等词库，支持 AI / 咸鱼 / 抖音 / 小红书 多平台一键切换。</p>
+        </div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">🧩</span>
+        <div>
+          <b>自定义扩展</b>
+          <p>支持根据特定平台的特殊规定，自行添加自定义违禁词库，让检测更加灵活、全面。</p>
+        </div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">🎯</span>
+        <div>
+          <b>直观标红</b>
+          <p>检测结果中，所有命中的违禁词都会以醒目的红色高亮展示，且结果框支持直接编辑修改。</p>
+        </div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">🔒</span>
+        <div>
+          <b>本地处理</b>
+          <p>文案检测过程完全在浏览器本地运行，不上传任何服务器，充分保护您的隐私与未公开的文案。</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li><span class="td-step-num">1</span><span>将您的文案或商品介绍，复制并粘贴到页面的主输入框中。</span></li>
+      <li><span class="td-step-num">2</span><span>（可选）如有特定平台需要规避的特殊词汇，可点击「自定义违禁词库」逐行添加。</span></li>
+      <li><span class="td-step-num">3</span><span>点击「开始检查」按钮，工具会立刻扫描全文，并在下方生成标红敏感词的结果视图。</span></li>
+      <li><span class="td-step-num">4</span><span>在结果框中直接修改标红的违规词语，修改完毕后点击「复制结果」即可获取合规文案。</span></li>
+    </ol>
   </div>
 </main>
 
@@ -113,8 +167,8 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-<script src="js/words.js"></script>
-<script src="js/ac.js"></script>
-<script src="js/app.js"></script>
+<script src="js/words.js?v=3"></script>
+<script src="js/ac.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>

@@ -38,11 +38,47 @@
 
   function saveCustomWords() {
     var raw = customWords.value.split('\n').map(function (s) { return s.trim(); }).filter(function (s) { return s; });
+    var seen = {};
+    var list = [];
+    for (var i = 0; i < raw.length; i++) {
+      if (!seen.hasOwnProperty(raw[i])) { seen[raw[i]] = true; list.push(raw[i]); }
+    }
     try {
-      localStorage.setItem(CUSTOM_KEY, raw.join('\n'));
+      localStorage.setItem(CUSTOM_KEY, list.join('\n'));
     } catch (e) {}
+    customWords.value = list.join('\n');
     automata = {}; // 使自定义词立即生效
-    showTip('自定义词已保存并生效');
+    updateCustomBadge();
+    rerunCheck();
+    showTip('已保存 ' + list.length + ' 个自定义词并生效');
+  }
+
+  function clearCustomWords() {
+    customWords.value = '';
+    try { localStorage.removeItem(CUSTOM_KEY); } catch (e) {}
+    automata = {};
+    updateCustomBadge();
+    rerunCheck();
+    showTip('已清空自定义词库');
+  }
+
+  function rerunCheck() {
+    if (resultPanel.style.display !== 'none') { $('btnCheck').click(); }
+  }
+
+  function updateCustomBadge() {
+    var words = getCustomWords();
+    var badge = $('customBadge');
+    var count = $('customCount');
+    if (words.length) {
+      badge.textContent = words.length;
+      badge.hidden = false;
+      count.textContent = '当前 ' + words.length + ' 个词';
+    } else {
+      badge.hidden = true;
+      count.textContent = '暂无自定义词';
+    }
+    return words.length;
   }
 
   /* ---------- Tab 切换 ---------- */
@@ -170,8 +206,21 @@
   });
 
   /* ---------- 自定义词 ---------- */
+  var customPanel = $('customPanel');
+  $('btnCustom').addEventListener('click', function () {
+    var willOpen = customPanel.hasAttribute('hidden');
+    if (willOpen) {
+      customPanel.removeAttribute('hidden');
+    } else {
+      customPanel.setAttribute('hidden', '');
+    }
+    $('btnCustom').classList.toggle('active', willOpen);
+    if (willOpen) customWords.focus();
+  });
   $('btnSaveCustom').addEventListener('click', saveCustomWords);
+  $('btnClearCustom').addEventListener('click', clearCustomWords);
   customWords.value = getCustomWords().join('\n');
+  updateCustomBadge();
 
   /* ---------- 输入计数 ---------- */
   input.addEventListener('input', updateCount);
