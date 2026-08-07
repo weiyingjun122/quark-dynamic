@@ -68,6 +68,23 @@ export async function onRequest(context) {
         });
     }
 
+    // 自我查询时优先使用 Cloudflare 提供的 request.cf 地理信息（无限流、零外部依赖）
+    if (!queryIP) {
+        const cf = buildCfGeo(request, clientIP);
+        if (cf) {
+            setCache(targetIP, cf);
+            return json(corsHeaders, 200, {
+                success: true,
+                self: true,
+                query: targetIP,
+                visitor: clientIP || null,
+                cached: false,
+                source: "cloudflare",
+                result: cf
+            });
+        }
+    }
+
     // 主库失败/限流时自动降级
     const raw = await fetchWithFallback(targetIP);
 
@@ -93,6 +110,35 @@ export async function onRequest(context) {
 
 function json(headers, status, obj) {
     return new Response(JSON.stringify(obj), { status, headers });
+}
+
+// 用 Cloudflare 提供的 request.cf 地理元数据组装结果（自我查询用，免外部API）
+function buildCfGeo(request, clientIP) {
+    const cf = request.cf;
+    if (!cf || (!cf.country && !cf.city)) return null;
+    const countryCode = (cf.country || "").toUpperCase();
+    return {
+        success: true,
+        source: "cloudflare",
+        ip: clientIP || "",
+        type: clientIP && clientIP.includes(":") ? "IPv6" : "IPv4",
+        country: cf.country || "",
+        country_code: countryCode,
+        region: cf.region || "",
+        region_code: (cf.regionCode || cf.__region_code || ""),
+        city: cf.city || "",
+        postal: cf.postalCode || "",
+        latitude: typeof cf.latitude === "number" ? Math.round(cf.latitude * 10000) / 10000 : null,
+        longitude: typeof cf.longitude === "number" ? Math.round(cf.longitude * 10000) / 10000 : null,
+        flag: countryFlag(countryCode),
+        isp: cf.asOrganization || "",
+        org: cf.asOrganization || "",
+        asn: cf.asn || "",
+        timezone: cf.timezone || "",
+        utc: "",
+        offset_minutes: null,
+        current_time: ""
+    };
 }
 
 /* ============================================================
