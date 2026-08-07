@@ -104,7 +104,8 @@ export async function onRequest(context) {
     return json(corsHeaders, 404, {
         success: false,
         query: targetIP,
-        error: (raw && raw.message) || "查询失败，IP 可能不在数据库中"
+        error: (raw && raw.message) || "查询失败，IP 可能不在数据库中",
+        detail: raw && raw.message
     });
 }
 
@@ -150,15 +151,20 @@ function buildCfGeo(request, clientIP) {
  * ============================================================ */
 async function fetchWithFallback(ip) {
     const sources = [fetchIpwho, fetchFreeipapi, fetchIpapiCo];
+    const errors = [];
     for (const fn of sources) {
         try {
             const r = await withTimeout(fn(ip), 6000);
-            if (r && r.success) return r;
+            if (r && r.success) {
+                r.tried = errors;
+                return r;
+            }
+            if (r) errors.push((fn.name) + ":" + (r.message || "fail"));
         } catch (e) {
-            // 单个源失败继续下一个
+            errors.push(fn.name + ":err");
         }
     }
-    return null;
+    return { success: false, message: errors.join(" | ") || "all failed" };
 }
 
 function withTimeout(promise, ms) {
