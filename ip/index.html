@@ -291,7 +291,19 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
         if (d.success && d.result) {
           renderResult(d.result, ip);
         } else {
-          showError(d.error || "查询失败");
+          // 后端受限时回退浏览器直连 ipwho.is（用户IP直连，不限流）
+          return fetch("https://ipwho.is/" + encodeURIComponent(ip))
+            .then(function (r) { return r.json(); })
+            .then(function (dw) {
+              if (dw && dw.success !== false) {
+                renderResult(normalizeIpwho(dw), ip);
+              } else {
+                showError((d.error || dw.message || "查询失败") + "，请稍后重试");
+              }
+            })
+            .catch(function () {
+              showError(d.error || "查询失败，请稍后重试");
+            });
         }
       })
       .catch(function () { showError("网络异常，请稍后重试"); })
@@ -369,6 +381,33 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
   // 地理拼接
   function buildGeo(r) {
     return [r.country, r.region, r.city].filter(Boolean).join(" · ") || "未知地区";
+  }
+  // 适配 ipwho.is 原始响应（浏览器直连回退用），转成统一字段结构
+  function normalizeIpwho(d) {
+    var tz = d.timezone || {};
+    return {
+      ip: d.ip,
+      type: d.type || "",
+      country: d.country || "",
+      country_code: d.country_code || "",
+      region: d.region || "",
+      region_code: d.region_code || "",
+      city: d.city || "",
+      postal: d.postal || "",
+      latitude: d.latitude,
+      longitude: d.longitude,
+      flag: (d.flag && d.flag.emoji) || "",
+      connection: {
+        isp: (d.connection && d.connection.isp) || "",
+        org: (d.connection && d.connection.org) || "",
+        asn: (d.connection && d.connection.asn) || ""
+      },
+      timezone: tz.id ? {
+        id: tz.id,
+        utc: tz.utc || "",
+        current_time: tz.current_time || ""
+      } : null
+    };
   }
 
   // —— 页脚链接：从 link_config.json 动态获取 ——
