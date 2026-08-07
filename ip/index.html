@@ -220,24 +220,6 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「查询」或按回车，即可查看国家、省份、运营商等详情。</div></li>
     </ol>
   </div>
-      <div class="td-card">
-        <span class="td-ico">🌐</span>
-        <div><b>双栈支持</b><p>同时支持 IPv4 与 IPv6 公网地址查询。</p></div>
-      </div>
-      <div class="td-card">
-        <span class="td-ico">🏢</span>
-        <div><b>运营商信息</b><p>展示 ISP、ASN、组织机构等运营商详情。</p></div>
-      </div>
-      <div class="td-card">
-        <span class="td-ico">🔒</span>
-        <div><b>安全可靠</b><p>后端代理查询，无浏览器跨域限制，调用稳定。</p></div>
-      </div>
-    </div>
-    <h3>使用步骤</h3>
-    <p>1. 打开页面，顶部卡片自动显示你的当前 IP 及归属地。<br>
-       2. 如需查询其他 IP，在上方输入框输入公网 IPv4/IPv6 地址。<br>
-       3. 点击「查询」按钮（或按回车），即可查看对应 IP 的国家、省份、城市、运营商等详细信息。</p>
-  </div>
 </main>
 
 <footer class="site-footer">
@@ -296,7 +278,7 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
             .then(function (r) { return r.json(); })
             .then(function (dw) {
               if (dw && dw.success !== false) {
-                renderResult(normalizeIpwho(dw), ip);
+                renderResult(dw, ip);
               } else {
                 showError((d.error || dw.message || "查询失败") + "，请稍后重试");
               }
@@ -316,23 +298,29 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
   }
 
   function renderResult(r, qip) {
+    var n = normalizeResult(r);
     resultCard.style.display = "block";
-    resultIp.textContent = qip || r.ip || "";
-    resultFlag.textContent = r.flag || "";
+    resultIp.textContent = qip || n.ip || "";
+    resultFlag.textContent = n.flag || "";
 
     var rows = [
-      ["IP 地址", r.ip],
-      ["IP 类型", r.type],
-      ["国家 / 地区", r.country + (r.country_code ? " (" + r.country_code + ")" : "")],
-      ["省份 / 州", r.region],
-      ["城市", r.city],
-      ["邮政编码", r.postal],
-      ["运营商 ISP", r.connection && r.connection.isp],
-      ["组织机构", r.connection && r.connection.org],
-      ["ASN", r.connection && r.connection.asn ? ("AS" + r.connection.asn) : ""],
-      ["时区", r.timezone ? (r.timezone.id + " (UTC" + r.timezone.utc + ")") : ""],
-      ["当地时间", r.timezone ? r.timezone.current_time : ""],
-      ["经纬度", (typeof r.latitude === "number" ? r.latitude.toFixed(2) : r.latitude) + ", " + (typeof r.longitude === "number" ? r.longitude.toFixed(2) : r.longitude)]
+      ["IP 地址", n.ip],
+      ["IP 类型", n.type],
+      ["数字地址", n.numeric],
+      ["洲", n.continent],
+      ["国家 / 地区", n.country + (n.country_code ? " (" + n.country_code + ")" : "")],
+      ["运营商 ISP", n.isp],
+      ["运营商", n.isp_cn],
+      ["组织机构", n.org],
+      ["ASN", n.asn ? "AS" + n.asn : ""],
+      ["省份 / 州", n.region],
+      ["区划编码", n.region_code],
+      ["城市", n.city],
+      ["邮政编码", n.postal],
+      ["经度", n.longitude],
+      ["纬度", n.latitude],
+      ["时区", n.timezone ? (n.timezone + (n.utc ? " (UTC" + n.utc + ")" : "")) : ""],
+      ["当地时间", n.current_time]
     ];
 
     resultGrid.innerHTML = "";
@@ -382,32 +370,73 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
   function buildGeo(r) {
     return [r.country, r.region, r.city].filter(Boolean).join(" · ") || "未知地区";
   }
-  // 适配 ipwho.is 原始响应（浏览器直连回退用），转成统一字段结构
-  function normalizeIpwho(d) {
-    var tz = d.timezone || {};
+  // 统一后端扁平结构与 ipwho.is 原始结构，并补充洲/数字地址/运营商中文名
+  function normalizeResult(r) {
+    r = r || {};
+    var conn = r.connection || {};
+    var tz = r.timezone && typeof r.timezone === "object" ? r.timezone : {};
+    var isp = r.isp || conn.isp || "";
+    var org = r.org || conn.org || isp;
+    var asn = r.asn || conn.asn || "";
+    var cc = r.country_code || "";
     return {
-      ip: d.ip,
-      type: d.type || "",
-      country: d.country || "",
-      country_code: d.country_code || "",
-      region: d.region || "",
-      region_code: d.region_code || "",
-      city: d.city || "",
-      postal: d.postal || "",
-      latitude: d.latitude,
-      longitude: d.longitude,
-      flag: (d.flag && d.flag.emoji) || "",
-      connection: {
-        isp: (d.connection && d.connection.isp) || "",
-        org: (d.connection && d.connection.org) || "",
-        asn: (d.connection && d.connection.asn) || ""
-      },
-      timezone: tz.id ? {
-        id: tz.id,
-        utc: tz.utc || "",
-        current_time: tz.current_time || ""
-      } : null
+      ip: r.ip || "",
+      type: r.type || (r.ip && r.ip.indexOf(":") >= 0 ? "IPv6" : "IPv4"),
+      numeric: ipv4ToLong(r.ip),
+      continent: r.continent || continentOf(cc),
+      country: r.country || "",
+      country_code: cc,
+      flag: (r.flag && r.flag.emoji) || r.flag || "",
+      region: r.region || "",
+      region_code: r.region_code || "",
+      city: r.city || "",
+      postal: r.postal || "",
+      longitude: typeof r.longitude === "number" ? r.longitude.toFixed(2) : r.longitude,
+      latitude: typeof r.latitude === "number" ? r.latitude.toFixed(2) : r.latitude,
+      isp: isp,
+      isp_cn: ispCn(isp + " " + org + " AS" + asn),
+      org: org,
+      asn: String(asn).replace(/^AS/i, ""),
+      timezone: tz.id || r.timezone || "",
+      utc: tz.utc || r.utc || "",
+      current_time: tz.current_time || r.current_time || ""
     };
+  }
+  // IPv4 -> 十进制数字地址（如 111.201.244.1 -> 1875506177）
+  function ipv4ToLong(ip) {
+    if (!ip || ip.indexOf(":") >= 0) return "";
+    var p = ip.split(".");
+    if (p.length !== 4) return "";
+    var n = 0;
+    for (var i = 0; i < 4; i++) {
+      var seg = parseInt(p[i], 10);
+      if (isNaN(seg) || seg < 0 || seg > 255) return "";
+      n = n * 256 + seg;
+    }
+    return String(n);
+  }
+  // 常见国家码 -> 洲（ipwho.is 未提供时兜底）
+  function continentOf(cc) {
+    if (!cc) return "";
+    cc = cc.toUpperCase();
+    if (/^(CN|JP|KR|KP|IN|ID|TH|VN|SG|MY|PH|PK|BD|LK|NP|KH|LA|MM|BN|TW|HK|MO|MN|KZ|UZ|TM|KG|TJ|AF|IR|IQ|IL|JO|LB|PS|SA|AE|QA|KW|BH|OM|YE|SY|TR|AZ|GE|AM|CY)$/.test(cc)) return "亚洲";
+    if (/^(US|CA|MX|BR|AR|CL|PE|CO|VE|EC|BO|PY|UY|GT|HN|SV|NI|CR|PA|CU|DO|JM|HT)$/.test(cc)) return "美洲";
+    if (/^(GB|DE|FR|IT|ES|PT|NL|BE|CH|AT|SE|NO|DK|FI|IE|PL|CZ|SK|HU|RO|BG|GR|HR|RS|SI|UA|BY|LT|LV|EE|RU|IS|LU|MT|CY|AL|BA|MK|ME|AD|LI|MC|SM|VA)$/.test(cc)) return "欧洲";
+    if (/^(AU|NZ|PG|FJ|SB|VU|NC|WS|TO|KI|FM|MH|PW|NR|TV)$/.test(cc)) return "大洋洲";
+    if (/^(ZA|EG|NG|KE|ET|TZ|GH|MA|DZ|TN|LY|SD|UG|ZM|ZW|MZ|AO|CM|CI|SN|BW|NA|RW|MG|MU|CD|ML|BF|NE|TD|CG|GA|GM|SL|LR)$/.test(cc)) return "非洲";
+    return "";
+  }
+  // 运营商英文名 -> 中文名
+  function ispCn(s) {
+    s = (s || "").toLowerCase();
+    if (s.indexOf("unicom") >= 0 || s.indexOf("联通") >= 0) return "中国联通";
+    if (s.indexOf("china telecom") >= 0 || s.indexOf("电信") >= 0) return "中国电信";
+    if (s.indexOf("china mobile") >= 0 || s.indexOf("移动") >= 0) return "中国移动";
+    if (s.indexOf("google") >= 0) return "谷歌";
+    if (s.indexOf("cloudflare") >= 0) return "Cloudflare";
+    if (s.indexOf("amazon") >= 0) return "亚马逊";
+    if (s.indexOf("microsoft") >= 0) return "微软";
+    return "";
   }
 
   // —— 页脚链接：从 link_config.json 动态获取 ——
