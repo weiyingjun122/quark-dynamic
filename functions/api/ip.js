@@ -97,22 +97,36 @@ function json(headers, status, obj) {
 
 /* ============================================================
  * 多数据源抓取（顺序降级）：
- * 1. ipwho.is   （主库，48/秒）
- * 2. ipapi.co    （备用1，免费无Key）
- * 3. freeipapi   （备用2）
- * 返回统一标准化后的 result 结构
+ * 1. ipwho.is（主库）
+ * 2. ipinfo-like freeipapi（备用）
+ * 3. ipapi.co（最后兜底）
+ * 每个源加超时保护，防止挂起阻塞后续源
  * ============================================================ */
 async function fetchWithFallback(ip) {
-    const sources = [fetchIpwho, fetchIpapiCo, fetchFreeipapi];
+    const sources = [fetchIpwho, fetchFreeipapi, fetchIpapiCo];
     for (const fn of sources) {
         try {
-            const r = await fn(ip);
+            const r = await withTimeout(fn(ip), 6000);
             if (r && r.success) return r;
         } catch (e) {
-            // 继续下一个
+            // 单个源失败继续下一个
         }
     }
     return null;
+}
+
+function withTimeout(promise, ms) {
+    return new Promise(function (resolve) {
+        let done = false;
+        const timer = setTimeout(function () {
+            if (!done) { done = true; resolve(null); }
+        }, ms);
+        promise.then(function (v) {
+            if (!done) { done = true; clearTimeout(timer); resolve(v); }
+        }).catch(function () {
+            if (!done) { done = true; clearTimeout(timer); resolve(null); }
+        });
+    });
 }
 
 async function fetchIpwho(ip) {
