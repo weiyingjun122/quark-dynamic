@@ -84,18 +84,57 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 .disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
 
 /* 工具简介 */
-.tool-desc { margin-top: 34px; }
-.tool-desc h2 { font-size: 20px; color: #1f2d3d; margin-bottom: 12px; }
-.tool-desc p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
-.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 {
+  font-size: 22px; color: #1f2d3d; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.tool-desc h2::before {
+  content: ""; display: inline-block; width: 5px; height: 22px;
+  background: linear-gradient(180deg, #3b82f6, #22d3ee);
+  border-radius: 3px;
+}
+.tool-desc h3 {
+  font-size: 17px; color: #1f2d3d; margin: 22px 0 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.tool-desc h3::after {
+  content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #e5e9f2, transparent);
+}
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
 @media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
-.td-card { background: #fff; border: 1px solid #eef2f7; border-radius: 12px; padding: 16px; display: flex; gap: 12px; }
-.td-ico { font-size: 26px; }
-
-footer.site-footer { text-align: center; padding: 24px 0 40px; font-size: 13px; color: #94a3b8; }
-footer.site-footer a { color: #3b82f6; text-decoration: none; }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #f8faff);
+  border: 1px solid #eef2f7; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(59,130,246,.10); border-color: #d6e4ff; }
+.td-ico {
+  width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px;
+  background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
 .td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
 .td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+
+/* 使用步骤 */
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+@media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
+.td-step {
+  background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px;
+  position: relative;
+}
+.td-step .step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; margin-bottom: 8px;
+}
+.td-step .step-txt { font-size: 13px; color: #475569; line-height: 1.7; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #3b82f6; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -149,16 +188,38 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
 
   <div class="disclaimer">数据来源于第三方公共 IP 库，经本站后端代理实时查询，仅供参考。查询过程不存储您的任何信息。</div>
 
-  <div class="tool-desc">
+<div class="tool-desc">
     <h2>IP 归属地查询工具</h2>
-    <p>本工具是一款免费在线的 IP 归属地查询服务。打开页面即可自动显示你当前的公网 IP 地址及对应的地理位置，也可以手动输入任意公网 IPv4 或 IPv6 地址，快速查询其所在的国家、省份、城市、运营商（ISP）、ASN、时区等详细信息。</p>
-    <p>适用于排查网络连接异常、定位服务器节点、了解访客来源地、SEO 分析、网络运维调试、以及日常的 IP 信息查询等场景。</p>
+    <p>本工具是一款免费在线的 IP 归属地查询服务。打开页面即可自动显示你当前的公网 IP 地址及对应地理位置，也可以手动输入任意公网 IPv4 或 IPv6 地址，快速查询所在的国家、省份、城市、运营商（ISP）、ASN、时区等详细信息。</p>
+    <p>适用于排查网络连接异常、定位服务器节点、了解访客来源地、SEO 分析、网络运维调试等场景。</p>
+
     <h3>工具特点</h3>
     <div class="td-grid">
       <div class="td-card">
         <span class="td-ico">📍</span>
-        <div><b>一键定位</b><p>打开即显示当前 IP 与国家省份城市经纬度，无需注册。</p></div>
+        <div><b>一键定位</b><p>打开即自动显示当前 IP 及国家、省份、城市、经纬度，无需任何注册操作。</p></div>
       </div>
+      <div class="td-card">
+        <span class="td-ico">🌐</span>
+        <div><b>双栈支持</b><p>同时支持 IPv4 与 IPv6 公网地址查询，覆盖绝大多数网络环境。</p></div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">🏢</span>
+        <div><b>运营商信息</b><p>展示 ISP、ASN、组织机构等运营商详情，助力网络溯源与分析。</p></div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">🔒</span>
+        <div><b>安全稳定</b><p>后端多数据源代理查询、自动降级，无跨域限制，调用更稳定。</p></div>
+      </div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">打开页面，顶部卡片自动显示当前 IP 及归属地。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">如需查询其他地址，在上方输入框输入公网 IPv4/IPv6。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「查询」或按回车，即可查看国家、省份、运营商等详情。</div></li>
+    </ol>
+  </div>
       <div class="td-card">
         <span class="td-ico">🌐</span>
         <div><b>双栈支持</b><p>同时支持 IPv4 与 IPv6 公网地址查询。</p></div>
