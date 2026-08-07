@@ -181,7 +181,7 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
 
 <footer class="site-footer">
   <div class="container">
-    <p>Copyright © 2026 <a href="/" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
   </div>
 </footer>
 
@@ -309,6 +309,22 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
   function buildGeo(r) {
     return [r.country, r.region, r.city].filter(Boolean).join(" · ") || "未知地区";
   }
+
+  // —— 页脚链接：从 link_config.json 动态获取 ——
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && data.link_url) {
+          link.href = data.link_url;
+          link.target = "_blank";
+        }
+      })
+      .catch(function () { link.href = fallback; });
+  })();
 })();
 </script>
 </body>
