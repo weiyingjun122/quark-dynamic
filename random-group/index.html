@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名单随机分组 - 在线随机分组/抽签分组工具</title>
+<meta name="description" content="免费在线名单随机分组工具，支持按人数或按组数一键随机分组，自动洗牌打乱、可去重，支持导出。适用于课程分组、团建分组、比赛分组、会议抽签等场景。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f97316'/%3E%3Ccircle cx='42' cy='42' r='13' fill='white'/%3E%3Ccircle cx='66' cy='58' r='18' fill='white'/%3E%3Ccircle cx='66' cy='58' r='18' fill='none' stroke='%23f97316' stroke-width='5' stroke-dasharray='26 12'/%3E%3C/svg%3E">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #fff7ed 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+
+.slot-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.slot-head .title { font-size: 15px; font-weight: 600; color: #1f2d3d; }
+.slot-head .count { font-size: 13px; color: #f97316; }
+textarea#names {
+  width: 100%; height: 170px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #dbe3ef; border-radius: 10px; outline: none;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.7;
+}
+textarea#names:focus { border-color: #f97316; }
+
+.row { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; margin-top: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; color: #475569; }
+.field input[type=number] {
+  width: 130px; padding: 9px 12px; font-size: 14px;
+  border: 1px solid #dbe3ef; border-radius: 8px; outline: none;
+}
+.field input[type=number]:focus { border-color: #f97316; }
+.radio-group { display: flex; gap: 16px; align-items: center; font-size: 14px; color: #475569; margin-bottom: 5px; }
+.radio-group label { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+.radio-group input[type=radio] { accent-color: #f97316; }
+.options { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; font-size: 14px; color: #475569; }
+.options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.options input[type=checkbox] { accent-color: #f97316; width: 15px; height: 15px; }
+
+.btn {
+  padding: 11px 24px; font-size: 15px; border: none; border-radius: 10px;
+  background: #f97316; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #ea580c; }
+.btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.result-box { margin-top: 20px; }
+.result-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.result-count { font-size: 14px; font-weight: 600; color: #1f2d3d; }
+.group-grid { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px){ .group-grid { grid-template-columns: 1fr; } }
+.group-card { border: 1px solid #fde7cd; border-radius: 12px; overflow: hidden; background: #fffdfb; }
+.group-head {
+  background: linear-gradient(90deg, #fff7ed, #ffedd5);
+  padding: 9px 14px; display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; color: #7c2d12; font-weight: 600;
+}
+.group-head .n { color: #f97316; font-size: 15px; }
+.group-body { padding: 12px 14px; display: flex; flex-wrap: wrap; gap: 7px; }
+.member-chip {
+  background: #fff7ed; border: 1px solid #ffedd5; color: #9a3412;
+  padding: 4px 11px; border-radius: 999px; font-size: 13px;
+}
+
+.empty { text-align: center; padding: 34px 10px; color: #94a3b8; font-size: 14px; }
+.empty b { display: block; font-size: 20px; margin-bottom: 6px; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #f97316, #fb923c); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #fde3c8, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #fff8f3);
+  border: 1px solid #fde8d9; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(249,115,22,.12); border-color: #fdba74; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #fff7ed, #ffedd5); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #f97316; text-decoration: none; }
+
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #e7e7ec;
+  background: #fff;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.action-btn:hover { border-color: #f97316; color: #f97316; }
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+.modal.show { display: flex; }
+.modal-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: min(90vw, 360px);
+  text-align: center;
+  animation: pop .18s ease;
+}
+@keyframes pop { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-box h3 { font-size: 18px; margin-bottom: 14px; color: #1f2d3d; }
+.modal-box #qrcode { display: inline-block; padding: 8px; background: #fff; }
+.modal-box #qrcode img, .modal-box #qrcode canvas { margin: 0 auto; }
+.modal-tip { font-size: 13px; color: #94a3b8; margin: 12px 0; }
+.btn-close {
+  padding: 9px 26px; font-size: 14px; border: none; border-radius: 8px;
+  background: #f1f5f9; color: #475569; cursor: pointer; transition: background .2s;
+}
+.btn-close:hover { background: #e2e8f0; }
+
+.donate-box { width: min(92vw, 480px); }
+.donate-cards { display: flex; gap: 16px; justify-content: center; margin: 12px 0 16px; }
+.pay-card { flex: 1; max-width: 210px; border-radius: 12px; padding: 14px 12px 16px; display: flex; flex-direction: column; align-items: center; color: #fff; }
+.pay-card-wechat { background: #07c160; }
+.pay-card-alipay { background: #1677ff; }
+.pay-card-head { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.pay-logo { width: 22px; height: 22px; }
+.pay-qr { width: 100%; max-width: 160px; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 4px; }
+.pay-main { font-size: 15px; margin: 12px 0 8px; }
+.pay-sub { font-size: 12px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5); padding: 4px 10px; border-radius: 999px; }
+@media (max-width: 520px) {
+  .donate-cards { flex-direction: column; align-items: center; }
+  .pay-card { width: 100%; max-width: 260px; }
+  .donate-box { width: min(92vw, 340px); }
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.8);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+#toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>名单随机分组</h1>
+  <p class="subtitle">一键洗牌随机分组 · 按人数或按组数 · 课程/团建/比赛分组利器</p>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+
+    <div class="toolbar">
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnDonate" class="action-btn" title="支持本站">打赏支持</button>
+        <button id="btnCopyLink" class="action-btn" title="复制本工具链接">复制链接</button>
+      </div>
+    </div>
+
+    <div class="slot">
+      <div class="slot-head">
+        <span class="title">待分组名单</span>
+        <span class="count" id="name-count">共 0 人</span>
+      </div>
+      <textarea id="names" spellcheck="false" placeholder="每行一个名字（姓名/工号/编号均可），也可用空格、逗号、分号分隔。&#10;例如：&#10;张三 李四 王五&#10;赵六,钱七,孙八"></textarea>
+      <div class="row">
+        <div class="radio-group">
+          <label><input type="radio" name="mode" value="size" checked> 每组固定人数</label>
+          <label><input type="radio" name="mode" value="groups"> 固定组数</label>
+        </div>
+        <div class="field">
+          <label id="numLabel" for="numInput">每组人数</label>
+          <input type="number" id="numInput" min="2" max="500" value="4">
+        </div>
+      </div>
+      <div class="options" style="margin-top:14px;">
+        <label><input type="checkbox" id="opt-dedupe" checked> 名单去重</label>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button class="btn" id="btn-group">开始分组</button>
+        <button class="btn ghost" id="btn-clear">清空</button>
+      </div>
+    </div>
+
+    <div class="result-box" id="result-box" style="display:none;">
+      <div class="result-head">
+        <span class="result-count" id="result-count"></span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn ghost" id="btn-group2" style="padding:8px 16px;font-size:13px;">🔄 重新分组</button>
+          <button class="btn ghost" id="btn-txt" style="padding:8px 16px;font-size:13px;">导出 TXT</button>
+        </div>
+      </div>
+      <div class="group-grid" id="group-grid" style="margin-top:14px;"></div>
+    </div>
+
+  </div>
+
+  <div class="disclaimer">随机分组完全在您的浏览器本地完成，名单不经过任何服务器，关闭页面即清除，请放心使用。</div>
+
+  <div class="tool-desc">
+    <h2>名单随机分组工具</h2>
+    <p>本工具在浏览器本地使用 Fisher-Yates 洗牌算法把名单随机打乱并分组，支持「按每组人数」和「按指定组数」两种方式，适合课堂/培训分组、团建分组、比赛对抗、会议抽签等场景。</p>
+    <p>每一次「重新分组」都会生成全新的随机结果，公平无偏差。名单只保存在浏览器本地，不会上传任何数据。</p>
+
+    <h3>工具特点</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🎲</span><div><b>随机公平</b><p>采用 Fisher-Yates 洗牌算法，每次分组结果真正随机、公平。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚙️</span><div><b>两种模式</b><p>支持按每组人数或按固定组数两种随机分组方式。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧹</span><div><b>智能去重</b><p>自动去除重复人名，保证每个成员只在一个组。</p></div></div>
+      <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出</b><p>分组结果支持导出 TXT，方便打印或发到群内。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只在浏览器本地处理，不上传服务器。</p></div></div>
+      <div class="td-card"><span class="td-ico">📱</span><div><b>免登录免安装</b><p>无需注册，即开即用，手机/平板/电脑浏览器通吃。</p></div></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var namesTA = document.getElementById("names");
+  var nameCount = document.getElementById("name-count");
+  var btnGroup = document.getElementById("btn-group");
+  var btnRegroup = document.getElementById("btn-group2");
+  var btnClear = document.getElementById("btn-clear");
+  var btnTxt = document.getElementById("btn-txt");
+  var resultBox = document.getElementById("result-box");
+  var resultCount = document.getElementById("result-count");
+  var groupGrid = document.getElementById("group-grid");
+
+  var lastGroups = [];
+  var lastTotal = 0;
+
+  function parseNames() {
+    return (namesTA.value || "").split(/[\s,，;；、\n]+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 0; });
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function currentMode() {
+    var r = document.querySelector('input[name="mode"]:checked');
+    return r ? r.value : "size";
+  }
+
+  function doGroup() {
+    var list = parseNames();
+    if (!list.length) { alert("请先输入要分组的名单"); return; }
+    var dedupe = document.getElementById("opt-dedupe").checked;
+    var cleaned = [];
+    if (dedupe) {
+      var seen = {};
+      list.forEach(function (s) { if (!seen[s]) { seen[s] = 1; cleaned.push(s); } });
+    } else {
+      cleaned = list.slice();
+    }
+    var num = parseInt(document.getElementById("numInput").value, 10);
+    if (!num || num < 1) { alert("请输入有效的分组人数/组数"); return; }
+
+    var pool = shuffle(cleaned);
+    var groups = [];
+    var mode = currentMode();
+    if (mode === "size") {
+      for (var i = 0; i < pool.length; i += num) groups.push(pool.slice(i, i + num));
+    } else {
+      var g = Math.min(num, pool.length);
+      var per = Math.ceil(pool.length / g);
+      for (var j = 0; j < pool.length; j += per) groups.push(pool.slice(j, j + per));
+    }
+    if (!groups.length) groups = [[]];
+
+    lastTotal = cleaned.length;
+    lastGroups = groups;
+    render();
+  }
+
+  function render() {
+    resultBox.style.display = "block";
+    var tailTip = lastGroups[lastGroups.length - 1] && lastGroups[0] && lastGroups[lastGroups.length - 1].length < lastGroups[0].length ? "（末组人数较少正常）" : "";
+    resultCount.textContent = "共 " + lastGroups.length + " 组 · 名单 " + lastTotal + " 人" + tailTip;
+    groupGrid.innerHTML = lastGroups.map(function (g, i) {
+      return '<div class="group-card"><div class="group-head"><span>第 ' + (i + 1) + ' 组</span><span class="n">' + g.length + ' 人</span></div><div class="group-body">' +
+        (g.length ? g.map(function (name) { return '<span class="member-chip">' + escapeHtml(name) + '</span>'; }).join("") : '<span style="color:#94a3b8;font-size:13px;">（空）</span>') +
+        '</div></div>';
+    }).join("");
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function exportFile(name, content, mime) {
+    var blob = new Blob(["\ufeff" + content], { type: mime || "text/plain;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+
+  function doTxt() {
+    if (!lastGroups.length) { alert("请先完成分组再导出"); return; }
+    var lines = lastGroups.map(function (g, i) {
+      return "第 " + (i + 1) + " 组（" + g.length + "人）：" + g.join("、");
+    });
+    exportFile("随机分组结果.txt", lines.join("\r\n"), "text/plain;charset=utf-8");
+  }
+
+  btnGroup.addEventListener("click", doGroup);
+  btnRegroup.addEventListener("click", doGroup);
+  btnClear.addEventListener("click", function () { namesTA.value = ""; nameCount.textContent = "共 0 人"; resultBox.style.display = "none"; });
+  namesTA.addEventListener("input", function () {
+    nameCount.textContent = "共 " + parseNames().length + " 人";
+  });
+  namesTA.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doGroup(); }
+  });
+  btnTxt.addEventListener("click", doTxt);
+
+  document.querySelectorAll('input[name="mode"]').forEach(function (r) {
+    r.addEventListener("change", function () {
+      document.getElementById("numLabel").textContent = r.value === "size" ? "每组人数" : "组数";
+    });
+  });
+
+  // —— 二维码 / 打赏 / 复制链接 ——
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast("已复制"); }, function () { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); toast("已复制"); } catch (e) { toast("复制失败"); }
+    document.body.removeChild(ta);
+  }
+  var btnQr = document.getElementById("btnQr");
+  var btnDonate = document.getElementById("btnDonate");
+  var btnCopyLink = document.getElementById("btnCopyLink");
+  if (btnQr) btnQr.addEventListener("click", function () {
+    var box = document.getElementById("qrModal");
+    var q = document.getElementById("qrcode");
+    q.innerHTML = "";
+    if (window.QRCode) { new QRCode(q, { text: location.href, width: 180, height: 180 }); }
+    else { q.textContent = "二维码组件加载失败，请复制链接使用"; }
+    box.classList.add("show");
+  });
+  if (btnDonate) btnDonate.addEventListener("click", function () {
+    document.getElementById("donateModal").classList.add("show");
+  });
+  if (btnCopyLink) btnCopyLink.addEventListener("click", function () {
+    copyText(location.origin + location.pathname);
+  });
+  document.addEventListener("click", function (e) {
+    var target = e.target;
+    var closeBtn = target.closest && target.closest(".btn-close");
+    if (closeBtn) {
+      var m = document.getElementById(closeBtn.getAttribute("data-close"));
+      if (m) m.classList.remove("show");
+      return;
+    }
+    if (target.classList && target.classList.contains("modal")) {
+      target.classList.remove("show");
+    }
+  });
+
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+})();
+</script>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="qrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn-close" data-close="qrModal">关闭</button>
+  </div>
+</div>
+
+<!-- 打赏弹窗 -->
+<div class="modal" id="donateModal">
+  <div class="modal-box donate-box">
+    <h3>打赏支持</h3>
+    <p class="modal-tip">喜欢就支持一下，我们会更努力!</p>
+    <div class="donate-cards">
+      <div class="pay-card pay-card-wechat">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+          <span>微信支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用微信付款</p>
+      </div>
+      <div class="pay-card pay-card-alipay">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
+          <span>支付宝支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用支付宝付款</p>
+      </div>
+    </div>
+<button class="btn-close" data-close="donateModal">关闭</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+</body>
+</html>
