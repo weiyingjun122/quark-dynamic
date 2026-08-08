@@ -12,6 +12,7 @@ on:
       - 'worker-test.html'
       - 'check-word/**'
       - 'ip/**'
+      - 'phone-batch/**'
       - 'functions/**'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
   # schedule:

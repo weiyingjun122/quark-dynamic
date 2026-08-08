@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手机号码归属地批量查询 - 在线号码属地查询</title>
+<meta name="description" content="免费在线手机号码归属地批量查询工具，最高支持500个号码，本地号段库实时查询运营商、省份、城市、区号、邮编，支持号码去重、分拣统计与导出TXT/CSV。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23059b7e'/%3E%3Crect x='30' y='22' width='40' height='56' rx='6' fill='white'/%3E%3Crect x='42' y='66' width='16' height='4' rx='2' fill='%23059b7e'/%3E%3C/svg%3E">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #ecfdf5 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+/* 数据加载状态 */
+.load-bar { display: none; margin-top: 26px; }
+.load-bar .track { height: 8px; background: #eef2f7; border-radius: 6px; overflow: hidden; }
+.load-bar .fill { height: 100%; width: 0%; background: linear-gradient(90deg, #059b7e, #34d399); transition: width .3s; }
+.load-bar .txt { margin-top: 8px; font-size: 13px; color: #64748b; text-align: center; }
+
+/* 单号查询 */
+.single-box { display: flex; gap: 10px; }
+.single-box input {
+  flex: 1; padding: 12px 14px; font-size: 15px;
+  border: 1px solid #dbe3ef; border-radius: 10px; outline: none;
+  transition: border .2s;
+}
+.single-box input:focus { border-color: #059b7e; }
+.btn {
+  padding: 12px 22px; font-size: 15px; border: none; border-radius: 10px;
+  background: #059b7e; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #04785f; }
+.btn:disabled { background: #9fc5b8; cursor: not-allowed; }
+.btn.ghost { background: #f0f4f8; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.slot { margin-top: 22px; }
+.slot-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.slot-head .title { font-size: 15px; font-weight: 600; color: #1f2d3d; }
+.slot-head .count { font-size: 13px; color: #059b7e; }
+textarea#numbers {
+  width: 100%; height: 170px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #dbe3ef; border-radius: 10px; outline: none;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
+}
+textarea#numbers:focus { border-color: #059b7e; }
+.options { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 14px; color: #475569; }
+.options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.options input[type=checkbox] { accent-color: #059b7e; width: 15px; height: 15px; }
+
+/* 结果 */
+.result-box { margin-top: 18px; }
+.result-tools { display: flex; gap: 8px; align-items: center; }
+.result-msg { font-size: 13px; color: #64748b; }
+.table-wrap { margin-top: 12px; overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 10px; max-height: 420px; overflow-y: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+thead th {
+  position: sticky; top: 0; background: #059b7e; color: #fff;
+  padding: 9px 12px; text-align: left; font-weight: 600; z-index: 1;
+}
+tbody td { padding: 8px 12px; border-top: 1px solid #eef2f7; }
+tbody tr:nth-child(even) { background: #f8fafc; }
+tbody tr:hover { background: #ecfdf5; }
+td.no-data { color: #94a3b8; }
+.prov-null td { background: #fff7ed; }
+
+/* 统计 */
+.stats { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+.stat-card {
+  border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 14px;
+  display: flex; gap: 8px; align-items: center; font-size: 13px; background: #f8fafc;
+}
+.stat-card .n { font-weight: 700; color: #059b7e; }
+
+/* 空状态 */
+.empty { text-align: center; padding: 34px 10px; color: #94a3b8; font-size: 14px; }
+.empty b { display: block; font-size: 20px; margin-bottom: 6px; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #059b7e, #34d399); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #e5e9f2, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #f7fdfb);
+  border: 1px solid #eef2f7; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(5,155,126,.10); border-color: #b9e6d8; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #059b7e; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>手机号码归属地批量查询</h1>
+  <p class="subtitle">本地号段库离线查询 · 支持运营商、省份、城市、区号、邮编 · 去重/统计/导出</p>
+</header>
+
+<main class="container">
+  <div class="load-bar" id="load-bar">
+    <div class="track"><div class="fill" id="load-fill"></div></div>
+    <div class="txt" id="load-txt">正在加载本地号段数据库…</div>
+  </div>
+
+  <div class="tool-card">
+
+    <!-- 单号查询 -->
+    <div class="single-box">
+      <input id="single-input" type="tel" maxlength="11" placeholder="输入 11 位手机号，如 13800138000" spellcheck="false">
+      <button class="btn" id="btn-single">查询</button>
+    </div>
+    <div id="single-result" style="display:none;margin-top:14px;"></div>
+
+    <!-- 批量查询 -->
+    <div class="slot">
+      <div class="slot-head">
+        <span class="title">批量查询</span>
+        <span class="count" id="num-count">共 0 个号码</span>
+      </div>
+      <textarea id="numbers" spellcheck="false" placeholder="每行一个手机号，也可用空格/逗号/分号分隔。&#10;例如：&#10;13800138000 13912345678&#10;15112345678,17688886666"></textarea>
+      <div class="options">
+        <label><input type="checkbox" id="opt-dedupe" checked> 号码去重</label>
+        <label><input type="checkbox" id="opt-filter" checked> 过滤无效号码</label>
+        <label><input type="checkbox" id="opt-stat"> 结果显示运营商/省份统计</label>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button class="btn" id="btn-batch">开始查询</button>
+        <button class="btn ghost" id="btn-clear">清空</button>
+        <span id="db-status" style="font-size:13px;color:#94a3b8;"></span>
+      </div>
+    </div>
+
+    <!-- 结果 -->
+    <div class="result-box" id="result-box" style="display:none;">
+      <div class="result-head">
+        <span class="result-count" id="result-count"></span>
+        <div class="result-tools">
+          <button class="btn ghost" id="btn-txt">导出 TXT</button>
+          <button class="btn ghost" id="btn-csv">导出 CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap"><div class="empty" id="table-empty"><b>暂无结果</b>请在上方输入号码后点击「开始查询」</div><table id="result-table" style="display:none;"></table></div>
+      <div class="stat-grid" id="stat-grid" style="display:none;"></div>
+    </div>
+
+  </div>
+
+  <div class="disclaimer">数据基于开源号段库本地匹配（含携号转网提示），仅供查询参考。全部查询在您的浏览器本地完成，不经过任何服务器，不上传任何号码。</div>
+
+  <div class="tool-desc">
+    <h2>手机号码归属地批量查询工具</h2>
+    <p>本工具基于开源手机号段归属地库，在浏览器本地完成查询。支持单个号码实时查询，也支持一次性粘贴大量号码（每行一个）批量查询，返回运营商、省份、城市、区号、邮编等字段。</p>
+    <p>适用于名单清洗、线索分配、区域运营统计、号码分拣、数据复核等场景。结果可直接导出为 TXT 或 CSV 文件，方便后续归档与处理。</p>
+
+    <h3>工具特点</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🚀</span><div><b>本地查询</b><p>号段库直接内置页面，查询在浏览器本地完成，无需后端、无次数限制。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔢</span><div><b>批量处理</b><p>一次最多支持 500 个号码，自动识别空格、逗号、分号或换行分隔。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧹</span><div><b>智能清洗</b><p>支持号码去重、自动过滤无效号码，确保导出结果精准。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>统计分析</b><p>可开启运营商/省份统计，快速掌握号码分布情况。</p></div></div>
+      <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出</b><p>结果支持导出 TXT / CSV，CSV 可直接用 Excel 打开。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只留在您的浏览器中，关闭页面即清除，不上传服务器。</p></div></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var MAX = 500; // 每次最多查询号码数
+
+  var loadBar = document.getElementById("load-bar");
+  var loadFill = document.getElementById("load-fill");
+  var loadTxt = document.getElementById("load-txt");
+  var singleInput = document.getElementById("single-input");
+  var btnSingle = document.getElementById("btn-single");
+  var singleResult = document.getElementById("single-result");
+  var numbersTA = document.getElementById("numbers");
+  var numCount = document.getElementById("num-count");
+  var btnBatch = document.getElementById("btn-batch");
+  var btnClear = document.getElementById("btn-clear");
+  var dbStatus = document.getElementById("db-status");
+  var resultBox = document.getElementById("result-box");
+  var resultCount = document.getElementById("result-count");
+  var btnTxt = document.getElementById("btn-txt");
+  var btnCsv = document.getElementById("btn-csv");
+  var resultTable = document.getElementById("result-table");
+  var emptyEl = document.getElementById("table-empty");
+  var statGrid = document.getElementById("stat-grid");
+
+  // ===== phone.dat 解析器 =====
+  // 格式（小端序）：
+  // [0..4)  ASCII 版本号
+  // [4..8)  索引区首条偏移
+  // 记录区: "省|市|邮编|区号\0"
+  // 索引区: 每条 9 字节 = 前7位号段(u32 LE) + 记录偏移(u32 LE) + 卡类型(u8)
+  var DB = null;
+  var CARD_MAP = { 1: "中国移动", 2: "中国联通", 3: "中国电信", 4: "中国电信(虚拟运营商)", 5: "中国联通(虚拟运营商)", 6: "中国移动(虚拟运营商)", 7: "中国广电", 8: "中国广电(虚拟运营商)" };
+
+  function loadDB() {
+    loadBar.style.display = "block";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "data/phone.dat", true);
+    xhr.responseType = "arraybuffer";
+    xhr.onprogress = function (e) {
+      if (e.lengthComputable) {
+        var pct = Math.floor(e.loaded / e.total * 100);
+        loadFill.style.width = pct + "%";
+        loadTxt.textContent = "正在加载本地号段数据库… " + pct + "%";
+      }
+    };
+    xhr.onload = function () {
+      try {
+        DB = parseDat(xhr.response);
+        loadBar.style.display = "none";
+        dbStatus.textContent = "号段库已加载 · 共 " + DB.count + " 条";
+        btnBatch.disabled = false;
+        btnSingle.disabled = false;
+      } catch (err) {
+        loadFill.style.width = "100%";
+        loadTxt.style.color = "#dc2626";
+        loadTxt.textContent = "号段库加载失败（" + err.message + "），请刷新重试";
+      }
+    };
+    xhr.onerror = function () {
+      loadTxt.style.color = "#dc2626";
+      loadTxt.textContent = "号段库加载失败，请检查网络后刷新重试";
+    };
+    xhr.send();
+  }
+
+  function parseDat(ab) {
+    var view = new DataView(ab);
+    var firstOffset = view.getUint32(4, true);
+    var total = ab.byteLength;
+    var count = (total - firstOffset) / 9;
+    if (firstOffset <= 0 || firstOffset >= total || Math.floor(count) !== count || count <= 0) {
+      throw new Error("无效的数据库格式");
+    }
+    return {
+      buf: ab,
+      view: view,
+      count: count,
+      firstOffset: firstOffset
+    };
+  }
+
+  function recordAt(off) {
+    var u8 = new Uint8Array(DB.buf, off);
+    var end = 0;
+    while (u8[end] !== 0) end++;
+    var dec = new TextDecoder("utf-8");
+    return dec.decode(u8.subarray(0, end)).split("|");
+  }
+
+  // 二分查找前7位号段
+  function lookup(phone) {
+    var prefix = parseInt(phone.slice(0, 7), 10);
+    var view = DB.view, first = DB.firstOffset, hi = DB.count - 1, lo = 0;
+    while (lo <= hi) {
+      var mid = (lo + hi) >> 1;
+      var base = first + mid * 9;
+      var pre = view.getUint32(base, true);
+      if (pre < prefix) lo = mid + 1;
+      else if (pre > prefix) hi = mid - 1;
+      else {
+        var off = view.getUint32(base + 4, true);
+        var card = view.getUint8(base + 8);
+        var parts = recordAt(off);
+        return {
+          prefix: phone.slice(0, 7),
+          operator: CARD_MAP[card] || ("未知运营商(" + card + ")"),
+          operator_code: card,
+          province: parts[0] || "",
+          city: parts[1] || "",
+          postal: parts[2] || "",
+          area_code: parts[3] || ""
+        };
+      }
+    }
+    return null;
+  }
+
+  function isValidPhone(s) {
+    return /^1[3-9]\d{9}$/.test(s);
+  }
+
+  // ===== 单号查询 =====
+  function doSingle() {
+    singleResult.style.display = "none";
+    var v = (singleInput.value || "").trim();
+    if (!DB) return;
+    if (!isValidPhone(v)) {
+      singleResult.style.display = "block";
+      singleResult.innerHTML = '<div style="color:#dc2626;padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;font-size:14px;">请输入正确的 11 位手机号码（1开头）</div>';
+      return;
+    }
+    var info = lookup(v);
+    if (!info) {
+      singleResult.style.display = "block";
+      singleResult.innerHTML = '<div style="color:#b45309;padding:10px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;font-size:14px;">未收录该号段，可能为最新放号或虚拟运营商号码。</div>';
+      return;
+    }
+    var chip = function (k, val) {
+      return '<div style="flex:1;min-width:120px;"><div style="font-size:12px;color:#94a3b8;">' + k + '</div><div style="font-size:15px;color:#1f2d3d;margin-top:3px;font-weight:600;">' + (val || "--") + '</div></div>';
+    };
+    singleResult.style.display = "block";
+    singleResult.innerHTML =
+      '<div style="border:1px solid #e2e8f0;border-radius:12px;padding:16px;background:#f8fafc;display:flex;flex-wrap:wrap;gap:12px;">' +
+      '<div style="flex:1;min-width:120px;"><div style="font-size:12px;color:#94a3b8;">手机号码</div><div style="font-size:18px;color:#059b7e;font-weight:700;margin-top:3px;">' + v + '</div></div>' +
+      chip("运营商", info.operator) + chip("省份", info.province) + chip("城市", info.city) +
+      chip("长途区号", info.area_code) + chip("邮编", info.postal) +
+      '</div>';
+  }
+
+  // ===== 批量查询 =====
+  function parseNumbers() {
+    var raw = numbersTA.value || "";
+    var list = raw.split(/[\s,，;；\n]+/).filter(Boolean);
+    return list;
+  }
+
+  function doBatch() {
+    if (!DB) return;
+    var list = parseNumbers();
+    if (!list.length) { alert("请先输入要查询的手机号"); return; }
+    var dedupe = document.getElementById("opt-dedupe").checked;
+
+    var seen = {}, items = [];
+    list.forEach(function (s) {
+      var n = s.trim();
+      if (!n) return;
+      var valid = isValidPhone(n);
+      if (dedupe && seen[n]) return;
+      if (valid) seen[n] = 1;
+      items.push({ phone: n, valid: valid });
+    });
+
+    var validList = items.filter(function (i) { return i.valid; });
+    var result = [];
+    validList.forEach(function (i) {
+      var info = lookup(i.phone);
+      result.push({ phone: i.phone, hit: !!info, info: info });
+    });
+
+    var filter = document.getElementById("opt-filter").checked;
+    var shown = filter ? result.filter(function (r) { return r.hit; }) : result;
+    var missCount = result.length - shown.length;
+    renderTable(shown, missCount);
+    renderStats(shown);
+  }
+
+  function renderTable(rows, miss) {
+    resultBox.style.display = "block";
+    resultCount.textContent = "查询 " + rows.length + " 个号码" + (miss ? "（已过滤 " + miss + " 个无匹配/无效）" : "");
+    if (!rows.length) {
+      resultTable.style.display = "none";
+      resultTable.innerHTML = "";
+      emptyEl.style.display = "block";
+      emptyEl.innerHTML = "<b>没有匹配结果</b>请检查号码格式（11 位手机号）";
+      return;
+    }
+    emptyEl.style.display = "none";
+    resultTable.style.display = "";
+    resultTable.innerHTML =
+      '<thead><tr><th>#</th><th>手机号</th><th>号段</th><th>运营商</th><th>省份</th><th>城市</th><th>区号</th><th>邮编</th></tr></thead><tbody>' +
+      rows.map(function (r, i) {
+        var info = r.info;
+        var cls = r.hit ? "" : "prov-note";
+        var cells = r.hit
+          ? [info.operator, info.province, info.city, info.area_code, info.postal]
+          : ["未收录", "—", "—", "—", "—"];
+        return '<tr class="' + cls + '"><td>' + (i + 1) + '</td><td>' + r.phone + '</td><td style="color:#94a3b8;">' + (r.phone.slice(0, 7)) + "</td>" +
+          cells.map(function (c) { return "<td>" + (c || "--") + "</td>"; }).join("") + "</tr>";
+      }).join("") + "</tbody>";
+  }
+
+  function renderStats(rows) {
+    var use = document.getElementById("opt-stat").checked;
+    statGrid.style.display = use ? "flex" : "none";
+    statGrid.innerHTML = "";
+    if (!use) return;
+    var op = {}, prov = {};
+    rows.forEach(function (r) {
+      if (!r.hit) return;
+      var o = r.info.operator || "未知";
+      op[o] = (op[o] || 0) + 1;
+      var p = r.info.province || "未知";
+      prov[p] = (prov[p] || 0) + 1;
+    });
+    function card(rows2, name) {
+      return '<div style="padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#475569;"><b style="color:#059b7e;font-size:13px;">' + name + '</b>' + Object.keys(rows2).map(function (k) { return k + " <b>" + rows2[k] + "</b>"; }).join("，") + "</div>";
+    }
+    var html = "";
+    if (Object.keys(op).length) html += card(op, "运营商");
+    if (Object.keys(prov).length) html += card(prov, "省份");
+    statGrid.innerHTML = html;
+  }
+
+  function exportFile(name, content, mime) {
+    var blob = new Blob(["\ufeff" + content], { type: mime || "text/plain;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+
+  function collectRows() {
+    var out = [];
+    var trs = resultTable.querySelectorAll("tbody tr");
+    trs.forEach(function (tr) {
+      var tds = tr.querySelectorAll("td");
+      if (tds.length < 8) return;
+      out.push({
+        phone: tds[1].textContent,
+        operator: tds[3].textContent,
+        province: tds[4].textContent,
+        city: tds[5].textContent,
+        area: tds[6].textContent,
+        postal: tds[7].textContent
+      });
+    });
+    return out;
+  }
+
+  function doTxt() {
+    var rows = collectRows();
+    if (!rows.length) { alert("暂无已查询的号码可导出"); return; }
+    var txt = rows.map(function (r) {
+      return r.phone + " " + r.operator + " " + r.province + r.city + (r.area !== "--" && r.area !== "—" ? " 区号" + r.area : "") + (r.postal !== "--" && r.postal !== "—" ? " 邮编" + r.postal : "");
+    }).join("\r\n");
+    exportFile("手机号归属地.txt", txt);
+  }
+
+  function doCsv() {
+    var rows = collectRows();
+    if (!rows.length) { alert("暂无已可的号码可导出"); return; }
+    var esc = function (s) { s = String(s || ""); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    var header = ["手机号", "运营商", "省份", "城市", "长途区号", "邮编"];
+    var lines = [header.join(",")].concat(rows.map(function (r) {
+      return [r.phone, r.operator, r.province, r.city, r.area, r.postal].map(esc).join(",");
+    }));
+    exportFile("phone_result.csv", lines.join("\r\n"), "text/csv;charset=utf-8");
+  }
+
+  // ===== 事件绑定 =====
+  btnSingle.addEventListener("click", doSingle);
+  singleInput.addEventListener("keydown", function (e) { if (e.key === "Enter") doSingle(); });
+  btnBatch.addEventListener("click", doBatch);
+  btnClear.addEventListener("click", function () { numbersTA.value = ""; numCount.textContent = "共 0 个号码"; });
+
+  numbersTA.addEventListener("input", function () {
+    var n = parseNumbers().filter(isValidPhone).length;
+    numCount.textContent = "共 " + n + " 个有效号码" + (n > MAX ? "（超过" + MAX + "个，仅前" + MAX + "个生效）" : "");
+  });
+
+  btnTxt.addEventListener("click", doTxt);
+  btnCsv.addEventListener("click", doCsv);
+
+  // 页脚链接
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+
+  btnBatch.disabled = true;
+  btnSingle.disabled = true;
+  loadDB();
+})();
+</script>
+</body>
+</html>
