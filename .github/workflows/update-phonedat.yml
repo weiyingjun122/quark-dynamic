@@ -21,8 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: 下载最新 phone.dat
-        run: curl -sL --fail --max-time 120 -o /tmp/phone.dat.new \
-             "https://raw.githubusercontent.com/pangongzi/phone/refs/heads/master/src/data/phone.dat"
+        run: curl -sL --fail --max-time 120 -o /tmp/phone.dat.new "https://raw.githubusercontent.com/pangongzi/phone/refs/heads/master/src/data/phone.dat"
 
       - name: 校验下载完整性
         run: |
