@@ -1,0 +1,68 @@
+name: Sync phone.dat (Weekly)
+
+on:
+  schedule:
+    # 每周一 03:00 UTC = 北京时间 11:00
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+    inputs:
+      description:
+        description: '手动同步描述'
+        required: false
+        default: '手动更新 phone.dat'
+
+permissions:
+  contents: write
+
+jobs:
+  sync-phonedat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 下载最新 phone.dat
+        run: curl -sL --fail --max-time 120 -o /tmp/phone.dat.new \
+             "https://raw.githubusercontent.com/pangongzi/phone/refs/heads/master/src/data/phone.dat"
+
+      - name: 校验下载完整性
+        run: |
+          SIZE=$(stat -c%s /tmp/phone.dat.new)
+          echo "下载大小: $SIZE 字节"
+          # 正常约 4.6MB，小于 4MB 多半是错误页或截断，放弃本次更新
+          if [ "$SIZE" -lt 4000000 ]; then
+            echo "下载文件过小($SIZE)，疑似失败，终止并保留旧库。"
+            exit 0
+          fi
+          # 头部应为 ASCII 版本号，跳过 HTML 错误页
+          HEAD=$(head -c 4 /tmp/phone.dat.new | tr -cd '0-9')
+          echo "头部版本: $HEAD"
+          if [ -z "$HEAD" ]; then
+            echo "头部非版本号，疑似错误页，终止。"
+            exit 0
+          fi
+
+      - name: 对比并替换
+        run: |
+          if cmp -s /tmp/phone.dat.new phone-batch/data/phone.dat; then
+            echo "phone.dat 与线上相同，无需更新。"
+            echo "CHANGED=false" >> $GITHUB_ENV
+          else
+            cp /tmp/phone.dat.new phone-batch/data/phone.dat
+            echo "已更新 phone-batch/data/phone.dat"
+            echo "CHANGED=true" >> $GITHUB_ENV
+          fi
+
+      - name: Commit & Push（仅在有变化时）
+        if: env.CHANGED == 'true'
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add phone-batch/data/phone.dat
+          git commit -m "自动更新: 手机号段库 phone.dat $(date '+%Y-%m-%d')"
+          git push
+          echo "已推送 phone.dat 更新，deploy-dynamic.yml 将随之部署"
