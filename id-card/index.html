@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>身份证查询校验 - 身份证号码归属地/性别/年龄/校验码验证</title>
+<meta name="description" content="免费在线身份证号码查询校验工具，支持18位和15位身份证号合法性校验、前6位归属地查询（省份/城市/区县）、出生日期、性别、年龄、生肖星座提取及校验码（GB 11643）验证，支持批量校验与导出。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236d28d9'/%3E%3Crect x='28' y='20' width='44' height='60' rx='6' fill='white'/%3E%3Crect x='36' y='30' width='28' height='4' rx='2' fill='%236d28d9'/%3E%3Crect x='36' y='42' width='28' height='4' rx='2' fill='%23a78bfa'/%3E%3Crect x='36' y='54' width='18' height='4' rx='2' fill='%23a78bfa'/%3E%3C/svg%3E">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #f5f3ff 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+
+/* 单号查询 */
+.single-box { display: flex; gap: 10px; }
+.single-box input {
+  flex: 1; padding: 12px 14px; font-size: 15px;
+  border: 1px solid #dbe3ef; border-radius: 10px; outline: none;
+  transition: border .2s; letter-spacing: .5px;
+}
+.single-box input:focus { border-color: #7c3aed; }
+.btn {
+  padding: 12px 22px; font-size: 15px; border: none; border-radius: 10px;
+  background: #7c3aed; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #6d28d9; }
+.btn.ghost { background: #f0f4f8; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.slot { margin-top: 22px; }
+.slot-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.slot-head .title { font-size: 15px; font-weight: 600; color: #1f2d3d; }
+.slot-head .count { font-size: 13px; color: #7c3aed; }
+textarea#ids {
+  width: 100%; height: 170px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #dbe3ef; border-radius: 10px; outline: none;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
+}
+textarea#ids:focus { border-color: #7c3aed; }
+.options { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: 14px; color: #475569; }
+.options label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.options input[type=checkbox] { accent-color: #7c3aed; width: 15px; height: 15px; }
+
+/* 结果 */
+.result-box { margin-top: 18px; }
+.result-tools { display: flex; gap: 8px; align-items: center; }
+.result-msg { font-size: 13px; color: #64748b; }
+.table-wrap { margin-top: 12px; overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 10px; max-height: 420px; overflow-y: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+thead th {
+  position: sticky; top: 0; background: #7c3aed; color: #fff;
+  padding: 9px 12px; text-align: left; font-weight: 600; z-index: 1;
+}
+tbody td { padding: 8px 12px; border-top: 1px solid #eef2f7; }
+tbody tr:nth-child(even) { background: #faf8ff; }
+tbody tr:hover { background: #f5f3ff; }
+td.no-data { color: #94a3b8; }
+tr.bad { background: #fff7ed; }
+tr.bad td { border-top-color: #fde68a; }
+.badge-ok { color: #059669; font-weight: 700; }
+.badge-bad { color: #dc2626; font-weight: 700; }
+
+/* 详情卡 */
+.detail-card { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+.det-chip { flex: 1; min-width: 120px; }
+.det-chip .k { font-size: 12px; color: #94a3b8; }
+.det-chip .v { font-size: 15px; color: #1f2d3d; margin-top: 3px; font-weight: 600; }
+.detail-status { display: inline-flex; align-items: center; gap: 8px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; }
+.dot.ok { background: #10b981; }
+.dot.bad { background: #ef4444; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #7c3aed, #a78bfa); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #e5e9f2, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #faf8ff);
+  border: 1px solid #eef2f7; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(124,58,237,.10); border-color: #ddd6fe; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #f5f3ff, #ede9fe); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #7c3aed; text-decoration: none; }
+
+/* 工具栏按钮 */
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 4px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #dbe3ee;
+  background: #fff;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.action-btn:hover { border-color: #7c3aed; color: #7c3aed; }
+
+/* 弹窗 */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+}
+.modal.show { display: flex; }
+.modal-box {
+  background: #fff; border-radius: 14px; padding: 24px; min-width: 300px;
+  max-width: 92vw; text-align: center;
+}
+.modal-box h3 { font-size: 18px; color: #1f2d3d; margin-bottom: 12px; }
+.modal-tip { font-size: 13px; color: #94a3b8; margin-top: 10px; line-height: 1.7; }
+.btn-close {
+  margin-top: 16px; padding: 8px 22px; border: 1px solid #e2e8f0;
+  background: #f8fafc; color: #475569; border-radius: 8px; cursor: pointer; transition: background .2s;
+}
+.btn-close:hover { background: #e2e8f0; }
+#qrcode { display: flex; justify-content: center; margin: 6px 0; }
+
+/* 打赏卡片 */
+.donate-box { width: min(92vw, 480px); }
+.donate-cards { display: flex; gap: 16px; justify-content: center; margin: 12px 0 16px; }
+.pay-card {
+  flex: 1;
+  max-width: 210px;
+  border-radius: 12px;
+  padding: 14px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+}
+.pay-card-wechat { background: #07c160; }
+.pay-card-alipay { background: #1677ff; }
+.pay-card-head { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.pay-logo { width: 22px; height: 22px; }
+.pay-qr { width: 100%; max-width: 160px; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 4px; }
+.pay-main { font-size: 15px; margin: 12px 0 8px; }
+.pay-sub { font-size: 12px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5); padding: 4px 10px; border-radius: 999px; }
+@media (max-width: 520px) {
+  .donate-cards { flex-direction: column; align-items: center; }
+  .pay-card { width: 100%; max-width: 260px; }
+  .donate-box { width: min(92vw, 340px); }
+}
+
+/* Toast */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.8);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+#toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>身份证查询校验</h1>
+  <p class="subtitle">输入身份证号，一键校验真伪、查询归属地、提取生日性别与年龄</p>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+
+    <div class="toolbar">
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnDonate" class="action-btn" title="支持本站">打赏支持</button>
+        <button id="btnCopyLink" class="action-btn" title="复制本工具链接">复制链接</button>
+      </div>
+    </div>
+
+    <!-- 单号校验 -->
+    <div class="single-box">
+      <input id="single-input" type="text" maxlength="18" placeholder="输入 18 或 15 位身份证号，如 110101199003077977" spellcheck="false">
+      <button class="btn" id="btn-single">校验</button>
+    </div>
+    <div id="single-result" style="display:none;margin-top:14px;"></div>
+
+    <!-- 批量查询 -->
+    <div class="slot">
+      <div class="slot-head">
+        <span class="title">批量校验</span>
+        <span class="count" id="id-count">共 0 个号码</span>
+      </div>
+      <textarea id="ids" spellcheck="false" placeholder="每行一个身份证号，也可用空格/逗号/分号分隔。&#10;例如：&#10;110101199003077979 440106198806080292&#10;370102199112140431,510101198909270159"></textarea>
+      <div class="options">
+        <label><input type="checkbox" id="opt-dedupe" checked> 号码去重</label>
+        <label><input type="checkbox" id="opt-filter" checked> 仅显示合法号码</label>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button class="btn" id="btn-batch">开始校验</button>
+        <button class="btn ghost" id="btn-clear">清空</button>
+        <span id="db-status" style="font-size:13px;color:#94a3b8;"></span>
+      </div>
+    </div>
+
+    <!-- 结果 -->
+    <div class="result-box" id="result-box" style="display:none;">
+      <div class="slot-head">
+        <span class="count" id="result-count"></span>
+        <div class="result-tools">
+          <button class="btn ghost" id="btn-txt">导出 TXT</button>
+          <button class="btn ghost" id="btn-csv">导出 CSV</button>
+        </div>
+      </div>
+      <div class="table-wrap"><div class="empty" id="table-empty" style="display:none;text-align:center;padding:34px 10px;color:#94a3b8;font-size:14px;"><b style="display:block;font-size:20px;margin-bottom:6px;">暂无结果</b>请在上方输入号码后点击「开始校验」</div><table id="result-table" style="display:none;"></table></div>
+    </div>
+
+  </div>
+
+  <div class="disclaimer">身份证校验依据国家标准 GB 11643-1999 校验码算法在浏览器本地计算，地址信息基于民政部行政区划数据。所有号码仅在本机处理，不上传任何服务器。</div>
+
+  <div class="tool-desc">
+    <h2>身份证号码查询校验工具</h2>
+    <p>本工具依据国家标准 GB 11643-1999《公民身份号码》校验码算法，在浏览器本地对身份证号码进行合法性验证，并自动提取归属地（省份/城市/区县）、出生日期、性别、年龄等字段，支持 18 位与 15 位身份证。</p>
+    <p>适用于名单核对、实名信息清洗、登记资料复核、人文/电商审核等场景。结果可直接导出为 TXT 或 CSV 文件，方便归档。</p>
+
+    <h3>校验规则说明</h3>
+    <p>18 位公民身份号码由 6 位地址码 + 8 位出生日期 + 3 位顺序码 + 1 位校验码组成。校验码由前 17 位按加权因子（7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2）求和后对 11 取模得到，模 11 对应字符为 1,0,X,9,8,7,6,5,4,3,2。工具会同时校验格式、出生日期合理性、地址码有效性与校验码一致性。</p>
+
+    <h3>工具特点</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🆔</span><div><b>真伪校验</b><p>采用国家标准校验码算法，精确识别号码真伪。</p></div></div>
+      <div class="td-card"><span class="td-ico">📍</span><div><b>归属地查询</b><p>自动解析省份、城市与区县级行政归属地。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎂</span><div><b>生日性别</b><p>自动提取出生日期、性别与周岁年龄。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔢</span><div><b>批量处理</b><p>一次校验多个号码，自动去重、过滤无效。</p></div></div>
+      <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出</b><p>结果支持导出 TXT / CSV，CSV 可直接用 Excel 打开。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只留在浏览器中，关闭页面即清除，不上传服务器。</p></div></div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+  </div>
+</footer>
+
+<script src="data/region.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var singleInput = document.getElementById("single-input");
+  var btnSingle = document.getElementById("btn-single");
+  var singleResult = document.getElementById("single-result");
+  var idsTA = document.getElementById("ids");
+  var idCount = document.getElementById("id-count");
+  var btnBatch = document.getElementById("btn-batch");
+  var btnClear = document.getElementById("btn-clear");
+  var dbStatus = document.getElementById("db-status");
+  var resultBox = document.getElementById("result-box");
+  var resultCount = document.getElementById("result-count");
+  var btnTxt = document.getElementById("btn-txt");
+  var btnCsv = document.getElementById("btn-csv");
+  var resultTable = document.getElementById("result-table");
+  var emptyEl = document.getElementById("table-empty");
+
+  // ===== 行政区划查询 =====
+  function lookupRegion(area6) {
+    if (!window.REGION) return null;
+    if (REGION[area6]) return REGION[area6];
+    var four = REGION[area6.slice(0, 4) + "00"];
+    if (four) return four;
+    var two = REGION[area6.slice(0, 2) + "0000"];
+    if (two) return two;
+    return null;
+  }
+  function regionText(area6) {
+    var r = lookupRegion(area6);
+    if (!r) return "";
+    return (r.p || "") + (r.c || "");
+  }
+
+  // ===== 身份证算法（GB 11643-1999）=====
+  var WEIGHT = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  var CHECK = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"];
+
+  function isValidDate(y, m, d) {
+    if (m < 1 || m > 12 || d < 1) return false;
+    var daysIn = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    if ((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0) daysIn[1] = 29;
+    return d <= daysIn[m - 1];
+  }
+
+  // 解析身份证，返回 null 表示非法格式
+  function parse(id) {
+    var s = String(id || "").trim().toUpperCase();
+    if (!/^\d{17}[\dX]$/.test(s) && !/^\d{15}$/.test(s)) return { error: "格式错误" };
+
+    var area6 = s.slice(0, 6);
+    if (!lookupRegion(area6)) return { error: "地址码无效", area6: area6 };
+
+    var birth;
+    if (s.length === 18) {
+      var y = +s.slice(6, 10), m = +s.slice(10, 12), d = +s.slice(12, 14);
+      if (!isValidDate(y, m, d)) return { error: "出生日期非法", area6: area6 };
+      birth = { y: y, m: m, d: d };
+    } else {
+      var y2 = 1900 + (+s.slice(6, 8)), m2 = +s.slice(8, 10), d2 = +s.slice(10, 12);
+      if (!isValidDate(y2, m2, d2)) return { error: "出生日期非法", area6: area6 };
+      birth = { y: y2, m: m2, d: d2 };
+    }
+
+    // 出生日期不能晚于今天（允许同号当天）
+    var now = new Date();
+    var by = new Date(birth.y, birth.m - 1, birth.d);
+    if (by.getTime() > now.getTime()) return { error: "出生日期晚于今天", area6: area6 };
+
+    // 性别：顺序码第17位（18位）/ 第15位（15位），奇男偶女
+    var seqStr = s.length === 18 ? s.slice(14, 17) : s.slice(12, 15);
+    var seq = +seqStr;
+    if (!(seq >= 0 && seq <= 999)) return { error: "顺序码非法", area6: area6 };
+    var gender = seq % 2 === 1 ? "男" : "女";
+
+    // 校验码
+    var checkValid = true, checkChar = "";
+    if (s.length === 18) {
+      var sum = 0;
+      for (var i = 0; i < 17; i++) sum += (+s[i]) * WEIGHT[i];
+      checkChar = CHECK[sum % 11];
+      checkValid = checkChar === s[17];
+    }
+
+    // 年龄
+    var age = now.getFullYear() - birth.y;
+    if (now.getMonth() + 1 < birth.m || (now.getMonth() + 1 === birth.m && now.getDate() < birth.d)) age--;
+
+    return {
+      id: s,
+      length: s.length,
+      valid: checkValid,
+      checkChar: checkChar,
+      area6: area6,
+      areaText: regionText(area6),
+      birth: birth,
+      birthText: birth.y + "年" + birth.m + "月" + birth.d + "日",
+      age: age >= 0 ? age : "",
+      gender: gender,
+      error: checkValid ? "" : "校验码错误"
+    };
+  }
+
+  function isOk(p) { return !p.error; }
+
+  // ===== 单号校验 =====
+  function doSingle() {
+    singleResult.style.display = "none";
+    var v = (singleInput.value || "").trim();
+    if (!v) return;
+    renderSingle(parse(v), v);
+  }
+
+  function chip(k, val, strong) {
+    return '<div class="det-chip"><div class="k">' + k + '</div><div class="v" style="' + (strong ? 'color:#7c3aed;font-weight:700;font-size:18px;' : '') + '">' + (val || "--") + '</div></div>';
+  }
+
+  function renderSingle(p, raw) {
+    singleResult.style.display = "block";
+    var ok = isOk(p);
+    var head = '<div style="border:1px solid ' + (ok ? '#a7f3d0' : '#fecaca') + ';border-radius:12px;overflow:hidden;background:#f8fafc;">' +
+      '<div style="padding:10px 14px;background:' + (ok ? '#ecfdf5' : '#fef2f2') + ';display:flex;align-items:center;gap:10px;font-size:14px;color:' + (ok ? '#065f46' : '#991b1b') + ';">' +
+      '<span class="dot ' + (ok ? 'ok' : 'bad') + '"></span><b>' + (ok ? '校验通过' : '校验失败') + '</b><span style="color:#94a3b8;font-size:13px;">' + (p.error || "") + '</span></div>' +
+      '<div style="padding:16px;display:flex;flex-wrap:wrap;gap:12px;">' +
+      chip("身份证号", raw, true) +
+      '</div></div>';
+    if (!ok) { singleResult.innerHTML = head; return; }
+    singleResult.innerHTML = head +
+      '<div class="detail-card" style="border:1px solid #e2e8f0;border-radius:12px;padding:16px;background:#fff;margin-top:12px;">' +
+      chip("归属地", p.areaText) + chip("出生日期", p.birthText) + chip("年龄", (p.age === "" ? "--" : p.age + " 周岁")) + chip("性别", p.gender) +
+      (p.length === 18 ? chip("校验码", p.checkChar) : chip("证件类型", "15 位旧证")) +
+      '</div>';
+  }
+
+  // ===== 批量校验 =====
+  function parseIds() {
+    var raw = idsTA.value || "";
+    return raw.split(/[\s,，;；\n]+/).filter(Boolean);
+  }
+
+  function doBatch() {
+    var list = parseIds();
+    if (!list.length) { alert("请先输入要校验的身份证号"); return; }
+    var dedupe = document.getElementById("opt-dedupe").checked;
+    var seen = {}, items = [];
+    list.forEach(function (s) {
+      var n = s.trim();
+      if (!n) return;
+      if (dedupe && seen[n]) return;
+      seen[n] = 1;
+      items.push(parse(n));
+    });
+    renderTable(items);
+  }
+
+  function renderTable(items) {
+    resultBox.style.display = "block";
+    var okList = items.filter(isOk);
+    var badList = items.filter(function (p) { return !isOk(p); });
+    var filterBad = document.getElementById("opt-filter").checked;
+    var shown = filterBad ? okList : items;
+    resultCount.textContent = "共 " + items.length + " 条" + (okList.length ? "，合法 " + okList.length + " 条" : "") + (badList.length ? "，非法 " + badList.length + " 条" : "") + (filterBad && badList.length ? "（已隐藏非法号码）" : "");
+    if (!shown.length) {
+      resultTable.style.display = "none";
+      resultTable.innerHTML = "";
+      emptyEl.style.display = "block";
+      emptyEl.innerHTML = "<b>没有可用结果</b>请检查身份证号格式（15 或 18 位）";
+      return;
+    }
+    emptyEl.style.display = "none";
+    resultTable.style.display = "";
+    resultTable.innerHTML =
+      '<thead><tr><th>#</th><th>身份证号</th><th>状态</th><th>归属地</th><th>出生日期</th><th>年龄</th><th>性别</th><th>校验码</th></tr></thead><tbody>' +
+      shown.map(function (p, i) {
+        var ok = isOk(p);
+        var cls = ok ? "" : "bad";
+        var st = ok ? '<span class="badge-ok">√ 合法</span>' : '<span class="badge-bad">× ' + (p.error || "非法") + '</span>';
+        return '<tr class="' + cls + '"><td>' + (i + 1) + '</td><td>' + (p.id || "") + "</td><td>" + st + "</td><td>" + (ok ? p.areaText : (p.area6 ? "--" : "--")) + "</td><td>" + (ok ? p.birthText : "--") + "</td><td>" + (ok ? (p.age + " 岁") : "--") + "</td><td>" + (ok ? p.gender : "--") + "</td><td>" + (ok && p.length === 18 ? p.checkChar : "--") + "</td></tr>";
+      }).join("") + "</tbody>";
+  }
+
+  // ===== 导出 =====
+  function exportFile(name, content, mime) {
+    var blob = new Blob(["\ufeff" + content], { type: mime || "text/plain;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+
+  function collectRows() {
+    var out = [];
+    var trs = resultTable.querySelectorAll("tbody tr");
+    trs.forEach(function (tr) {
+      var tds = tr.querySelectorAll("td");
+      if (tds.length < 8) return;
+      out.push({ id: tds[1].textContent, status: tds[2].textContent.trim(), area: tds[3].textContent, birth: tds[4].textContent, age: tds[5].textContent, gender: tds[6].textContent, check: tds[7].textContent });
+    });
+    return out;
+  }
+
+  function doTxt() {
+    var rows = collectRows();
+    if (!rows.length) { alert("暂无结果可导出"); return; }
+    var txt = rows.map(function (r) { return r.id + " " + r.status + " " + r.area + " " + r.birth + " " + r.age + " " + r.gender; }).join("\r\n");
+    exportFile("身份证校验结果.txt", txt);
+  }
+
+  function doCsv() {
+    var rows = collectRows();
+    if (!rows.length) { alert("暂无结果可导出"); return; }
+    var esc = function (s) { s = String(s || ""); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    var header = ["身份证号", "状态", "归属地", "出生日期", "年龄", "性别", "校验码"];
+    var lines = [header.join(",")].concat(rows.map(function (r) { return [r.id, r.status, r.area, r.birth, r.age, r.gender, r.check].map(esc).join(","); }));
+    exportFile("id_card_result.csv", lines.join("\n"), "text/csv;charset=utf-8");
+  }
+
+  // ===== 事件绑定 =====
+  btnSingle.addEventListener("click", doSingle);
+  singleInput.addEventListener("keydown", function (e) { if (e.key === "Enter") doSingle(); });
+  btnBatch.addEventListener("click", doBatch);
+  btnClear.addEventListener("click", function () { idsTA.value = ""; idCount.textContent = "共 0 个号码"; });
+
+  idsTA.addEventListener("input", function () {
+    var list = parseIds();
+    idCount.textContent = "共 " + list.length + " 个号码";
+  });
+
+  btnTxt.addEventListener("click", doTxt);
+  btnCsv.addEventListener("click", doCsv);
+
+  // —— 二维码 / 打赏 / 复制链接 ——
+  function showToast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { showToast("已复制"); }, function () { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); showToast("已复制"); } catch (e) { showToast("复制失败"); }
+    document.body.removeChild(ta);
+  }
+  var btnQr = document.getElementById("btnQr");
+  var btnDonate = document.getElementById("btnDonate");
+  var btnCopyLink = document.getElementById("btnCopyLink");
+  if (btnQr) btnQr.addEventListener("click", function () {
+    var box = document.getElementById("qrModal");
+    var qr = document.getElementById("qrcode");
+    qr.innerHTML = "";
+    if (window.QRCode) { new QRCode(qr, { text: location.href, width: 180, height: 180 }); }
+    else { qr.textContent = "二维码组件加载失败，请复制链接使用"; }
+    box.classList.add("show");
+  });
+  if (btnDonate) btnDonate.addEventListener("click", function () {
+    document.getElementById("donateModal").classList.add("show");
+  });
+  if (btnCopyLink) btnCopyLink.addEventListener("click", function () {
+    copyText(location.origin + location.pathname);
+  });
+  // 事件委托：关闭弹窗（按钮 data-close + 点击遮罩）
+  document.addEventListener("click", function (e) {
+    var target = e.target;
+    var closeBtn = target.closest && target.closest(".btn-close");
+    if (closeBtn) {
+      var m = document.getElementById(closeBtn.getAttribute("data-close"));
+      if (m) m.classList.remove("show");
+      return;
+    }
+    if (target.classList && target.classList.contains("modal")) {
+      target.classList.remove("show");
+    }
+  });
+
+  // 页脚链接
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+
+  dbStatus.textContent = "区划库已加载 · " + (window.REGION ? Object.keys(window.REGION).length : "失败");
+})();
+</script>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="qrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn-close" data-close="qrModal">关闭</button>
+  </div>
+</div>
+
+<!-- 打赏弹窗 -->
+<div class="modal" id="donateModal">
+  <div class="modal-box donate-box">
+    <h3>打赏支持</h3>
+    <p class="modal-tip">喜欢就支持一下，我们会更努力!</p>
+    <div class="donate-cards">
+      <div class="pay-card pay-card-wechat">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+          <span>微信支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用微信付款</p>
+      </div>
+      <div class="pay-card pay-card-alipay">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
+          <span>支付宝支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用支付宝付款</p>
+      </div>
+    </div>
+    <button class="btn-close" data-close="donateModal">关闭</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+</body>
+</html>

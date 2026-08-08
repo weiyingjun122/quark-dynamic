@@ -9,29 +9,3 @@
 /update.json
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
   Pragma: no-cache
-
-# mumuy 静态资源 - 强缓存（文件名带 hash 或版本号）
-/mumuy/static/image/*
-  Cache-Control: public, max-age=31536000, immutable
-  X-Content-Type-Options: nosniff
-
-/mumuy/static/style/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/mumuy/*.svg
-  Cache-Control: public, max-age=31536000, immutable
-
-# mumuy 项目 dist 目录（编译产物）
-/mumuy/*/dist/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# mumuy HTML 页面 - 短期缓存
-/mumuy/*/index.html
-  Cache-Control: public, max-age=3600, s-maxage=86400
-
-/mumuy/index.html
-  Cache-Control: public, max-age=3600, s-maxage=86400
-
-# mumuy JS 库文件
-/mumuy/*/static/script/*
-  Cache-Control: public, max-age=31536000, immutable

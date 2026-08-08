@@ -13,6 +13,7 @@ on:
       - 'check-word/**'
       - 'ip/**'
       - 'phone-batch/**'
+      - 'id-card/**'
       - 'functions/**'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
   # schedule:
@@ -110,6 +111,7 @@ jobs:
             git add static/qrcode/* 2>/dev/null || true
             git add search/ 2>/dev/null || true
             git add check-word/ 2>/dev/null || true
+            git add id-card/ 2>/dev/null || true
 
             if ! git diff --cached --quiet; then
                 echo "有变更，提交并推送..."
