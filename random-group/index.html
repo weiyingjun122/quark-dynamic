@@ -230,6 +230,7 @@ footer.site-footer a { color: #f97316; text-decoration: none; }
         <div style="display:flex;gap:8px;">
           <button class="btn ghost" id="btn-group2" style="padding:8px 16px;font-size:13px;">🔄 重新分组</button>
           <button class="btn ghost" id="btn-txt" style="padding:8px 16px;font-size:13px;">导出 TXT</button>
+          <button class="btn ghost" id="btn-excel" style="padding:8px 16px;font-size:13px;">导出 Excel</button>
         </div>
       </div>
       <div class="group-grid" id="group-grid" style="margin-top:14px;"></div>
@@ -249,7 +250,7 @@ footer.site-footer a { color: #f97316; text-decoration: none; }
       <div class="td-card"><span class="td-ico">🎲</span><div><b>随机公平</b><p>采用 Fisher-Yates 洗牌算法，每次分组结果真正随机、公平。</p></div></div>
       <div class="td-card"><span class="td-ico">⚙️</span><div><b>两种模式</b><p>支持按每组人数或按固定组数两种随机分组方式。</p></div></div>
       <div class="td-card"><span class="td-ico">🧹</span><div><b>智能去重</b><p>自动去除重复人名，保证每个成员只在一个组。</p></div></div>
-      <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出</b><p>分组结果支持导出 TXT，方便打印或发到群内。</p></div></div>
+      <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出</b><p>分组结果支持导出 TXT 或 Excel，方便打印或发到群内。</p></div></div>
       <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只在浏览器本地处理，不上传服务器。</p></div></div>
       <div class="td-card"><span class="td-ico">📱</span><div><b>免登录免安装</b><p>无需注册，即开即用，手机/平板/电脑浏览器通吃。</p></div></div>
     </div>
@@ -263,6 +264,7 @@ footer.site-footer a { color: #f97316; text-decoration: none; }
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 (function () {
   "use strict";
@@ -273,6 +275,7 @@ footer.site-footer a { color: #f97316; text-decoration: none; }
   var btnRegroup = document.getElementById("btn-group2");
   var btnClear = document.getElementById("btn-clear");
   var btnTxt = document.getElementById("btn-txt");
+  var btnExcel = document.getElementById("btn-excel");
   var resultBox = document.getElementById("result-box");
   var resultCount = document.getElementById("result-count");
   var groupGrid = document.getElementById("group-grid");
@@ -364,6 +367,27 @@ footer.site-footer a { color: #f97316; text-decoration: none; }
     exportFile("随机分组结果.txt", lines.join("\r\n"), "text/plain;charset=utf-8");
   }
 
+  function doExcel() {
+    if (!lastGroups.length) { alert("请先完成分组再导出"); return; }
+    if (typeof XLSX === "undefined") { alert("Excel 组件加载失败，请检查网络后重试，或改用导出 TXT"); return; }
+    var maxLen = 0;
+    lastGroups.forEach(function (g) { if (g.length > maxLen) maxLen = g.length; });
+    var header = ["组号"];
+    for (var c = 0; c < maxLen; c++) header.push("成员" + (c + 1));
+    var rows = [header];
+    lastGroups.forEach(function (g, i) {
+      var row = ["第 " + (i + 1) + " 组"];
+      for (var k = 0; k < g.length; k++) row.push(g[k]);
+      rows.push(row);
+    });
+    var ws = XLSX.utils.aoa_to_sheet(rows);
+    ws["!cols"] = [{ wch: 10 }];
+    for (var c2 = 0; c2 < maxLen; c2++) ws["!cols"].push({ wch: 14 });
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "分组结果");
+    XLSX.writeFile(wb, "随机分组结果.xlsx");
+  }
+
   btnGroup.addEventListener("click", doGroup);
   btnRegroup.addEventListener("click", doGroup);
   btnClear.addEventListener("click", function () { namesTA.value = ""; nameCount.textContent = "共 0 人"; resultBox.style.display = "none"; });
@@ -374,6 +398,7 @@ footer.site-footer a { color: #f97316; text-decoration: none; }
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); doGroup(); }
   });
   btnTxt.addEventListener("click", doTxt);
+  btnExcel.addEventListener("click", doExcel);
 
   document.querySelectorAll('input[name="mode"]').forEach(function (r) {
     r.addEventListener("change", function () {
