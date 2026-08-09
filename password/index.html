@@ -202,7 +202,12 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
     </div>
 
     <div class="mini-row">
-      <label class="chip"><input type="checkbox" id="opt-exclude" checked> 排除易混淆字符 (0O1l|)</label>
+      <label class="chip">特殊符号字符 <input type="text" id="opt-symbols" value="!@#$%^&*_-" placeholder="自定义符号，如 !@#$%^&amp;*_-" style="width:160px;padding:4px 6px;border:1px solid #d8deec;border-radius:6px;font-size:13px;"></label>
+    </div>
+
+    <div class="mini-row">
+      <label class="chip">排除字符 <input type="text" id="opt-exclude" value="0O1l|" placeholder="输入要排除的字符，如 0O1l|" style="width:160px;padding:4px 6px;border:1px solid #d8deec;border-radius:6px;font-size:13px;"></label>
+      <label class="chip"><input type="checkbox" id="opt-exclude-on" checked> 启用排除</label>
       <label class="chip">生成数量 <input type="number" id="opt-count" min="1" max="500" value="1" style="width:76px;padding:4px 6px;border:1px solid #d8deec;border-radius:6px;font-size:13px;"> 条</label>
     </div>
 
@@ -226,7 +231,7 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
 
   <div class="tool-desc">
     <h2>随机密码生成器工具介绍</h2>
-    <p>本工具是一款免费在线的随机密码生成器，可以根据您的需要自定义密码长度（4-64 位），并自由勾选小写字母、大写字母、数字、特殊符号，一键生成高强度随机密码，还可以自动排除 0O1l| 等易混淆字符，避免手工抄录时看错输入。</p>
+    <p>本工具是一款免费在线的随机密码生成器，可以根据您的需要自定义密码长度（4-64 位），并自由勾选小写字母、大写字母、数字、特殊符号，其中特殊符号字符与排除字符均支持手动输入（默认符号：!@#$%^&*_-，默认排除：0O1l| 等易混淆字符），灵活定制最符合需求的密码组合。</p>
     <p>生成的密码基于浏览器内置的加密安全随机源（Web Crypto），无任何规律可循。适用于注册各类网站账号、设置数据库与服务器登录密码、为企业批量初始化账号等场景，是保护您数字资产安全的必备工具。</p>
 
     <h3>工具特点</h3>
@@ -235,14 +240,14 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
       <div class="td-card"><span class="td-ico">🔐</span><div><b>加密级随机</b><p>基于 Web Crypto 加密随机源生成，无规律可循，难以被暴力破解。</p></div></div>
       <div class="td-card"><span class="td-ico">⚡</span><div><b>一键复制</b><p>每条密码可单独复制，也可一键复制全部，粘贴即用省时省力。</p></div></div>
       <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全程浏览器本地运行，密码绝不上传服务器，从根源杜绝泄露。</p></div></div>
-      <div class="td-card"><span class="td-ico">🧹</span><div><b>防混淆设计</b><p>支持排除 0/O、1/l/| 等易混淆字符，减少手工输入出错。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧹</span><div><b>防混淆设计</b><p>支持自定义排除字符（默认 0/O、1/l/|），手动输入即可剔除易混淆字符，减少手工输入出错。</p></div></div>
       <div class="td-card"><span class="td-ico">📱</span><div><b>免登录免费</b><p>无需注册下载，手机、平板、电脑打开即用。</p></div></div>
     </div>
 
     <h3>使用步骤</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">拖动滑块设置密码长度（建议 12 位以上），选择需要的字符类型。</div></li>
-      <li class="td-step"><span class="step-num">2</span><div class="step-txt">按需开启「排除易混淆字符」，并输入需要生成的数量（范围 1-500 条）。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">可修改特殊符号字符与排除字符输入框，并设置需要生成的数量（范围 1-500 条）。</div></li>
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「随机生成密码」，即可复制使用。</div></li>
     </ol>
 
@@ -251,7 +256,7 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
       <div class="faq-item"><b>生成的密码安全吗？</b><p>安全。工具调用浏览器内置的 Web Crypto 加密随机数生成器，与普通 Math.random 不同，生成结果不可预测、无规律，配合足够长度与字符组合，安全性非常高。</p></div>
       <div class="faq-item"><b>密码会被上传或保存吗？</b><p>不会。所有生成与运算都在您的浏览器本地完成，密码不经过任何服务器，刷新或关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>密码长度设置多少合适？</b><p>一般建议至少 12 位；重要账户建议 16-20 位，并同时包含大小写字母、数字与特殊符号。</p></div>
-      <div class="faq-item"><b>「排除易混淆字符」有什么用？</b><p>开启后可剔除 0/O、1/l/| 等外观相似的字符，降低手工抄写、输入密码时看错、输错的概率。</p></div>
+      <div class="faq-item"><b>「排除字符」和「特殊符号字符」能自定义吗？</b><p>可以。「排除字符」输入框中可自由输入想剔除的字符（勾选「启用排除」生效，默认排除 0、O、1、l、| 等易混淆字符）；「特殊符号字符」输入框可自定义生成时使用的符号集合（默认 !@#$%^&*_-）。</p></div>
       <div class="faq-item"><b>支持批量生成吗？</b><p>支持。可在「生成数量」中输入 1-500 条，一次生成多条不同密码，还可一键导出 TXT 或 Excel（CSV）文件，适合批量初始化工号、应用账号。</p></div>
     </div>
   </div>
@@ -304,9 +309,16 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
     if (document.getElementById("opt-lower").checked) s += LOWER;
     if (document.getElementById("opt-upper").checked) s += UPPER;
     if (document.getElementById("opt-digit").checked) s += DIGIT;
-    if (document.getElementById("opt-symbol").checked) s += SYMBOL;
-    if (document.getElementById("opt-exclude").checked) s = s.replace(/[0O1l|]/g, "");
-    return s;
+    if (document.getElementById("opt-symbol").checked) {
+      var sym = document.getElementById("opt-symbols").value || SYMBOL;
+      s += sym;
+    }
+    if (document.getElementById("opt-exclude-on").checked) {
+      var ex = document.getElementById("opt-exclude").value || "";
+      if (ex) s = s.split("").filter(function (c) { return ex.indexOf(c) < 0; }).join("");
+    }
+    // 去重，避免同字符多次出现
+    return s.split("").filter(function (c, i, a) { return a.indexOf(c) === i; }).join("");
   }
 
   // 密码学安全随机整数：0 <= n < max（拒绝偏差）
