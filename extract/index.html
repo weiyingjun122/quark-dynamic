@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文本提取工具 - 手机号邮箱链接免费在线提取</title>
+<meta name="description" content="免费在线文本提取工具，一键提取文本中的手机号、邮箱、网址链接，支持去重、上传文本/Excel/HTML 文件与拖拽粘贴、一键复制与导出，本地处理不上传服务器，安全高效。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/extract/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="文本提取工具 - 手机号/邮箱/链接提取">
+<meta property="og:description" content="免费在线提取手机号、邮箱、网址链接，支持去重、文件上传、一键复制导出。">
+<meta property="og:url" content="https://www.weiyingjun.top/extract/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3E提%3C/text%3E%3C/svg%3E">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #eff6ff 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #dfe3ee;
+  background: #fff;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.action-btn:hover { border-color: #2563eb; color: #2563eb; }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab {
+  flex: 1; min-width: 120px; text-align: center;
+  padding: 10px 12px; border: 1px solid #dfe3ee; border-radius: 10px;
+  background: #f8fafc; color: #475569; font-size: 14px; cursor: pointer;
+  transition: all .15s; white-space: nowrap;
+}
+.tab:hover { border-color: #93c5fd; }
+.tab.active { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 600; }
+
+.upload-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+.upload-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border: 1px dashed #93c5fd; border-radius: 10px;
+  background: #eff6ff; color: #2563eb; font-size: 13px; cursor: pointer;
+  transition: all .15s;
+}
+.upload-btn:hover { background: #dbeafe; }
+#fileInput { display: none; }
+.upload-tip { font-size: 12px; color: #94a3b8; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; color: #475569; }
+#srcText {
+  width: 100%; min-height: 150px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
+  background: #fafbff;
+}
+#srcText:focus { border-color: #2563eb; background: #fff; }
+
+.options-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #475569; }
+.chip input { accent-color: #2563eb; }
+.chip-note { font-size: 12px; color: #94a3b8; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+.btn {
+  padding: 12px 26px; font-size: 15px; border: none; border-radius: 10px;
+  background: #2563eb; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #1d4ed8; }
+.btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.result-box { margin-top: 22px; display: none; }
+.result-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.result-count { font-size: 14px; font-weight: 600; color: #1f2d3d; }
+.result-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.mini-btn {
+  border: 1px solid #e2e5ee; background: #fff; color: #475569;
+  padding: 6px 14px; border-radius: 7px; font-size: 13px; cursor: pointer;
+  white-space: nowrap; transition: all .15s;
+}
+.mini-btn:hover { border-color: #2563eb; color: #2563eb; }
+.result-list {
+  margin-top: 12px; border: 1px solid #e4e7f0; border-radius: 10px;
+  max-height: 320px; overflow-y: auto; background: #fafbff;
+}
+.result-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px; border-bottom: 1px dashed #eef1f7; font-size: 14px;
+  font-family: Consolas, Menlo, monospace; color: #1f2d3d; word-break: break-all;
+}
+.result-item:last-child { border-bottom: none; }
+.result-item .idx { color: #94a3b8; font-size: 12px; flex-shrink: 0; width: 34px; text-align: right; }
+.result-item .val { flex: 1; }
+.result-item .copy { color: #2563eb; cursor: pointer; font-size: 12px; flex-shrink: 0; padding: 3px 10px; border: 1px solid #bfdbfe; border-radius: 6px; background: #eff6ff; transition: all .15s; }
+.result-item .copy:hover { background: #dbeafe; border-color: #93c5fd; }
+
+.error-msg { display: none; margin-top: 16px; padding: 12px 14px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 10px; font-size: 14px; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #2563eb, #60a5fa); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #bfdbfe, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #f0f6ff);
+  border: 1px solid #e0eaff; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(37,99,235,.10); border-color: #bfdbfe; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #eff6ff, #dbeafe); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+@media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
+.td-step { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px; position: relative; }
+.td-step .step-num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.td-step .step-txt { font-size: 13px; color: #475569; line-height: 1.7; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #2563eb; text-decoration: none; }
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 999; align-items: center; justify-content: center; }
+.modal.show { display: flex; }
+.modal-box { background: #fff; border-radius: 12px; padding: 24px; width: min(90vw, 360px); text-align: center; animation: pop .18s ease; }
+@keyframes pop { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-box h3 { font-size: 18px; margin-bottom: 14px; color: #1f2d3d; }
+.modal-box #qrcode { display: inline-block; padding: 8px; background: #fff; }
+.modal-box #qrcode img, .modal-box #qrcode canvas { margin: 0 auto; }
+.modal-tip { font-size: 13px; color: #94a3b8; margin: 12px 0; }
+.btn-close { padding: 9px 26px; font-size: 14px; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer; transition: background .2s; }
+.btn-close:hover { background: #e2e8f0; }
+
+.donate-box { width: min(92vw, 480px); }
+.donate-cards { display: flex; gap: 16px; justify-content: center; margin: 12px 0 16px; }
+.pay-card { flex: 1; max-width: 210px; border-radius: 12px; padding: 14px 12px 16px; display: flex; flex-direction: column; align-items: center; color: #fff; }
+.pay-card-wechat { background: #07c160; }
+.pay-card-alipay { background: #1677ff; }
+.pay-card-head { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.pay-logo { width: 22px; height: 22px; }
+.pay-qr { width: 100%; max-width: 160px; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 4px; }
+.pay-main { font-size: 15px; margin: 12px 0 8px; }
+.pay-sub { font-size: 12px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5); padding: 4px 10px; border-radius: 999px; }
+@media (max-width: 520px) {
+  .donate-cards { flex-direction: column; align-items: center; }
+  .pay-card { width: 100%; max-width: 260px; }
+  .donate-box { width: min(92vw, 340px); }
+}
+
+#toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); background: rgba(0,0,0,.8); color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>文本提取工具</h1>
+  <p class="subtitle">一键提取文本中的手机号、邮箱、网址链接，支持去重与文件上传</p>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+
+    <div class="toolbar">
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnDonate" class="action-btn" title="支持本站">打赏支持</button>
+        <button id="btnCopyLink" class="action-btn" title="复制本工具链接">复制链接</button>
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-type="phone">📱 手机号提取</button>
+      <button class="tab" data-type="email">✉️ 邮箱提取</button>
+      <button class="tab" data-type="link">🔗 链接提取</button>
+    </div>
+
+    <div class="upload-row">
+      <label class="upload-btn">📁 上传文件<input type="file" id="fileInput" accept=".txt,.csv,.html,.htm,.md,.xlsx,.xls,.log"></label>
+      <span class="upload-tip">支持 txt / csv / html / xlsx / log，也可直接粘贴或拖入下方文本框</span>
+    </div>
+
+    <div class="field">
+      <label for="srcText" id="srcLabel">手机号提取 - 粘贴或输入包含手机号的文本</label>
+      <textarea id="srcText" placeholder="在此粘贴文本，例如：&#10;联系人：王经理 13812345678 邮箱 wang@example.com&#10;客服电话 13900008888，官网 https://www.example.com/page.html"></textarea>
+    </div>
+
+    <div class="options-row">
+      <label class="chip"><input type="checkbox" id="opt-dedup" checked> 结果去重</label>
+      <span class="chip-note">开启后重复的手机号/邮箱/链接只保留一个</span>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-extract">开始提取</button>
+      <button class="btn ghost" id="btn-clear">清空</button>
+    </div>
+
+    <div class="result-box" id="result-box">
+      <div class="result-head">
+        <span class="result-count" id="result-count"></span>
+        <span class="result-actions">
+          <button class="mini-btn" id="btn-copy-all">复制全部</button>
+          <button class="mini-btn" id="btn-export-txt">导出 TXT</button>
+          <button class="mini-btn" id="btn-export-excel">导出 Excel</button>
+        </span>
+      </div>
+      <div class="result-list" id="result-list"></div>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+
+  </div>
+
+  <div class="disclaimer">所有文本提取、去重操作均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
+
+  <div class="tool-desc">
+    <h2>文本提取工具介绍</h2>
+    <p>本工具是一款免费在线的文本提取神器，支持从任意文本中一键提取手机号码、电子邮箱、网址链接三大类信息。无论是网页源码、Excel 列表、聊天记录还是文档内容，粘贴进来即可自动识别、去重并整理成清单，方便后续批量使用。</p>
+    <p>工具内置智能提取规则：手机号支持中国大陆 11 位手机号；邮箱可识别常见邮箱格式；链接支持 http/https/www 开头的网址。所有处理均在本地完成，内容不经过任何服务器，安全隐私零顾虑。</p>
+
+    <h3>工具特点</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📱</span><div><b>手机号提取</b><p>一键提取文本中所有大陆 11 位手机号，自动过滤无关数字。</p></div></div>
+      <div class="td-card"><span class="td-ico">✉️</span><div><b>邮箱提取</b><p>智能识别常见邮箱格式，从杂乱文本中批量提取电子邮箱。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔗</span><div><b>链接提取</b><p>提取 http/https 网址链接，批量整理页面地址与资源链接。</p></div></div>
+      <div class="td-card"><span class="td-ico">🗂️</span><div><b>自动去重</b><p>一键去除重复项，让提取结果更干净、便于进一步处理。</p></div></div>
+      <div class="td-card"><span class="td-ico">📂</span><div><b>文件上传</b><p>支持上传 txt / csv / html / xlsx 等文件，直接解析并提取。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">切换上方 Tab 选择要提取的类型（手机号/邮箱/链接）。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">粘贴文本或点击「上传文件」选择本地文档，可开启去重。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始提取」，查看结果并可一键复制、导出。</div></li>
+    </ol>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>支持哪些文件格式上传？</b><p>支持 txt、csv、html、htm、log、markdown 等纯文本格式，以及 xlsx / xls 电子表格；也可直接复制粘贴或从本地文件管理器拖拽文本。</p></div>
+      <div class="faq-item"><b>提取的数据会被上传吗？</b><p>不会。手机号、邮箱、链接等所有数据均在您的浏览器本地通过正则匹配完成，不经过任何服务器，可放心处理敏感信息。</p></div>
+      <div class="faq-item"><b>手机号提取会误提取其他数字吗？</b><p>不会。工具仅匹配符合 11 位手机号特征的号码段（以 13X-19X 开头），不会将普通数字、座机号等误判为手机号。</p></div>
+      <div class="faq-item"><b>提取结果如何导出？</b><p>结果区域提供「复制全部」「导出 TXT」「导出 Excel（CSV 格式）」按钮，一次性保存所有提取结果。</p></div>
+    </div>
+  </div>
+
+</main>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "支持哪些文件格式上传？", "acceptedAnswer": { "@type": "Answer", "text": "支持 txt、csv、html、xml、log、md 等纯文本格式，以及 xlsx/xls 电子表格，也可直接粘贴文本。" } },
+    { "@type": "Question", "name": "提取的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有提取均在浏览器本地完成，不经过任何服务器。" } },
+    { "@type": "Question", "name": "提取结果如何导出？", "acceptedAnswer": { "@type": "Answer", "text": "支持复制全部、导出 TXT 与导出 Excel（CSV 格式）。" } }
+  ]
+}
+</script>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+    <p style="margin-top:10px;line-height:2;"><a href="/check-word/" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;margin:0 8px;">违禁词检测</a><a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">IP查询</a><a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机密码</a><a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">年龄计算</a><a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">金额大写</a><a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">文本提取</a><a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">手机号查询</a><a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">身份证查询</a><a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机分组</a><a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机点名</a></p>
+    <p style="margin-top:8px;"><a href="/about.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">关于本站</a><a href="/privacy.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">隐私政策</a><a href="/contact.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">联系我们</a></p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var tabs = document.getElementById("tabs");
+  var fileInput = document.getElementById("fileInput");
+  var srcText = document.getElementById("srcText");
+  var srcLabel = document.getElementById("srcLabel");
+  var optDedup = document.getElementById("opt-dedup");
+  var btnExtract = document.getElementById("btn-extract");
+  var btnClear = document.getElementById("btn-clear");
+  var resultBox = document.getElementById("result-box");
+  var resultCount = document.getElementById("result-count");
+  var resultList = document.getElementById("result-list");
+  var errorMsg = document.getElementById("error-msg");
+
+  var TABS = [
+    { type: "phone", title: "手机号", regex: /(?<![\d])(1[3-9]\d{9})(?![\d])/g, label: "手机号 · 粘贴包含手机号的文本" },
+    { type: "email", title: "邮箱", regex: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g, label: "邮箱 · 粘贴包含邮箱的文本" },
+    { type: "link", title: "链接", regex: /(?:https?:\/\/|www\.)[^\s"'<>）()[\]]+/g, label: "链接 · 粘贴包含网址的文本", normalize: function (s) { return s.replace(/[.,;:]+$/, ""); } }
+  ];
+  var currentType = "phone";
+
+  tabs.addEventListener("click", function (e) {
+    var b = e.target.closest(".tab");
+    if (!b) return;
+    tabs.querySelectorAll(".tab").forEach(function (t) { t.classList.remove("active"); });
+    b.classList.add("active");
+    currentType = b.getAttribute("data-type");
+    var info = getTab(currentType);
+    srcLabel.textContent = info.label;
+    var total = extractAll();
+    if (total > 0) { /* 保留结果，提示已在当前类型重新提取 */ }
+  });
+
+  function getTab(type) {
+    for (var i = 0; i < TABS.length; i++) if (TABS[i].type === type) return TABS[i];
+    return TABS[0];
+  }
+
+  function findVal(info, text) {
+    info.regex.lastIndex = 0;
+    var res = [], m;
+    while ((m = info.regex.exec(text)) !== null) {
+      var v = m[0] || m[1];
+      if (info.normalize) v = info.normalize(v);
+      if (!v) continue;
+      res.push(v);
+      if (m[0].length === 0) info.regex.lastIndex++;
+    }
+    return res;
+  }
+
+  function extract() {
+    var text = srcText.value;
+    if (!text.trim()) { showError("请先粘贴文本或上传文件"); return; }
+    hideError();
+    var info = getTab(currentType);
+    var items = findVal(info, text);
+    if (optDedup.checked) items = dedup(items, currentType);
+    render(items, info);
+  }
+
+  function extractAll() {
+    var text = srcText.value;
+    if (!text.trim()) return 0;
+    var info = getTab(currentType);
+    var items = findVal(info, text);
+    if (optDedup.checked) items = dedup(items, currentType);
+    render(items, info);
+    return items.length;
+  }
+
+  function dedup(arr, type) {
+    var seen = {}, out = [];
+    for (var i = 0; i < arr.length; i++) {
+      var k = (type === "email" ? arr[i].toLowerCase() : arr[i]);
+      if (!seen[k]) { seen[k] = 1; out.push(arr[i]); }
+    }
+    return out;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function render(items, info) {
+    resultBox.style.display = "block";
+    resultCount.textContent = "已提取 " + items.length + " 个" + (info ? info.title : "") + (optDedup.checked ? "（已去重）" : "");
+    if (!items.length) {
+      resultList.innerHTML = '<div class="result-item"><span class="idx">--</span><span class="val" style="color:#94a3b8;">未提取到结果</span></div>';
+      return;
+    }
+    resultList.innerHTML = items.map(function (it, i) {
+      return '<div class="result-item"><span class="idx">' + (i + 1) + '</span><span class="val">' + escapeHtml(it) + '</span><button class="copy" data-v="' + escapeHtml(it) + '">复制</button></div>';
+    }).join("");
+  }
+
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+  function copyText(text, doneMsg) {
+    function ok() { toast(doneMsg || "复制成功"); }
+    function fail() { toast("复制失败"); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function () { fallbackCopy(text, ok, fail); });
+    } else { fallbackCopy(text, ok, fail); }
+  }
+  function fallbackCopy(text, ok, fail) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); ok(); } catch (e) { fail(); }
+    document.body.removeChild(ta);
+  }
+
+  function showError(msg) { errorMsg.textContent = msg; errorMsg.style.display = "block"; resultBox.style.display = "none"; }
+  function hideError() { errorMsg.style.display = "none"; }
+
+  function getItems() {
+    var vals = [];
+    resultList.querySelectorAll(".val").forEach(function (n) { vals.push(n.textContent); });
+    return vals;
+  }
+  function download(blob, filename) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 200);
+  }
+
+  function readFileToText(file, cb) {
+    var name = (file.name || "").toLowerCase();
+    if (/(\.xlsx|\.xls)$/.test(name)) {
+      readExcel(file, cb);
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () { cb(String(reader.result || "")); };
+    reader.onerror = function () { toast("读取文件失败"); };
+    reader.readAsText(file);
+  }
+  function readExcel(file, cb) {
+    if (!window.XLSX) {
+      var s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+      s.onload = function () { readExcel(file, cb); };
+      s.onerror = function () { cb(""); toast("Excel 解析库加载失败，请直接粘贴文本或下载 XLSX 库后重试"); };
+      document.head.appendChild(s);
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var data = new Uint8Array(reader.result);
+      var wb;
+      try {
+        wb = window.XLSX.read(data, { type: "array" });
+      } catch (e) {
+        cb("");
+        toast("Excel 文件解析失败，请直接粘贴文本");
+        return;
+      }
+      var lines = [];
+      wb.SheetNames.forEach(function (sn) {
+        var rows = window.XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: "" });
+        rows.forEach(function (r) { lines.push(r.join("\t")); });
+      });
+      cb(lines.join("\n"));
+    };
+    reader.onerror = function () { toast("读取文件失败"); };
+    reader.readAsArrayBuffer(file);
+  }
+
+  btnExtract.addEventListener("click", extract);
+  btnClear.addEventListener("click", function () { srcText.value = ""; resultBox.style.display = "none"; errorMsg.style.display = "none"; srcText.focus(); });
+  fileInput.addEventListener("change", function () {
+    var f = fileInput.files && fileInput.files[0];
+    if (!f) return;
+    readFileToText(f, function (content) {
+      if (!content) return;
+      srcText.value = content;
+      toast("已加载文件： " + f.name);
+      resultBox.style.display = "none";
+      errorMsg.style.display = "none";
+      extract();
+    });
+    fileInput.value = "";
+  });
+  // 拖拽粘贴
+  srcText.addEventListener("drop", function (e) {
+    e.preventDefault();
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) { readFileToText(f, function (content) { if (content) { srcText.value = content; extract(); } }); }
+    else { srcText.value = (e.dataTransfer && e.dataTransfer.getData("text")) || srcText.value; }
+  });
+  srcText.addEventListener("dragover", function (e) { e.preventDefault(); });
+
+  resultList.addEventListener("click", function (e) {
+    var b = e.target.closest(".copy");
+    if (b) copyText(b.getAttribute("data-v"));
+  });
+  document.getElementById("btn-copy-all").addEventListener("click", function () {
+    var arr = getItems();
+    if (!arr.length) return;
+    copyText(arr.join("\n"), "已复制全部");
+  });
+  document.getElementById("btn-export-txt").addEventListener("click", function () {
+    var arr = getItems();
+    if (!arr.length) { toast("暂无可导出的结果"); return; }
+    var content = getTab(currentType).title + "提取结果\n提取时间：" + new Date().toLocaleString() + "\n\n" + arr.join("\n");
+    download(new Blob(["\ufeff" + content], { type: "text/plain;charset=utf-8" }), currentType + "_提取_" + Date.now() + ".txt");
+    toast("已导出 TXT");
+  });
+  document.getElementById("btn-export-excel").addEventListener("click", function () {
+    var arr = getItems();
+    if (!arr.length) { toast("暂无可导出的结果"); return; }
+    var esc = function (s) { return String(s).replace(/"/g, '""'); };
+    var lines = ['"' + getTab(currentType).title + '"'].concat(arr.map(function (v) { return '"' + esc(v) + '"'; }));
+    download(new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" }), currentType + "_提取_" + Date.now() + ".csv");
+    toast("已导出 Excel(CSV)");
+  });
+
+  // 二维码 / 打赏 / 复制链接
+  var btnQr = document.getElementById("btnQr");
+  var btnDonate = document.getElementById("btnDonate");
+  var btnCopyLink = document.getElementById("btnCopyLink");
+  if (btnQr) btnQr.addEventListener("click", function () {
+    var q = document.getElementById("qrcode");
+    q.innerHTML = "";
+    if (window.QRCode) { new QRCode(q, { text: location.href, width: 180, height: 180 }); }
+    else { q.textContent = "二维码组件加载失败，请复制链接使用"; }
+    document.getElementById("qrModal").classList.add("show");
+  });
+  if (btnDonate) btnDonate.addEventListener("click", function () {
+    document.getElementById("donateModal").classList.add("show");
+  });
+  if (btnCopyLink) btnCopyLink.addEventListener("click", function () { copyText(location.origin + location.pathname); });
+  document.addEventListener("click", function (e) {
+    var closeBtn = e.target.closest && e.target.closest(".btn-close");
+    if (closeBtn) {
+      var m = document.getElementById(closeBtn.getAttribute("data-close"));
+      if (m) m.classList.remove("show");
+      return;
+    }
+    if (e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("show");
+  });
+
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+})();
+</script>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="qrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn-close" data-close="qrModal">关闭</button>
+  </div>
+</div>
+
+<!-- 打赏弹窗 -->
+<div class="modal" id="donateModal">
+  <div class="modal-box donate-box">
+    <h3>打赏支持</h3>
+    <p class="modal-tip">喜欢就支持一下，我们会更努力!</p>
+    <div class="donate-cards">
+      <div class="pay-card pay-card-wechat">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+          <span>微信支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用微信付款</p>
+      </div>
+      <div class="pay-card pay-card-alipay">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
+          <span>支付宝支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用支付宝付款</p>
+      </div>
+    </div>
+    <button class="btn-close" data-close="donateModal">关闭</button>
+  </div>
+</div>
+</body>
+</html>
