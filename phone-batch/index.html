@@ -116,6 +116,10 @@ td.no-data { color: #94a3b8; }
 .td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); display: flex; align-items: center; justify-content: center; font-size: 24px; }
 .td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
 .td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #eef0f4; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
 
 footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
 footer.site-footer a { color: #059b7e; text-decoration: none; }
@@ -290,8 +294,29 @@ footer.site-footer a { color: #059b7e; text-decoration: none; }
       <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出</b><p>结果支持导出 TXT / CSV，CSV 可直接用 Excel 打开。</p></div></div>
       <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只留在您的浏览器中，关闭页面即清除，不上传服务器。</p></div></div>
     </div>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>一次最多能查询多少个号码？</b><p>单次最多支持 500 个号码，可自动识别空格、逗号、分号或换行分隔，一次粘贴多行号码直接查询。</p></div>
+      <div class="faq-item"><b>查询结果准确吗？</b><p>工具基于开源手机号段归属地库在本地完成查询，返回运营商、省份、城市、区号、邮编等信息，库会定期更新，不同版本库的行政区划命名可能存在差异。</p></div>
+      <div class="faq-item"><b>号码会上传服务器吗？</b><p>不会。所有查询都在浏览器本地完成，号码不上传任何服务器，关闭页面即全部清除。</p></div>
+      <div class="faq-item"><b>结果怎么导出？</b><p>支持导出 TXT 与 CSV 两种格式，CSV 可直接用 Excel/WPS 打开，方便续进行号码分拣、运营统计。</p></div>
+    </div>
   </div>
 </main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "一次最多能查询多少个号码？", "acceptedAnswer": { "@type": "Answer", "text": "单次最多支持 500 个号码，可自动识别空格、逗号、分号或换行分隔。" } },
+    { "@type": "Question", "name": "手机号查询结果准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "基于开源手机号段归属地库本地查询，返回运营商、省份、城市、区号、邮编等信息。" } },
+    { "@type": "Question", "name": "号码会上传服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。全部查询在浏览器本地完成，不上传服务器，隐私安全。" } },
+    { "@type": "Question", "name": "结果怎么导出？", "acceptedAnswer": { "@type": "Answer", "text": "支持导出 TXT 与 CSV 格式，CSV 可直接用 Excel 打开，方便分拣与统计。" } }
+  ]
+}
+</script>
 
 <footer class="site-footer">
   <div class="container">

@@ -111,6 +111,10 @@ tr.bad td { border-top-color: #fde68a; }
 .td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #f5f3ff, #ede9fe); display: flex; align-items: center; justify-content: center; font-size: 24px; }
 .td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
 .td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #eef0f4; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
 
 footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
 footer.site-footer a { color: #7c3aed; text-decoration: none; }
@@ -275,8 +279,31 @@ footer.site-footer a { color: #7c3aed; text-decoration: none; }
       <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出</b><p>结果支持导出 TXT / CSV，CSV 可直接用 Excel 打开。</p></div></div>
       <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只留在浏览器中，关闭页面即清除，不上传服务器。</p></div></div>
     </div>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>校验结果可信吗？</b><p>工具严格依据国家标准 GB 11643-1999 的校验码算法，同时校验格式、出生日期合理性、地址码有效性与校验码一致性，能精确识别号码是否合法。</p></div>
+      <div class="faq-item"><b>支持 15 位身份证吗？</b><p>支持。工具可自动识别 18 位与 15 位身份证号，并对 15 位号码进行升位处理与一致性校验。</p></div>
+      <div class="faq-item"><b>身份证号会上传服务器吗？</b><p>不会。所有校验与分析都在浏览器本地完成，号码不上传任何服务器，关闭页面即清除。</p></div>
+      <div class="faq-item"><b>可以批量校验吗？</b><p>可以。支持一次粘贴多个号码批量校验，自动去重、过滤无效，并支持导出 TXT / CSV。</p></div>
+      <div class="faq-item"><b>归属地数据准确吗？</b><p>归属地依据国家行政区划代码解析省份/城市/区县，代码库会随官方行政区划调整定期维护更新。</p></div>
+    </div>
   </div>
 </main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "身份证校验结果可信吗？", "acceptedAnswer": { "@type": "Answer", "text": "严格依据国家标准 GB 11643-1999 校验码算法校验格式、出生日期、地址码与校验码，能精确识别号码真伪。" } },
+    { "@type": "Question", "name": "支持 15 位身份证吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。可自动识别 15 位与 18 位号码，并对 15 位做升位与一致性校验。" } },
+    { "@type": "Question", "name": "身份证号会上传服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。校验全程在浏览器本地完成，号码不上传服务器，隐私安全。" } },
+    { "@type": "Question", "name": "可以批量校验吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。支持批量粘贴校验，自动去重过滤无效，并可导出 TXT/CSV。" } },
+    { "@type": "Question", "name": "身份证归属地数据准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "归属地依据身份证前6位行政区域码解析，代码随官方调整更新。" } }
+  ]
+}
+</script>
 
 <footer class="site-footer">
   <div class="container">

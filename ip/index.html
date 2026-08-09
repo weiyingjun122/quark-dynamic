@@ -123,6 +123,10 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 }
 .td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
 .td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
 
 /* 使用步骤 */
 .td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
@@ -322,8 +326,29 @@ footer.site-footer a { color: #3b82f6; text-decoration: none; }
       <li class="td-step"><span class="step-num">2</span><div class="step-txt">如需查询其他地址，在上方输入框输入公网 IPv4/IPv6。</div></li>
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「查询」或按回车，即可查看国家、省份、运营商等详情。</div></li>
     </ol>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>查询出来的 IP 归属地准确吗？</b><p>本站通过后端代理多数据源查询并自动降级，返回国家、省份、城市、运营商、ASN 等信息。运营商级归属地一般较准确，精确到区县级别取决于数据库精度，结果仅供参考。</p></div>
+      <div class="faq-item"><b>支持 IPv6 查询吗？</b><p>支持。工具同时支持 IPv4 与 IPv6 公网地址，在输入框中直接输入即可查询。</p></div>
+      <div class="faq-item"><b>我的 IP 会被保存吗？</b><p>不会。查询结果仅用于本次展示，本站不存储您的 IP 地址与查询历史，可放心使用。</p></div>
+      <div class="faq-item"><b>为什么查询显示的位置和我不一致？</b><p>当使用代理、VPN 或 CDN 时，查询到的是其出口 IP 的归属地，与本地实际物理位置不同，属于正常现象。</p></div>
+    </div>
   </div>
 </main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "IP 归属地查询准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "本站通过后端多数据源代理查询并自动降级，返回国家、省份、城市、运营商等信息，结果仅供参考。" } },
+    { "@type": "Question", "name": "支持 IPv6 查询吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。同时支持 IPv4 与 IPv6 公网地址查询。" } },
+    { "@type": "Question", "name": "查询的 IP 会被保存吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。查询结果仅用于本次展示，本站不存储 IP 与查询历史。" } },
+    { "@type": "Question", "name": "为什么显示的位置和我实际不符？", "acceptedAnswer": { "@type": "Answer", "text": "使用代理、VPN或CDN时，查询到的是出口IP所在的归属地，并非本机物理位置。" } }
+  ]
+}
+</script>
 
 <footer class="site-footer">
   <div class="container">

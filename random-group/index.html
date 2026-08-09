@@ -106,6 +106,10 @@ textarea#names:focus { border-color: #f97316; }
 .td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #fff7ed, #ffedd5); display: flex; align-items: center; justify-content: center; font-size: 24px; }
 .td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
 .td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { background: #fafafc; border: 1px solid #eef0f4; border-radius: 12px; padding: 14px 16px; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
 
 footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
 footer.site-footer a { color: #f97316; text-decoration: none; }
@@ -260,8 +264,29 @@ footer.site-footer a { color: #f97316; text-decoration: none; }
       <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只在浏览器本地处理，不上传服务器。</p></div></div>
       <div class="td-card"><span class="td-ico">📱</span><div><b>免登录免安装</b><p>无需注册，即开即用，手机/平板/电脑浏览器通吃。</p></div></div>
     </div>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>分组结果公平吗？</b><p>公平。工具采用 Fisher-Yates 洗牌算法对名单随机打乱后分组，每次点击「重新分组」都会重新洗牌，结果相互独立、无规律可循。</p></div>
+      <div class="faq-item"><b>名单会上传服务器吗？</b><p>不会。所有分组运算都在您的浏览器本地完成，名单不经过任何服务器，关闭页面即全部清除，可放心使用。</p></div>
+      <div class="faq-item"><b>按人数分组和按组数分组有什么区别？</b><p>按每组人数：您指定每组几人，前面各组人数一致，末尾可能人数较少。按组数：您指定分几组，工具按人数平均分配组。</p></div>
+      <div class="faq-item"><b>支持导出什么格式？</b><p>支持导出 TXT 和 Excel（.xlsx）两种格式，方便打印或直接发到群内、提交给老师。</p></div>
+    </div>
   </div>
 </main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "分组结果公平吗？", "acceptedAnswer": { "@type": "Answer", "text": "完全公平。工具采用 Fisher-Yates 随机洗牌算法，每次重新分组都会生成全新随机结果，无规律、无偏差。" } },
+    { "@type": "Question", "name": "名单会上传服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有分组运算都在浏览器本地完成，名单不经过任何服务器，关闭页面即清除。" } },
+    { "@type": "Question", "name": "按每组人数和按固定组数分组有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "按每组人数即指定每组几人，前面各组人数一致；按组数即指定总成组数，系统按人数自动平均分配。" } },
+    { "@type": "Question", "name": "支持导出什么格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持导出 TXT 和 Excel（xlsx）两种格式，方便打印或发到群内。" } }
+  ]
+}
+</script>
 
 <footer class="site-footer">
   <div class="container">

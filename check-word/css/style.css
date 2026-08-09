@@ -337,6 +337,10 @@ mark.hit {
   line-height: 1.7;
   margin: 0;
 }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #5a5f69; line-height: 1.8; margin: 0; }
 
 /* 使用步骤 */
 .td-steps {
