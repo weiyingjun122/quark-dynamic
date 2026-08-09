@@ -7,17 +7,17 @@
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/about.html</loc>
+        <loc>https://www.weiyingjun.top/about</loc>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/privacy.html</loc>
+        <loc>https://www.weiyingjun.top/privacy</loc>
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/contact.html</loc>
+        <loc>https://www.weiyingjun.top/contact</loc>
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>
