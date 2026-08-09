@@ -22,6 +22,9 @@ on:
       - 'id-card/**'
       - 'random-group/**'
       - 'random-pick/**'
+      - 'password/**'
+      - 'age/**'
+      - 'money/**'
       - 'functions/**'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
   # schedule:
@@ -122,6 +125,9 @@ jobs:
             git add id-card/ 2>/dev/null || true
             git add random-group/ 2>/dev/null || true
             git add random-pick/ 2>/dev/null || true
+            git add password/ 2>/dev/null || true
+            git add age/ 2>/dev/null || true
+            git add money/ 2>/dev/null || true
 
             if ! git diff --cached --quiet; then
                 echo "有变更，提交并推送..."
