@@ -5,5 +5,13 @@ Allow: /
 # 禁止参数搜索页，防重复收录
 Disallow: /*?q=
 
+# 搜索引擎的优化类爬虫
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 # 正确的 Sitemap 地址（重要）
+Sitemap: https://www.weiyingjun.top/sitemap.xml
 Sitemap: https://www.weiyingjun.top/search/sitemap.xml
