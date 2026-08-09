@@ -203,11 +203,13 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
 
     <div class="mini-row">
       <label class="chip"><input type="checkbox" id="opt-exclude" checked> 排除易混淆字符 (0O1l|)</label>
-      <label class="chip"><input type="checkbox" id="opt-number"> 批量生成 5 条</label>
+      <label class="chip">生成数量 <input type="number" id="opt-count" min="1" max="500" value="1" style="width:76px;padding:4px 6px;border:1px solid #d8deec;border-radius:6px;font-size:13px;"> 条</label>
     </div>
 
     <div class="btn-row">
       <button class="btn" id="btn-gen">随机生成密码</button>
+      <button class="btn ghost" id="btn-export-txt">导出 TXT</button>
+      <button class="btn ghost" id="btn-export-excel">导出 Excel</button>
       <button class="btn ghost" id="btn-copy-all">复制全部</button>
     </div>
 
@@ -240,7 +242,7 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
     <h3>使用步骤</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">拖动滑块设置密码长度（建议 12 位以上），选择需要的字符类型。</div></li>
-      <li class="td-step"><span class="step-num">2</span><div class="step-txt">如需，勾选「排除易混淆字符」或「批量生成 5 条」。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">按需开启「排除易混淆字符」，并输入需要生成的数量（范围 1-500 条）。</div></li>
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「随机生成密码」，即可复制使用。</div></li>
     </ol>
 
@@ -250,7 +252,7 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
       <div class="faq-item"><b>密码会被上传或保存吗？</b><p>不会。所有生成与运算都在您的浏览器本地完成，密码不经过任何服务器，刷新或关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>密码长度设置多少合适？</b><p>一般建议至少 12 位；重要账户建议 16-20 位，并同时包含大小写字母、数字与特殊符号。</p></div>
       <div class="faq-item"><b>「排除易混淆字符」有什么用？</b><p>开启后可剔除 0/O、1/l/| 等外观相似的字符，降低手工抄写、输入密码时看错、输错的概率。</p></div>
-      <div class="faq-item"><b>支持批量生成吗？</b><p>支持。勾选「批量生成 5 条」即可一次生成多条不同密码，适合批量初始化工号、应用账号。</p></div>
+      <div class="faq-item"><b>支持批量生成吗？</b><p>支持。可在「生成数量」中输入 1-500 条，一次生成多条不同密码，还可一键导出 TXT 或 Excel（CSV）文件，适合批量初始化工号、应用账号。</p></div>
     </div>
   </div>
 
@@ -376,7 +378,10 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
     var len = parseInt(lenSlider.value, 10);
     var charset = buildCharset();
     if (!charset) { toast("请至少勾选一种字符类型"); return; }
-    var count = document.getElementById("opt-number").checked ? 5 : 1;
+    var countInput = document.getElementById("opt-count");
+    var count = parseInt(countInput.value, 10);
+    if (isNaN(count) || count < 1) { count = 1; countInput.value = "1"; }
+    if (count > 500) { count = 500; countInput.value = "500"; }
     var list = [];
     for (var i = 0; i < count; i++) list.push(genPassword(len, charset));
     render(list, len);
@@ -416,6 +421,43 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
     var items = pwList.querySelectorAll(".pw-text");
     if (!items.length) return;
     copyText(Array.prototype.map.call(items, function (n) { return n.textContent; }).join("\n"), "已复制全部密码");
+  });
+
+  function getPasswords() {
+    var items = pwList.querySelectorAll(".pw-text");
+    var arr = [];
+    for (var i = 0; i < items.length; i++) arr.push(items[i].textContent);
+    return arr;
+  }
+  function download(blob, filename) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }, 200);
+  }
+  document.getElementById("btn-export-txt").addEventListener("click", function () {
+    var pw = getPasswords();
+    if (!pw.length) { toast("请先生成密码"); return; }
+    var content = "随机密码列表\n生成时间：" + new Date().toLocaleString() + "\n\n";
+    pw.forEach(function (p, i) { content += (i + 1) + ".\t" + p + "\n"; });
+    download(new Blob(["\ufeff" + content], { type: "text/plain;charset=utf-8" }), "随机密码_" + Date.now() + ".txt");
+    toast("已导出 TXT");
+  });
+  document.getElementById("btn-export-excel").addEventListener("click", function () {
+    var pw = getPasswords();
+    if (!pw.length) { toast("请先生成密码"); return; }
+    var esc = function (s) { return String(s).replace(/"/g, '""'); };
+    var rows = [["序号", "密码", "长度", "强度"]];
+    pw.forEach(function (p, i) { rows.push([i + 1, p, p.length, strength(p)]); });
+    var lines = rows.map(function (r) { return r.map(function (c) { return '"' + esc(c) + '"'; }).join(","); });
+    var content = "\ufeff" + lines.join("\r\n");
+    download(new Blob([content], { type: "text/csv;charset=utf-8" }), "随机密码_" + Date.now() + ".csv");
+    toast("已导出 Excel(CSV)");
   });
 
   // 默认生成一组
@@ -479,7 +521,7 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
     <div class="donate-cards">
       <div class="pay-card pay-card-wechat">
         <div class="pay-card-head">
-          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-2.4-1.1-4.7-2.9-6.5"/></svg>
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
           <span>微信支付</span>
         </div>
         <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
@@ -488,7 +530,7 @@ footer.site-footer a { color: #4f46e5; text-decoration: none; }
       </div>
       <div class="pay-card pay-card-alipay">
         <div class="pay-card-head">
-          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-3.223-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.34-3.375H5.78v-.952h4.799V6.975H4.77v-.952h5.81V3.591s0-.089.411-.089h2.347v2.34h5.744v.951h-5.744v1.532c0 .334-.01.141-.01.475h4.69a19.453 19.453 0 0 1-1.986 4.061c1.424.52 2.702 1.011 3.654 1.333M5.885 13.038c-.596.06-1.71.87-2.321 1.413-1.83 1.608-.589 3.249 3.268 3.249 1.905 0 3.621-.77 5.158-2.31 1.231-1.2 2.198-2.46 2.254-2.57-2.07-1.011-5.06-1.93-8.218-1.471"/></svg>
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
           <span>支付宝支付</span>
         </div>
         <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">

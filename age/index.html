@@ -50,6 +50,18 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 .action-btn:hover { border-color: #0d9488; color: #0d9488; }
 
 .form-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; align-items: flex-end; }
+.form-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; align-items: flex-end; }
+.sel-row { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
+.sel {
+  padding: 10px 8px; font-size: 15px; color: #1f2d3d;
+  border: 1px solid #dbe3ef; border-radius: 10px; outline: none; background: #fff;
+  cursor: pointer;
+}
+.sel:focus { border-color: #0d9488; }
+.sel-unit { font-size: 13px; color: #475569; white-space: nowrap; margin-right: 4px; }
+#birth-y, #to-y { flex: 1; min-width: 92px; }
+#birth-m, #to-m { width: 74px; }
+#birth-d, #to-d { width: 74px; }
 .field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 160px; }
 .field label { font-size: 13px; color: #475569; }
 .field input[type=date], .field input[type=text] {
@@ -179,14 +191,22 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
       <label><input type="radio" name="mode" value="custom"> 算到指定日期</label>
     </div>
 
-    <div class="form-row">
+    <div class="form-group">
       <div class="field">
-        <label for="birth">出生日期（公历）</label>
-        <input type="date" id="birth">
+        <label>阳历生日</label>
+        <div class="sel-row">
+          <select id="birth-y" class="sel"></select><span class="sel-unit">年</span>
+          <select id="birth-m" class="sel"></select><span class="sel-unit">月</span>
+          <select id="birth-d" class="sel"></select><span class="sel-unit">日</span>
+        </div>
       </div>
       <div class="field" id="custom-field" style="display:none;">
-        <label for="toDate">计算截止日期（公历）</label>
-        <input type="date" id="toDate">
+        <label>计算截止日期（阳历）</label>
+        <div class="sel-row">
+          <select id="to-y" class="sel"></select><span class="sel-unit">年</span>
+          <select id="to-m" class="sel"></select><span class="sel-unit">月</span>
+          <select id="to-d" class="sel"></select><span class="sel-unit">日</span>
+        </div>
       </div>
       <div>
         <button class="btn" id="btn-calc">计算年龄</button>
@@ -234,7 +254,7 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
 
     <h3>使用步骤</h3>
     <ol class="td-steps">
-      <li class="td-step"><span class="step-num">1</span><div class="step-txt">选择「距今/指定日期」，并在日期框中输入公历出生日期。</div></li>
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">选择「距今/指定日期」，并用下拉菜单选择阳历（公历）出生年、月、日。</div></li>
       <li class="td-step"><span class="step-num">2</span><div class="step-txt">如需，选择计算截止日期；点击「计算年龄」按钮。</div></li>
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">即可查看周岁、虚岁、生肖、星座、农历等信息。</div></li>
     </ol>
@@ -276,8 +296,8 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
 (function () {
   "use strict";
 
-  var birthEl = document.getElementById("birth");
-  var toEl = document.getElementById("toDate");
+  var birthCell = { y: document.getElementById("birth-y"), m: document.getElementById("birth-m"), d: document.getElementById("birth-d") };
+  var toCell = { y: document.getElementById("to-y"), m: document.getElementById("to-m"), d: document.getElementById("to-d") };
   var customField = document.getElementById("custom-field");
   var btnCalc = document.getElementById("btn-calc");
   var resultBox = document.getElementById("result-box");
@@ -375,14 +395,25 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
     return r ? r.value : "today";
   }
 
+  function selDate(cell) {
+    var y = parseInt(cell.y.value, 10);
+    var m = parseInt(cell.m.value, 10);
+    var d = parseInt(cell.d.value, 10);
+    if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
+    var maxD = daysInMonth(y, m);
+    if (d > maxD) d = maxD;
+    return { y: y, m: m, d: d };
+  }
+
   function calc() {
     errorMsg.style.display = "none";
-    var birth = parseDate(birthEl.value);
-    if (!birth) { showError("请输入正确的公历出生日期"); return; }
-    var tag = toEl.value;
-    var to = currentMode() === "custom" && tag ? parseDate(tag) : todayLocal();
-    if (!to) { showError("请输入正确的截止日期"); return; }
-    if (to.d < birth.d) { showError("截止日期不能早于出生日期"); return; }
+    var birth = selDate(birthCell);
+    if (!birth) { showError("请选择正确的阳历出生日期"); return; }
+    var to = currentMode() === "custom" ? selDate(toCell) : todayLocal();
+    if (!to) { showError("请选择正确的截止日期"); return; }
+    var birthNum = birth.y * 10000 + birth.m * 100 + birth.d;
+    var toNum = to.y * 10000 + to.m * 100 + to.d;
+    if (toNum < birthNum) { showError("截止日期不能早于出生日期"); return; }
 
     var days = totalDays(to.y, to.m, to.d) - totalDays(birth.y, birth.m, birth.d);
     var yDiff = to.y - birth.y;
@@ -418,19 +449,35 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
     resultBox.style.display = "block";
   }
 
-  function parseDate(s) {
-    if (!s) return null;
-    var p = s.split("-").map(function (n) { return parseInt(n, 10); });
-    if (p.length !== 3 || isNaN(p[0]) || isNaN(p[1]) || isNaN(p[2])) return null;
-    if (p[1] < 1 || p[1] > 12 || p[2] < 1 || p[2] > daysInMonth(p[0], p[1])) return null;
-    return { y: p[0], m: p[1], d: p[2] };
-  }
   function todayLocal() {
     var n = new Date();
     return { y: n.getFullYear(), m: n.getMonth() + 1, d: n.getDate() };
   }
   function pad(n) { return n < 10 ? "0" + n : String(n); }
   function showError(msg) { errorMsg.textContent = msg; errorMsg.style.display = "block"; resultBox.style.display = "none"; }
+
+  function fillOptions(sel, start, end, selected) {
+    var html = "";
+    for (var i = start; i <= end; i++) html += '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + i + '</option>';
+    sel.innerHTML = html;
+  }
+  function refreshDay(sel, y, m, selected) {
+    var max = daysInMonth(y, m);
+    var cur = selected || parseInt(sel.value, 10) || 1;
+    if (cur > max) cur = max;
+    fillOptions(sel, 1, max, cur);
+  }
+  function setSelDate(cell, obj) {
+    fillOptions(cell.y, 1900, 2100, obj.y);
+    fillOptions(cell.m, 1, 12, obj.m);
+    refreshDay(cell.d, obj.y, obj.m, obj.d);
+  }
+  function syncDay(cell) {
+    var y = parseInt(cell.y.value, 10);
+    var m = parseInt(cell.m.value, 10);
+    if (isNaN(y) || isNaN(m)) return;
+    refreshDay(cell.d, y, m);
+  }
 
   function getConstellation(m, d) {
     var bounds = [20,19,21,20,21,22,22,23,23,24,23,22];
@@ -469,21 +516,29 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
   document.querySelectorAll('input[name="mode"]').forEach(function (r) {
     r.addEventListener("change", function () {
       customField.style.display = r.value === "custom" ? "block" : "none";
-      if (r.value === "custom" && !toEl.value) toEl.value = birthEl.value || todayLocal().y + "-" + pad(todayLocal().m) + "-" + pad(todayLocal().d);
+      if (r.value === "custom") {
+        var b = selDate(birthCell) || todayLocal();
+        setSelDate(toCell, { y: b.y, m: b.m, d: b.d });
+      }
     });
   });
   document.querySelectorAll(".tag").forEach(function (t) {
     t.addEventListener("click", function () {
-      birthEl.value = t.getAttribute("data-d");
+      var p = t.getAttribute("data-d").split("-").map(function (n) { return parseInt(n, 10); });
+      setSelDate(birthCell, { y: p[0], m: p[1], d: p[2] });
       calc();
     });
   });
   btnCalc.addEventListener("click", calc);
+  birthCell.y.addEventListener("change", function () { syncDay(birthCell); });
+  birthCell.m.addEventListener("change", function () { syncDay(birthCell); });
+  toCell.y.addEventListener("change", function () { syncDay(toCell); });
+  toCell.m.addEventListener("change", function () { syncDay(toCell); });
 
-  // 默认填充今天
+  // 默认填充：出生日期 1995-06-15，截止日期为今天
   var tl = todayLocal();
-  if (!birthEl.value) birthEl.value = "1995-06-15";
-  toEl.value = tl.y + "-" + pad(tl.m) + "-" + pad(tl.d);
+  setSelDate(birthCell, { y: 1995, m: 6, d: 15 });
+  setSelDate(toCell, { y: tl.y, m: tl.m, d: tl.d });
 
   // —— 二维码 / 打赏 / 复制链接 ——
   function toast(msg) {
@@ -564,7 +619,7 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
     <div class="donate-cards">
       <div class="pay-card pay-card-wechat">
         <div class="pay-card-head">
-          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 1.13-1.78 3.63.942 1.976 3.666 3.703 6.884 3.703.826 0 1.622-.102 2.361-.3a.722.722 0 0 1 .598.15l1.584 1.263a.272.272 0 0 0 .14.06c.134.01.24-.11.24-.25 0-.06-.02-.12-.036-.18l-.327-1.27a.582.582 0 0 1-.023-.16.49.49 0 0 1 .201-.4C23.024 17.7 24 16.06 24 14.3c0-2.65-2.43-4.82-5.52-5.03h-.09c-.77-.04-1.55.04-2.29.18l-1.89.47c-.58.15-1.21.12-1.76-.06l-1.33-.5c-.3-.11-.56.2-.4.47l.72 1.6c.11.25.06.54-.12.74l-.35.4c-.18.2-.48.29-.8.2l-1.9-.4c-.25-1.24.6-2.16 1.47-2.36l1.35-.26c.06-.03.16-.04.22-.07.2-.1.22-.37.03-.5l-1.04-.6c-.42-.2-.93.1-1.4.3l-2.3 1.63c-1.87 1.33-2.97 3.28-2.21 5.6.6 1.93 2.5 2.9 4.6 2.9 2 0 4.2-.9 5.9-2.7"/></svg>
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
           <span>微信支付</span>
         </div>
         <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
@@ -573,7 +628,7 @@ footer.site-footer a { color: #0d9488; text-decoration: none; }
       </div>
       <div class="pay-card pay-card-alipay">
         <div class="pay-card-head">
-          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-3.322-4.112-6.294.49-.6 1.324-1.37 2.617-1.642 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.413.411-.413h2.347v2.797h5.744v.951h-5.744v1.685c0 .299.02.222.02.521h4.69a19.453 19.453 0 0 1-1.986 4.837c1.424.519 2.702 1.01 3.654-1.332"/></svg>
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
           <span>支付宝支付</span>
         </div>
         <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
