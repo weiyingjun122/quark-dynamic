@@ -96,19 +96,45 @@ async function followRedirects(startUrl) {
         const loc = res.headers.get("location");
         hops.push({ url: current, status: status, location: loc || null });
 
-        // 是重定向
+        // ============ 判定是否有下一跳 ============
+        // 1) 标准 3xx 重定向
+        let next = null;
         if (status >= 300 && status < 400 && loc && [301, 302, 303, 307, 308].includes(status)) {
-            let next;
+            next = loc;
+        }
+        // 2) 状态 200 但响应头携带 Location（如 t.cn 安全确认页：返回 200 + Location 头）
+        else if (status >= 200 && status < 300 && loc) {
+            next = loc;
+        }
+        // 3) 页面内 meta refresh 跳转
+        if (!next) {
             try {
-                next = new URL(loc, current).href;
+                const body = await res.text();
+                const mm = body.match(/<meta[^>]+http-equiv=["']?refresh["']?[^>]+content=["']?([^"'>;]+)(?:;[^"'>]*url=([^"'><]+))?/i) ||
+                           body.match(/<meta[^>]+content=["']?([^"'>;]+)(?:;[^"'>]*url=([^"'><]+))?[^>]*http-equiv=["']?refresh["']?/i);
+                if (mm && mm[1]) {
+                    const delay = mm[1].trim();
+                    const jump = (mm[2] || "").trim();
+                    if (jump) next = jump;
+                    else if (/^\d+$/.test(delay)) next = null; // 仅延迟无跳转地址，忽略
+                }
             } catch (e) {
-                return { final: current, original: startUrl, redirects: hops.length > 1, hops, maxHopsReached, error: "重定向地址解析失败" };
+                // 读取 body 失败则忽略，交给下一逻辑
             }
-            current = next;
+        }
+
+        if (next) {
+            let resolved;
+            try {
+                resolved = new URL(next.trim(), current).href;
+            } catch (e) {
+                return { final: current, original: startUrl, redirects: hops.length > 1, hops, maxHopsReached, error: "跳转地址解析失败" };
+            }
+            current = resolved;
             continue;
         }
 
-        // 非重定向（最终地址）
+        // 无下一跳 -> 最终地址
         return { final: current, original: startUrl, redirects: hops.length > 1, hops, maxHopsReached };
     }
 
