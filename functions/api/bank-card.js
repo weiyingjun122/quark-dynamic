@@ -5,7 +5,7 @@
 // 支持：GET /api/bank-card?card=6222021001113891234
 //       POST /api/bank-card  {"card":"6222..."}
 
-const UPSTREAM_TIMEOUT_MS = 4000; // 上游接口超时时间
+const UPSTREAM_TIMEOUT_MS = 2500; // 上游接口超时时间（快进快出，超时走本地 BIN 兜底）
 
 export async function onRequest(context) {
     const { request } = context;

@@ -355,6 +355,34 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     });
   });
 
+  // 本地 BIN 前缀库（接口不可用时的兜底）
+  var LOCAL_BINS = {"622202":["ICBC","中国工商银行","借记卡"],"622203":["ICBC","中国工商银行","借记卡"],"622230":["ICBC","中国工商银行","借记卡"],"621225":["ICBC","中国工商银行","借记卡"],"621226":["ICBC","中国工商银行","借记卡"],"621227":["ICBC","中国工商银行","借记卡"],"621288":["ICBC","中国工商银行","借记卡"],"621558":["ICBC","中国工商银行","借记卡"],"621559":["ICBC","中国工商银行","借记卡"],"621722":["ICBC","中国工商银行","借记卡"],"622848":["ABC","中国农业银行","借记卡"],"622849":["ABC","中国农业银行","借记卡"],"621336":["ABC","中国农业银行","借记卡"],"621337":["ABC","中国农业银行","借记卡"],"621338":["ABC","中国农业银行","借记卡"],"622828":["ABC","中国农业银行","借记卡"],"622841":["ABC","中国农业银行","借记卡"],"622843":["ABC","中国农业银行","借记卡"],"621700":["CCB","中国建设银行","借记卡"],"622700":["CCB","中国建设银行","借记卡"],"621466":["CCB","中国建设银行","借记卡"],"621467":["CCB","中国建设银行","借记卡"],"621468":["CCB","中国建设银行","借记卡"],"621081":["CCB","中国建设银行","借记卡"],"622280":["CCB","中国建设银行","借记卡"],"621660":["BOC","中国银行","借记卡"],"621661":["BOC","中国银行","借记卡"],"621662":["BOC","中国银行","借记卡"],"621663":["BOC","中国银行","借记卡"],"621665":["BOC","中国银行","借记卡"],"622760":["BOC","中国银行","借记卡"],"622258":["COMM","交通银行","借记卡"],"622259":["COMM","交通银行","借记卡"],"621962":["COMM","交通银行","借记卡"],"622588":["CMB","招商银行","借记卡"],"622575":["CMB","招商银行","借记卡"],"621483":["CMB","招商银行","借记卡"],"621484":["CMB","招商银行","借记卡"],"621485":["CMB","招商银行","借记卡"],"622521":["SPDB","上海浦东发展银行","借记卡"],"622522":["SPDB","上海浦东发展银行","借记卡"],"621793":["SPDB","上海浦东发展银行","借记卡"],"622908":["CIB","兴业银行","借记卡"],"622901":["CIB","兴业银行","借记卡"],"622910":["CIB","兴业银行","借记卡"],"622668":["CEB","中国光大银行","借记卡"],"622669":["CEB","中国光大银行","借记卡"],"621030":["CEB","中国光大银行","借记卡"],"622636":["HXB","华夏银行","借记卡"],"622630":["HXB","华夏银行","借记卡"],"622639":["HXB","华夏银行","借记卡"],"622622":["CMBC","中国民生银行","借记卡"],"622623":["CMBC","中国民生银行","借记卡"],"621691":["CMBC","中国民生银行","借记卡"],"622690":["CITIC","中信银行","借记卡"],"622691":["CITIC","中信银行","借记卡"],"622692":["CITIC","中信银行","借记卡"],"621768":["CITIC","中信银行","借记卡"],"622155":["PAB","平安银行","借记卡"],"622156":["PAB","平安银行","借记卡"],"621626":["PAB","平安银行","借记卡"],"622568":["CGB","广发银行","借记卡"],"621462":["CGB","广发银行","借记卡"],"621463":["CGB","广发银行","借记卡"],"622188":["PSBC","中国邮政储蓄银行","借记卡"],"621797":["PSBC","中国邮政储蓄银行","借记卡"],"621798":["PSBC","中国邮政储蓄银行","借记卡"],"621799":["PSBC","中国邮政储蓄银行","借记卡"],"622150":["PSBC","中国邮政储蓄银行","借记卡"],"622151":["PSBC","中国邮政储蓄银行","借记卡"]};
+
+  function localLuhn(num) {
+    var sum = 0, dbl = false;
+    for (var i = num.length - 1; i >= 0; i--) {
+      var d = +num.charAt(i);
+      if (dbl) { d *= 2; if (d > 9) d -= 9; }
+      sum += d;
+      dbl = !dbl;
+    }
+    return sum % 10 === 0;
+  }
+
+  function renderLocal(v) {
+    var hit = LOCAL_BINS[v.slice(0, 6)];
+    var luhn = v.length >= 16 ? localLuhn(v) : null;
+    var bankName = hit ? hit[1] : "未知银行";
+    var code = hit ? hit[0] : "?";
+    var typeName = hit ? hit[2] : "银行卡";
+    render({
+      source: "local-bin", masked: v.slice(0, 4) + " **** **** " + v.slice(-4), bin: v.slice(0, 6), length: v.length,
+      bank: { code: code, name: bankName, short: bankName, type: hit ? "DC" : "-", typeName: typeName },
+      luhn: luhn, luhn_msg: luhn === null ? "卡号不足16位，未执行 Luhn 算法校验" : (luhn ? "卡号校验通过" : "卡号校验未通过（非有效卡号）"),
+      hit: !!hit
+    });
+  }
+
   function query() {
     var v = input.value.replace(/[\s-]/g, "").trim();
     hideError();
@@ -365,28 +393,41 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     btnQuery.disabled = true;
 
     var controller = new AbortController();
-    var timer = setTimeout(function () { controller.abort(); }, 15000);
+    var timer = setTimeout(function () { controller.abort(); }, 12000);
 
     fetch("/api/bank-card?card=" + encodeURIComponent(v), { cache: "no-store", signal: controller.signal })
       .then(function (res) {
         var ct = (res.headers.get("Content-Type") || "");
-        if (ct.indexOf("json") < 0) { throw new Error("接口暂时不可用（服务异常），请稍后重试"); }
+        if (!res.ok || ct.indexOf("json") < 0) { throw new Error("bad-response"); }
         return res.json();
       })
       .then(function (data) {
         loading.style.display = "none";
         btnQuery.disabled = false;
         clearTimeout(timer);
-        if (!data || data.success === false) { showError((data && data.error) || "查询失败，请检查卡号后重试"); return; }
+        if (!data || data.success === false) {
+          if (LOCAL_BINS[v.slice(0, 6)]) {
+            renderLocal(v);
+            toast("接口暂时不可用，已使用本地 BIN 库匹配");
+          } else {
+            showError((data && data.error) || "查询失败，请检查卡号后重试");
+          }
+          return;
+        }
         render(data);
       })
       .catch(function (err) {
         loading.style.display = "none";
         btnQuery.disabled = false;
         clearTimeout(timer);
+        if (LOCAL_BINS[v.slice(0, 6)]) {
+          renderLocal(v);
+          toast("接口暂时不可用，已使用本地 BIN 库匹配");
+          return;
+        }
         var msg = (err && err.name === "AbortError")
           ? "查询超时，请稍后重试"
-          : "查询请求失败：" + (err && err.message ? err.message : "网络异常") + "，请稍后重试";
+          : "查询请求失败：" + (err && err.message && err.message !== "bad-response" ? err.message : "接口暂时不可用") + "，请稍后重试";
         showError(msg);
       });
   }
@@ -404,7 +445,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
           '<span class="bank-type">' + escapeHtml(bank.typeName || "银行卡") + '</span>' +
         '</div>' +
       '</div>' +
-      (d.source === "local-bin" ? '<div class="local-note">⚠ 上游接口暂时不可用，本次结果由本地 BIN 库匹配，仅供参考</div>' : '') +
+      (d.source === "local-bin" ? '<div class="local-note">⚠ 查询接口暂时不可用，本次结果由本地 BIN 库匹配，仅供参考</div>' : '') +
       '<div class="detail-grid">' +
         '<div class="detail-item"><span class="d-label">卡号（打码）</span><span class="d-value">' + escapeHtml(d.masked || "-") + '</span></div>' +
         '<div class="detail-item"><span class="d-label">BIN（前6位）</span><span class="d-value">' + escapeHtml(d.bin || "-") + '</span></div>' +
