@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>文本提取工具 - 手机号邮箱链接免费在线提取</title>
-<meta name="description" content="免费在线文本提取工具，一键提取文本中的手机号、邮箱、网址链接，支持去重、上传文本/Excel/HTML 文件与拖拽粘贴、一键复制与导出，本地处理不上传服务器，安全高效。">
+<title>短链接还原 - 短网址还原查询在线工具</title>
+<meta name="description" content="免费在线短链接还原工具，输入短网址即可解析其真实跳转目标，显示完整 301/302 重定向链与每跳状态码，适用于链接安全检查、运营投放复盘与跳转链路核验，支持常见短链平台，永久免费。">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="canonical" href="https://www.weiyingjun.top/extract/">
+<link rel="canonical" href="https://www.weiyingjun.top/short-link/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="文本提取工具 - 手机号/邮箱/链接提取">
-<meta property="og:description" content="免费在线提取手机号、邮箱、网址链接，支持去重、文件上传、一键复制导出。">
-<meta property="og:url" content="https://www.weiyingjun.top/extract/">
+<meta property="og:title" content="短链接还原 - 短网址还原查询工具">
+<meta property="og:description" content="输入短网址，一键还原真实跳转目标，展示完整 301/302 重定向链。">
+<meta property="og:url" content="https://www.weiyingjun.top/short-link/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="实用资源整理站">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3E提%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3E%E9%93%BE%3C/text%3E%3C/svg%3E">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -49,41 +49,23 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 }
 .action-btn:hover { border-color: #2563eb; color: #2563eb; }
 
-.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.tab {
-  flex: 1; min-width: 120px; text-align: center;
-  padding: 10px 12px; border: 1px solid #dfe3ee; border-radius: 10px;
-  background: #f8fafc; color: #475569; font-size: 14px; cursor: pointer;
-  transition: all .15s; white-space: nowrap;
-}
-.tab:hover { border-color: #93c5fd; }
-.tab.active { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 600; }
-
-.upload-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
-.upload-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 16px; border: 1px dashed #93c5fd; border-radius: 10px;
-  background: #eff6ff; color: #2563eb; font-size: 13px; cursor: pointer;
-  transition: all .15s;
-}
-.upload-btn:hover { background: #dbeafe; }
-#fileInput { display: none; }
-.upload-tip { font-size: 12px; color: #94a3b8; }
-
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 13px; color: #475569; }
-#srcText {
-  width: 100%; min-height: 150px; padding: 12px 14px; font-size: 14px;
+#shortUrl {
+  width: 100%; padding: 13px 14px; font-size: 14px;
   border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
-  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
-  background: #fafbff;
+  font-family: Consolas, Menlo, monospace; background: #fafbff;
 }
-#srcText:focus { border-color: #2563eb; background: #fff; }
+#shortUrl:focus { border-color: #2563eb; background: #fff; }
 
-.options-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; align-items: center; }
-.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #475569; }
-.chip input { accent-color: #2563eb; }
-.chip-note { font-size: 12px; color: #94a3b8; }
+.samples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; align-items: center; }
+.samples .hint { font-size: 12px; color: #94a3b8; margin-right: 2px; }
+.sample-chip {
+  border: 1px dashed #93c5fd; background: #eff6ff; color: #2563eb;
+  padding: 5px 12px; border-radius: 999px; font-size: 12px; cursor: pointer;
+  transition: all .15s; font-family: Consolas, Menlo, monospace;
+}
+.sample-chip:hover { background: #dbeafe; }
 
 .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
 .btn {
@@ -92,6 +74,7 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
   white-space: nowrap;
 }
 .btn:hover { background: #1d4ed8; }
+.btn:disabled { background: #93c5fd; cursor: not-allowed; }
 .btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
 .btn.ghost:hover { background: #e2e8f0; }
 
@@ -105,22 +88,35 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
   white-space: nowrap; transition: all .15s;
 }
 .mini-btn:hover { border-color: #2563eb; color: #2563eb; }
-.result-list {
-  margin-top: 12px; border: 1px solid #e4e7f0; border-radius: 10px;
-  max-height: 320px; overflow-y: auto; background: #fafbff;
+
+.final-box {
+  margin-top: 12px; border: 1px solid #d1e7ff; border-radius: 10px;
+  padding: 14px 16px; background: #f0f6ff; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
 }
-.result-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 14px; border-bottom: 1px dashed #eef1f7; font-size: 14px;
-  font-family: Consolas, Menlo, monospace; color: #1f2d3d; word-break: break-all;
-}
-.result-item:last-child { border-bottom: none; }
-.result-item .idx { color: #94a3b8; font-size: 12px; flex-shrink: 0; width: 34px; text-align: right; }
-.result-item .val { flex: 1; }
-.result-item .copy { color: #2563eb; cursor: pointer; font-size: 12px; flex-shrink: 0; padding: 3px 10px; border: 1px solid #bfdbfe; border-radius: 6px; background: #eff6ff; transition: all .15s; }
-.result-item .copy:hover { background: #dbeafe; border-color: #93c5fd; }
+.final-box .f-label { font-size: 13px; color: #2563eb; font-weight: 600; flex-shrink: 0; }
+.final-box .f-url { flex: 1; font-size: 14px; color: #1f2d3d; font-family: Consolas, Menlo, monospace; word-break: break-all; }
+
+.hops-box { margin-top: 12px; border: 1px solid #e4e7f0; border-radius: 10px; background: #fafbff; overflow: hidden; }
+.hops-title { font-size: 13px; color: #64748b; padding: 10px 14px; border-bottom: 1px dashed #eef1f7; }
+.hop-item { display: flex; gap: 10px; padding: 9px 14px; border-bottom: 1px dashed #eef1f7; font-size: 13px; align-items: flex-start; }
+.hop-item:last-child { border-bottom: none; }
+.hop-num { color: #94a3b8; flex-shrink: 0; width: 52px; font-family: Consolas, Menlo, monospace; }
+.hop-url { flex: 1; color: #1f2d3d; word-break: break-all; font-family: Consolas, Menlo, monospace; }
+.hop-status { flex-shrink: 0; font-family: Consolas, Menlo, monospace; padding: 1px 8px; border-radius: 5px; font-size: 12px; }
+.hop-status.s30x { background: #fef3c7; color: #b45309; }
+.hop-status.s20x { background: #dcfce7; color: #15803d; }
+.hop-status.serr { background: #fee2e2; color: #b91c1c; }
+.hop-arrow { color: #94a3b8; flex-shrink: 0; }
 
 .error-msg { display: none; margin-top: 16px; padding: 12px 14px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 10px; font-size: 14px; }
+
+.loading { display: none; margin-top: 16px; color: #64748b; font-size: 14px; }
+.spinner {
+  display: inline-block; width: 14px; height: 14px; margin-right: 8px;
+  border: 2px solid #bfdbfe; border-top-color: #2563eb; border-radius: 50%;
+  animation: spin .7s linear infinite; vertical-align: -2px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
 
@@ -188,8 +184,8 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
 <body>
 
 <header class="site-header">
-  <h1>文本提取工具</h1>
-  <p class="subtitle">一键提取文本中的手机号、邮箱、网址链接，支持去重与文件上传</p>
+  <h1>短链接还原</h1>
+  <p class="subtitle">输入短网址，一键还原真实跳转目标，查看完整 301/302 重定向链</p>
 </header>
 
 <main class="container">
@@ -203,78 +199,75 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       </div>
     </div>
 
-    <div class="tabs" id="tabs">
-      <button class="tab active" data-type="phone">📱 手机号提取</button>
-      <button class="tab" data-type="email">✉️ 邮箱提取</button>
-      <button class="tab" data-type="link">🔗 链接提取</button>
-    </div>
-
-    <div class="upload-row">
-      <label class="upload-btn">📁 上传文件<input type="file" id="fileInput" accept=".txt,.csv,.html,.htm,.md,.xlsx,.xls,.log"></label>
-      <span class="upload-tip">支持 txt / csv / html / xlsx / log，也可直接粘贴或拖入下方文本框</span>
-    </div>
-
     <div class="field">
-      <label for="srcText" id="srcLabel">手机号提取 - 粘贴或输入包含手机号的文本</label>
-      <textarea id="srcText" placeholder="在此粘贴文本，例如：&#10;联系人：王经理 13812345678 邮箱 wang@example.com&#10;客服电话 13900008888，官网 https://www.example.com/page.html"></textarea>
+      <label for="shortUrl">请输入要还原的短链接</label>
+      <input type="url" id="shortUrl" placeholder="粘贴短链接，例如：https://k.sina.com.cn/xxxxx 或 https://v.douyin.com/xxxxx">
     </div>
 
-    <div class="options-row">
-      <label class="chip"><input type="checkbox" id="opt-dedup" checked> 结果去重</label>
-      <span class="chip-note">开启后重复的手机号/邮箱/链接只保留一个</span>
+    <div class="samples">
+      <span class="hint">示例短链：</span>
+      <button class="sample-chip" data-url="https://www.weiyingjun.top/demo-redirect">weiyingjun.top/demo-redirect</button>
     </div>
 
     <div class="btn-row">
-      <button class="btn" id="btn-extract">开始提取</button>
+      <button class="btn" id="btn-redirect">还原 URL</button>
       <button class="btn ghost" id="btn-clear">清空</button>
     </div>
+
+    <div class="loading" id="loading"><span class="spinner"></span>正在还原，请稍候...</div>
 
     <div class="result-box" id="result-box">
       <div class="result-head">
         <span class="result-count" id="result-count"></span>
         <span class="result-actions">
-          <button class="mini-btn" id="btn-copy-all">复制全部</button>
-          <button class="mini-btn" id="btn-export-txt">导出 TXT</button>
-          <button class="mini-btn" id="btn-export-excel">导出 Excel</button>
+          <button class="mini-btn" id="btn-copy-final">复制最终地址</button>
+          <button class="mini-btn" id="btn-copy-chain">复制完整链路</button>
         </span>
       </div>
-      <div class="result-list" id="result-list"></div>
+      <div class="final-box">
+        <span class="f-label">最终地址</span>
+        <span class="f-url" id="final-url"></span>
+      </div>
+      <div class="hops-box">
+        <div class="hops-title">重定向跳转链（按跳转顺序）</div>
+        <div id="hops-list"></div>
+      </div>
     </div>
 
     <div class="error-msg" id="error-msg"></div>
 
   </div>
 
-  <div class="disclaimer">所有文本提取、去重操作均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
+  <div class="disclaimer">还原过程由本站服务端发起请求完成，仅读取跳转目标地址，不会自动打开目标站点，请注意核对域名后再访问。</div>
 
   <div class="tool-desc">
-    <h2>文本提取工具介绍</h2>
-    <p>本工具是一款免费在线的文本提取神器，支持从任意文本中一键提取手机号码、电子邮箱、网址链接三大类信息。无论是网页源码、Excel 列表、聊天记录还是文档内容，粘贴进来即可自动识别、去重并整理成清单，方便后续批量使用。</p>
-    <p>工具内置智能提取规则：手机号支持中国大陆 11 位手机号；邮箱可识别常见邮箱格式；链接支持 http/https/www 开头的网址。所有处理均在本地完成，内容不经过任何服务器，安全隐私零顾虑。</p>
+    <h2>短链接还原工具介绍</h2>
+    <p>本工具是一款免费在线的短网址还原工具，输入短链接后即可解析出它最终跳转到的真实网址，并展示完整的 301/302 重定向链与每个节点的状态码。适用于链接安全检查、广告投放复盘、运营数据归因以及跳转链路核验等场景。</p>
+    <p>工具主要针对 301/302/307/308 类型的 HTTP 重定向进行还原，支持 http 与 https 协议，覆盖常见短链平台的链接还原需求。不使用 JS 动态跳转的短网址无法还原，具体原因见下方常见问题。</p>
 
-    <h3>工具特点</h3>
+    <h3>核心功能</h3>
     <div class="td-grid">
-      <div class="td-card"><span class="td-ico">📱</span><div><b>手机号提取</b><p>一键提取文本中所有大陆 11 位手机号，自动过滤无关数字。</p></div></div>
-      <div class="td-card"><span class="td-ico">✉️</span><div><b>邮箱提取</b><p>智能识别常见邮箱格式，从杂乱文本中批量提取电子邮箱。</p></div></div>
-      <div class="td-card"><span class="td-ico">🔗</span><div><b>链接提取</b><p>提取 http/https 网址链接，批量整理页面地址与资源链接。</p></div></div>
-      <div class="td-card"><span class="td-ico">🗂️</span><div><b>自动去重</b><p>一键去除重复项，让提取结果更干净、便于进一步处理。</p></div></div>
-      <div class="td-card"><span class="td-ico">📂</span><div><b>文件上传</b><p>支持上传 txt / csv / html / xlsx 等文件，直接解析并提取。</p></div></div>
-      <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔗</span><div><b>一键还原</b><p>输入短链接点击还原，即可获取最终目标地址与完整跳转链。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧭</span><div><b>跳转链明细</b><p>逐步展示每一跳的地址与状态码，链路清晰可见。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>快捷复制</b><p>支持一键复制最终地址或完整链路，便于核验与分享。</p></div></div>
+      <div class="td-card"><span class="td-ico">🛡️</span><div><b>安全核验</b><p>解析前可见最终域名，辅助识别异常跳转与风险链接。</p></div></div>
+      <div class="td-card"><span class="td-ico">📱</span><div><b>多端可用</b><p>电脑、手机浏览器均可直接使用，无需下载安装。</p></div></div>
+      <div class="td-card"><span class="td-ico">🚀</span><div><b>服务端解析</b><p>由云端函数完成跟链，避开浏览器跨域限制，解析更准确。</p></div></div>
     </div>
 
-    <h3>使用步骤</h3>
+    <h3>如何使用短链接还原工具</h3>
     <ol class="td-steps">
-      <li class="td-step"><span class="step-num">1</span><div class="step-txt">切换上方 Tab 选择要提取的类型（手机号/邮箱/链接）。</div></li>
-      <li class="td-step"><span class="step-num">2</span><div class="step-txt">粘贴文本或点击「上传文件」选择本地文档，可开启去重。</div></li>
-      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始提取」，查看结果并可一键复制、导出。</div></li>
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">将短网址粘贴到上方输入框中。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">点击「还原 URL」按钮开始解析。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">在结果区查看目标地址与跳转链，并按需复制使用。</div></li>
     </ol>
 
     <h3>常见问题</h3>
     <div class="faq-list">
-      <div class="faq-item"><b>支持哪些文件格式上传？</b><p>支持 txt、csv、html、htm、log、markdown 等纯文本格式，以及 xlsx / xls 电子表格；也可直接复制粘贴或从本地文件管理器拖拽文本。</p></div>
-      <div class="faq-item"><b>提取的数据会被上传吗？</b><p>不会。手机号、邮箱、链接等所有数据均在您的浏览器本地通过正则匹配完成，不经过任何服务器，可放心处理敏感信息。</p></div>
-      <div class="faq-item"><b>手机号提取会误提取其他数字吗？</b><p>不会。工具仅匹配符合 11 位手机号特征的号码段（以 13X-19X 开头），不会将普通数字、座机号等误判为手机号。</p></div>
-      <div class="faq-item"><b>提取结果如何导出？</b><p>结果区域提供「复制全部」「导出 TXT」「导出 Excel（CSV 格式）」按钮，一次性保存所有提取结果。</p></div>
+      <div class="faq-item"><b>为什么有些短链接还原失败？</b><p>常见原因是该短链未使用 301/302 服务端跳转，而是通过 JS 脚本或前端逻辑在浏览器内跳转，此类短链无法被解析。部分平台也会对无特定 Referer/User-Agent 的请求返回拦截页。</p></div>
+      <div class="faq-item"><b>可以批量还原短链接吗？</b><p>当前版本为单条还原模式，适合快速核验单个短网址；如需批量核验可使用站内「文本提取工具」先提取出链接清单。</p></div>
+      <div class="faq-item"><b>还原结果安全吗？</b><p>本工具仅用于展示跳转目标地址，不会自动打开目标站点或执行任何跳转。建议先核对最终域名与协议，确认安全后再访问。</p></div>
+      <div class="faq-item"><b>支持哪些短链平台？</b><p>凡是使用 HTTP 301/302 跳转的短链均可还原，例如常见短链服务生成的链接；若目标页面使用框架页或 JS 跳转则无法显示最终地址。</p></div>
     </div>
   </div>
 
@@ -284,9 +277,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "支持哪些文件格式上传？", "acceptedAnswer": { "@type": "Answer", "text": "支持 txt、csv、html、xml、log、md 等纯文本格式，以及 xlsx/xls 电子表格，也可直接粘贴文本。" } },
-    { "@type": "Question", "name": "提取的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有提取均在浏览器本地完成，不经过任何服务器。" } },
-    { "@type": "Question", "name": "提取结果如何导出？", "acceptedAnswer": { "@type": "Answer", "text": "支持复制全部、导出 TXT 与导出 Excel（CSV 格式）。" } }
+    { "@type": "Question", "name": "为什么有些短链接还原失败？", "acceptedAnswer": { "@type": "Answer", "text": "常见原因是该短链未使用 301/302 服务端跳转，而是通过 JS 脚本或前端逻辑在浏览器内跳转，此类短链无法被解析。部分平台也会对无特定 Referer/User-Agent 的请求返回拦截页。" } },
+    { "@type": "Question", "name": "可以批量还原短链接吗？", "acceptedAnswer": { "@type": "Answer", "text": "当前版本为单条还原模式，适合快速核验单个短网址。" } },
+    { "@type": "Question", "name": "还原结果安全吗？", "acceptedAnswer": { "@type": "Answer", "text": "本工具仅用于展示跳转目标地址，不会自动打开目标站点或执行任何跳转，建议先核对最终域名再访问。" } },
+    { "@type": "Question", "name": "支持哪些短链平台？", "acceptedAnswer": { "@type": "Answer", "text": "凡是使用 HTTP 301/302 跳转的短链均可还原；若目标页面使用框架页或 JS 跳转则无法显示最终地址。" } }
   ]
 }
 </script>
@@ -305,100 +299,96 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
 (function () {
   "use strict";
 
-  var tabs = document.getElementById("tabs");
-  var fileInput = document.getElementById("fileInput");
-  var srcText = document.getElementById("srcText");
-  var srcLabel = document.getElementById("srcLabel");
-  var optDedup = document.getElementById("opt-dedup");
-  var btnExtract = document.getElementById("btn-extract");
+  var input = document.getElementById("shortUrl");
+  var btnRedirect = document.getElementById("btn-redirect");
   var btnClear = document.getElementById("btn-clear");
+  var loading = document.getElementById("loading");
   var resultBox = document.getElementById("result-box");
   var resultCount = document.getElementById("result-count");
-  var resultList = document.getElementById("result-list");
+  var finalUrl = document.getElementById("final-url");
+  var hopsList = document.getElementById("hops-list");
   var errorMsg = document.getElementById("error-msg");
 
-  var TABS = [
-    { type: "phone", title: "手机号", regex: /(?<![\d])(1[3-9]\d{9})(?![\d])/g, label: "手机号 · 粘贴包含手机号的文本" },
-    { type: "email", title: "邮箱", regex: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g, label: "邮箱 · 粘贴包含邮箱的文本" },
-    { type: "link", title: "链接", regex: /(?:https?:\/\/|www\.)[^\s"'<>）()[\]]+/g, label: "链接 · 粘贴包含网址的文本", normalize: function (s) { return s.replace(/[.,;:]+$/, ""); } }
-  ];
-  var currentType = "phone";
+  btnRedirect.addEventListener("click", resolve);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") resolve(); });
+  btnClear.addEventListener("click", function () { input.value = ""; resultBox.style.display = "none"; errorMsg.style.display = "none"; loading.style.display = "none"; input.focus(); });
 
-  tabs.addEventListener("click", function (e) {
-    var b = e.target.closest(".tab");
-    if (!b) return;
-    tabs.querySelectorAll(".tab").forEach(function (t) { t.classList.remove("active"); });
-    b.classList.add("active");
-    currentType = b.getAttribute("data-type");
-    var info = getTab(currentType);
-    srcLabel.textContent = info.label;
-    var total = extractAll();
-    if (total > 0) { /* 保留结果，提示已在当前类型重新提取 */ }
+  document.querySelectorAll(".sample-chip").forEach(function (ch) {
+    ch.addEventListener("click", function () {
+      input.value = ch.getAttribute("data-url");
+      resolve();
+    });
   });
 
-  function getTab(type) {
-    for (var i = 0; i < TABS.length; i++) if (TABS[i].type === type) return TABS[i];
-    return TABS[0];
-  }
-
-  function findVal(info, text) {
-    info.regex.lastIndex = 0;
-    var res = [], m;
-    while ((m = info.regex.exec(text)) !== null) {
-      var v = m[0] || m[1];
-      if (info.normalize) v = info.normalize(v);
-      if (!v) continue;
-      res.push(v);
-      if (m[0].length === 0) info.regex.lastIndex++;
-    }
-    return res;
-  }
-
-  function extract() {
-    var text = srcText.value;
-    if (!text.trim()) { showError("请先粘贴文本或上传文件"); return; }
+  function resolve() {
+    var v = input.value.trim();
+    if (!v) { showError("请先输入要还原的短链接"); return; }
     hideError();
-    var info = getTab(currentType);
-    var items = findVal(info, text);
-    if (optDedup.checked) items = dedup(items, currentType);
-    render(items, info);
+    resultBox.style.display = "none";
+    loading.style.display = "block";
+    btnRedirect.disabled = true;
+
+    fetch("/api/short-link?url=" + encodeURIComponent(v), { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) {
+          return res.text().then(function (t) {
+            throw new Error("HTTP " + res.status + " " + (t || "").slice(0, 120));
+          });
+        }
+        return res.json();
+      })
+      .then(function (data) {
+        loading.style.display = "none";
+        btnRedirect.disabled = false;
+        if (!data || data.success === false) {
+          showError((data && data.error) || "还原失败，请检查链接后重试");
+          return;
+        }
+        render(data);
+      })
+      .catch(function (err) {
+        loading.style.display = "none";
+        btnRedirect.disabled = false;
+        if (err && err.message && /^HTTP /.test(err.message)) {
+          showError("还原请求失败：" + err.message + "。若接口返回 404，说明功能尚未部署完成，请刷新后重试。");
+        } else {
+          showError("还原请求失败，请检查网络后重试");
+        }
+      });
   }
 
-  function extractAll() {
-    var text = srcText.value;
-    if (!text.trim()) return 0;
-    var info = getTab(currentType);
-    var items = findVal(info, text);
-    if (optDedup.checked) items = dedup(items, currentType);
-    render(items, info);
-    return items.length;
-  }
+  function render(data) {
+    resultBox.style.display = "block";
+    resultCount.textContent = "还原完成 · " + (data.redirects ? "存在跳转，共 " + (data.hops && data.hops.length) + " 跳" : "未发生跳转，该链接即为最终地址");
+    finalUrl.textContent = data.final;
+    finalUrl.title = data.final;
 
-  function dedup(arr, type) {
-    var seen = {}, out = [];
-    for (var i = 0; i < arr.length; i++) {
-      var k = (type === "email" ? arr[i].toLowerCase() : arr[i]);
-      if (!seen[k]) { seen[k] = 1; out.push(arr[i]); }
+    var hops = data.hops || [];
+    if (!hops.length) {
+      hopsList.innerHTML = '<div class="hop-item"><span class="hop-num">--</span><span class="hop-url" style="color:#94a3b8;">无跳转记录</span></div>';
+      return;
     }
-    return out;
+    var html = "";
+    for (var i = 0; i < hops.length; i++) {
+      var h = hops[i];
+      var cls = "";
+      if (h.status !== null && h.status >= 300 && h.status < 400) cls = "s30x";
+      else if (h.status !== null && h.status >= 200 && h.status < 300) cls = "s20x";
+      else if (h.error) cls = "serr";
+      var statusTxt = h.error ? "失败" : (h.status || "-");
+      html += '<div class="hop-item">' +
+        '<span class="hop-num">第 ' + (i + 1) + ' 跳</span>' +
+        '<span class="hop-url">' + escapeHtml(h.url) + (h.location ? ' <span class="hop-arrow">→</span> ' + escapeHtml(h.location) : '') + '</span>' +
+        '<span class="hop-status ' + cls + '">' + escapeHtml(statusTxt) + '</span>' +
+      '</div>';
+    }
+    hopsList.innerHTML = html;
   }
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
-  }
-
-  function render(items, info) {
-    resultBox.style.display = "block";
-    resultCount.textContent = "已提取 " + items.length + " 个" + (info ? info.title : "") + (optDedup.checked ? "（已去重）" : "");
-    if (!items.length) {
-      resultList.innerHTML = '<div class="result-item"><span class="idx">--</span><span class="val" style="color:#94a3b8;">未提取到结果</span></div>';
-      return;
-    }
-    resultList.innerHTML = items.map(function (it, i) {
-      return '<div class="result-item"><span class="idx">' + (i + 1) + '</span><span class="val">' + escapeHtml(it) + '</span><button class="copy" data-v="' + escapeHtml(it) + '">复制</button></div>';
-    }).join("");
   }
 
   function toast(msg) {
@@ -408,6 +398,9 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     clearTimeout(toast._t);
     toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
   }
+  function showError(msg) { resultBox.style.display = "none"; errorMsg.textContent = msg; errorMsg.style.display = "block"; }
+  function hideError() { errorMsg.style.display = "none"; }
+
   function copyText(text, doneMsg) {
     function ok() { toast(doneMsg || "复制成功"); }
     function fail() { toast("复制失败"); }
@@ -426,112 +419,16 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     document.body.removeChild(ta);
   }
 
-  function showError(msg) { errorMsg.textContent = msg; errorMsg.style.display = "block"; resultBox.style.display = "none"; }
-  function hideError() { errorMsg.style.display = "none"; }
-
-  function getItems() {
-    var vals = [];
-    resultList.querySelectorAll(".val").forEach(function (n) { vals.push(n.textContent); });
-    return vals;
-  }
-  function download(blob, filename) {
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 200);
-  }
-
-  function readFileToText(file, cb) {
-    var name = (file.name || "").toLowerCase();
-    if (/(\.xlsx|\.xls)$/.test(name)) {
-      readExcel(file, cb);
-      return;
-    }
-    var reader = new FileReader();
-    reader.onload = function () { cb(String(reader.result || "")); };
-    reader.onerror = function () { toast("读取文件失败"); };
-    reader.readAsText(file);
-  }
-  function readExcel(file, cb) {
-    if (!window.XLSX) {
-      var s = document.createElement("script");
-      s.src = "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
-      s.onload = function () { readExcel(file, cb); };
-      s.onerror = function () { cb(""); toast("Excel 解析库加载失败，请直接粘贴文本或下载 XLSX 库后重试"); };
-      document.head.appendChild(s);
-      return;
-    }
-    var reader = new FileReader();
-    reader.onload = function () {
-      var data = new Uint8Array(reader.result);
-      var wb;
-      try {
-        wb = window.XLSX.read(data, { type: "array" });
-      } catch (e) {
-        cb("");
-        toast("Excel 文件解析失败，请直接粘贴文本");
-        return;
-      }
-      var lines = [];
-      wb.SheetNames.forEach(function (sn) {
-        var rows = window.XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, defval: "" });
-        rows.forEach(function (r) { lines.push(r.join("\t")); });
-      });
-      cb(lines.join("\n"));
-    };
-    reader.onerror = function () { toast("读取文件失败"); };
-    reader.readAsArrayBuffer(file);
-  }
-
-  btnExtract.addEventListener("click", extract);
-  btnClear.addEventListener("click", function () { srcText.value = ""; resultBox.style.display = "none"; errorMsg.style.display = "none"; srcText.focus(); });
-  fileInput.addEventListener("change", function () {
-    var f = fileInput.files && fileInput.files[0];
-    if (!f) return;
-    readFileToText(f, function (content) {
-      if (!content) return;
-      srcText.value = content;
-      toast("已加载文件： " + f.name);
-      resultBox.style.display = "none";
-      errorMsg.style.display = "none";
-      extract();
+  document.getElementById("btn-copy-final").addEventListener("click", function () {
+    if (finalUrl.textContent) copyText(finalUrl.textContent, "已复制最终地址");
+  });
+  document.getElementById("btn-copy-chain").addEventListener("click", function () {
+    var lines = [];
+    hopsList.querySelectorAll(".hop-item").forEach(function (n) {
+      var url = n.querySelector(".hop-url");
+      if (url) lines.push(url.textContent.replace(/\s*→\s*/, " -> "));
     });
-    fileInput.value = "";
-  });
-  // 拖拽粘贴
-  srcText.addEventListener("drop", function (e) {
-    e.preventDefault();
-    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (f) { readFileToText(f, function (content) { if (content) { srcText.value = content; extract(); } }); }
-    else { srcText.value = (e.dataTransfer && e.dataTransfer.getData("text")) || srcText.value; }
-  });
-  srcText.addEventListener("dragover", function (e) { e.preventDefault(); });
-
-  resultList.addEventListener("click", function (e) {
-    var b = e.target.closest(".copy");
-    if (b) copyText(b.getAttribute("data-v"));
-  });
-  document.getElementById("btn-copy-all").addEventListener("click", function () {
-    var arr = getItems();
-    if (!arr.length) return;
-    copyText(arr.join("\n"), "已复制全部");
-  });
-  document.getElementById("btn-export-txt").addEventListener("click", function () {
-    var arr = getItems();
-    if (!arr.length) { toast("暂无可导出的结果"); return; }
-    var content = getTab(currentType).title + "提取结果\n提取时间：" + new Date().toLocaleString() + "\n\n" + arr.join("\n");
-    download(new Blob(["\ufeff" + content], { type: "text/plain;charset=utf-8" }), currentType + "_提取_" + Date.now() + ".txt");
-    toast("已导出 TXT");
-  });
-  document.getElementById("btn-export-excel").addEventListener("click", function () {
-    var arr = getItems();
-    if (!arr.length) { toast("暂无可导出的结果"); return; }
-    var esc = function (s) { return String(s).replace(/"/g, '""'); };
-    var lines = ['"' + getTab(currentType).title + '"'].concat(arr.map(function (v) { return '"' + esc(v) + '"'; }));
-    download(new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" }), currentType + "_提取_" + Date.now() + ".csv");
-    toast("已导出 Excel(CSV)");
+    if (lines.length) { copyText(lines.join("\n"), "已复制完整链路"); }
   });
 
   // 二维码 / 打赏 / 复制链接
