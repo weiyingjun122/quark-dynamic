@@ -406,12 +406,8 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
         btnQuery.disabled = false;
         clearTimeout(timer);
         if (!data || data.success === false) {
-          if (LOCAL_BINS[v.slice(0, 6)]) {
-            renderLocal(v);
-            toast("接口暂时不可用，已使用本地 BIN 库匹配");
-          } else {
-            showError((data && data.error) || "查询失败，请检查卡号后重试");
-          }
+          renderLocal(v);
+          toast(data && data.error ? "接口异常：" + data.error : "接口暂时不可用，已使用本地 BIN 库匹配");
           return;
         }
         render(data);
@@ -420,15 +416,8 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
         loading.style.display = "none";
         btnQuery.disabled = false;
         clearTimeout(timer);
-        if (LOCAL_BINS[v.slice(0, 6)]) {
-          renderLocal(v);
-          toast("接口暂时不可用，已使用本地 BIN 库匹配");
-          return;
-        }
-        var msg = (err && err.name === "AbortError")
-          ? "查询超时，请稍后重试"
-          : "查询请求失败：" + (err && err.message && err.message !== "bad-response" ? err.message : "接口暂时不可用") + "，请稍后重试";
-        showError(msg);
+        renderLocal(v);
+        toast("接口暂时不可用，已使用本地 BIN 库匹配");
       });
   }
 
