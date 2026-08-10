@@ -254,13 +254,13 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   <div class="tool-desc">
     <h2>文本提取工具介绍</h2>
     <p>本工具是一款免费在线的文本提取神器，支持从任意文本中一键提取手机号码、电子邮箱、网址链接、身份证号四大类信息。无论是网页源码、Excel 列表、聊天记录还是文档内容，粘贴进来即可自动识别、去重并整理成清单，方便后续批量使用。</p>
-    <p>工具内置智能提取规则：手机号支持中国大陆 11 位手机号；邮箱可识别常见邮箱格式；链接支持 http/https/www 开头的网址；身份证号支持 18 位与 15 位号码，并自动校验出生日期与校验位。所有处理均在本地完成，内容不经过任何服务器，安全隐私零顾虑。</p>
+    <p>工具内置智能提取规则：手机号支持中国大陆 11 位手机号；邮箱可识别常见邮箱格式；链接支持 http/https/www 开头的网址；身份证号支持 18 位与 15 位号码，末位 X 兼容不区分大小写。所有处理均在本地完成，内容不经过任何服务器，安全隐私零顾虑。</p>
 
     <h3>工具特点</h3>
     <div class="td-grid">
       <div class="td-card"><span class="td-ico">📱</span><div><b>手机号提取</b><p>一键提取文本中所有大陆 11 位手机号，自动过滤无关数字。</p></div></div>
       <div class="td-card"><span class="td-ico">✉️</span><div><b>邮箱提取</b><p>智能识别常见邮箱格式，从杂乱文本中批量提取电子邮箱。</p></div></div>
-      <div class="td-card"><span class="td-ico">🪪</span><div><b>身份证号提取</b><p>支持 18 位与 15 位身份证号，自动校验出生日期与校验位。</p></div></div>
+      <div class="td-card"><span class="td-ico">🪪</span><div><b>身份证号提取</b><p>支持 18 位与 15 位身份证号，末位 X 兼容不区分大小写。</p></div></div>
       <div class="td-card"><span class="td-ico">🔗</span><div><b>链接提取</b><p>提取 http/https 网址链接，批量整理页面地址与资源链接。</p></div></div>
       <div class="td-card"><span class="td-ico">🗂️</span><div><b>自动去重</b><p>一键去除重复项，让提取结果更干净、便于进一步处理。</p></div></div>
       <div class="td-card"><span class="td-ico">📂</span><div><b>文件上传</b><p>支持上传 txt / csv / html / xlsx 等文件，直接解析并提取。</p></div></div>
@@ -279,7 +279,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       <div class="faq-item"><b>支持哪些文件格式上传？</b><p>支持 txt、csv、html、htm、log、markdown 等纯文本格式，以及 xlsx / xls 电子表格；也可直接复制粘贴或从本地文件管理器拖拽文本。</p></div>
       <div class="faq-item"><b>提取的数据会被上传吗？</b><p>不会。手机号、邮箱、链接等所有数据均在您的浏览器本地通过正则匹配完成，不经过任何服务器，可放心处理敏感信息。</p></div>
       <div class="faq-item"><b>手机号提取会误提取其他数字吗？</b><p>不会。工具仅匹配符合 11 位手机号特征的号码段（以 13X-19X 开头），不会将普通数字、座机号等误判为手机号。</p></div>
-      <div class="faq-item"><b>身份证号提取支持哪些格式？</b><p>支持 18 位新号码与 15 位旧号码。18 位号码会校验校验位与出生日期，末位 X 不区分大小写，可有效过滤账号、订单号等无关长数字。</p></div>
+      <div class="faq-item"><b>身份证号提取支持哪些格式？</b><p>支持 18 位新号码与 15 位旧号码，按号码位数匹配提取，末位 X 不区分大小写并统一输出为大写。</p></div>
       <div class="faq-item"><b>提取结果如何导出？</b><p>结果区域提供「复制全部」「导出 TXT」「导出 Excel（CSV 格式）」按钮，一次性保存所有提取结果。</p></div>
     </div>
   </div>
@@ -293,7 +293,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     { "@type": "Question", "name": "支持哪些文件格式上传？", "acceptedAnswer": { "@type": "Answer", "text": "支持 txt、csv、html、xml、log、md 等纯文本格式，以及 xlsx/xls 电子表格，也可直接粘贴文本。" } },
     { "@type": "Question", "name": "提取的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有提取均在浏览器本地完成，不经过任何服务器。" } },
     { "@type": "Question", "name": "提取结果如何导出？", "acceptedAnswer": { "@type": "Answer", "text": "支持复制全部、导出 TXT 与导出 Excel（CSV 格式）。" } },
-    { "@type": "Question", "name": "身份证号提取支持哪些格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持 18 位新号码与 15 位旧号码，自动校验出生日期与校验位，末位 X 不区分大小写。" } }
+    { "@type": "Question", "name": "身份证号提取支持哪些格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持 18 位新号码与 15 位旧号码，按位数匹配提取，末位 X 不区分大小写并统一输出为大写。" } }
   ]
 }
 </script>
@@ -327,7 +327,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   var TABS = [
     { type: "phone", title: "手机号", regex: /(?<![\d])(1[3-9]\d{9})(?![\d])/g, label: "手机号 · 粘贴包含手机号的文本" },
     { type: "email", title: "邮箱", regex: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g, label: "邮箱 · 粘贴包含邮箱的文本" },
-    { type: "idcard", title: "身份证号", regex: /(?<![\d])((?:\d{17}[\dXx])|(?:\d{15}))(?![\d])/g, label: "身份证号 · 粘贴包含身份证号的文本", normalize: function (s) { return s.toUpperCase(); }, filter: isValidId },
+    { type: "idcard", title: "身份证号", regex: /(?<![\d])((?:\d{17}[\dXx])|(?:\d{15}))(?![\d])/g, label: "身份证号 · 粘贴包含身份证号的文本", normalize: function (s) { return s.toUpperCase(); } },
     { type: "link", title: "链接", regex: /(?:https?:\/\/|www\.)[^\s"'<>）()[\]]+/g, label: "链接 · 粘贴包含网址的文本", normalize: function (s) { return s.replace(/[.,;:]+$/, ""); } }
   ];
   var currentType = "phone";
@@ -343,39 +343,6 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     var total = extractAll();
     if (total > 0) { /* 保留结果，提示已在当前类型重新提取 */ }
   });
-
-  // 身份证号合法性校验（GB 11643）：地址码+生日码校验+校验码
-  var IDC_WEIGHTS = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-  var IDC_CODES = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"];
-  function isValidId(s) {
-    var id = String(s || "").toUpperCase();
-    if (!/^\d{17}[\dX]$/.test(id)) {
-      // 兼容15位旧号码（仅做日期合理性判断）
-      if (!/^\d{15}$/.test(id)) return false;
-      var y15 = parseInt(id.slice(6, 8), 10) + 1900;
-      var m15 = parseInt(id.slice(8, 10), 10);
-      var d15 = parseInt(id.slice(10, 12), 10);
-      return isRealDate(y15, m15, d15);
-    }
-    var sum = 0;
-    for (var i = 0; i < 17; i++) sum += parseInt(id.charAt(i), 10) * IDC_WEIGHTS[i];
-    var check = IDC_CODES[sum % 11];
-    if (check !== id.charAt(17)) return false;
-    var year = parseInt(id.slice(6, 10), 10);
-    var month = parseInt(id.slice(10, 12), 10);
-    var day = parseInt(id.slice(12, 14), 10);
-    // 顺延码 000 无效
-    if (id.slice(14, 17) === "000") return false;
-    var now = new Date();
-    if (year < 1900 || year > now.getFullYear()) return false;
-    return isRealDate(year, month, day);
-  }
-  function isRealDate(y, m, d) {
-    if (m < 1 || m > 12 || d < 1 || d > 31) return false;
-    var leaps = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    if ((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0) leaps[1] = 29;
-    return d <= leaps[m - 1];
-  }
 
   function getTab(type) {
     for (var i = 0; i < TABS.length; i++) if (TABS[i].type === type) return TABS[i];
