@@ -11,6 +11,7 @@ on:
       - 'index.html'
       - 'worker-test.html'
       - 'robots.txt'
+      - 'ads.txt'
       - 'sitemap.xml'
       - 'about.html'
       - 'privacy.html'

@@ -139,6 +139,7 @@ def generate_seo_page(keyword, count, resources):
     <meta name="keywords" content="{keyword},夸克网盘,{keyword}下载,{keyword}资源">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{CONFIG['seo']['site_url']}/search/{safe_filename}">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
     
     <style>
         /* 基础样式 */
@@ -539,6 +540,7 @@ def generate_index_page(generated_pages):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>热门搜索关键词 - 夸克网盘资源</title>
     <meta name="description" content="根据用户搜索热度自动生成的热门关键词资源页面。">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: 'Microsoft YaHei', sans-serif;
