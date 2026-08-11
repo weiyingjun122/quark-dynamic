@@ -415,13 +415,16 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   function showError(msg) { errorMsg.textContent = msg; errorMsg.style.display = "block"; }
   function hideError() { errorMsg.style.display = "none"; }
 
-  function set(id, v) {
+  function set(id, v, frac) {
     var el = document.getElementById(id);
-    if (el) el.textContent = addThousand(v);
+    if (el) el.textContent = fmtNum(v, frac);
   }
-  function addThousand(n) {
+  function fmtNum(n, frac) {
     if (typeof n !== "number" || isNaN(n)) return "-";
-    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    var s = frac ? n.toFixed(frac).replace(/\.?0+$/, "") : Math.round(n).toString();
+    var parts = s.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.length > 1 ? parts[0] + "." + parts[1] : parts[0];
   }
 
   function calcDiff() {
@@ -435,9 +438,9 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     var minutes = Math.floor(seconds / 60);
     var hours = Math.floor(minutes / 60);
     var days = Math.floor(hours / 24);
-    set("r-weeks", days / 7);
-    set("r-months", days / 30);
-    set("r-years", days / 365);
+    set("r-weeks", days / 7, 4);
+    set("r-months", days / 30, 4);
+    set("r-years", days / 365, 4);
     set("r-days", days);
     set("r-hours", hours);
     set("r-minutes", minutes);
