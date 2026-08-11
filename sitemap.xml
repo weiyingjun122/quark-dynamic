@@ -92,6 +92,11 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://www.weiyingjun.top/json-format/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://www.weiyingjun.top/short-link/</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>

@@ -30,6 +30,7 @@ on:
       - 'text-unique/**'
       - 'char-count/**'
       - 'data-masking/**'
+      - 'json-format/**'
       - 'short-link/**'
       - 'bank-card/**'
       - 'functions/**'
@@ -140,6 +141,7 @@ jobs:
             git add text-unique/ 2>/dev/null || true
             git add char-count/ 2>/dev/null || true
             git add data-masking/ 2>/dev/null || true
+            git add json-format/ 2>/dev/null || true
             git add short-link/ 2>/dev/null || true
             git add bank-card/ 2>/dev/null || true
 

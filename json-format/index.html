@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>字符数统计工具 - 在线文字字数统计/字符计数器</title>
-<meta name="description" content="免费在线字符数统计工具，实时统计文本总字符数、中文字符数、英文字母数、数字数、标点符号数、占位长度（中文按2字节），支持单词数、行数与段落数统计，支持粘贴、文件上传、实时更新与一键清空，本地处理不上传服务器。">
+<title>JSON格式化工具 - 在线JSON美化压缩校验</title>
+<meta name="description" content="免费在线JSON格式化工具，一键美化压缩JSON代码，支持自定义缩进空格数、语法校验与错误提示、复制结果、下载为 .json 文件，支持文件上传与拖拽，原生JavaScript极速处理超大JSON，本地运行不上传服务器。">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="canonical" href="https://www.weiyingjun.top/char-count/">
+<link rel="canonical" href="https://www.weiyingjun.top/json-format/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="字符数统计工具 - 在线文字字数统计">
-<meta property="og:description" content="免费在线字符统计工具，实时统计总字符、中文、英文、数字、符号及占位长度，支持文件上传与一键清空。">
-<meta property="og:url" content="https://www.weiyingjun.top/char-count/">
+<meta property="og:title" content="JSON格式化工具 - 在线JSON美化压缩校验">
+<meta property="og:description" content="免费在线JSON格式化工具，美化压缩JSON、自定义缩进、语法校验、复制与下载导出，供前后端开发者使用。">
+<meta property="og:url" content="https://www.weiyingjun.top/json-format/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="实用资源整理站">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3E字%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='46' text-anchor='middle' fill='white' font-family='Consolas,Microsoft YaHei,Arial'%3E{}%3C/text%3E%3C/svg%3E">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -22,7 +22,7 @@ body {
   min-height: 100vh;
   color: #333;
 }
-.container { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+.container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
 header.site-header { text-align: center; padding: 40px 16px 10px; }
 header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
 header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
@@ -65,46 +65,45 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 13px; color: #475569; }
-#srcText {
-  width: 100%; min-height: 200px; padding: 12px 14px; font-size: 14px;
+textarea {
+  width: 100%; padding: 12px 14px; font-size: 13px;
   border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
   font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
-  background: #fafbff;
+  background: #fafbff; tab-size: 4;
 }
-#srcText:focus { border-color: #2563eb; background: #fff; }
+textarea:focus { border-color: #2563eb; background: #fff; }
+#srcText { min-height: 180px; }
+
+.options-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; }
+.chip select { padding: 6px 8px; border: 1px solid #dfe3ee; border-radius: 7px; font-size: 13px; color: #334155; background: #fff; outline: none; }
+.chip select:focus { border-color: #2563eb; }
 
 .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
 .btn {
-  padding: 12px 26px; font-size: 15px; border: none; border-radius: 10px;
+  padding: 12px 22px; font-size: 15px; border: none; border-radius: 10px;
   background: #2563eb; color: #fff; cursor: pointer; transition: background .2s;
   white-space: nowrap;
 }
 .btn:hover { background: #1d4ed8; }
 .btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
 .btn.ghost:hover { background: #e2e8f0; }
+.btn.green { background: #059669; }
+.btn.green:hover { background: #047857; }
 
-.stats-box { margin-top: 22px; }
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-@media (max-width: 620px){ .stat-grid { grid-template-columns: repeat(2, 1fr); } }
-.stat-card {
-  background: linear-gradient(180deg, #ffffff, #f0f6ff);
-  border: 1px solid #e0eaff; border-radius: 12px; padding: 14px 16px;
-  display: flex; flex-direction: column; gap: 6px; transition: all .2s;
+.result-box { margin-top: 22px; display: none; }
+.result-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.result-count { font-size: 14px; font-weight: 600; color: #1f2d3d; }
+.result-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.mini-btn {
+  border: 1px solid #e2e5ee; background: #fff; color: #475569;
+  padding: 6px 14px; border-radius: 7px; font-size: 13px; cursor: pointer;
+  white-space: nowrap; transition: all .15s;
 }
-.stat-card:hover { transform: translateY(-2px); border-color: #bfdbfe; }
-.stat-card b { font-size: 26px; color: #2563eb; font-weight: 700; font-family: Consolas, Menlo, monospace; word-break: break-all; }
-.stat-card span { font-size: 13px; color: #64748b; }
-.stat-card .stat-sub { font-size: 11px; color: #94a3b8; }
-.stat-card.accent { background: linear-gradient(180deg, #2563eb, #3b82f6); border-color: transparent; }
-.stat-card.accent b, .stat-card.accent span, .stat-card.accent .stat-sub { color: #fff; }
-.stat-card.accent b { color: #fff; }
+.mini-btn:hover { border-color: #2563eb; color: #2563eb; }
+#outText { min-height: 200px; margin-top: 12px; background: #fafbff; }
 
-.stat-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
-.stat-head h2 { font-size: 16px; color: #1f2d3d; }
-.stat-head .live { font-size: 12px; color: #22c55e; display: inline-flex; align-items: center; gap: 4px; }
-.stat-head .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; }
-
-.error-msg { display: none; margin-top: 16px; padding: 12px 14px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 10px; font-size: 14px; }
+.error-msg { display: none; margin-top: 16px; padding: 12px 14px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 10px; font-size: 13px; line-height: 1.8; font-family: Consolas, Menlo, monospace; white-space: pre-wrap; word-break: break-all; }
 
 .disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
 
@@ -125,7 +124,7 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 .td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #eff6ff, #dbeafe); display: flex; align-items: center; justify-content: center; font-size: 24px; }
 .td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
 .td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
-.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
 @media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
 .td-step { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px; position: relative; }
 .td-step .step-num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
@@ -172,13 +171,13 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
 <body>
 
 <header class="site-header">
-  <h1>字符数统计工具</h1>
-  <p class="subtitle">实时统计总字符数、中文、英文、数字、符号与占位长度，粘贴即可出结果</p>
+  <h1>JSON 格式化工具</h1>
+  <p class="subtitle">一键美化、压缩、校验 JSON，自定义缩进，前后端开发提效利器</p>
   <div class="header-tags">
-    <span class="htag">实时统计</span>
-    <span class="htag">中文/英文/数字/符号</span>
-    <span class="htag">占位长度</span>
-    <span class="htag">本地处理</span>
+    <span class="htag">美化格式</span>
+    <span class="htag">压缩</span>
+    <span class="htag">语法校验</span>
+    <span class="htag">本地运行</span>
   </div>
 </header>
 
@@ -194,74 +193,80 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     </div>
 
     <div class="upload-row">
-      <label class="upload-btn">📁 上传文件<input type="file" id="fileInput" accept=".txt,.csv,.html,.htm,.md,.log,.json,.js,.css"></label>
-      <span class="upload-tip">支持 txt / csv / html / md / log 等文本文件，也可直接粘贴或拖入下方文本框</span>
+      <label class="upload-btn">📁 上传文件<input type="file" id="fileInput" accept=".json,.txt,.log"></label>
+      <span class="upload-tip">支持 .json 文件上传或直接拖入文本框，也支持拖入文本</span>
     </div>
 
     <div class="field">
-      <label for="srcText">输入或粘贴需要统计的文本</label>
-      <textarea id="srcText" placeholder="在此粘贴文章、文案、代码或标题等内容，输入后实时统计。例如：&#10;你好，世界 Hello World! 123456"></textarea>
+      <label for="srcText">粘贴需要格式化 / 校验的 JSON 数据</label>
+      <textarea id="srcText" placeholder='在此粘贴 JSON 字符串，例如：&#10;{"name":"张三","age":18,"tags":["前端","JSON"],"info":{"city":"北京"}}'></textarea>
+    </div>
+
+    <div class="options-row">
+      <label class="chip">缩进
+        <select id="indent">
+          <option value="2">2 个空格</option>
+          <option value="4" selected>4 个空格</option>
+          <option value="8">8 个空格</option>
+          <option value="tab">Tab 制表符</option>
+        </select>
+      </label>
     </div>
 
     <div class="btn-row">
-      <button class="btn" id="btn-clear">清空</button>
+      <button class="btn" id="btn-format">✨ 格式化</button>
+      <button class="btn ghost" id="btn-minify">压缩</button>
+      <button class="btn ghost" id="btn-validate">仅校验</button>
+      <button class="btn ghost" id="btn-clear">清空</button>
     </div>
 
-    <div class="stats-box">
-      <div class="stat-head">
-        <h2>统计结果</h2>
-        <span class="live">实时更新</span>
+    <div class="result-box" id="result-box">
+      <div class="result-head">
+        <span class="result-count" id="result-count"></span>
+        <span class="result-actions">
+          <button class="mini-btn" id="btn-copy">复制结果</button>
+          <button class="mini-btn" id="btn-download">下载 .json</button>
+        </span>
       </div>
-      <div class="stat-grid">
-        <div class="stat-card accent"><b id="st-total">0</b><span>总字符数</span><span class="stat-sub">含空格与换行</span></div>
-        <div class="stat-card"><b id="st-nospace">0</b><span>不计空格字数</span><span class="stat-sub">去除空格与换行后</span></div>
-        <div class="stat-card"><b id="st-cn">0</b><span>中文字符</span><span class="stat-sub">汉字字符数</span></div>
-        <div class="stat-card"><b id="st-en">0</b><span>英文字母</span><span class="stat-sub">A-Z a-z</span></div>
-        <div class="stat-card"><b id="st-num">0</b><span>数字</span><span class="stat-sub">0-9</span></div>
-        <div class="stat-card"><b id="st-symbol">0</b><span>标点符号</span><span class="stat-sub">中文/英文符号等</span></div>
-        <div class="stat-card"><b id="st-space">0</b><span>空格数</span><span class="stat-sub">空格与换行符</span></div>
-        <div class="stat-card"><b id="st-bytes">0</b><span>占位长度</span><span class="stat-sub">中文按2字节计算</span></div>
-        <div class="stat-card"><b id="st-word">0</b><span>英文单词</span><span class="stat-sub">由字母组成的单词数</span></div>
-        <div class="stat-card"><b id="st-line">0</b><span>行数</span><span class="stat-sub">按换行符统计</span></div>
-        <div class="stat-card"><b id="st-para">0</b><span>段落数</span><span class="stat-sub">按空行分段</span></div>
-      </div>
+      <textarea id="outText" readonly spellcheck="false"></textarea>
     </div>
 
     <div class="error-msg" id="error-msg"></div>
   </div>
 
-  <div class="disclaimer">所有统计均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
+  <div class="disclaimer">所有处理均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
 
   <div class="tool-desc">
-    <h2>字符数统计工具介绍</h2>
-    <p>本工具是一款免费在线的字符数统计工具，可以快速统计文本中的总字符数、中文字符数、英文字母数、数字数、标点符号数以及占位长度（中文按 2 字节、英文数字符号按 1 字节计算），并额外提供单词数、行数与段落数统计。粘贴文本即自动实时更新，无需点击任何按钮。</p>
-    <p>适用于学生写作、作者编辑、运营排版、SEO 文案、简历填写、微博/知乎/小红书字数限制检测，以及开发者调试时校验数据库字段长度、接口字段长度等场景。所有处理均在浏览器本地完成，数据不经过任何服务器，隐私安全有保障。</p>
+    <h2>JSON 格式化工具介绍</h2>
+    <p>本工具是一款免费在线的 JSON 代码格式化与美化工具，专为前后端开发者设计。它可以将压缩、杂乱无章的 JSON 字符串一键转换为结构清晰、层级分明的美化代码，同时内置严格的语法校验功能，能帮您快速发现 JSON 数据中的语法错误，是 API 调试和数据结构分析的得力助手。</p>
+    <p>支持自定义缩进空格数（默认 4 个空格），也可切换为 Tab 制表符；支持一键压缩成单行；格式化或压缩前自动校验语法，错误时给出明确提示；结果支持一键复制或直接下载为 .json 文件。所有处理均在浏览器本地完成，数据不经过任何服务器。</p>
 
-    <h3>工具特点</h3>
+    <h3>工具优势</h3>
     <div class="td-grid">
-      <div class="td-card"><span class="td-ico">🔢</span><div><b>多维度统计</b><p>总字符、中文、英文、数字、标点、空格、单词、行数、段落一屏看全。</p></div></div>
-      <div class="td-card"><span class="td-ico">⚡</span><div><b>实时自动更新</b><p>输入或粘贴后立即出结果，无需手动点击统计。</p></div></div>
-      <div class="td-card"><span class="td-ico">🧮</span><div><b>占位长度计算</b><p>中文按 2 字节、英文数字符号按 1 字节，适合字段长度校验。</p></div></div>
-      <div class="td-card"><span class="td-ico">📏</span><div><b>字数限制检测</b><p>适用于微博、知乎、小红书、简历、论文等对字数有要求的场景。</p></div></div>
-      <div class="td-card"><span class="td-ico">📁</span><div><b>文件上传</b><p>支持 txt / csv / md / log 等文本文件上传，自动读取并统计。</p></div></div>
-      <div class="td-card"><span class="td-ico">🧹</span><div><b>一键清空</b><p>点击「清空」即可重置内容与统计结果，重新开始。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎨</span><div><b>自定义缩进</b><p>支持 2/4/8 空格或 Tab 制表符，满足不同团队代码规范。</p></div></div>
+      <div class="td-card"><span class="td-ico">🛡️</span><div><b>容错与校验</b><p>格式化前自动校验 JSON 语法，格式错误时给出友好提示。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>极速响应</b><p>基于原生 JavaScript 高效解析，超大 JSON 也能瞬间完成美化。</p></div></div>
+      <div class="td-card"><span class="td-ico">📦</span><div><b>一键压缩</b><p>将美化后的 JSON 快速压缩为单行，便于传输与存储。</p></div></div>
+      <div class="td-card"><span class="td-ico">📁</span><div><b>文件上传</b><p>支持上传 .json 文件或拖入文本，自动识别并处理。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>多重导出</b><p>一键全选复制，或直接下载保存为 .json 文件。</p></div></div>
       <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
     </div>
 
     <h3>使用步骤</h3>
     <ol class="td-steps">
-      <li class="td-step"><span class="step-num">1</span><div class="step-txt">粘贴需要统计的文本，或点击「上传文件」选择本地文档。</div></li>
-      <li class="td-step"><span class="step-num">2</span><div class="step-txt">查看统计结果：总字符、中文、英文、数字、符号、占位长度等实时更新。</div></li>
-      <li class="td-step"><span class="step-num">3</span><div class="step-txt">按需求调整文本；如需重新统计，点击「清空」即可重置。</div></li>
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">在输入框中粘贴需要格式化或校验的 JSON 数据。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">根据需要调整「缩进空格数」。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「格式化」，下方立即展示层级清晰的美化结果。</div></li>
+      <li class="td-step"><span class="step-num">4</span><div class="step-txt">点击「复制结果」或「下载 .json」保存到项目中。</div></li>
     </ol>
 
     <h3>常见问题</h3>
     <div class="faq-list">
-      <div class="faq-item"><b>字符统计中的“占位长度”是什么意思？</b><p>占位长度按编码长度计算：中文按 2 字节、英文数字符号按 1 字节统计，适用于数据库字段长度计算、接口字段校验等场景。</p></div>
-      <div class="faq-item"><b>工具可以统计多少字？</b><p>支持大段文本，理论可统计上万字，页面不卡顿即可正常使用。</p></div>
-      <div class="faq-item"><b>中文和符号会重复计算吗？</b><p>不会。每个字符会根据其 Unicode 范围准确归类，只属于其中一种类型，不会重复计数。</p></div>
-      <div class="faq-item"><b>统计的数据会被上传吗？</b><p>不会。所有统计均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
-      <div class="faq-item"><b>统计结果如何保存？</b><p>当前支持直接查看，如需保存可手动复制统计结果或对页面截图保存。</p></div>
+      <div class="faq-item"><b>JSON 格式化与校验的原理是什么？</b><p>工具使用标准的 JSON.parse 进行语法解析，解析成功后再通过 JSON.stringify 重新输出美化或压缩结果，保证结果一定是合法 JSON。</p></div>
+      <div class="faq-item"><b>支持超大 JSON 吗？</b><p>支持。基于原生 JavaScript 的高效解析，即便是包含成千上万条记录的超大 JSON 也能瞬间完成美化。</p></div>
+      <div class="faq-item"><b>遇到语法错误怎么办？</b><p>工具会提示具体错误位置与原因（如缺少逗号、引号未闭合等），请根据提示检查对应位置。</p></div>
+      <div class="faq-item"><b>数据会被上传吗？</b><p>不会。所有处理均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
+      <div class="faq-item"><b>如何把结果保存到文件？</b><p>点击「下载 .json」即可将格式化后的 JSON 保存为 .json 文件，也可复制结果粘贴到项目代码中。</p></div>
     </div>
   </div>
 
@@ -271,10 +276,11 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "字符统计中的“占位长度”是什么意思？", "acceptedAnswer": { "@type": "Answer", "text": "占位长度按编码长度计算：中文按 2 字节、英文数字符号按 1 字节统计，适用于数据库字段长度计算、接口字段校验等场景。" } },
-    { "@type": "Question", "name": "工具可以统计多少字？", "acceptedAnswer": { "@type": "Answer", "text": "支持大段文本，理论可统计上万字，页面不卡顿即可正常使用。" } },
-    { "@type": "Question", "name": "中文和符号会重复计算吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。每个字符会根据 Unicode 范围准确归类，只属于其中一种类型，不会重复计数。" } },
-    { "@type": "Question", "name": "统计的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有统计均在浏览器本地完成，数据不经过任何服务器。" } }
+    { "@type": "Question", "name": "JSON 格式化与校验的原理是什么？", "acceptedAnswer": { "@type": "Answer", "text": "工具使用标准的 JSON.parse 进行语法解析，解析成功后再通过 JSON.stringify 重新输出美化或压缩结果，保证结果一定是合法 JSON。" } },
+    { "@type": "Question", "name": "支持超大 JSON 吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。基于原生 JavaScript 的高效解析，超大 JSON 也能瞬间完成美化。" } },
+    { "@type": "Question", "name": "遇到语法错误怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "工具会提示具体错误位置与原因，请根据提示检查对应位置。" } },
+    { "@type": "Question", "name": "数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有处理均在浏览器本地完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "如何把结果保存到文件？", "acceptedAnswer": { "@type": "Answer", "text": "点击「下载 .json」即可将结果保存为 .json 文件，也可复制结果粘贴到项目代码中。" } }
   ]
 }
 </script>
@@ -282,7 +288,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
 <footer class="site-footer">
   <div class="container">
     <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
-    <p style="margin-top:10px;line-height:2;"><a href="/check-word/" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;margin:0 8px;">违禁词检测</a><a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">IP查询</a><a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机密码</a><a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">年龄计算</a><a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">金额大写</a><a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">文本提取</a><a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">日期计算</a><a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">文本去重</a><a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">字符统计</a><a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">数据脱敏</a><a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">JSON格式化</a><a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">短链接还原</a><a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">手机号查询</a><a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">身份证查询</a><a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机分组</a><a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机点名</a></p>
+    <p style="margin-top:10px;line-height:2;"><a href="/check-word/" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;margin:0 8px;">违禁词检测</a><a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">IP查询</a><a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机密码</a><a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">年龄计算</a><a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">日期计算</a><a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">金额大写</a><a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">文本提取</a><a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">文本去重</a><a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">字符统计</a><a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">数据脱敏</a><a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">JSON格式化</a><a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">短链接还原</a><a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">手机号查询</a><a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">身份证查询</a><a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机分组</a><a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机点名</a></p>
     <p style="margin-top:8px;"><a href="/about.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">关于本站</a><a href="/privacy.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">隐私政策</a><a href="/contact.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">联系我们</a></p>
   </div>
 </footer>
@@ -295,45 +301,61 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
 
   var fileInput = document.getElementById("fileInput");
   var srcText = document.getElementById("srcText");
-  var btnClear = document.getElementById("btn-clear");
+  var selIndent = document.getElementById("indent");
+  var outText = document.getElementById("outText");
+  var resultBox = document.getElementById("result-box");
+  var resultCount = document.getElementById("result-count");
+  var errorMsg = document.getElementById("error-msg");
 
-  var CJK = /[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}]/u;
-
-  function count() {
-    var text = srcText.value || "";
-    var points = Array.from(text);
-    var total = points.length;
-
-    var cn = 0, en = 0, num = 0, sym = 0, space = 0, bytes = 0, i, ch;
-    for (i = 0; i < points.length; i++) {
-      ch = points[i];
-      if (CJK.test(ch)) { cn++; bytes += 2; }
-      else if (/[A-Za-z]/.test(ch)) { en++; bytes += 1; }
-      else if (/[0-9]/.test(ch)) { num++; bytes += 1; }
-      else if (/\s/.test(ch)) { space++; bytes += 1; }
-      else { sym++; bytes += (ch.codePointAt(0) > 0xFF ? 2 : 1); }
-    }
-
-    var words = (text.match(/[A-Za-z]+(?:['\u2018\u2019-][A-Za-z]+)*/g) || []).length;
-    var lines = text.length ? text.split(/\r?\n/).length : 0;
-    var paras = text.replace(/\r?\n/g, "\n").split(/\n\s*\n/).filter(function (p) { return p.trim(); }).length;
-
-    set("st-total", total);
-    set("st-nospace", total - space);
-    set("st-cn", cn);
-    set("st-en", en);
-    set("st-num", num);
-    set("st-symbol", sym);
-    set("st-space", space);
-    set("st-bytes", bytes);
-    set("st-word", words);
-    set("st-line", lines);
-    set("st-para", paras);
+  function indentVal() {
+    return selIndent.value === "tab" ? "\t" : parseInt(selIndent.value, 10) || 4;
   }
 
-  function set(id, v) {
-    var el = document.getElementById(id);
-    if (el) el.textContent = String(v);
+  function parse(text) {
+    try {
+      return { ok: true, data: JSON.parse(text) };
+    } catch (e) {
+      return { ok: false, msg: parseErrorMsg(e, text) };
+    }
+  }
+
+  function parseErrorMsg(e, text) {
+    var m = e && e.message ? e.message : "JSON 语法错误";
+    var pos = text.length;
+    if (e && typeof e.position === "number") pos = e.position;
+    var line = 1, col = 1, i;
+    for (i = 0; i < pos && i < text.length; i++) {
+      if (text.charAt(i) === "\n") { line++; col = 1; }
+      else col++;
+    }
+    return "解析失败：" + m + "\n错误位置：第 " + line + " 行，第 " + col + " 列";
+  }
+
+  function showError(msg) { errorMsg.textContent = msg; errorMsg.style.display = "block"; resultBox.style.display = "none"; }
+  function hideError() { errorMsg.style.display = "none"; }
+
+  function showResult(str) {
+    outText.value = str;
+    resultBox.style.display = "block";
+    resultCount.textContent = "结果 " + str.split(/\r?\n/).length + " 行，共 " + str.length + " 字符";
+  }
+
+  function run(mode) {
+    var text = srcText.value;
+    if (!text.trim()) { showError("请先粘贴 JSON 数据或上传 .json 文件"); return; }
+    var r = parse(text);
+    if (!r.ok) { showError(r.msg); return; }
+    hideError();
+    if (mode === "validate") {
+      resultBox.style.display = "none";
+      toast("JSON 校验通过 ✅");
+      return;
+    }
+    if (mode === "minify") {
+      showResult(JSON.stringify(r.data));
+    } else {
+      showResult(JSON.stringify(r.data, null, indentVal()));
+    }
   }
 
   function toast(msg) {
@@ -362,6 +384,15 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     document.body.removeChild(ta);
   }
 
+  function download(blob, filename) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 200);
+  }
+
   function readFileToText(file, cb) {
     var reader = new FileReader();
     reader.onload = function () { cb(String(reader.result || "")); };
@@ -369,8 +400,16 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     reader.readAsText(file);
   }
 
-  srcText.addEventListener("input", count);
-  btnClear.addEventListener("click", function () { srcText.value = ""; count(); srcText.focus(); });
+  document.getElementById("btn-format").addEventListener("click", function () { run("format"); });
+  document.getElementById("btn-minify").addEventListener("click", function () { run("minify"); });
+  document.getElementById("btn-validate").addEventListener("click", function () { run("validate"); });
+  document.getElementById("btn-clear").addEventListener("click", function () {
+    srcText.value = "";
+    outText.value = "";
+    resultBox.style.display = "none";
+    errorMsg.style.display = "none";
+    srcText.focus();
+  });
   fileInput.addEventListener("change", function () {
     var f = fileInput.files && fileInput.files[0];
     if (!f) return;
@@ -378,20 +417,30 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       if (!content) return;
       srcText.value = content;
       toast("已加载文件： " + f.name);
-      count();
+      resultBox.style.display = "none";
+      errorMsg.style.display = "none";
+      run("format");
     });
     fileInput.value = "";
   });
-  // 拖拽粘贴
+  // 拖拽
   srcText.addEventListener("drop", function (e) {
     e.preventDefault();
     var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (f) { readFileToText(f, function (content) { if (content) { srcText.value = content; count(); } }); }
-    else { srcText.value = (e.dataTransfer && e.dataTransfer.getData("text")) || srcText.value; count(); }
+    if (f) { readFileToText(f, function (content) { if (content) { srcText.value = content; run("format"); } }); }
+    else { srcText.value = (e.dataTransfer && e.dataTransfer.getData("text")) || srcText.value; }
   });
   srcText.addEventListener("dragover", function (e) { e.preventDefault(); });
 
-  count();
+  document.getElementById("btn-copy").addEventListener("click", function () {
+    if (!outText.value) return;
+    copyText(outText.value, "已复制 JSON");
+  });
+  document.getElementById("btn-download").addEventListener("click", function () {
+    if (!outText.value) { toast("暂无可导出的结果"); return; }
+    download(new Blob([outText.value], { type: "application/json;charset=utf-8" }), "data_" + Date.now() + ".json");
+    toast("已下载 .json");
+  });
 
   // 二维码 / 打赏 / 复制链接
   var btnQr = document.getElementById("btnQr");
