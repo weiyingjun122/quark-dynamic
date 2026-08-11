@@ -77,6 +77,11 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://www.weiyingjun.top/char-count/</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://www.weiyingjun.top/data-masking/</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
