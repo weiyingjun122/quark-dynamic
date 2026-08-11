@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>数据脱敏工具 - 手机号身份证姓名邮箱银行卡批量打码免费在线</title>
-<meta name="description" content="免费在线数据脱敏工具，批量对手机号、邮箱、身份证号、姓名、银行卡号等敏感信息进行脱敏打码处理，保留前后位隐藏中间信息，支持多行批量、TXT 文件上传、一键复制与导出，本地处理不上传服务器，隐私安全保障。">
+<title>文本去重工具 - 在线批量去除重复行/重复内容</title>
+<meta name="description" content="免费在线文本去重工具，按行快速去除重复内容，支持保留首次/最后出现、忽略空行与大小写、去重后排序，支持多行批量、TXT/CSV 文件上传、一键复制与导出，本地处理不上传服务器，安全高效。">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="canonical" href="https://www.weiyingjun.top/data-masking/">
+<link rel="canonical" href="https://www.weiyingjun.top/text-unique/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="数据脱敏工具 - 手机号/身份证/姓名批量打码">
-<meta property="og:description" content="免费在线批量手机号、邮箱、身份证、姓名、银行卡脱敏打码，支持文件上传、一键复制导出。">
-<meta property="og:url" content="https://www.weiyingjun.top/data-masking/">
+<meta property="og:title" content="文本去重工具 - 在线批量去除重复行">
+<meta property="og:description" content="免费在线按行文本去重，支持保留首次/末次出现、忽略空行与大小写、去重后排序、一键复制导出。">
+<meta property="og:url" content="https://www.weiyingjun.top/text-unique/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="实用资源整理站">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3E脱%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3E去%3C/text%3E%3C/svg%3E">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -52,16 +52,6 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 }
 .action-btn:hover { border-color: #2563eb; color: #2563eb; }
 
-.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.tab {
-  flex: 1; min-width: 118px; text-align: center;
-  padding: 10px 12px; border: 1px solid #dfe3ee; border-radius: 10px;
-  background: #f8fafc; color: #475569; font-size: 14px; cursor: pointer;
-  transition: all .15s; white-space: nowrap;
-}
-.tab:hover { border-color: #93c5fd; }
-.tab.active { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 600; }
-
 .upload-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
 .upload-btn {
   display: inline-flex; align-items: center; gap: 6px;
@@ -76,18 +66,19 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 13px; color: #475569; }
 #srcText {
-  width: 100%; min-height: 150px; padding: 12px 14px; font-size: 14px;
+  width: 100%; min-height: 160px; padding: 12px 14px; font-size: 14px;
   border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
   font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
   background: #fafbff;
 }
 #srcText:focus { border-color: #2563eb; background: #fff; }
 
-.options-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; align-items: center; }
+.options-row { display: flex; flex-wrap: wrap; gap: 16px 22px; margin-top: 14px; align-items: center; }
 .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #475569; }
+.chip input[type="checkbox"] { accent-color: #2563eb; }
 .chip select { padding: 5px 8px; border: 1px solid #dfe3ee; border-radius: 7px; font-size: 13px; color: #334155; background: #fff; outline: none; }
 .chip select:focus { border-color: #2563eb; }
-.chip-note { font-size: 12px; color: #94a3b8; }
+.chip-note { font-size: 12px; color: #94a3b8; width: 100%; }
 
 .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
 .btn {
@@ -192,13 +183,13 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
 <body>
 
 <header class="site-header">
-  <h1>数据脱敏工具</h1>
-  <p class="subtitle">一键对手机号、邮箱、身份证、姓名、银行卡等敏感信息批量打码，保护隐私安全</p>
+  <h1>文本去重工具</h1>
+  <p class="subtitle">一键去除文本中的重复行/重复内容，支持保留首次或末次出现、忽略空行与大小写</p>
   <div class="header-tags">
-    <span class="htag">📱 手机号脱敏</span>
-    <span class="htag">🪪 身份证脱敏</span>
-    <span class="htag">👤 姓名脱敏</span>
-    <span class="htag">🔒 本地处理</span>
+    <span class="htag">按行去重</span>
+    <span class="htag">保留首次/末次</span>
+    <span class="htag">忽略大小写</span>
+    <span class="htag">去重排序</span>
   </div>
 </header>
 
@@ -213,37 +204,31 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       </div>
     </div>
 
-    <div class="tabs" id="tabs">
-      <button class="tab active" data-type="phone">📱 手机号脱敏</button>
-      <button class="tab" data-type="email">✉️ 邮箱脱敏</button>
-      <button class="tab" data-type="idcard">🪪 身份证脱敏</button>
-      <button class="tab" data-type="name">👤 姓名脱敏</button>
-      <button class="tab" data-type="bankcard">💳 银行卡脱敏</button>
-    </div>
-
     <div class="upload-row">
       <label class="upload-btn">📁 上传文件<input type="file" id="fileInput" accept=".txt,.csv,.html,.htm,.md,.log"></label>
-      <span class="upload-tip">支持 txt / csv / html / log，也可直接粘贴或拖入下方文本框，每行一条数据</span>
+      <span class="upload-tip">支持 txt / csv / html / log，也可直接粘贴或拖入下方文本框，每行一条</span>
     </div>
 
     <div class="field">
-      <label for="srcText" id="srcLabel">手机号脱敏 - 每行粘贴一条或粘贴含手机号的文本</label>
-      <textarea id="srcText" placeholder="在此粘贴需要脱敏的数据，每行一条，例如：&#10;13812345678&#10;王伟&#10;11010519491231002X&#10;zhangsan@example.com&#10;6222002012345678901"></textarea>
+      <label for="srcText">输入需要去重的文本，每行一条</label>
+      <textarea id="srcText" placeholder="在此粘贴需要去重的名单或列表，每行一条，例如：&#10;王伟&#10;李娜&#10;王伟&#10;13812345678&#10;13812345678&#10;zhangsan@example.com&#10;Zhangsan@example.com"></textarea>
     </div>
 
     <div class="options-row">
-      <label class="chip">掩码符号
-        <select id="mask-char">
-          <option value="*" selected>星号 *</option>
-          <option value="#">井号 #</option>
-          <option value="•">圆点 •</option>
+      <label class="chip">去重模式
+        <select id="mode">
+          <option value="first" selected>保留首次出现</option>
+          <option value="last">保留最后出现</option>
         </select>
       </label>
-      <span class="chip-note">脱敏后保留首尾位数，中间以所选符号隐藏</span>
+      <label class="chip"><input type="checkbox" id="opt-empty" checked> 忽略空行</label>
+      <label class="chip"><input type="checkbox" id="opt-case"> 忽略大小写</label>
+      <label class="chip"><input type="checkbox" id="opt-sort"> 去重后排序</label>
+      <span class="chip-note">「保留首次出现」去除重复时保留第一次出现的行；「保留最后出现」则保留最后一次出现的行</span>
     </div>
 
     <div class="btn-row">
-      <button class="btn" id="btn-run">开始脱敏</button>
+      <button class="btn" id="btn-run">开始去重</button>
       <button class="btn ghost" id="btn-clear">清空</button>
     </div>
 
@@ -262,37 +247,38 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     <div class="error-msg" id="error-msg"></div>
   </div>
 
-  <div class="disclaimer">所有脱敏处理均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
+  <div class="disclaimer">所有去重处理均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
 
   <div class="tool-desc">
-    <h2>数据脱敏工具介绍</h2>
-    <p>本工具是一款免费在线的隐私数据保护工具，支持对手机号码、电子邮箱、身份证号、真实姓名、银行卡号等敏感信息进行批量脱敏（打码）处理。无论是测试数据、演示文档、日志文件还是待共享的数据表格，粘贴进来即可一键将隐私部分替换为星号，既保留数据格式与识别信息，又有效防止隐私泄露。</p>
-    <p>脱敏规则遵循「最小必要」原则：仅保留业务判断所需的少量前缀与后缀，其余部分统一隐藏。所有计算均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除，安全隐私零顾虑。</p>
+    <h2>文本去重工具介绍</h2>
+    <p>本工具是一款免费在线的文本去重小助手，支持按行快速去除文本中的重复内容，常用于名单整理、Excel 导出数据清洗、手机号列表去重、关键词去重、代码行去重等场景。粘贴进来即可一键去重、统计去重数量并整理成整洁清单，方便进一步使用。</p>
+    <p>工具内置灵活的去重选项：可选择保留首次出现或最后出现，可忽略空行与英文字母大小写，去重后还可按升序排序。所有处理均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除，隐私安全有保障。</p>
 
     <h3>工具特点</h3>
     <div class="td-grid">
-      <div class="td-card"><span class="td-ico">📱</span><div><b>手机号脱敏</b><p>保留前 3 位和后 4 位，中间 4 位打码，如 138****5678。</p></div></div>
-      <div class="td-card"><span class="td-ico">🪪</span><div><b>身份证脱敏</b><p>保留前 6 位地区码和后 4 位，中间出生年月日打码，支持 18/15 位。</p></div></div>
-      <div class="td-card"><span class="td-ico">👤</span><div><b>姓名脱敏</b><p>隐藏中间字，保留姓氏与末字，两字姓名只保留姓氏，如 张*、王*明。</p></div></div>
-      <div class="td-card"><span class="td-ico">✉️</span><div><b>邮箱脱敏</b><p>隐藏前缀中间部分，保留首尾和域名，如 z***g@example.com。</p></div></div>
-      <div class="td-card"><span class="td-ico">💳</span><div><b>银行卡脱敏</b><p>保留前 4 位和后 4 位，中间隐藏，兼容带空格/分隔的卡号。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧹</span><div><b>按行去重</b><p>一键去除重复行，重复内容只保留一行，结果更干净。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔄</span><div><b>首次/末次可选</b><p>支持保留首次出现或最后出现，灵活匹配不同整理习惯。</p></div></div>
+      <div class="td-card"><span class="td-ico">⬜</span><div><b>忽略空行</b><p>自动跳过空行，避免空行干扰去重结果。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔤</span><div><b>忽略大小写</b><p>Abc、ABC、abc 视为重复，英文数据去重更彻底。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>去重后排序</b><p>结果按字母/拼音升序排列，便于浏览与核对。</p></div></div>
+      <div class="td-card"><span class="td-ico">📂</span><div><b>批量上传</b><p>支持粘贴多行或上传 txt/csv 文件，一键复制与导出。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔢</span><div><b>去重统计</b><p>清晰显示原始行数、去重行数与去除的重复数量。</p></div></div>
       <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
     </div>
 
     <h3>使用步骤</h3>
     <ol class="td-steps">
-      <li class="td-step"><span class="step-num">1</span><div class="step-txt">切换上方 Tab 选择要脱敏的数据类型（手机号/邮箱/身份证/姓名/银行卡）。</div></li>
-      <li class="td-step"><span class="step-num">2</span><div class="step-txt">粘贴数据或点击「上传文件」选择本地文档，每行一条，可选掩码符号。</div></li>
-      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始脱敏」，查看结果并可一键复制、导出。</div></li>
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">粘贴需要去重的名单/列表，或点击「上传文件」选择本地文档。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">选择去重模式与选项：保留首次/末次、忽略空行/大小写、去重后排序。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始去重」，查看去重结果并一键复制、导出。</div></li>
     </ol>
 
     <h3>常见问题</h3>
     <div class="faq-list">
-      <div class="faq-item"><b>脱敏的数据会被上传吗？</b><p>不会。手机号、身份证、邮箱等所有数据均在您的浏览器本地完成处理，不经过任何服务器，可放心处理敏感信息。</p></div>
-      <div class="faq-item"><b>支持批量处理吗？</b><p>支持。可直接粘贴多行数据，或上传 txt、csv、html、log 等文本文件批量脱敏，几万条也能秒级完成。</p></div>
-      <div class="faq-item"><b>手机号脱敏后保留哪些部分？</b><p>默认保留前 3 位和后 4 位，中间 4 位打码（如 138****5678），既能识别运营商归属，又保护了完整号码。</p></div>
-      <div class="faq-item"><b>身份证 15 位旧号码能处理吗？</b><p>可以。15 位号码同样保留前 6 位地区码和后 4 位，中间出生日期部分打码；18 位号码末位 X 不区分大小写。</p></div>
-      <div class="faq-item"><b>掩码符号可以自定义吗？</b><p>可以。支持星号 *、井号 #、圆点 • 三种掩码符号，结果支持复制全部、导出 TXT 或 Excel（CSV 格式）。</p></div>
+      <div class="faq-item"><b>去重的数据会被上传吗？</b><p>不会。所有去重处理均在您的浏览器本地完成，不经过任何服务器，可放心处理名单、手机号等敏感信息。</p></div>
+      <div class="faq-item"><b>保留首次出现和保留最后出现有什么区别？</b><p>「保留首次」去重后保留第一次出现的行；「保留最后」去重后保留最后一次出现的行。两者都能去除重复，区别在于保留哪一版内容。</p></div>
+      <div class="faq-item"><b>空行和大小写会被处理吗？</b><p>默认忽略空行；「忽略大小写」开启后，Abc、ABC、abc 将被视为同一项，对中文内容无影响。</p></div>
+      <div class="faq-item"><b>支持批量处理和导出吗？</b><p>支持。可直接粘贴多行数据或上传 txt、csv 文件，结果支持复制全部、导出 TXT 或 Excel（CSV 格式）。</p></div>
     </div>
   </div>
 
@@ -302,11 +288,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    { "@type": "Question", "name": "脱敏的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有脱敏处理均在浏览器本地完成，数据不经过任何服务器。" } },
-    { "@type": "Question", "name": "支持批量处理吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持直接粘贴多行数据，或上传 txt、csv、html、log 文件批量脱敏。" } },
-    { "@type": "Question", "name": "手机号脱敏后保留哪些部分？", "acceptedAnswer": { "@type": "Answer", "text": "保留前 3 位和后 4 位，中间 4 位打码，如 138****5678。" } },
-    { "@type": "Question", "name": "身份证 15 位旧号码能处理吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以，15 位号码同样保留前 6 位和后 4 位，中间打码，末位 X 不区分大小写。" } },
-    { "@type": "Question", "name": "掩码符号可以自定义吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持星号 *、井号 #、圆点 • 三种掩码符号，并支持复制全部、导出 TXT 或 Excel。" } }
+    { "@type": "Question", "name": "去重的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有去重处理均在浏览器本地完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "保留首次出现和保留最后出现有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "「保留首次」保留第一次出现的行，「保留最后」保留最后一次出现的行，两者均能去除重复。" } },
+    { "@type": "Question", "name": "空行和大小写会被处理吗？", "acceptedAnswer": { "@type": "Answer", "text": "默认忽略空行；开启「忽略大小写」后英文视为同一项，对中文无影响。" } },
+    { "@type": "Question", "name": "支持批量处理和导出吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持粘贴多行或上传 txt、csv 文件，结果可复制全部、导出 TXT 或 Excel。" } }
   ]
 }
 </script>
@@ -325,11 +310,12 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
 (function () {
   "use strict";
 
-  var tabs = document.getElementById("tabs");
   var fileInput = document.getElementById("fileInput");
   var srcText = document.getElementById("srcText");
-  var srcLabel = document.getElementById("srcLabel");
-  var inputMask = document.getElementById("mask-char");
+  var selMode = document.getElementById("mode");
+  var optEmpty = document.getElementById("opt-empty");
+  var optCase = document.getElementById("opt-case");
+  var optSort = document.getElementById("opt-sort");
   var btnRun = document.getElementById("btn-run");
   var btnClear = document.getElementById("btn-clear");
   var resultBox = document.getElementById("result-box");
@@ -337,103 +323,40 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   var resultList = document.getElementById("result-list");
   var errorMsg = document.getElementById("error-msg");
 
-  var REGEX = {
-    phone: /(?<![\d])(1[3-9]\d{9})(?![\d])/g,
-    email: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g,
-    idcard: /(?<![\d])((?:\d{17}[\dXx])|(?:\d{15}))(?![\d])/g,
-    bankcard: /(?<![\d])((?:\d{4}[\s-]?){3,}\d{1,4})(?![\d])/g
-  };
-  var TABS = [
-    { type: "phone", title: "手机号", label: "手机号脱敏 - 每行粘贴一条或粘贴含手机号的文本", mask: maskPhone },
-    { type: "email", title: "邮箱", label: "邮箱脱敏 - 每行粘贴一条邮箱", mask: maskEmail },
-    { type: "idcard", title: "身份证号", label: "身份证脱敏 - 支持 18 位与 15 位号码", mask: maskId },
-    { type: "name", title: "姓名", label: "姓名脱敏 - 每行输入一个姓名", mask: maskName },
-    { type: "bankcard", title: "银行卡号", label: "银行卡脱敏 - 每行一条，支持带空格分隔", mask: maskBank }
-  ];
-  var currentType = "phone";
-  var maskChar = "*";
+  function keyOf(line) { return optCase.checked ? line.toUpperCase() : line; }
 
-  tabs.addEventListener("click", function (e) {
-    var b = e.target.closest(".tab");
-    if (!b) return;
-    tabs.querySelectorAll(".tab").forEach(function (t) { t.classList.remove("active"); });
-    b.classList.add("active");
-    currentType = b.getAttribute("data-type");
-    srcLabel.textContent = getTab(currentType).label;
-    hideError();
-  });
-
-  inputMask.addEventListener("change", function () { maskChar = inputMask.value || "*"; });
-
-  function getTab(type) {
-    for (var i = 0; i < TABS.length; i++) if (TABS[i].type === type) return TABS[i];
-    return TABS[0];
-  }
-
-  function stars(n) { var s = ""; for (var i = 0; i < n; i++) s += maskChar; return s; }
-
-  function maskPhone(m) { return m.slice(0, 3) + stars(4) + m.slice(7); }
-
-  function maskId(m) {
-    m = m.toUpperCase();
-    if (/^\d{17}[\dX]$/.test(m)) return m.slice(0, 6) + stars(8) + m.slice(14);
-    if (/^\d{15}$/.test(m)) return m.slice(0, 6) + stars(5) + m.slice(11);
-    return m;
-  }
-
-  function maskEmail(m) {
-    var at = m.lastIndexOf("@");
-    if (at <= 1) return m;
-    var local = m.slice(0, at), domain = m.slice(at);
-    if (local.length <= 1) return local + stars(3) + domain;
-    return local.charAt(0) + stars(3) + local.charAt(local.length - 1) + domain;
-  }
-
-  function maskName(line) {
-    if (!line || line.length < 1) return line;
-    if (line.length === 1) return line;
-    if (line.length === 2) return line.charAt(0) + maskChar;
-    return line.charAt(0) + stars(line.length - 2) + line.charAt(line.length - 1);
-  }
-
-  function maskBank(m) {
-    var total = 0, i, ch;
-    for (i = 0; i < m.length; i++) if (/[0-9]/.test(m[i])) total++;
-    if (total <= 8) return m;
-    var di = 0, out = "";
-    for (i = 0; i < m.length; i++) {
-      ch = m[i];
-      if (/[0-9]/.test(ch)) { out += (di < 4 || di >= total - 4) ? ch : maskChar; di++; }
-      else out += ch;
-    }
-    return out;
-  }
-
-  function processLine(line) {
-    if (!line) return line;
-    var info = getTab(currentType);
-    if (info.type === "name") return maskName(line);
-    var re = REGEX[info.type];
-    if (!re) return line;
-    re.lastIndex = 0;
-    return line.replace(re, function (m) { return info.mask(m); });
-  }
-
-  function run() {
+  function dedup() {
     var text = srcText.value;
-    if (!text.trim()) { showError("请先粘贴需要脱敏的数据或上传文件"); return; }
+    if (!text.trim()) { showError("请先粘贴需要去重的文本或上传文件"); return; }
     hideError();
-    maskChar = inputMask.value || "*";
     var lines = text.split(/\r?\n/);
-    var out = [], changed = 0, total = 0, i;
-    for (i = 0; i < lines.length; i++) {
-      if (lines[i].trim()) total++;
-      var masked = processLine(lines[i]);
-      if (masked !== lines[i]) changed++;
-      out.push(masked);
+    var seen = {}, out = [], i, line, key;
+    var total = 0;
+
+    if (selMode.value === "last") {
+      for (i = lines.length - 1; i >= 0; i--) {
+        line = lines[i];
+        if (!line.trim()) { if (optEmpty.checked) continue; }
+        else total++;
+        key = keyOf(line);
+        if (!seen[key]) { seen[key] = 1; out.push(line); }
+      }
+      out.reverse();
+    } else {
+      for (i = 0; i < lines.length; i++) {
+        line = lines[i];
+        if (!line.trim()) { if (optEmpty.checked) continue; }
+        else total++;
+        key = keyOf(line);
+        if (!seen[key]) { seen[key] = 1; out.push(line); }
+      }
     }
+
+    if (optSort.checked) out.sort(function (a, b) { return a.localeCompare(b, "zh-Hans-CN"); });
+
     render(out);
-    resultCount.textContent = "已处理 " + total + " 行，其中脱敏 " + changed + " 行（" + getTab(currentType).title + "）";
+    var removed = total - out.length;
+    resultCount.textContent = "输入 " + total + " 行，去除重复 " + removed + " 行，保留 " + out.length + " 行";
   }
 
   function render(lines) {
@@ -443,7 +366,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       return;
     }
     resultList.innerHTML = lines.map(function (it, i) {
-      return '<div class="result-item"><span class="idx">' + (i + 1) + '</span><span class="val">' + escapeHtml(it || " ") + '</span><button class="copy" data-v="' + escapeHtml(it) + '">复制</button></div>';
+      return '<div class="result-item"><span class="idx">' + (i + 1) + '</span><span class="val">' + escapeHtml(it) + '</span><button class="copy" data-v="' + escapeHtml(it) + '">复制</button></div>';
     }).join("");
   }
 
@@ -503,7 +426,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     reader.readAsText(file);
   }
 
-  btnRun.addEventListener("click", run);
+  btnRun.addEventListener("click", dedup);
   btnClear.addEventListener("click", function () { srcText.value = ""; resultBox.style.display = "none"; errorMsg.style.display = "none"; srcText.focus(); });
   fileInput.addEventListener("change", function () {
     var f = fileInput.files && fileInput.files[0];
@@ -514,7 +437,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       toast("已加载文件： " + f.name);
       resultBox.style.display = "none";
       errorMsg.style.display = "none";
-      run();
+      dedup();
     });
     fileInput.value = "";
   });
@@ -522,7 +445,7 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   srcText.addEventListener("drop", function (e) {
     e.preventDefault();
     var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (f) { readFileToText(f, function (content) { if (content) { srcText.value = content; run(); } }); }
+    if (f) { readFileToText(f, function (content) { if (content) { srcText.value = content; dedup(); } }); }
     else { srcText.value = (e.dataTransfer && e.dataTransfer.getData("text")) || srcText.value; }
   });
   srcText.addEventListener("dragover", function (e) { e.preventDefault(); });
@@ -539,16 +462,16 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
   document.getElementById("btn-export-txt").addEventListener("click", function () {
     var arr = getItems();
     if (!arr.length) { toast("暂无可导出的结果"); return; }
-    var content = "数据脱敏结果\n脱敏类型：" + getTab(currentType).title + "\n处理时间：" + new Date().toLocaleString() + "\n\n" + arr.join("\n");
-    download(new Blob(["\ufeff" + content], { type: "text/plain;charset=utf-8" }), "脱敏结果_" + Date.now() + ".txt");
+    var content = "文本去重结果\n处理时间：" + new Date().toLocaleString() + "\n\n" + arr.join("\n");
+    download(new Blob(["\ufeff" + content], { type: "text/plain;charset=utf-8" }), "去重结果_" + Date.now() + ".txt");
     toast("已导出 TXT");
   });
   document.getElementById("btn-export-excel").addEventListener("click", function () {
     var arr = getItems();
     if (!arr.length) { toast("暂无可导出的结果"); return; }
     var esc = function (s) { return String(s).replace(/"/g, '""'); };
-    var lines = ['"数据脱敏结果"'].concat(arr.map(function (v) { return '"' + esc(v) + '"'; }));
-    download(new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" }), "脱敏结果_" + Date.now() + ".csv");
+    var lines = ['"文本去重结果"'].concat(arr.map(function (v) { return '"' + esc(v) + '"'; }));
+    download(new Blob(["\ufeff" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" }), "去重结果_" + Date.now() + ".csv");
     toast("已导出 Excel(CSV)");
   });
 

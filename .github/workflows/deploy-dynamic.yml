@@ -26,6 +26,7 @@ on:
       - 'age/**'
       - 'money/**'
       - 'extract/**'
+      - 'text-unique/**'
       - 'data-masking/**'
       - 'short-link/**'
       - 'bank-card/**'
@@ -133,6 +134,7 @@ jobs:
             git add age/ 2>/dev/null || true
             git add money/ 2>/dev/null || true
             git add extract/ 2>/dev/null || true
+            git add text-unique/ 2>/dev/null || true
             git add data-masking/ 2>/dev/null || true
             git add short-link/ 2>/dev/null || true
             git add bank-card/ 2>/dev/null || true
