@@ -24,6 +24,7 @@ on:
       - 'random-pick/**'
       - 'password/**'
       - 'age/**'
+      - 'date-calc/**'
       - 'money/**'
       - 'extract/**'
       - 'text-unique/**'
@@ -133,6 +134,7 @@ jobs:
             git add random-pick/ 2>/dev/null || true
             git add password/ 2>/dev/null || true
             git add age/ 2>/dev/null || true
+            git add date-calc/ 2>/dev/null || true
             git add money/ 2>/dev/null || true
             git add extract/ 2>/dev/null || true
             git add text-unique/ 2>/dev/null || true
