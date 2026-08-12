@@ -35,6 +35,7 @@ on:
       - 'md5-batch/**'
       - 'short-link/**'
       - 'bank-card/**'
+      - 'bmi/**'
       - 'functions/**'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
   # schedule:
@@ -147,6 +148,7 @@ jobs:
             git add md5-batch/ 2>/dev/null || true
             git add short-link/ 2>/dev/null || true
             git add bank-card/ 2>/dev/null || true
+            git add bmi/ 2>/dev/null || true
 
             if ! git diff --cached --quiet; then
                 echo "有变更，提交并推送..."

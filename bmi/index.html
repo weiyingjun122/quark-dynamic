@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI计算器 - 在线身体质量指数BMI测试</title>
+<meta name="description" content="免费在线BMI身体质量指数计算器，输入身高体重一键计算BMI指数，自动判断偏瘦、正常、超重、肥胖等级，同时给出健康体重范围建议，支持公制/英制单位切换，纯本地运算不上传数据。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/bmi/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BMI计算器 - 在线身体质量指数BMI测试">
+<meta property="og:description" content="在线BMI身体质量指数计算器：输入身高体重一键计算BMI，自动判断偏瘦/正常/超重/肥胖，附健康体重范围建议。">
+<meta property="og:url" content="https://www.weiyingjun.top/bmi/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23059669'/%3E%3Ctext x='50' y='70' font-size='44' text-anchor='middle' fill='white' font-family='Consolas,Microsoft YaHei,Arial'%3EBMI%3C/text%3E%3C/svg%3E">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #ecfdf5 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+
+.header-tags { margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.header-tags .htag { font-size: 12px; color: #059669; background: #d1fae5; padding: 4px 12px; border-radius: 999px; }
+
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #dfe3ee;
+  background: #fff;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.action-btn:hover { border-color: #059669; color: #059669; }
+
+.unit-switch { display: flex; gap: 0; margin-bottom: 18px; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; width: fit-content; }
+.unit-switch button { padding: 8px 18px; border: none; background: #fff; color: #475569; font-size: 13px; cursor: pointer; transition: all .15s; }
+.unit-switch button.on { background: #059669; color: #fff; }
+
+.inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px; }
+@media (max-width: 620px){ .inputs { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; color: #475569; }
+.field label small { color: #94a3b8; }
+.input-wrap { display: flex; align-items: center; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; background: #fafbff; }
+.input-wrap:focus-within { border-color: #059669; background: #fff; }
+.input-wrap input { flex: 1; min-width: 0; border: none; outline: none; padding: 12px 14px; font-size: 15px; color: #1f2d3d; background: transparent; font-family: Consolas, Menlo, monospace; }
+.input-wrap .unit { padding: 0 14px; color: #94a3b8; font-size: 13px; white-space: nowrap; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+.btn {
+  padding: 12px 22px; font-size: 15px; border: none; border-radius: 10px;
+  background: #059669; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #047857; }
+.btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.result-box { margin-top: 20px; display: none; }
+.bmi-value { text-align: center; padding: 18px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; }
+.bmi-value .big { font-size: 46px; font-weight: 700; color: #059669; font-family: Consolas, Menlo, monospace; }
+.bmi-value .level { display: inline-block; margin-top: 8px; padding: 4px 16px; border-radius: 999px; color: #fff; font-size: 15px; font-weight: 600; }
+
+.scale { margin-top: 18px; }
+.scale-bar { position: relative; height: 14px; border-radius: 999px; overflow: hidden; display: flex; }
+.scale-bar span { display: block; height: 100%; }
+.s-under { background: #93c5fd; }
+.s-normal { background: #34d399; }
+.s-over { background: #fbbf24; }
+.s-obese { background: #f87171; }
+.scale-marker { position: absolute; top: -6px; width: 4px; height: 26px; background: #1f2937; border-radius: 2px; }
+.scale-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: #64748b; }
+.scale-labels b { color: #1f2d3d; }
+
+.advice { margin-top: 16px; padding: 14px 16px; background: #f8fafc; border-radius: 10px; font-size: 13px; color: #475569; line-height: 1.9; }
+.advice b { color: #1f2d3d; }
+
+.range-table { margin-top: 20px; width: 100%; border-collapse: collapse; font-size: 13px; }
+.range-table th, .range-table td { border: 1px solid #e2e8f0; padding: 10px 12px; text-align: center; }
+.range-table th { background: #f0fdf4; color: #1f2d3d; }
+.range-table td { color: #475569; }
+.range-table .tag { display: inline-block; padding: 2px 10px; border-radius: 999px; color: #fff; font-size: 12px; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #059669, #34d399); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #a7f3d0, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #ecfdf5);
+  border: 1px solid #d1fae5; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(5,150,105,.12); border-color: #6ee7b7; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+@media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
+.td-step { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px; position: relative; }
+.td-step .step-num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #059669, #10b981); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.td-step .step-txt { font-size: 13px; color: #475569; line-height: 1.7; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #059669; text-decoration: none; }
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 999; align-items: center; justify-content: center; }
+.modal.show { display: flex; }
+.modal-box { background: #fff; border-radius: 12px; padding: 24px; width: min(90vw, 360px); text-align: center; animation: pop .18s ease; }
+@keyframes pop { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-box h3 { font-size: 18px; margin-bottom: 14px; color: #1f2d3d; }
+.modal-box #qrcode { display: inline-block; padding: 8px; background: #fff; }
+.modal-box #qrcode img, .modal-box #qrcode canvas { margin: 0 auto; }
+.modal-tip { font-size: 13px; color: #94a3b8; margin: 12px 0; }
+.btn-close { padding: 9px 26px; font-size: 14px; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer; transition: background .2s; }
+.btn-close:hover { background: #e2e8f0; }
+
+.donate-box { width: min(92vw, 480px); }
+.donate-cards { display: flex; gap: 16px; justify-content: center; margin: 12px 0 16px; }
+.pay-card { flex: 1; max-width: 210px; border-radius: 12px; padding: 14px 12px 16px; display: flex; flex-direction: column; align-items: center; color: #fff; }
+.pay-card-wechat { background: #07c160; }
+.pay-card-alipay { background: #1677ff; }
+.pay-card-head { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.pay-logo { width: 22px; height: 22px; }
+.pay-qr { width: 100%; max-width: 160px; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 4px; }
+.pay-main { font-size: 15px; margin: 12px 0 8px; }
+.pay-sub { font-size: 12px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5); padding: 4px 10px; border-radius: 999px; }
+@media (max-width: 520px) {
+  .donate-cards { flex-direction: column; align-items: center; }
+  .pay-card { width: 100%; max-width: 260px; }
+  .donate-box { width: min(92vw, 340px); }
+}
+
+#toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); background: rgba(0,0,0,.8); color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>BMI 计算器</h1>
+  <p class="subtitle">输入身高体重，一键计算身体质量指数 BMI 并判断健康等级</p>
+  <div class="header-tags">
+    <span class="htag">身体健康</span>
+    <span class="htag">偏瘦/正常/超重</span>
+    <span class="htag">公制/英制</span>
+    <span class="htag">本地运算</span>
+  </div>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+
+    <div class="toolbar">
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnDonate" class="action-btn" title="支持本站">打赏支持</button>
+        <button id="btnCopyLink" class="action-btn" title="复制本工具链接">复制链接</button>
+      </div>
+    </div>
+
+    <div class="unit-switch" id="unitSwitch">
+      <button type="button" class="on" data-unit="metric">公制 (cm / kg)</button>
+      <button type="button" data-unit="imperial">英制 (ft/in / lb)</button>
+    </div>
+
+    <div class="inputs">
+      <div class="field">
+        <label for="height" id="labelHeight">身高 <small>厘米</small></label>
+        <div class="input-wrap">
+          <input type="number" id="height" placeholder="例如：175" min="1" step="0.1">
+          <span class="unit" id="unitHeight">cm</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="weight" id="labelWeight">体重 <small>千克</small></label>
+        <div class="input-wrap">
+          <input type="number" id="weight" placeholder="例如：65" min="1" step="0.1">
+          <span class="unit" id="unitWeight">kg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-calc">🧮 立即计算 BMI</button>
+      <button class="btn ghost" id="btn-clear">清空</button>
+    </div>
+
+    <div class="result-box" id="result-box">
+      <div class="bmi-value">
+        <div class="big" id="bmiValue">--</div>
+        <div><span class="level" id="bmiLevel"></span></div>
+      </div>
+      <div class="scale">
+        <div class="scale-bar" id="scaleBar">
+          <span class="s-under" style="flex:18.5;"></span>
+          <span class="s-normal" style="flex:5.5;"></span>
+          <span class="s-over" style="flex:4;"></span>
+          <span class="s-obese" style="flex:20;"></span>
+          <div class="scale-marker" id="scaleMarker"></div>
+        </div>
+        <div class="scale-labels">
+          <span><b>偏瘦</b> &lt;18.5</span>
+          <span><b>正常</b> 18.5~24</span>
+          <span><b>超重</b> 24~28</span>
+          <span><b>肥胖</b> ≥28</span>
+        </div>
+      </div>
+      <div class="advice" id="advice"></div>
+      <table class="range-table">
+        <thead>
+          <tr><th>BMI 指数</th><th>健康等级</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>&lt; 18.5</td><td><span class="tag" style="background:#93c5fd;">偏瘦</span></td></tr>
+          <tr><td>18.5 ~ 23.9</td><td><span class="tag" style="background:#34d399;">正常</span></td></tr>
+          <tr><td>24 ~ 27.9</td><td><span class="tag" style="background:#fbbf24;">超重</span></td></tr>
+          <tr><td>≥ 28</td><td><span class="tag" style="background:#f87171;">肥胖</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="disclaimer">所有计算均在您的浏览器本地完成，不记录任何健康数据，请放心使用。</div>
+
+  <div class="tool-desc">
+    <h2>BMI 计算器工具介绍</h2>
+    <p>本工具是一款免费在线的身体质量指数（BMI，Body Mass Index）计算器，通过身高和体重快速计算 BMI 指数，用于评估个人的体重状况与健康风险。BMI 是衡量体重与身高比例的常用指标，可以帮助您初步判断体重是否过轻、正常、超重或肥胖。</p>
+    <p>只需输入身高和体重，点击「立即计算 BMI」即可得到结果，同时直观显示您在 BMI 标准刻度上的位置，并给出对应健康等级与健康体重范围建议。支持公制（厘米/千克）与英制（英尺英寸/磅）双单位切换。本工具适用于 18 周岁以上人群；18 周岁以下建议参考儿童青少年生长发育标准。</p>
+
+    <h3>工具优势</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>一键计算</b><p>输入身高体重立即得出 BMI 指数与健康等级，无需等待。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>刻度可视化</b><p>BMI 标尺直观展示您的指数位置，对应偏瘦/正常/超重/肥胖区间。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔄</span><div><b>双单位切换</b><p>支持公制与英制单位，国内外用户均可轻松使用。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>健康建议</b><p>自动给出健康体重范围与改善建议，帮助您了解自身状况。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地计算，健康数据绝不上传服务器。</p></div></div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">输入身高（厘米）和体重（千克），也可切换为英制单位。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">点击「立即计算 BMI」按钮。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">查看 BMI 指数、健康等级与对应的健康体重范围。</div></li>
+    </ol>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>什么是 BMI？</b><p>BMI（身体质量指数，Body Mass Index）用于衡量体重与身高的比例，计算公式为：BMI = 体重(kg) ÷ 身高²(m²)。</p></div>
+      <div class="faq-item"><b>BMI 计算适用于所有人吗？</b><p>BMI 适用于大多数成年人，但对孕妇、运动员或肌肉含量较高的人群可能不完全适用，结果仅供参考。</p></div>
+      <div class="faq-item"><b>BMI 计算是否精准？</b><p>BMI 仅基于身高和体重计算，无法衡量体脂率或肌肉比例，因此只能作为健康评估的参考指标之一。</p></div>
+      <div class="faq-item"><b>如何改善 BMI 指数？</b><p>通过均衡饮食、适量运动与健康的生活方式，逐步将 BMI 维持在正常范围内（18.5~24）。</p></div>
+      <div class="faq-item"><b>儿童和青少年的 BMI 如何计算？</b><p>18 岁以下人群应参考儿童青少年生长发育标准，而不是直接使用成人 BMI 判断标准。</p></div>
+    </div>
+  </div>
+
+</main>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "什么是 BMI？", "acceptedAnswer": { "@type": "Answer", "text": "BMI（身体质量指数）用于衡量体重与身高的比例，计算公式为 BMI = 体重(kg) ÷ 身高²(m²)。" } },
+    { "@type": "Question", "name": "BMI 计算适用于所有人吗？", "acceptedAnswer": { "@type": "Answer", "text": "BMI 适用于大多数成年人，但对孕妇、运动员或肌肉含量较高的人群可能不完全适用。" } },
+    { "@type": "Question", "name": "BMI 计算是否精准？", "acceptedAnswer": { "@type": "Answer", "text": "BMI 仅基于身高和体重计算，无法衡量体脂率或肌肉比例，只能作为参考指标。" } },
+    { "@type": "Question", "name": "如何改善 BMI 指数？", "acceptedAnswer": { "@type": "Answer", "text": "通过均衡饮食、适量运动与健康的生活方式，逐步将 BMI 维持在正常范围内。" } },
+    { "@type": "Question", "name": "儿童和青少年的 BMI 如何计算？", "acceptedAnswer": { "@type": "Answer", "text": "18 岁以下人群应参考儿童青少年生长发育标准，而非成人 BMI 判断标准。" } }
+  ]
+}
+</script>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+    <p style="margin-top:10px;line-height:2;"><a href="/check-word/" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">违禁词检测</a><a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">IP查询</a><a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机密码</a><a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">年龄计算</a><a href="/bmi/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">BMI计算器</a><a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">日期计算</a><a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">金额大写</a><a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本提取</a><a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本去重</a><a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">字符统计</a><a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">数据脱敏</a><a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">JSON格式化</a><a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">MD5批量加密</a><a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">短链接还原</a><a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">手机号查询</a><a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">身份证查询</a><a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机分组</a><a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机点名</a></p>
+    <p style="margin-top:8px;"><a href="/about.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">关于本站</a><a href="/privacy.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">隐私政策</a><a href="/contact.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">联系我们</a></p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var unit = "metric";
+  var inHeight = document.getElementById("height");
+  var inWeight = document.getElementById("weight");
+  var resultBox = document.getElementById("result-box");
+  var bmiValueEl = document.getElementById("bmiValue");
+  var bmiLevelEl = document.getElementById("bmiLevel");
+  var adviceEl = document.getElementById("advice");
+  var marker = document.getElementById("scaleMarker");
+
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+
+  function setUnit(u) {
+    unit = u;
+    var buttons = document.querySelectorAll("#unitSwitch button");
+    var i;
+    for (i = 0; i < buttons.length; i++) {
+      buttons[i].className = buttons[i].getAttribute("data-unit") === unit ? "on" : "";
+    }
+    if (unit === "metric") {
+      document.getElementById("labelHeight").innerHTML = "身高 <small>厘米</small>";
+      document.getElementById("labelWeight").innerHTML = "体重 <small>千克</small>";
+      document.getElementById("unitHeight").textContent = "cm";
+      document.getElementById("unitWeight").textContent = "kg";
+      inHeight.placeholder = "例如：175";
+      inWeight.placeholder = "例如：65";
+    } else {
+      document.getElementById("labelHeight").innerHTML = "身高 <small>英尺/英寸</small>";
+      document.getElementById("labelWeight").innerHTML = "体重 <small>磅</small>";
+      document.getElementById("unitHeight").textContent = "ft/in";
+      document.getElementById("unitWeight").textContent = "lb";
+      inHeight.placeholder = "例如：5 尺 9 寸（输入总英寸 69）";
+      inWeight.placeholder = "例如：143";
+    }
+  }
+
+  document.getElementById("unitSwitch").addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest("button");
+    if (btn) setUnit(btn.getAttribute("data-unit"));
+  });
+
+  function levelInfo(bmi) {
+    if (bmi < 18.5) return { name: "偏瘦", color: "#3b82f6", advice: "体重偏轻，建议适当增加营养摄入，均衡饮食、规律作息，可结合适量力量训练增强体质。" };
+    if (bmi < 24) return { name: "正常", color: "#10b981", advice: "体重处于正常范围，请继续保持均衡饮食与适度运动，维持健康状态。" };
+    if (bmi < 28) return { name: "超重", color: "#f59e0b", advice: "体重略有超标，建议控制饮食、减少高糖高脂摄入，并坚持有氧运动逐步减重。" };
+    return { name: "肥胖", color: "#ef4444", advice: "体重已进入肥胖区间，健康风险较高，建议咨询专业医生或营养师，制定科学的减重与运动计划。" };
+  }
+
+  function calc() {
+    var h = parseFloat(inHeight.value);
+    var w = parseFloat(inWeight.value);
+    if (!h || !w || h <= 0 || w <= 0) { toast("请填写有效的身高和体重"); return; }
+
+    var heightM, weightKg;
+    if (unit === "metric") {
+      heightM = h / 100;
+      weightKg = w;
+    } else {
+      heightM = h * 0.0254;
+      weightKg = w * 0.45359237;
+    }
+
+    var bmi = weightKg / (heightM * heightM);
+    bmi = Math.round(bmi * 100) / 100;
+
+    var info = levelInfo(bmi);
+    bmiValueEl.textContent = bmi.toFixed(2);
+    bmiLevelEl.textContent = info.name;
+    bmiLevelEl.style.background = info.color;
+
+    var low = 18.5 * heightM * heightM;
+    var high = 23.9 * heightM * heightM;
+    var lowStr = unit === "metric" ? low.toFixed(1) + " kg" : (low / 0.45359237).toFixed(1) + " lb";
+    var highStr = unit === "metric" ? high.toFixed(1) + " kg" : (high / 0.45359237).toFixed(1) + " lb";
+    adviceEl.innerHTML = "您的 BMI 为 <b>" + bmi.toFixed(2) + "</b>，属于 <b>" + info.name + "</b>。对应当前身高，健康体重范围约为 <b>" + lowStr + " ~ " + highStr + "</b>。" + info.advice;
+
+    var pct = Math.min(55, Math.max(2, ((bmi - 14) / (38 - 14)) * 100));
+    marker.style.left = pct + "%";
+
+    resultBox.style.display = "block";
+  }
+
+  document.getElementById("btn-calc").addEventListener("click", calc);
+  inHeight.addEventListener("keydown", function (e) { if (e.key === "Enter") calc(); });
+  inWeight.addEventListener("keydown", function (e) { if (e.key === "Enter") calc(); });
+  document.getElementById("btn-clear").addEventListener("click", function () {
+    inHeight.value = "";
+    inWeight.value = "";
+    resultBox.style.display = "none";
+    inHeight.focus();
+  });
+
+  function copyText(text, doneMsg) {
+    function ok() { toast(doneMsg || "复制成功"); }
+    function fail() { toast("复制失败"); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function () { fallbackCopy(text, ok, fail); });
+    } else { fallbackCopy(text, ok, fail); }
+  }
+  function fallbackCopy(text, ok, fail) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); ok(); } catch (e) { fail(); }
+    document.body.removeChild(ta);
+  }
+
+  var btnQr = document.getElementById("btnQr");
+  var btnDonate = document.getElementById("btnDonate");
+  var btnCopyLink = document.getElementById("btnCopyLink");
+  if (btnQr) btnQr.addEventListener("click", function () {
+    var q = document.getElementById("qrcode");
+    q.innerHTML = "";
+    if (window.QRCode) { new QRCode(q, { text: location.href, width: 180, height: 180 }); }
+    else { q.textContent = "二维码组件加载失败，请复制链接使用"; }
+    document.getElementById("qrModal").classList.add("show");
+  });
+  if (btnDonate) btnDonate.addEventListener("click", function () {
+    document.getElementById("donateModal").classList.add("show");
+  });
+  if (btnCopyLink) btnCopyLink.addEventListener("click", function () { copyText(location.origin + location.pathname); });
+  document.addEventListener("click", function (e) {
+    var closeBtn = e.target.closest && e.target.closest(".btn-close");
+    if (closeBtn) {
+      var m = document.getElementById(closeBtn.getAttribute("data-close"));
+      if (m) m.classList.remove("show");
+      return;
+    }
+    if (e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("show");
+  });
+
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+})();
+</script>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="qrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn-close" data-close="qrModal">关闭</button>
+  </div>
+</div>
+
+<!-- 打赏弹窗 -->
+<div class="modal" id="donateModal">
+  <div class="modal-box donate-box">
+    <h3>打赏支持</h3>
+    <p class="modal-tip">喜欢就支持一下，我们会更努力!</p>
+    <div class="donate-cards">
+      <div class="pay-card pay-card-wechat">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+          <span>微信支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用微信付款</p>
+      </div>
+      <div class="pay-card pay-card-alipay">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
+          <span>支付宝支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用支付宝付款</p>
+      </div>
+    </div>
+    <button class="btn-close" data-close="donateModal">关闭</button>
+  </div>
+</div>
+</body>
+</html>
