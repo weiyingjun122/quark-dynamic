@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MD5批量加密工具 - 在线批量生成MD5哈希值</title>
+<meta name="description" content="免费在线MD5批量加密工具，支持一次性对上百行文本批量生成MD5哈希值，可选32位/16位、大写/小写输出，一键复制、导出TXT或Excel文件，支持文件上传与拖拽，原生JavaScript纯本地运算，数据不上传服务器，适合密码初始化、数据校验与安全审计。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/md5-batch/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MD5批量加密工具 - 在线批量生成MD5哈希值">
+<meta property="og:description" content="在线MD5批量加密工具：批量生成32位/16位MD5，支持大小写切换、复制与导出，纯本地运算安全可靠。">
+<meta property="og:url" content="https://www.weiyingjun.top/md5-batch/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23059669'/%3E%3Ctext x='50' y='68' font-size='40' text-anchor='middle' fill='white' font-family='Consolas,Microsoft YaHei,Arial'%3EMD5%3C/text%3E%3C/svg%3E">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #ecfdf5 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+
+.header-tags { margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.header-tags .htag { font-size: 12px; color: #059669; background: #d1fae5; padding: 4px 12px; border-radius: 999px; }
+
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #dfe3ee;
+  background: #fff;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.action-btn:hover { border-color: #059669; color: #059669; }
+
+.upload-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+.upload-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border: 1px dashed #6ee7b7; border-radius: 10px;
+  background: #ecfdf5; color: #059669; font-size: 13px; cursor: pointer;
+  transition: all .15s;
+}
+.upload-btn:hover { background: #d1fae5; }
+#fileInput { display: none; }
+.upload-tip { font-size: 12px; color: #94a3b8; }
+
+.panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px; }
+@media (max-width: 620px){ .panels { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; color: #475569; }
+textarea {
+  width: 100%; padding: 12px 14px; font-size: 13px;
+  border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
+  background: #fafbff; tab-size: 4;
+}
+textarea:focus { border-color: #059669; background: #fff; }
+#srcText { min-height: 260px; }
+#outText { min-height: 260px; background: #fafbff; }
+
+.options-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; }
+.chip select { padding: 6px 8px; border: 1px solid #dfe3ee; border-radius: 7px; font-size: 13px; color: #334155; background: #fff; outline: none; }
+.chip select:focus { border-color: #059669; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+.btn {
+  padding: 12px 22px; font-size: 15px; border: none; border-radius: 10px;
+  background: #059669; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #047857; }
+.btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.result-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.result-count { font-size: 14px; font-weight: 600; color: #1f2d3d; }
+.result-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.mini-btn {
+  border: 1px solid #e2e5ee; background: #fff; color: #475569;
+  padding: 6px 14px; border-radius: 7px; font-size: 13px; cursor: pointer;
+  white-space: nowrap; transition: all .15s;
+}
+.mini-btn:hover { border-color: #059669; color: #059669; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #059669, #34d399); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #a7f3d0, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #ecfdf5);
+  border: 1px solid #d1fae5; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(5,150,105,.12); border-color: #6ee7b7; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+@media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
+.td-step { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px; position: relative; }
+.td-step .step-num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #059669, #10b981); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.td-step .step-txt { font-size: 13px; color: #475569; line-height: 1.7; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #059669; text-decoration: none; }
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 999; align-items: center; justify-content: center; }
+.modal.show { display: flex; }
+.modal-box { background: #fff; border-radius: 12px; padding: 24px; width: min(90vw, 360px); text-align: center; animation: pop .18s ease; }
+@keyframes pop { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-box h3 { font-size: 18px; margin-bottom: 14px; color: #1f2d3d; }
+.modal-box #qrcode { display: inline-block; padding: 8px; background: #fff; }
+.modal-box #qrcode img, .modal-box #qrcode canvas { margin: 0 auto; }
+.modal-tip { font-size: 13px; color: #94a3b8; margin: 12px 0; }
+.btn-close { padding: 9px 26px; font-size: 14px; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer; transition: background .2s; }
+.btn-close:hover { background: #e2e8f0; }
+
+.donate-box { width: min(92vw, 480px); }
+.donate-cards { display: flex; gap: 16px; justify-content: center; margin: 12px 0 16px; }
+.pay-card { flex: 1; max-width: 210px; border-radius: 12px; padding: 14px 12px 16px; display: flex; flex-direction: column; align-items: center; color: #fff; }
+.pay-card-wechat { background: #07c160; }
+.pay-card-alipay { background: #1677ff; }
+.pay-card-head { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.pay-logo { width: 22px; height: 22px; }
+.pay-qr { width: 100%; max-width: 160px; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 4px; }
+.pay-main { font-size: 15px; margin: 12px 0 8px; }
+.pay-sub { font-size: 12px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5); padding: 4px 10px; border-radius: 999px; }
+@media (max-width: 520px) {
+  .donate-cards { flex-direction: column; align-items: center; }
+  .pay-card { width: 100%; max-width: 260px; }
+  .donate-box { width: min(92vw, 340px); }
+}
+
+#toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); background: rgba(0,0,0,.8); color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>MD5 批量加密工具</h1>
+  <p class="subtitle">一次性批量生成 32 位 / 16 位 MD5 哈希，支持大写小写一键切换导出</p>
+  <div class="header-tags">
+    <span class="htag">批量加密</span>
+    <span class="htag">32位/16位</span>
+    <span class="htag">大小写切换</span>
+    <span class="htag">本地运算</span>
+  </div>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+
+    <div class="toolbar">
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnDonate" class="action-btn" title="支持本站">打赏支持</button>
+        <button id="btnCopyLink" class="action-btn" title="复制本工具链接">复制链接</button>
+      </div>
+    </div>
+
+    <div class="upload-row">
+      <label class="upload-btn">📁 上传文件<input type="file" id="fileInput" accept=".txt,.log,.csv"></label>
+      <span class="upload-tip">支持 .txt 文件上传或直接拖入文本框，每行一条明文</span>
+    </div>
+
+    <div class="panels">
+      <div class="field">
+        <label for="srcText">明文内容（每行一条）</label>
+        <textarea id="srcText" placeholder="每行粘贴一条需要加密的文本，例如：&#10;123456&#10;admin&#10;hello world&#10;123456"></textarea>
+      </div>
+      <div class="field">
+        <label for="outText">MD5 加密结果</label>
+        <textarea id="outText" readonly spellcheck="false" placeholder="点击「开始批量加密」后，这里将显示每行对应的 MD5"></textarea>
+      </div>
+    </div>
+
+    <div class="options-row">
+      <label class="chip">输出位数
+        <select id="digits">
+          <option value="32" selected>32 位</option>
+          <option value="16">16 位</option>
+        </select>
+      </label>
+      <label class="chip">字母大小写
+        <select id="letterCase">
+          <option value="lower" selected>小写</option>
+          <option value="upper">大写</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-run">🔐 开始批量加密</button>
+      <button class="btn ghost" id="btn-clear">清空</button>
+    </div>
+
+    <div class="result-head" id="result-head" style="display:none;">
+      <span class="result-count" id="result-count"></span>
+      <span class="result-actions">
+        <button class="mini-btn" id="btn-copy">复制结果</button>
+        <button class="mini-btn" id="btn-txt">导出 TXT</button>
+        <button class="mini-btn" id="btn-excel">导出 Excel</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="disclaimer">所有哈希计算均在您的浏览器本地完成，明文数据不会被上传，请放心使用。</div>
+
+  <div class="tool-desc">
+    <h2>MD5 批量加密工具介绍</h2>
+    <p>本工具是一款免费在线的 MD5 批量加密工具，专为开发者、数据库管理员及安全测试人员打造。它支持一次性对成百上千行文本批量计算 MD5 哈希值，彻底告别逐条加密的低效模式。在用户密码初始化、生成数据校验签名、去重比对或安全审计等场景中非常实用。</p>
+    <p>输出格式灵活：可选 32 位或 16 位 MD5，字母大小写一键切换，完美适配不同业务系统的安全规范。加密结果支持一键复制，也可导出为 TXT 或 Excel 文件，方便后续的数据库导入或报表制作。所有运算均在浏览器本地完成，数据不经过任何服务器。</p>
+
+    <h3>工具优势</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>批量加密</b><p>支持一次性处理海量行文本，彻底告别单条加密的低效工作模式。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎨</span><div><b>格式灵活</b><p>可选 32 位/16 位、大写/小写输出，完美适配各种业务系统规范。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>纯净安全</b><p>哈希计算完全基于浏览器本地，明文与敏感数据绝不上传服务器。</p></div></div>
+      <div class="td-card"><span class="td-ico">📦</span><div><b>一键导出</b><p>支持复制结果，或一键导出为 TXT / Excel 文件便于导入数据库。</p></div></div>
+      <div class="td-card"><span class="td-ico">📁</span><div><b>文件导入</b><p>支持上传 .txt 文件或直接拖入文本，每行一条自动批量处理。</p></div></div>
+      <div class="td-card"><span class="td-ico">📐</span><div><b>16/32位可选</b><p>16 位即取 32 位 MD5 中间 16 个字符，常用场景一键可得。</p></div></div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">将需要加密的明文（每行一条）粘贴到左侧输入框。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">选择输出位数（32 位 / 16 位）与字母大小写。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始批量加密」，右侧即时展示全部 MD5 密文。</div></li>
+      <li class="td-step"><span class="step-num">4</span><div class="step-txt">点击「复制结果」或导出 TXT / Excel 保存到本地。</div></li>
+    </ol>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>MD5 加密的原理是什么？</b><p>MD5 是一种单向哈希算法，将任意长度的文本通过杂凑运算生成固定长度的 128 位哈希值，通常以 32 位十六进制字符串表示。本工具使用标准的 MD5 算法在浏览器本地计算结果。</p></div>
+      <div class="faq-item"><b>32 位和 16 位有什么区别？</b><p>MD5 标准结果为 32 位十六进制；16 位是取 32 位结果中间的第 9-24 位共 16 个字符，是部分老系统的简化表示方式，两边都可互相推导。</p></div>
+      <div class="faq-item"><b>MD5 加密后的数据还能解密还原吗？</b><p>不能。MD5 是单向不可逆的哈希算法，无法从密文反推明文。部分常见明文可通过「彩虹表」机制猜测，故密码场景建议加盐并选用更强的算法。</p></div>
+      <div class="faq-item"><b>明文数据会被上传吗？</b><p>不会。所有哈希计算均在浏览器本地完成，明文数据不经过任何服务器，关闭页面即全部清除。</p></div>
+      <div class="faq-item"><b>如何把结果保存成文件？</b><p>点击「导出 TXT」可保存为 .txt 文件；点击「导出 Excel」可生成为 Excel 可打开的 .csv 文件，方便直接导入数据库或报表工具。</p></div>
+    </div>
+  </div>
+
+</main>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "MD5 加密的原理是什么？", "acceptedAnswer": { "@type": "Answer", "text": "MD5 是一种单向哈希算法，将任意长度的文本通过杂凑运算生成固定长度的 128 位哈希值，通常以 32 位十六进制字符串表示。" } },
+    { "@type": "Question", "name": "32 位和 16 位有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "MD5 标准结果为 32 位；16 位是取 32 位结果中间 16 个字符，是部分老系统的简化表示。" } },
+    { "@type": "Question", "name": "MD5 加密后的数据还能解密还原吗？", "acceptedAnswer": { "@type": "Answer", "text": "不能。MD5 是单向不可逆的哈希算法，无法从密文反推明文，密码场景建议加盐并选用更强算法。" } },
+    { "@type": "Question", "name": "明文数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有哈希计算均在浏览器本地完成，明文不经过任何服务器。" } },
+    { "@type": "Question", "name": "如何把结果保存成文件？", "acceptedAnswer": { "@type": "Answer", "text": "可导出 TXT 文件，或导出为 Excel 可打开的 CSV 文件，方便导入数据库。" } }
+  ]
+}
+</script>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+    <p style="margin-top:10px;line-height:2;"><a href="/check-word/" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;margin:0 8px;">违禁词检测</a><a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">IP查询</a><a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机密码</a><a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">年龄计算</a><a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">日期计算</a><a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">金额大写</a><a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">文本提取</a><a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">文本去重</a><a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">字符统计</a><a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">数据脱敏</a><a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">JSON格式化</a><a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">MD5批量加密</a><a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">短链接还原</a><a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">手机号查询</a><a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">身份证查询</a><a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机分组</a><a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;">随机点名</a></p>
+    <p style="margin-top:8px;"><a href="/about.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">关于本站</a><a href="/privacy.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">隐私政策</a><a href="/contact.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">联系我们</a></p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ===== MD5 实现（纯JS，标准RFC 1321） ===== */
+  var md5 = (function () {
+    function safeAdd(x, y) { var lsw = (x & 0xffff) + (y & 0xffff); var msw = (x >> 16) + (y >> 16) + (lsw >> 16); return (msw << 16) | (lsw & 0xffff); }
+    function bitRotateLeft(num, cnt) { return (num << cnt) | (num >>> (32 - cnt)); }
+    function md5cmn(q, a, b, x, s, t) { return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b); }
+    function md5ff(a, b, c, d, x, s, t) { return md5cmn((b & c) | (~b & d), a, b, x, s, t); }
+    function md5gg(a, b, c, d, x, s, t) { return md5cmn((b & d) | (c & ~d), a, b, x, s, t); }
+    function md5hh(a, b, c, d, x, s, t) { return md5cmn(b ^ c ^ d, a, b, x, s, t); }
+    function md5ii(a, b, c, d, x, s, t) { return md5cmn(c ^ (b | ~d), a, b, x, s, t); }
+    function binlMD5(x, len) {
+      x[len >> 5] |= 0x80 << (len % 32);
+      x[(((len + 64) >>> 9) << 4) + 14] = len;
+      var i, olda, oldb, oldc, oldd;
+      var a = 1732584193, b = -271733879, c = -1732584194, d = 271733878;
+      for (i = 0; i < x.length; i += 16) {
+        olda = a; oldb = b; oldc = c; oldd = d;
+        a = md5ff(a, b, c, d, x[i], 7, -680876936); d = md5ff(d, a, b, c, x[i + 1], 12, -389564586); c = md5ff(c, d, a, b, x[i + 2], 17, 606105819); b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+        a = md5ff(a, b, c, d, x[i + 4], 7, -176418897); d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426); c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341); b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+        a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416); d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417); c = md5ff(c, d, a, b, x[i + 10], 17, -42063); b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+        a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682); d = md5ff(d, a, b, c, x[i + 13], 12, -40341101); c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290); b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+        a = md5gg(a, b, c, d, x[i + 1], 5, -165796510); d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632); c = md5gg(c, d, a, b, x[i + 11], 14, 643717713); b = md5gg(b, c, d, a, x[i], 20, -373897302);
+        a = md5gg(a, b, c, d, x[i + 5], 5, -701558691); d = md5gg(d, a, b, c, x[i + 10], 9, 38016083); c = md5gg(c, d, a, b, x[i + 15], 14, -660478335); b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+        a = md5gg(a, b, c, d, x[i + 9], 5, 568446438); d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690); c = md5gg(c, d, a, b, x[i + 3], 14, -187363961); b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+        a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467); d = md5gg(d, a, b, c, x[i + 2], 9, -51403784); c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473); b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+        a = md5hh(a, b, c, d, x[i + 5], 4, -378558); d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463); c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562); b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+        a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060); d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353); c = md5hh(c, d, a, b, x[i + 7], 16, -155497632); b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+        a = md5hh(a, b, c, d, x[i + 13], 4, 681279174); d = md5hh(d, a, b, c, x[i], 11, -358537222); c = md5hh(c, d, a, b, x[i + 3], 16, -722521979); b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+        a = md5hh(a, b, c, d, x[i + 9], 4, -640364487); d = md5hh(d, a, b, c, x[i + 12], 11, -421815835); c = md5hh(c, d, a, b, x[i + 15], 16, 530742520); b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+        a = md5ii(a, b, c, d, x[i], 6, -198630844); d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415); c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905); b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+        a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571); d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606); c = md5ii(c, d, a, b, x[i + 10], 15, -1051523); b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+        a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359); d = md5ii(d, a, b, c, x[i + 15], 10, -30611744); c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380); b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+        a = md5ii(a, b, c, d, x[i + 4], 6, -145523070); d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379); c = md5ii(c, d, a, b, x[i + 2], 15, 718787259); b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+        a = safeAdd(a, olda); b = safeAdd(b, oldb); c = safeAdd(c, oldc); d = safeAdd(d, oldd);
+      }
+      return [a, b, c, d];
+    }
+    function binl2hex(binarray) {
+      var hexTab = "0123456789abcdef"; var str = ""; var i;
+      for (i = 0; i < binarray.length * 4; i++) {
+        str += hexTab.charAt((binarray[i >> 2] >> ((i % 4) * 8 + 4)) & 0xf) + hexTab.charAt((binarray[i >> 2] >> ((i % 4) * 8)) & 0xf);
+      }
+      return str;
+    }
+    function utf8Encode(str) {
+      if (str === undefined || str === null) str = "";
+      if (typeof TextEncoder !== "undefined") return Array.from(new TextEncoder().encode(str));
+      unescape(encodeURIComponent(str)).split("");
+      var bytes = []; var i;
+      for (i = 0; i < str.length; i++) { bytes.push.apply(bytes, utf8CharToBytes(str.charCodeAt(i))); }
+      return bytes;
+    }
+    function utf8CharToBytes(c) {
+      var bytes = [];
+      if (c <= 0x7f) { bytes.push(c); }
+      else if (c <= 0x7ff) { bytes.push(0xc0 | (c >> 6), 0x80 | (c & 0x3f)); }
+      else if (c <= 0xffff) { bytes.push(0xe0 | (c >> 12), 0x80 | ((c >> 6) & 0x3f), 0x80 | (c & 0x3f)); }
+      else { bytes.push(0xf0 | (c >> 18), 0x80 | ((c >> 12) & 0x3f), 0x80 | ((c >> 6) & 0x3f), 0x80 | (c & 0x3f)); }
+      return bytes;
+    }
+    function str2binl(str) {
+      var bytes = utf8Encode(str);
+      var bin = []; var mask = 255; var i;
+      for (i = 0; i < bytes.length * 8; i += 8) {
+        bin[i >> 5] |= (bytes[i / 8] & mask) << (i % 32);
+      }
+      return bin;
+    }
+    return function (str) {
+      return binl2hex(binlMD5(str2binl(str), utf8Encode(str).length * 8));
+    };
+  })();
+
+  /* ===== 工具逻辑 ===== */
+  var fileInput = document.getElementById("fileInput");
+  var srcText = document.getElementById("srcText");
+  var outText = document.getElementById("outText");
+  var selDigits = document.getElementById("digits");
+  var selCase = document.getElementById("letterCase");
+  var resultHead = document.getElementById("result-head");
+  var resultCount = document.getElementById("result-count");
+
+  function finalize(hash) {
+    var h = hash;
+    if (selDigits.value === "16") h = h.substring(8, 24);
+    if (selCase.value === "upper") h = h.toUpperCase();
+    return h;
+  }
+
+  function run() {
+    var text = srcText.value.replace(/\r\n/g, "\n");
+    var lines = text.split("\n");
+    var out = []; var empty = 0; var i;
+    for (i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (!line.length) { empty++; continue; }
+      out.push(finalize(md5(line)));
+    }
+    var total = lines.length - empty;
+    if (!total) { toast("请先输入需要加密的明文内容"); return; }
+    var result = out.join("\n");
+    outText.value = result;
+    resultHead.style.display = "flex";
+    resultCount.textContent = "已加密 " + total + " 行，共 " + result.length + " 字符";
+  }
+
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+
+  function copyText(text, doneMsg) {
+    function ok() { toast(doneMsg || "复制成功"); }
+    function fail() { toast("复制失败"); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function () { fallbackCopy(text, ok, fail); });
+    } else { fallbackCopy(text, ok, fail); }
+  }
+  function fallbackCopy(text, ok, fail) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); ok(); } catch (e) { fail(); }
+    document.body.removeChild(ta);
+  }
+
+  function download(blob, filename) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 200);
+  }
+
+  function readFileToText(file, cb) {
+    var reader = new FileReader();
+    reader.onload = function () { cb(String(reader.result || "")); };
+    reader.onerror = function () { toast("读取文件失败"); };
+    reader.readAsText(file);
+  }
+
+  document.getElementById("btn-run").addEventListener("click", run);
+  document.getElementById("btn-clear").addEventListener("click", function () {
+    srcText.value = "";
+    outText.value = "";
+    resultHead.style.display = "none";
+    srcText.focus();
+  });
+
+  fileInput.addEventListener("change", function () {
+    var f = fileInput.files && fileInput.files[0];
+    if (!f) return;
+    readFileToText(f, function (content) {
+      if (!content) return;
+      srcText.value = content.replace(/^\uFEFF/, "");
+      toast("已加载文件：" + f.name);
+      run();
+    });
+    fileInput.value = "";
+  });
+
+  srcText.addEventListener("drop", function (e) {
+    e.preventDefault();
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) { readFileToText(f, function (content) { if (content) { srcText.value = content.replace(/^\uFEFF/, ""); run(); } }); }
+    else { srcText.value = (e.dataTransfer && e.dataTransfer.getData("text")) || srcText.value; }
+  });
+  srcText.addEventListener("dragover", function (e) { e.preventDefault(); });
+
+  document.getElementById("btn-copy").addEventListener("click", function () {
+    if (!outText.value) { toast("暂无可复制的结果"); return; }
+    copyText(outText.value, "已复制 MD5 结果");
+  });
+  document.getElementById("btn-txt").addEventListener("click", function () {
+    if (!outText.value) { toast("暂无可导出的结果"); return; }
+    download(new Blob([outText.value], { type: "text/plain;charset=utf-8" }), "md5_" + Date.now() + ".txt");
+    toast("已导出 TXT");
+  });
+  document.getElementById("btn-excel").addEventListener("click", function () {
+    if (!outText.value) { toast("暂无可导出的结果"); return; }
+    var rows = outText.value.split("\n");
+    var csv = "\uFEFF" + "明文,MD5\n";
+    var srcLines = srcText.value.replace(/\r\n/g, "\n").split("\n");
+    var vidx = 0; var i;
+    for (i = 0; i < srcLines.length; i++) {
+      if (!srcLines[i].length) continue;
+      var esc = function (s) { s = s || ""; return '"' + s.replace(/"/g, '""') + '"'; };
+      csv += esc(srcLines[i]) + "," + esc(rows[vidx] || "") + "\n";
+      vidx++;
+    }
+    download(new Blob([csv], { type: "text/csv;charset=utf-8" }), "md5_" + Date.now() + ".csv");
+    toast("已导出 Excel(CSV)");
+  });
+
+  /* ===== 二维码 / 打赏 / 复制链接 ===== */
+  var btnQr = document.getElementById("btnQr");
+  var btnDonate = document.getElementById("btnDonate");
+  var btnCopyLink = document.getElementById("btnCopyLink");
+  if (btnQr) btnQr.addEventListener("click", function () {
+    var q = document.getElementById("qrcode");
+    q.innerHTML = "";
+    if (window.QRCode) { new QRCode(q, { text: location.href, width: 180, height: 180 }); }
+    else { q.textContent = "二维码组件加载失败，请复制链接使用"; }
+    document.getElementById("qrModal").classList.add("show");
+  });
+  if (btnDonate) btnDonate.addEventListener("click", function () {
+    document.getElementById("donateModal").classList.add("show");
+  });
+  if (btnCopyLink) btnCopyLink.addEventListener("click", function () { copyText(location.origin + location.pathname); });
+  document.addEventListener("click", function (e) {
+    var closeBtn = e.target.closest && e.target.closest(".btn-close");
+    if (closeBtn) {
+      var m = document.getElementById(closeBtn.getAttribute("data-close"));
+      if (m) m.classList.remove("show");
+      return;
+    }
+    if (e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("show");
+  });
+
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+})();
+</script>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="qrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn-close" data-close="qrModal">关闭</button>
+  </div>
+</div>
+
+<!-- 打赏弹窗 -->
+<div class="modal" id="donateModal">
+  <div class="modal-box donate-box">
+    <h3>打赏支持</h3>
+    <p class="modal-tip">喜欢就支持一下，我们会更努力!</p>
+    <div class="donate-cards">
+      <div class="pay-card pay-card-wechat">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+          <span>微信支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用微信付款</p>
+      </div>
+      <div class="pay-card pay-card-alipay">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
+          <span>支付宝支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用支付宝付款</p>
+      </div>
+    </div>
+    <button class="btn-close" data-close="donateModal">关闭</button>
+  </div>
+</div>
+</body>
+</html>
