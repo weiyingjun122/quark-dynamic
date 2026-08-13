@@ -292,7 +292,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
         <div class="canvas-box" id="canvasBox">
           <div class="canvas-placeholder" id="placeholder">
             <div style="font-size:52px;margin-bottom:12px;">🧩</div>
-            上传图片后点击「生成图纸」，即可在这里预览拼豆图纸效果<br>支持显示色号、网格线，放大查看每个豆子的颜色
+            上传图片后自动生成拼豆图纸预览<br>支持显示色号、网格线，放大查看每个豆子的颜色
           </div>
           <canvas id="previewCanvas" style="display:none;"></canvas>
         </div>
@@ -477,6 +477,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
         try { localStorage.setItem(LICENSE_KEY, JSON.stringify(curLic)); } catch (e) {}
         updateUnlockUI();
         toast("✅ 解锁成功，" + (curLic.plan_label || "已激活"));
+        autoGenerate();
       } else {
         toast((res && res.error) || "卡密无效或已被使用", true);
       }
@@ -656,7 +657,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
         $("previewImg").src = e.target.result;
         $("upPreview").style.display = "block";
         $("upName").textContent = file.name + " (" + img.width + "×" + img.height + ")";
-        toast("图片加载成功，点击「生成图纸」开始转换");
+        autoGenerate();
       };
       img.src = e.target.result;
     };
@@ -752,6 +753,17 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
       } catch (e) { toast("生成失败：" + e.message, true); }
     });
   });
+
+  // 上传图片后自动生成图纸预览，无需再点击「生成图纸」
+  function autoGenerate() {
+    if (!state.img) return;
+    guardAction(function () {
+      try {
+        generate();
+        toast("图纸已自动生成");
+      } catch (e) { toast("生成失败：" + e.message, true); }
+    });
+  }
 
   function getImageData(img) {
     var c = document.createElement("canvas");
@@ -1651,6 +1663,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
         $("unlockModal").classList.remove("show");
         updateUnlockUI();
         toast("✅ 解锁成功");
+        autoGenerate();
       } else {
         $("modalErr").textContent = (res && res.error) || "卡密无效";
       }
