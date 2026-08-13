@@ -1055,10 +1055,22 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
       }
     }
 
-    // 网格线（每 N 格一条）
+    // 网格线：先画浅色每格分隔线（与预览一致，保证小方格可见），再叠加间隔线
     if (cfg.grid) {
-      ctx.strokeStyle = cfg.gridColor;
+      ctx.strokeStyle = "rgba(0,0,0,.10)";
       ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (var fgx = 0; fgx <= state.cols; fgx++) {
+        var fpx = ox + fgx * cellPx;
+        ctx.moveTo(fpx + .5, oy); ctx.lineTo(fpx + .5, oy + gridH);
+      }
+      for (var fgy = 0; fgy <= state.rows; fgy++) {
+        var fpy = oy + fgy * cellPx;
+        ctx.moveTo(ox, fpy + .5); ctx.lineTo(ox + gridW, fpy + .5);
+      }
+      ctx.stroke();
+
+      ctx.strokeStyle = cfg.gridColor;
       ctx.beginPath();
       var g = Math.max(1, cfg.gridEvery | 0);
       for (var gx = 0; gx <= state.cols; gx += g) {
