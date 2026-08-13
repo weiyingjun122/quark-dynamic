@@ -203,6 +203,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     <div class="unlock-form" id="unlockForm">
       <input type="text" id="cardInput" placeholder="输入卡密解锁" maxlength="20" autocomplete="off">
       <button type="button" id="btnUnlock">解锁</button>
+      <button type="button" id="btnCopyFp" class="btn-copyfp" title="换设备/售后时把设备指纹发给卖家">📋 复制设备指纹</button>
     </div>
     <div class="unlock-status" id="unlockStatus" style="display:none;">✅ 已解锁<span class="expiry" id="unlockExpiry"></span></div>
   </div>
@@ -1678,6 +1679,26 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     doUnlock(code);
   });
   $("cardInput").addEventListener("keydown", function (e) { if (e.key === "Enter") $("btnUnlock").click(); });
+
+  // 复制设备指纹(换设备/售后): 买家复制后发给卖家, 用于后台换绑
+  function copyText(t) {
+    var ta = document.createElement("textarea");
+    ta.value = t;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  $("btnCopyFp").addEventListener("click", function () {
+    var fp = getDeviceFp();
+    var done = function () { toast("设备指纹已复制，可发给卖家用于换绑", false); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(fp).then(done, function () { copyText(fp); done(); });
+    } else { copyText(fp); done(); }
+  });
+  window.pindouDeviceFp = getDeviceFp;
 
   // 初始化
   updateUnlockUI();

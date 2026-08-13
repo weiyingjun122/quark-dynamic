@@ -315,7 +315,7 @@
       if (!confirm("确认重置卡密 " + code + " 为未使用？已付款买家会被踢下线，请谨慎操作！")) return;
       api("reset", { code: code }).then(function (res) { alert(res.success ? "已重置" : res.error); refreshAll(); });
     } else if (act === "rebind") {
-      var fp = prompt("请输入新设备的指纹（请买家提供，或在买家页面 F12 控制台输入 getDeviceFp() 获取）：");
+      var fp = prompt("请输入新设备的指纹（让买家打开工具页，点解锁条上的「📋 复制设备指纹」按钮，把复制的字符串发给你，粘贴到这里）：");
       if (!fp) return;
       api("rebind", { code: code, device_fp: fp.trim() }).then(function (res) { alert(res.success ? "换绑成功" : res.error); refreshAll(); });
     } else if (act === "del") {
