@@ -167,6 +167,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 .et:hover { border-color: #ec4899; }
 .et.on { background: #ec4899; border-color: #ec4899; color: #fff; }
 .edit-sub { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin: 4px 0 10px; flex-wrap: wrap; }
+#brushShape { width: 84px; padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; background: #fff; }
 .edit-active { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
 .edit-active .sw { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); display: inline-block; }
 .edit-sw { display: flex; flex-wrap: wrap; gap: 5px; max-height: 150px; overflow-y: auto; }
@@ -482,6 +483,49 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     }).catch(function () { toast("网络异常，请稍后重试", true); });
   }
 
+  // 服务端校验: 过期判断以服务端时间为准, 防修改本地系统时钟绕过
+  function serverVerify() {
+    var fp = curLic && curLic.device_fp ? curLic.device_fp : getDeviceFp();
+    return fetch("/api/pindou-license?device_fp=" + encodeURIComponent(fp), { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res || res.success !== true) return { ok: false, offline: true };
+        if (!res.data) return { ok: false, expired: true };
+        if (res.data.expires_at) {
+          var exp = new Date(res.data.expires_at).getTime();
+          var srv = new Date(res.server_time || res.data.expires_at).getTime();
+          if (isNaN(exp) || isNaN(srv)) return { ok: false, offline: true };
+          if (exp <= srv) return { ok: false, expired: true };
+        }
+        return { ok: true, data: res.data };
+      })
+      .catch(function () { return { ok: false, offline: true }; });
+  }
+  // 确保该用户此刻确实有有效卡密: 通过则用服务器返回覆盖本地记录, 失败(已过期)则锁定
+  function ensureUnlock() {
+    if (!curLic || !curLic.valid || !curLic.device_fp) return Promise.resolve(false);
+    return serverVerify().then(function (r) {
+      if (r.expired) {
+        curLic = null;
+        try { localStorage.removeItem(LICENSE_KEY); } catch (e) {}
+        updateUnlockUI();
+        return false;
+      }
+      if (!r.ok) return true; // 网络瞬断: 沿用本地状态(页面本身在线, 短暂降级)
+      var fix = { valid: true, plan: r.data.plan, plan_label: r.data.plan_label, expires_at: r.data.expires_at, device_fp: r.data.device_fp };
+      curLic = fix;
+      try { localStorage.setItem(LICENSE_KEY, JSON.stringify(fix)); } catch (e) {}
+      updateUnlockUI();
+      return true;
+    });
+  }
+  function guardAction(fn) {
+    ensureUnlock().then(function (ok) {
+      if (!ok) { showUnlockModal(); return; }
+      fn();
+    });
+  }
+
   /* ================= 工具函数 ================= */
   function $(id) { return document.getElementById(id); }
   var toastTimer = null;
@@ -696,16 +740,17 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 
   /* ================= 核心生成 ================= */
   $("btnGenerate").addEventListener("click", function () {
-    if (!isUnlocked()) { showUnlockModal(); return; }
-    if (!state.img) {
-      if (state.grid) { toast("已导入图纸，可直接下载/编辑；若要重新生成请先上传图片", true); }
-      else { toast("请先上传图片", true); }
-      return;
-    }
-    try {
-      generate();
-      toast("生成成功");
-    } catch (e) { toast("生成失败：" + e.message, true); }
+    guardAction(function () {
+      if (!state.img) {
+        if (state.grid) { toast("已导入图纸，可直接下载/编辑；若要重新生成请先上传图片", true); }
+        else { toast("请先上传图片", true); }
+        return;
+      }
+      try {
+        generate();
+        toast("生成成功");
+      } catch (e) { toast("生成失败：" + e.message, true); }
+    });
   });
 
   function getImageData(img) {
@@ -1020,9 +1065,10 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 
   /* ================= 导出 ================= */
   $("btnExportPNG").addEventListener("click", function () {
-    if (!isUnlocked()) { showUnlockModal(); return; }
-    if (!state.grid) { toast("请先生成图纸", true); return; }
-    $("dlModal").classList.add("show");
+    guardAction(function () {
+      if (!state.grid) { toast("请先生成图纸", true); return; }
+      $("dlModal").classList.add("show");
+    });
   });
   $("dlClose").addEventListener("click", function () { $("dlModal").classList.remove("show"); });
   $("dlCancel").addEventListener("click", function () { $("dlModal").classList.remove("show"); });
@@ -1043,9 +1089,10 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     if (cfg.srcCsv) exportSourceCSV();
   });
   $("btnExportList").addEventListener("click", function () {
-    if (!isUnlocked()) { showUnlockModal(); return; }
-    if (!state.grid) { toast("请先生成图纸", true); return; }
-    exportList();
+    guardAction(function () {
+      if (!state.grid) { toast("请先生成图纸", true); return; }
+      exportList();
+    });
   });
   $("btnClear").addEventListener("click", function () {
     state.grid = null; state.img = null; state.imgData = null; state.useList = [];
@@ -1284,8 +1331,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     toast("图纸导入成功");
   }
   $("btnImport").addEventListener("click", function () {
-    if (!isUnlocked()) { showUnlockModal(); return; }
-    $("importInput").click();
+    guardAction(function () { $("importInput").click(); });
   });
   $("importInput").addEventListener("change", function () {
     var f = $("importInput").files && $("importInput").files[0];
@@ -1317,29 +1363,30 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     });
   }
   $("btnEdit").addEventListener("click", function () {
-    if (!isUnlocked()) { showUnlockModal(); return; }
-    if (!state.grid) { toast("请先生成图纸", true); return; }
-    state.editMode = !state.editMode;
-    this.classList.toggle("on", state.editMode);
-    this.textContent = state.editMode ? "✏️ 编辑中" : "✏️ 编辑";
-    $("editBar").style.display = state.editMode ? "block" : "none";
-    if (state.editMode) {
-      buildEditSwatches();
-      if (!state.editHex) {
-        var first = state.palIndex[state.useList.length ? state.useList[0].hex : Object.keys(state.palIndex)[0]];
-        if (first) {
-          state.editHex = first.hex;
-          $("editActive").innerHTML = '<span class="sw" style="background:' + first.hex + '"></span>' + first.code + ' ' + first.hex;
+    guardAction(function () {
+      if (!state.grid) { toast("请先生成图纸", true); return; }
+      state.editMode = !state.editMode;
+      this.classList.toggle("on", state.editMode);
+      this.textContent = state.editMode ? "✏️ 编辑中" : "✏️ 编辑";
+      $("editBar").style.display = state.editMode ? "block" : "none";
+      if (state.editMode) {
+        buildEditSwatches();
+        if (!state.editHex) {
+          var first = state.palIndex[state.useList.length ? state.useList[0].hex : Object.keys(state.palIndex)[0]];
+          if (first) {
+            state.editHex = first.hex;
+            $("editActive").innerHTML = '<span class="sw" style="background:' + first.hex + '"></span>' + first.code + ' ' + first.hex;
+          }
+        } else {
+          var cur = state.palIndex[state.editHex];
+          if (cur) $("editActive").innerHTML = '<span class="sw" style="background:' + cur.hex + '"></span>' + cur.code + ' ' + cur.hex;
         }
+        boxActiveSync();
+        toast("编辑模式已开启，选择颜色后点击格子替换");
       } else {
-        var cur = state.palIndex[state.editHex];
-        if (cur) $("editActive").innerHTML = '<span class="sw" style="background:' + cur.hex + '"></span>' + cur.code + ' ' + cur.hex;
+        toast("已退出编辑模式");
       }
-      boxActiveSync();
-      toast("编辑模式已开启，选择颜色后点击格子替换");
-    } else {
-      toast("已退出编辑模式");
-    }
+    });
   });
   function boxActiveSync() {
     var box = $("editSwatches");
@@ -1620,6 +1667,10 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 
   // 初始化
   updateUnlockUI();
+  // 启动服务端校验: 立即 + 每3分钟 + 窗口聚焦时 (仅当本地已有卡密记录)
+  if (curLic && curLic.valid && curLic.device_fp) ensureUnlock();
+  setInterval(function () { if (curLic && curLic.valid && curLic.device_fp) ensureUnlock(); }, 3 * 60 * 1000);
+  window.addEventListener("focus", function () { if (curLic && curLic.valid && curLic.device_fp) ensureUnlock(); });
 })();
 </script>
 </body>
