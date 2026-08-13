@@ -810,7 +810,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 
     for (var y = 0; y < rows; y++) {
       for (var x = 0; x < cols; x++) {
-        var cell = grid[y][x];
+        var cell = state.grid[y][x];
         var px2 = x * cellPx, py = y * cellPx;
         if (cell.external) {
           ctx.fillStyle = "#fafafa";
