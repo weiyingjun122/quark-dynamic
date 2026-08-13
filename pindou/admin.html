@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>拼豆卡密管理</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Microsoft YaHei", -apple-system, sans-serif; background: linear-gradient(135deg,#fdf2f8,#eff6ff); min-height: 100vh; color: #1f2d3d; padding: 20px; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1 { font-size: 22px; margin-bottom: 16px; }
+  h1 span { color: #db2777; }
+  .card { background: #fff; border-radius: 14px; box-shadow: 0 2px 10px rgba(30,41,59,.06); padding: 16px 18px; margin-bottom: 16px; }
+  .card h2 { font-size: 15px; margin-bottom: 12px; color: #0f172a; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stat { flex: 1 1 120px; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 2px 8px rgba(30,41,59,.05); }
+  .stat b { display: block; font-size: 20px; color: #0f172a; }
+  .stat small { color: #94a3b8; }
+  input, select, textarea { padding: 7px 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; }
+  input:focus, select:focus { border-color: #db2777; }
+  button { padding: 7px 14px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; background: #db2777; color: #fff; }
+  button.ghost { background: #f1f5f9; color: #334155; }
+  button.danger { background: #ef4444; }
+  button.sm { padding: 3px 9px; font-size: 12px; border-radius: 6px; }
+  button.ghost.sm { background: #f8fafc; border: 1px solid #e2e8f0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+  th { color: #64748b; font-weight: 600; background: #f8fafc; white-space: nowrap; }
+  td.code { font-family: Consolas, monospace; }
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; }
+  .tag.available { background: #ecfdf5; color: #059669; }
+  .tag.active { background: #eff6ff; color: #2563eb; }
+  .tag.forever { background: #fef3c7; color: #b45309; }
+  .tag.expired { background: #fef2f2; color: #dc2626; }
+  .muted { color: #94a3b8; }
+  .err { color: #dc2626; }
+  .ok { color: #059669; }
+  .fmt { font-size: 12px; color: #94a3b8; margin-top: 6px; }
+  .sub { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2e8f0; }
+  textarea { width: 100%; }
+  .pager { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  #loginBox { max-width: 380px; margin: 40px auto; }
+  #loginBox input { width: 100%; margin-bottom: 10px; }
+  #loginBox button { width: 100%; }
+  .bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>拼豆图纸生成器 · <span>卡密管理</span></h1>
+
+  <div id="loginBox" class="card">
+    <div style="font-size:14px;margin-bottom:10px;">请输入管理员令牌（在 Cloudflare Pages 环境变量 <code>PINDOU_ADMIN_TOKEN</code> 中设置）</div>
+    <input type="password" id="tokenInput" placeholder="管理员令牌" autocomplete="off">
+    <button id="btnLogin">进入管理</button>
+    <div id="loginMsg" class="fmt"></div>
+  </div>
+
+  <div id="mainBox" style="display:none;">
+    <div class="bar">
+      <div class="stats" id="statsBar"></div>
+      <button class="ghost" id="btnLogout">退出</button>
+    </div>
+
+    <div class="card">
+      <h2>查卡</h2>
+      <div class="row">
+        <input id="qCode" placeholder="输入 14 位卡密" style="flex:1;min-width:220px;">
+        <button id="btnQuery">查询</button>
+      </div>
+      <div id="qResult"></div>
+    </div>
+
+    <div class="card">
+      <h2>新增卡密</h2>
+      <div class="row">
+        <select id="addPlan">
+          <option value="1d">1天卡</option>
+          <option value="7d">7天卡</option>
+          <option value="forever" selected>永久卡</option>
+        </select>
+        数量 <input type="number" id="addCount" value="10" min="1" max="200" style="width:80px;">
+        <button id="btnAddGen">随机生成并入库</button>
+      </div>
+      <div class="sub">
+        或粘贴已有卡密（每行一个，需 14 位有效格式）：
+        <textarea id="addCodes" rows="3" placeholder="卡密1&#10;卡密2"></textarea>
+        <div class="row">
+          <button class="ghost" id="btnAddCodes">导入以上卡密</button>
+        </div>
+      </div>
+      <div id="addResult" class="fmt"></div>
+    </div>
+
+    <div class="card">
+      <h2>卡密列表</h2>
+      <div class="row">
+        <select id="fStatus">
+          <option value="all">全部状态</option>
+          <option value="available">未使用</option>
+          <option value="redeemed">已售</option>
+        </select>
+        <select id="fPlan">
+          <option value="all">全部类型</option>
+          <option value="1d">1天卡</option>
+          <option value="7d">7天卡</option>
+          <option value="forever">永久卡</option>
+        </select>
+        <input id="fSearch" placeholder="搜索卡密" style="width:220px;">
+        <button id="btnList">刷新列表</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>卡密</th><th>类型</th><th>状态</th><th>设备指纹</th><th>兑换时间</th><th>到期时间</th><th>操作</th></tr></thead>
+          <tbody id="listBody"></tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <button class="ghost sm" id="btnPrev">上一页</button>
+        <span id="pageInfo" class="fmt"></span>
+        <button class="ghost sm" id="btnNext">下一页</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var TOKEN_KEY = "pindou_admin_token";
+  var $ = function (id) { return document.getElementById(id); };
+
+  function token() { return sessionStorage.getItem(TOKEN_KEY) || ""; }
+
+  function api(action, data) {
+    return fetch("/api/pindou-admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token() },
+      body: JSON.stringify(Object.assign({ action: action }, data || {}))
+    }).then(function (r) { return r.json(); });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function fmtTime(iso) { return iso ? new Date(iso).toLocaleString() : "-"; }
+  function planLabel(p) { return ({ "1d": "1天卡", "7d": "7天卡", "forever": "永久卡" })[p] || p; }
+  function tagClass(label) {
+    if (label === "未使用") return "available";
+    if (label === "永久生效") return "forever";
+    if (label === "生效中") return "active";
+    return "expired";
+  }
+
+  function toast(el, msg, isErr) { el.innerHTML = '<span class="' + (isErr ? "err" : "ok") + '">' + esc(msg) + '</span>'; }
+
+  function renderStats(stats) {
+    if (!stats) return;
+    var html = [
+      ["总卡密", stats.total],
+      ["未使用", stats.available],
+      ["已售", stats.redeemed],
+      ["生效中", stats.active],
+      ["已过期", stats.expired]
+    ].map(function (it) {
+      return '<div class="stat"><b>' + it[1] + '</b><small>' + it[0] + '</small></div>';
+    }).join("");
+    $("statsBar").innerHTML = html;
+  }
+
+  function renderList(res) {
+    var body = $("listBody");
+    if (!res.cards || !res.cards.length) { body.innerHTML = '<tr><td colspan="7" class="muted">暂无数据</td></tr>'; }
+    else {
+      body.innerHTML = res.cards.map(function (c) {
+        return '<tr>' +
+          '<td class="code">' + esc(c.code) + '</td>' +
+          '<td>' + planLabel(c.plan) + '</td>' +
+          '<td><span class="tag ' + tagClass(c.label) + '">' + c.label + '</span></td>' +
+          '<td class="muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + esc(c.device_fp || "") + '">' + esc(c.device_fp || "-") + '</td>' +
+          '<td class="muted">' + fmtTime(c.redeemed_at) + '</td>' +
+          '<td class="muted">' + fmtTime(c.expires_at) + '</td>' +
+          '<td style="white-space:nowrap;">' +
+            '<button class="ghost sm" data-act="extend" data-code="' + esc(c.code) + '">续期</button> ' +
+            '<select data-act="plan" data-code="' + esc(c.code) + '" style="padding:2px 4px;font-size:12px;">' +
+              '<option value="1d"' + (c.plan === "1d" ? " selected" : "") + '>1天</option>' +
+              '<option value="7d"' + (c.plan === "7d" ? " selected" : "") + '>7天</option>' +
+              '<option value="forever"' + (c.plan === "forever" ? " selected" : "") + '>永久</option>' +
+            '</select> ' +
+            '<button class="ghost sm" data-act="rebind" data-code="' + esc(c.code) + '">换绑</button> ' +
+            '<button class="ghost sm" data-act="reset" data-code="' + esc(c.code) + '">重置</button> ' +
+            '<button class="danger sm" data-act="del" data-code="' + esc(c.code) + '">删除</button>' +
+          '</td></tr>';
+      }).join("");
+    }
+    var totalPage = Math.max(1, Math.ceil(res.total / res.pageSize));
+    $("pageInfo").textContent = "共 " + res.total + " 条 · 第 " + res.page + " / " + totalPage + " 页";
+    $("btnPrev").disabled = res.page <= 1;
+    $("btnNext").disabled = res.page >= totalPage;
+    window.__listPage = res.page;
+    window.__totalPage = totalPage;
+  }
+
+  var state = { page: 1 };
+  function loadList() {
+    return api("list", {
+      search: $("fSearch").value.trim(),
+      status: $("fStatus").value,
+      plan: $("fPlan").value,
+      page: state.page,
+      pageSize: 20
+    }).then(function (res) {
+      if (!res.success) throw new Error(res.error);
+      renderList(res);
+      renderStats(res.stats);
+      return res;
+    });
+  }
+
+  function refreshAll() {
+    api("stats").then(function (res) { if (res.success) renderStats(res.stats); });
+    loadList();
+  }
+
+  /* 登录 */
+  function enter() {
+    if (!token()) return false;
+    api("stats").then(function (res) {
+      if (res.success) {
+        $("loginBox").style.display = "none";
+        $("mainBox").style.display = "block";
+        refreshAll();
+      } else {
+        sessionStorage.removeItem(TOKEN_KEY);
+        $("loginMsg").innerHTML = '<span class="err">' + esc(res.error) + "</span>";
+      }
+    });
+    return true;
+  }
+
+  $("btnLogin").addEventListener("click", function () {
+    var t = $("tokenInput").value.trim();
+    if (!t) { $("loginMsg").innerHTML = '<span class="err">请输入令牌</span>'; return; }
+    sessionStorage.setItem(TOKEN_KEY, t);
+    if (!enter()) $("loginMsg").innerHTML = '<span class="err">未找到会话</span>';
+  });
+  $("tokenInput").addEventListener("keydown", function (e) { if (e.key === "Enter") $("btnLogin").click(); });
+  $("btnLogout").addEventListener("click", function () {
+    sessionStorage.removeItem(TOKEN_KEY);
+    $("mainBox").style.display = "none";
+    $("loginBox").style.display = "block";
+    $("tokenInput").value = "";
+  });
+  enter();
+
+  /* 查卡 */
+  $("btnQuery").addEventListener("click", function () {
+    var code = $("qCode").value.trim();
+    if (!code) { toast($("qResult"), "请输入卡密", true); return; }
+    api("query", { code: code }).then(function (res) {
+      if (!res.success) { toast($("qResult"), res.error, true); return; }
+      if (!res.card) { $("qResult").innerHTML = '<span class="err">未找到该卡密</span>'; return; }
+      var c = res.card;
+      $("qResult").innerHTML =
+        '<table style="margin-top:6px;">' +
+        '<tr><th>卡密</th><td class="code">' + esc(c.code) + '</td></tr>' +
+        '<tr><th>类型</th><td>' + planLabel(c.plan) + '</td></tr>' +
+        '<tr><th>状态</th><td><span class="tag ' + tagClass(c.label) + '">' + c.label + '</span></td></tr>' +
+        '<tr><th>设备指纹</th><td>' + esc(c.device_fp || "-") + '</td></tr>' +
+        '<tr><th>兑换时间</th><td>' + fmtTime(c.redeemed_at) + '</td></tr>' +
+        '<tr><th>到期时间</th><td>' + fmtTime(c.expires_at) + '</td></tr>' +
+        '</table>';
+    });
+  });
+  $("qCode").addEventListener("keydown", function (e) { if (e.key === "Enter") $("btnQuery").click(); });
+
+  /* 新增 */
+  function doAdd(payload) {
+    api("add", payload).then(function (res) {
+      if (!res.success) { toast($("addResult"), res.error, true); return; }
+      $("addResult").innerHTML = '<span class="ok">成功入库 ' + res.inserted + ' 张' + (res.duplicates ? '，跳过重复 ' + res.duplicates + ' 张' : '') + '</span>';
+      refreshAll();
+    });
+  }
+  $("btnAddGen").addEventListener("click", function () {
+    doAdd({ plan: $("addPlan").value, count: parseInt($("addCount").value, 10) || 0 });
+  });
+  $("btnAddCodes").addEventListener("click", function () {
+    var codes = $("addCodes").value.split(/[\r\n,，;；]+/).map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!codes.length) { toast($("addResult"), "请粘贴卡密", true); return; }
+    doAdd({ plan: $("addPlan").value, codes: codes });
+  });
+
+  /* 列表 */
+  $("btnList").addEventListener("click", function () { state.page = 1; loadList(); });
+  $("btnPrev").addEventListener("click", function () { if (state.page > 1) { state.page--; loadList(); } });
+  $("btnNext").addEventListener("click", function () { if (state.page < (window.__totalPage || 1)) { state.page++; loadList(); } });
+  $("fSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { state.page = 1; loadList(); } });
+
+  $("listBody").addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    var code = btn.getAttribute("data-code"), act = btn.getAttribute("data-act");
+    if (act === "extend") {
+      var days = prompt("续期天数（从当前到期时间起算，永久卡/未使用则从现在起算）：", "7");
+      if (!days) return;
+      api("extend", { code: code, days: parseInt(days, 10) }).then(function (res) {
+        alert(res.success ? "续期成功，到期：" + fmtTime(res.expires_at) : res.error);
+        refreshAll();
+      });
+    } else if (act === "reset") {
+      if (!confirm("确认重置卡密 " + code + " 为未使用？已付款买家会被踢下线，请谨慎操作！")) return;
+      api("reset", { code: code }).then(function (res) { alert(res.success ? "已重置" : res.error); refreshAll(); });
+    } else if (act === "rebind") {
+      var fp = prompt("请输入新设备的指纹（请买家提供，或在买家页面 F12 控制台输入 getDeviceFp() 获取）：");
+      if (!fp) return;
+      api("rebind", { code: code, device_fp: fp.trim() }).then(function (res) { alert(res.success ? "换绑成功" : res.error); refreshAll(); });
+    } else if (act === "del") {
+      if (!confirm("确认删除卡密 " + code + "？此操作不可恢复！")) return;
+      api("delete", { code: code }).then(function (res) { alert(res.success ? "已删除" : res.error); refreshAll(); });
+    }
+  });
+  $("listBody").addEventListener("change", function (e) {
+    var sel = e.target.closest("select[data-act=plan]");
+    if (!sel) return;
+    var code = sel.getAttribute("data-code");
+    var plan = sel.value;
+    if (!confirm("确认将卡密 " + code + " 类型改为 " + planLabel(plan) + "？")) { loadList(); return; }
+    api("setplan", { code: code, plan: plan }).then(function (res) { alert(res.success ? "已修改" : res.error); refreshAll(); });
+  });
+})();
+</script>
+</body>
+</html>
