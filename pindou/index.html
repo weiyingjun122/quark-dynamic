@@ -147,6 +147,28 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 .legend-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
 .legend-item { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: #94a3b8; }
 .legend-item .sw { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.08); }
+
+/* 下载设置弹窗 */
+.dl-box { max-width: 460px; text-align: left; }
+.dl-opts { margin: 16px 0 8px; }
+.dl-opt { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #334155; padding: 8px 0; cursor: pointer; }
+.dl-opt input[type=checkbox] { width: 17px; height: 17px; accent-color: #ec4899; }
+.dl-sub { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; padding: 2px 0 6px 25px; flex-wrap: wrap; }
+.dl-num { width: 56px; padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; }
+.dl-color { width: 34px; height: 28px; padding: 0; border: 1px solid #e2e8f0; border-radius: 6px; background: #fff; cursor: pointer; }
+.dl-wm-hint { font-size: 12px; color: #94a3b8; line-height: 1.7; margin: 6px 0 12px; }
+.dl-box .btn { width: 100%; margin-bottom: 8px; }
+
+/* 手动编辑 */
+.edit-bar { margin-top: 14px; border: 1px solid #f9a8d4; border-radius: 12px; padding: 12px; background: #fdf2f8; }
+.edit-head { font-size: 12px; color: #be185d; margin-bottom: 10px; line-height: 1.8; }
+.edit-active { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+.edit-active .sw { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); display: inline-block; }
+.edit-sw { display: flex; flex-wrap: wrap; gap: 5px; max-height: 150px; overflow-y: auto; }
+.edit-sw .esw { width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(0,0,0,.12); cursor: pointer; position: relative; }
+.edit-sw .esw:hover { transform: scale(1.15); }
+.edit-sw .esw.on { outline: 2px solid #ec4899; outline-offset: 1px; }
+.edit-sw .esw .esw-code { display: none; }
 </style>
 </head>
 <body>
@@ -242,6 +264,10 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
           <button class="btn btn-ghost" id="btnExportList">🛒 导出采购清单</button>
           <button class="btn btn-ghost" id="btnClear">🗑️ 清空</button>
         </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="btnImport">📤 导入图纸</button>
+        </div>
+        <input type="file" id="importInput" accept=".csv,text/csv,text/plain" style="display:none;">
       </div>
     </div>
 
@@ -251,6 +277,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
         <div class="canvas-toolbar">
           <div class="canvas-stats" id="canvasStats">尚未生成图纸</div>
           <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost" id="btnEdit" style="padding:6px 12px;min-width:0;flex:0 0 auto;">✏️ 编辑</button>
             <button class="btn btn-ghost" id="btnZoomIn" style="padding:6px 12px;min-width:0;flex:0 0 auto;">➕</button>
             <button class="btn btn-ghost" id="btnZoomOut" style="padding:6px 12px;min-width:0;flex:0 0 auto;">➖</button>
           </div>
@@ -263,6 +290,10 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
           <canvas id="previewCanvas" style="display:none;"></canvas>
         </div>
         <div class="legend-row" id="legendRow" style="display:none;"></div>
+        <div class="edit-bar" id="editBar" style="display:none;">
+          <div class="edit-head">✏️ 编辑模式：先点下方色块选择替换颜色，再点击图纸中的格子即可改色 <span class="edit-active" id="editActive"></span></div>
+          <div class="edit-sw" id="editSwatches"></div>
+        </div>
       </div>
 
       <!-- 用量统计 -->
@@ -319,6 +350,27 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     </div>
     <div class="copyright">© 2026 实用资源整理站 · 拼豆图纸生成器 · 本地运算，图片不上传</div>
   </footer>
+</div>
+
+<!-- 下载设置弹窗 -->
+<div class="modal-mask" id="dlModal">
+  <div class="modal-wrap modal-box dl-box">
+    <button class="modal-close" id="dlClose">✕</button>
+    <div class="m-ico">📥</div>
+    <h3>下载图纸设置</h3>
+    <div class="dl-opts">
+      <label class="dl-opt"><input type="checkbox" id="dlGrid" checked> 显示网格线</label>
+      <div class="dl-sub">间隔 <input type="number" class="dl-num" id="dlGridEvery" min="1" max="50" value="1"> 格画一条线 · 颜色 <input type="color" class="dl-color" id="dlGridColor" value="#888888"></div>
+      <label class="dl-opt"><input type="checkbox" id="dlCoords"> 显示坐标数字</label>
+      <label class="dl-opt"><input type="checkbox" id="dlHideCode"> 隐藏格内色号</label>
+      <label class="dl-opt"><input type="checkbox" id="dlStats" checked> 包含色号统计</label>
+      <label class="dl-opt"><input type="checkbox" id="dlSrcCSV"> 同时导出源数据 CSV（hex 色值，可用于重新导入）</label>
+      <label class="dl-opt"><input type="checkbox" id="dlNoWm"> 隐藏水印</label>
+      <p class="dl-wm-hint">开启隐藏后，下载图纸将不包含顶部横幅与底部「图纸来源：实用资源整理站」。</p>
+    </div>
+    <button class="btn" id="dlGo">下载图纸</button>
+    <button class="btn btn-ghost" id="dlCancel">取消</button>
+  </div>
 </div>
 
 <!-- 卡密弹窗 -->
@@ -505,6 +557,9 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     showCode: true,
     showGrid: true,
     cellPx: 24,
+    editMode: false,
+    editHex: null,
+    palIndex: {},
     useList: []
   };
 
@@ -573,6 +628,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
       brandList.querySelectorAll("button").forEach(function (x) { x.classList.remove("on"); });
       btn.classList.add("on");
       state.brand = b;
+      if (state.editMode) buildEditSwatches();
     });
     brandList.appendChild(btn);
   });
@@ -897,7 +953,25 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
   $("btnExportPNG").addEventListener("click", function () {
     if (!isUnlocked()) { showUnlockModal(); return; }
     if (!state.grid) { toast("请先生成图纸", true); return; }
-    exportPNG();
+    $("dlModal").classList.add("show");
+  });
+  $("dlClose").addEventListener("click", function () { $("dlModal").classList.remove("show"); });
+  $("dlCancel").addEventListener("click", function () { $("dlModal").classList.remove("show"); });
+  $("dlModal").addEventListener("click", function (e) { if (e.target === this) this.classList.remove("show"); });
+  $("dlGo").addEventListener("click", function () {
+    var cfg = {
+      grid: $("dlGrid").checked,
+      gridEvery: Math.max(1, parseInt($("dlGridEvery").value, 10) || 1),
+      gridColor: $("dlGridColor").value,
+      coords: $("dlCoords").checked,
+      hideCode: $("dlHideCode").checked,
+      stats: $("dlStats").checked,
+      srcCsv: $("dlSrcCSV").checked,
+      noWm: $("dlNoWm").checked
+    };
+    $("dlModal").classList.remove("show");
+    exportPNG(cfg);
+    if (cfg.srcCsv) exportSourceCSV();
   });
   $("btnExportList").addEventListener("click", function () {
     if (!isUnlocked()) { showUnlockModal(); return; }
@@ -906,6 +980,13 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
   });
   $("btnClear").addEventListener("click", function () {
     state.grid = null; state.img = null; state.imgData = null; state.useList = [];
+    if (state.editMode) {
+      state.editMode = false;
+      var be = $("btnEdit");
+      be.classList.remove("on");
+      be.textContent = "✏️ 编辑";
+      $("editBar").style.display = "none";
+    }
     $("placeholder").style.display = "block";
     $("previewCanvas").style.display = "none";
     $("upPreview").style.display = "none";
@@ -914,41 +995,291 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     $("canvasStats").textContent = "尚未生成图纸";
   });
 
-  function exportPNG() {
+  function exportPNG(cfg) {
     var cellPx = 32;
+    var GUTTER_L = cfg.coords ? 34 : 0;
+    var GUTTER_T = cfg.coords ? 26 : 0;
+    var BANNER_H = cfg.noWm ? 0 : 46;
+    var FOOTER_H = cfg.noWm ? 0 : 36;
+    var gridW = state.cols * cellPx, gridH = state.rows * cellPx;
+    var stats = [];
+    var statsH = 0;
+    if (cfg.stats) {
+      stats.push("品牌: " + brandNames[state.brand] + "  图纸: " + state.cols + " x " + state.rows + " 格");
+      stats.push("共 " + totalBeads() + " 颗豆, " + state.useList.length + " 种颜色");
+      state.useList.forEach(function (u) { stats.push(u.code + "  x" + u.n); });
+      statsH = 34 + stats.length * 24 + 18;
+    }
+    var W = GUTTER_L + gridW;
+    var H = BANNER_H + GUTTER_T + gridH + statsH + FOOTER_H;
+
     var canvas = document.createElement("canvas");
-    canvas.width = state.cols * cellPx;
-    canvas.height = state.rows * cellPx;
+    canvas.width = W;
+    canvas.height = H;
     var ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    var fontPx = Math.max(8, Math.round(cellPx * 0.4));
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, W, H);
+
+    var ox = GUTTER_L, oy = BANNER_H + GUTTER_T;
+
+    if (BANNER_H) {
+      ctx.fillStyle = "#1f2d3d";
+      ctx.fillRect(0, 0, W, BANNER_H);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 20px \"Microsoft YaHei\", sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("实用资源整理站 · 拼豆图纸生成", W / 2, BANNER_H / 2 + 1);
+    }
+
+    var fontPx = Math.max(9, Math.round(cellPx * 0.4));
     ctx.font = "bold " + fontPx + "px Consolas, monospace";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+
     for (var y = 0; y < state.rows; y++) {
       for (var x = 0; x < state.cols; x++) {
         var cell = state.grid[y][x];
-        var px2 = x * cellPx, py = y * cellPx;
+        var px2 = ox + x * cellPx, py2 = oy + y * cellPx;
         if (cell.external) {
           ctx.fillStyle = "#ffffff";
-          ctx.fillRect(px2, py, cellPx, cellPx);
+          ctx.fillRect(px2, py2, cellPx, cellPx);
         } else {
           ctx.fillStyle = cell.hex;
-          ctx.fillRect(px2, py, cellPx, cellPx);
-          ctx.fillStyle = isDark(cell.r, cell.g, cell.b) ? "#ffffff" : "#333333";
-          ctx.fillText(cell.code, px2 + cellPx / 2, py + cellPx / 2);
-          ctx.strokeStyle = "rgba(0,0,0,.1)";
-          ctx.lineWidth = 1;
-          ctx.strokeRect(px2 + .5, py + .5, cellPx - 1, cellPx - 1);
+          ctx.fillRect(px2, py2, cellPx, cellPx);
+          if (!cfg.hideCode && cell.code && cellPx >= 14) {
+            ctx.fillStyle = isDark(cell.r, cell.g, cell.b) ? "#ffffff" : "#333333";
+            ctx.fillText(cell.code, px2 + cellPx / 2, py2 + cellPx / 2);
+          }
         }
       }
     }
+
+    // 网格线（每 N 格一条）
+    if (cfg.grid) {
+      ctx.strokeStyle = cfg.gridColor;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      var g = Math.max(1, cfg.gridEvery | 0);
+      for (var gx = 0; gx <= state.cols; gx += g) {
+        var gpx = ox + gx * cellPx;
+        ctx.moveTo(gpx + .5, oy); ctx.lineTo(gpx + .5, oy + gridH);
+      }
+      for (var gy2 = 0; gy2 <= state.rows; gy2 += g) {
+        var gpy = oy + gy2 * cellPx;
+        ctx.moveTo(ox, gpy + .5); ctx.lineTo(ox + gridW, gpy + .5);
+      }
+      ctx.stroke();
+    }
+
+    // 坐标数字
+    if (cfg.coords) {
+      ctx.fillStyle = "#64748b";
+      ctx.font = "11px Consolas, monospace";
+      ctx.textBaseline = "middle";
+      for (var cx = 0; cx < state.cols; cx++) {
+        ctx.textAlign = "center";
+        ctx.fillText(String(cx + 1), ox + cx * cellPx + cellPx / 2, (BANNER_H + GUTTER_T / 2) + 2);
+      }
+      ctx.textAlign = "right";
+      for (var cy = 0; cy < state.rows; cy++) {
+        ctx.fillText(String(cy + 1), GUTTER_L - 8, oy + cy * cellPx + cellPx / 2);
+      }
+    }
+
+    // 统计区
+    if (statsH) {
+      var sy = oy + gridH + 12;
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.font = "bold 15px \"Microsoft YaHei\", sans-serif";
+      ctx.fillStyle = "#1f2d3d";
+      ctx.fillText(stats[0] + "  " + stats[1], ox, sy + 16);
+      sy += 34;
+      state.useList.forEach(function (u, idx) {
+        var cyy = sy + idx * 24 + 12;
+        ctx.fillStyle = u.hex;
+        ctx.fillRect(ox, cyy - 7, 16, 16);
+        ctx.strokeStyle = "rgba(0,0,0,.2)";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(ox + .5, cyy - 6.5, 16, 16);
+        ctx.font = "bold 13px Consolas, monospace";
+        ctx.fillStyle = "#db2777";
+        ctx.fillText(" " + u.code, ox + 22, cyy + 1);
+        ctx.font = "12px \"Microsoft YaHei\", sans-serif";
+        ctx.fillStyle = "#64748b";
+        ctx.fillText(" 需要 " + u.n + " 颗", ox + 22 + ctx.measureText(" " + u.code).width, cyy + 1);
+      });
+    }
+
+    // 底部来源
+    if (FOOTER_H) {
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, H - FOOTER_H, W, FOOTER_H);
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "12px \"Microsoft YaHei\", sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("图纸来源：实用资源整理站  weiyingjun.top", W / 2, H - FOOTER_H / 2 + 1);
+    }
+
     var a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = "pindou-pattern-" + state.cols + "x" + state.rows + ".png";
     a.click();
     toast("图纸已导出");
   }
+
+  // 导出源数据 CSV（hex 色值，可重新导入）
+  function exportSourceCSV() {
+    if (!state.grid) return;
+    var lines = [];
+    lines.push("PINDOU_SRC v1");
+    lines.push(state.brand);
+    lines.push(state.cols);
+    lines.push(state.rows);
+    for (var y = 0; y < state.rows; y++) {
+      var row = [];
+      for (var x = 0; x < state.cols; x++) {
+        var c = state.grid[y][x];
+        row.push(c.external ? "" : c.hex);
+      }
+      lines.push(row.join(","));
+    }
+    var blob = new Blob(["\ufeff" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "pindou-source-" + state.cols + "x" + state.rows + ".csv";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  // 导入图纸 CSV
+  function buildPalIndex(brand) {
+    var idx = {};
+    getBrandPalette(brand).forEach(function (e) { idx[e.hex] = e; });
+    state.palIndex = idx;
+    return idx;
+  }
+  function parseImportCsv(text) {
+    var lines = text.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 0; });
+    if (!lines.length || lines[0] !== "PINDOU_SRC v1") {
+      return toast("文件格式不正确，请使用本站导出的图纸 CSV", true);
+    }
+    var brand = lines[1] && lines[1].toUpperCase();
+    if (!brand || !brandNames[brand]) brand = state.brand;
+    var cols = parseInt(lines[2], 10), rows = parseInt(lines[3], 10);
+    if (!(cols > 0 && rows > 0) || lines.length < 4 + rows) {
+      return toast("图纸数据不完整，导入失败", true);
+    }
+    state.brand = brand;
+    state.cols = cols; state.rows = rows;
+    var idx = buildPalIndex(brand);
+    var grid = [];
+    for (var y = 0; y < rows; y++) {
+      var hexes = (lines[4 + y] || "").split(",");
+      var row = [];
+      for (var x = 0; x < cols; x++) {
+        var hex = (hexes[x] || "").trim();
+        if (!hex) {
+          row.push({ r: 255, g: 255, b: 255, a: 0, code: "", hex: "#FFFFFF", external: true, count: 0 });
+          continue;
+        }
+        hex = hex.toUpperCase();
+        var e = idx[hex];
+        if (!e) {
+          e = nearestPalette(rgbToOklab(hexToRgb(hex).r, hexToRgb(hex).g, hexToRgb(hex).b), brand);
+        }
+        row.push({ r: e.r, g: e.g, b: e.b, a: 255, code: e.code, hex: e.hex, external: false, count: 0 });
+      }
+      grid.push(row);
+    }
+    state.grid = grid;
+    brandList.querySelectorAll("button").forEach(function (x) {
+      x.classList.toggle("on", x.getAttribute("data-brand") === brand);
+    });
+    render();
+    renderUsage();
+    toast("图纸导入成功");
+  }
+  $("btnImport").addEventListener("click", function () {
+    if (!isUnlocked()) { showUnlockModal(); return; }
+    $("importInput").click();
+  });
+  $("importInput").addEventListener("change", function () {
+    var f = $("importInput").files && $("importInput").files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function (e2) { parseImportCsv(String(e2.target.result || "")); };
+    reader.readAsText(f, "utf-8");
+    $("importInput").value = "";
+  });
+
+  /* ================= 手动编辑 ================= */
+  function buildEditSwatches() {
+    var box = $("editSwatches");
+    box.innerHTML = "";
+    buildPalIndex(state.brand);
+    var onHex = state.editHex;
+    getBrandPalette(state.brand).forEach(function (e) {
+      var s = document.createElement("div");
+      s.className = "esw" + (e.hex === onHex ? " on" : "");
+      s.style.background = e.hex;
+      s.setAttribute("data-hex", e.hex);
+      s.title = e.code + "  " + e.hex;
+      s.addEventListener("click", function () {
+        state.editHex = e.hex;
+        boxActiveSync();
+        $("editActive").innerHTML = '<span class="sw" style="background:' + e.hex + '"></span>' + e.code + ' ' + e.hex;
+      });
+      box.appendChild(s);
+    });
+  }
+  $("btnEdit").addEventListener("click", function () {
+    if (!isUnlocked()) { showUnlockModal(); return; }
+    if (!state.grid) { toast("请先生成图纸", true); return; }
+    state.editMode = !state.editMode;
+    this.classList.toggle("on", state.editMode);
+    this.textContent = state.editMode ? "✏️ 编辑中" : "✏️ 编辑";
+    $("editBar").style.display = state.editMode ? "block" : "none";
+    if (state.editMode) {
+      buildEditSwatches();
+      if (!state.editHex) {
+        var first = state.palIndex[state.useList.length ? state.useList[0].hex : Object.keys(state.palIndex)[0]];
+        if (first) {
+          state.editHex = first.hex;
+          $("editActive").innerHTML = '<span class="sw" style="background:' + first.hex + '"></span>' + first.code + ' ' + first.hex;
+        }
+      } else {
+        var cur = state.palIndex[state.editHex];
+        if (cur) $("editActive").innerHTML = '<span class="sw" style="background:' + cur.hex + '"></span>' + cur.code + ' ' + cur.hex;
+      }
+      boxActiveSync();
+      toast("编辑模式已开启，选择颜色后点击格子替换");
+    } else {
+      toast("已退出编辑模式");
+    }
+  });
+  function boxActiveSync() {
+    var box = $("editSwatches");
+    box.querySelectorAll(".esw").forEach(function (x) {
+      x.classList.toggle("on", x.getAttribute("data-hex") === state.editHex);
+    });
+  }
+  $("previewCanvas").addEventListener("click", function (e) {
+    if (!state.editMode || !state.grid || !state.editHex) return;
+    var rect = e.target.getBoundingClientRect();
+    var x = Math.floor((e.clientX - rect.left) / rect.width * state.cols);
+    var y = Math.floor((e.clientY - rect.top) / rect.height * state.rows);
+    if (x < 0 || y < 0 || x >= state.cols || y >= state.rows) return;
+    var cell = state.grid[y][x];
+    if (cell.external) { toast("该格为空白背景，不可编辑", true); return; }
+    var e2 = state.palIndex[state.editHex];
+    if (!e2) return;
+    cell.hex = e2.hex; cell.code = e2.code; cell.r = e2.r; cell.g = e2.g; cell.b = e2.b;
+    render();
+    toast("已替换为 " + e2.code);
+  });
 
   function exportList() {
     var brandName = brandNames[state.brand];
