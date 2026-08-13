@@ -162,6 +162,11 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 /* 手动编辑 */
 .edit-bar { margin-top: 14px; border: 1px solid #f9a8d4; border-radius: 12px; padding: 12px; background: #fdf2f8; }
 .edit-head { font-size: 12px; color: #be185d; margin-bottom: 10px; line-height: 1.8; }
+.edit-tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 10px; }
+.et { padding: 5px 11px; border: 1px solid #f9a8d4; background: #fff; border-radius: 8px; font-size: 12px; color: #be185d; cursor: pointer; transition: all .15s; }
+.et:hover { border-color: #ec4899; }
+.et.on { background: #ec4899; border-color: #ec4899; color: #fff; }
+.edit-sub { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; margin: 4px 0 10px; flex-wrap: wrap; }
 .edit-active { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
 .edit-active .sw { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); display: inline-block; }
 .edit-sw { display: flex; flex-wrap: wrap; gap: 5px; max-height: 150px; overflow-y: auto; }
@@ -253,6 +258,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
           <div class="switch-list">
             <span class="switch-btn" id="swColorCode">🎨 显示色号</span>
             <span class="switch-btn" id="swGrid">▦ 网格线</span>
+            <span class="switch-btn on" id="swBg">🧽 去除背景</span>
           </div>
         </div>
 
@@ -291,7 +297,22 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
         </div>
         <div class="legend-row" id="legendRow" style="display:none;"></div>
         <div class="edit-bar" id="editBar" style="display:none;">
-          <div class="edit-head">✏️ 编辑模式：先点下方色块选择替换颜色，再点击图纸中的格子即可改色 <span class="edit-active" id="editActive"></span></div>
+          <div class="edit-head">✏️ 编辑模式：选择工具与颜色，在图纸上操作 <span class="edit-active" id="editActive"></span></div>
+          <div class="edit-tools">
+            <button class="et on" data-tool="brush">✏️ 画笔</button>
+            <button class="et" data-tool="fill">🪣 填充</button>
+            <button class="et" data-tool="rect">▭ 矩形</button>
+            <button class="et" data-tool="pick">💉 取色</button>
+            <button class="et" id="btnUndo">↩ 撤回</button>
+            <button class="et" id="btnMirrorH">↔ 水平镜像</button>
+            <button class="et" id="btnMirrorV">↕ 垂直镜像</button>
+            <button class="et" id="btnHighlight">🔦 颜色高亮</button>
+            <button class="et" id="btnClean">🧹 替换杂色</button>
+          </div>
+          <div class="edit-sub">
+            画笔大小 <input type="number" class="dl-num" id="brushSize" min="1" max="9" value="1">
+            形状 <select class="dl-num" id="brushShape"><option value="square" selected>方形</option><option value="circle">圆形</option></select>
+          </div>
           <div class="edit-sw" id="editSwatches"></div>
         </div>
       </div>
@@ -560,7 +581,12 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     editMode: false,
     editHex: null,
     palIndex: {},
-    useList: []
+    useList: [],
+    tool: "brush",
+    brushSize: 1,
+    brushShape: "square",
+    highlightHex: null,
+    autoRemoveBg: true
   };
 
   /* ================= 上传 ================= */
@@ -653,6 +679,15 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
   // 显示选项
   $("swColorCode").addEventListener("click", function () { state.showCode = !state.showCode; this.classList.toggle("on", state.showCode); if (state.grid) render(); });
   $("swGrid").addEventListener("click", function () { state.showGrid = !state.showGrid; this.classList.toggle("on", state.showGrid); if (state.grid) render(); });
+  $("swBg").addEventListener("click", function () {
+    state.autoRemoveBg = !state.autoRemoveBg;
+    this.classList.toggle("on", state.autoRemoveBg);
+    if (state.grid && state.autoRemoveBg) {
+      removeBackground(state.grid, state.rows, state.cols);
+      render();
+    }
+    toast(state.autoRemoveBg ? "已开启去除背景" : "已关闭去除背景");
+  });
 
   // 缩放
   var zoom = 1;
@@ -784,7 +819,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     }
 
     // 步骤5：背景移除
-    removeBackground(grid, rows, cols);
+    if (state.autoRemoveBg) removeBackground(grid, rows, cols);
 
     state.grid = grid;
     render();
@@ -907,6 +942,19 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
           ctx.strokeStyle = "rgba(0,0,0,.12)";
           ctx.lineWidth = 1;
           ctx.strokeRect(px2 + .5, py + .5, cellPx - 1, cellPx - 1);
+        }
+      }
+    }
+
+    // 颜色高亮叠加
+    if (state.highlightHex) {
+      ctx.strokeStyle = "#facc15";
+      ctx.lineWidth = Math.max(2, Math.round(cellPx * 0.18));
+      for (var hy = 0; hy < rows; hy++) {
+        for (var hx = 0; hx < cols; hx++) {
+          var hc = state.grid[hy][hx];
+          if (hc.external || hc.hex !== state.highlightHex) continue;
+          ctx.strokeRect(hx * cellPx + 1.5, hy * cellPx + 1.5, cellPx - 3, cellPx - 3);
         }
       }
     }
@@ -1299,19 +1347,222 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
       x.classList.toggle("on", x.getAttribute("data-hex") === state.editHex);
     });
   }
-  $("previewCanvas").addEventListener("click", function (e) {
-    if (!state.editMode || !state.grid || !state.editHex) return;
-    var rect = e.target.getBoundingClientRect();
-    var x = Math.floor((e.clientX - rect.left) / rect.width * state.cols);
-    var y = Math.floor((e.clientY - rect.top) / rect.height * state.rows);
-    if (x < 0 || y < 0 || x >= state.cols || y >= state.rows) return;
-    var cell = state.grid[y][x];
-    if (cell.external) { toast("该格为空白背景，不可编辑", true); return; }
+  /* ================= 编辑工具 ================= */
+  var undoStack = [];
+  function snapshotGrid() {
+    var s = [];
+    for (var y = 0; y < state.rows; y++) {
+      var r = [];
+      for (var x = 0; x < state.cols; x++) {
+        var c = state.grid[y][x];
+        r.push([c.hex, c.external ? 1 : 0]);
+      }
+      s.push(r);
+    }
+    return s;
+  }
+  function restoreSnapshot(s) {
+    for (var y = 0; y < state.rows; y++) {
+      for (var x = 0; x < state.cols; x++) {
+        var cell = state.grid[y][x];
+        var hex = s[y][x][0], ext = s[y][x][1];
+        if (ext) {
+          cell.external = true; cell.hex = "#FFFFFF"; cell.code = ""; cell.r = 255; cell.g = 255; cell.b = 255;
+        } else {
+          var e = state.palIndex[hex];
+          if (!e) e = nearestPalette(rgbToOklab(255, 255, 255), state.brand);
+          cell.external = false; cell.hex = e.hex; cell.code = e.code; cell.r = e.r; cell.g = e.g; cell.b = e.b;
+        }
+      }
+    }
+  }
+  function pushHistory() {
+    undoStack.push(snapshotGrid());
+    if (undoStack.length > 40) undoStack.shift();
+  }
+  function undo() {
+    if (!undoStack.length) { toast("没有可撤销的操作", true); return; }
+    restoreSnapshot(undoStack.pop());
+    render();
+    toast("已撤销上一步");
+  }
+
+  function mirrorGrid(horizontal) {
+    pushHistory();
+    if (horizontal) { for (var y = 0; y < state.rows; y++) state.grid[y].reverse(); }
+    else { state.grid.reverse(); }
+    render();
+    toast("已" + (horizontal ? "水平" : "垂直") + "镜像");
+  }
+
+  function paintStamp(cx, cy) {
     var e2 = state.palIndex[state.editHex];
     if (!e2) return;
-    cell.hex = e2.hex; cell.code = e2.code; cell.r = e2.r; cell.g = e2.g; cell.b = e2.b;
+    var r = Math.max(1, state.brushSize | 0);
+    for (var dy = -(r - 1); dy <= r - 1; dy++) {
+      for (var dx = -(r - 1); dx <= r - 1; dx++) {
+        var nx = cx + dx, ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= state.cols || ny >= state.rows) continue;
+        if (state.brushShape === "circle" && (dx * dx + dy * dy) > (r - 1) * (r - 1) * 1.5) continue;
+        var cell = state.grid[ny][nx];
+        if (cell.external) continue;
+        cell.hex = e2.hex; cell.code = e2.code; cell.r = e2.r; cell.g = e2.g; cell.b = e2.b;
+      }
+    }
+  }
+  function fillRectCells(x0, y0, x1, y1) {
+    var e2 = state.palIndex[state.editHex];
+    if (!e2) return;
+    var minX = Math.min(x0, x1), maxX = Math.max(x0, x1), minY = Math.min(y0, y1), maxY = Math.max(y0, y1);
+    for (var y = minY; y <= maxY; y++) {
+      for (var x = minX; x <= maxX; x++) {
+        var cell = state.grid[y][x];
+        if (cell.external) continue;
+        cell.hex = e2.hex; cell.code = e2.code; cell.r = e2.r; cell.g = e2.g; cell.b = e2.b;
+      }
+    }
+  }
+  function floodFill(x, y) {
+    var e2 = state.palIndex[state.editHex];
+    if (!e2) return;
+    var cell = state.grid[y][x];
+    if (cell.external) { toast("背景格不可填充", true); return; }
+    var targetHex = cell.hex;
+    if (targetHex === e2.hex) return;
+    var stack = [[y, x]], seen = {};
+    while (stack.length) {
+      var p = stack.pop(), py = p[0], px = p[1];
+      if (px < 0 || py < 0 || px >= state.cols || py >= state.rows) continue;
+      var k = py * state.cols + px;
+      if (seen[k]) continue;
+      var c = state.grid[py][px];
+      if (c.external || c.hex !== targetHex) continue;
+      seen[k] = true;
+      c.hex = e2.hex; c.code = e2.code; c.r = e2.r; c.g = e2.g; c.b = e2.b;
+      stack.push([py - 1, px], [py + 1, px], [py, px - 1], [py, px + 1]);
+    }
+  }
+  function doPick(x, y) {
+    var c = state.grid[y][x];
+    if (c.external) { toast("背景格无色号可取", true); return; }
+    var e = state.palIndex[c.hex];
+    if (!e) { toast("该颜色不在当前色板", true); return; }
+    state.editHex = e.hex;
+    boxActiveSync();
+    $("editActive").innerHTML = '<span class="sw" style="background:' + e.hex + '"></span>' + e.code + ' ' + e.hex;
+    toast("已取色：" + e.code);
+  }
+  function cleanSpeckles() {
+    var seen = {}, changed = 0;
+    for (var y = 0; y < state.rows; y++) {
+      for (var x = 0; x < state.cols; x++) {
+        if (seen[y * state.cols + x] || state.grid[y][x].external) continue;
+        var targetHex = state.grid[y][x].hex;
+        var region = [], stack = [[y, x]];
+        while (stack.length) {
+          var p = stack.pop(), py = p[0], px = p[1];
+          if (px < 0 || py < 0 || px >= state.cols || py >= state.rows) continue;
+          var k = py * state.cols + px;
+          if (seen[k]) continue;
+          var cc = state.grid[py][px];
+          if (cc.external || cc.hex !== targetHex) continue;
+          seen[k] = true;
+          region.push([py, px]);
+          stack.push([py - 1, px], [py + 1, px], [py, px - 1], [py, px + 1]);
+        }
+        if (region.length <= 3) {
+          var counts = {};
+          region.forEach(function (rp) {
+            var yy = rp[0], xx = rp[1];
+            [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(function (d) {
+              var ny = yy + d[0], nx = xx + d[1];
+              if (ny < 0 || nx < 0 || ny >= state.rows || nx >= state.cols) return;
+              var nc = state.grid[ny][nx];
+              if (nc.external || nc.hex === targetHex) return;
+              counts[nc.hex] = (counts[nc.hex] || 0) + 1;
+            });
+          });
+          var best = null, bn = 0;
+          for (var k2 in counts) if (counts[k2] > bn) { bn = counts[k2]; best = k2; }
+          if (best) {
+            var e2 = state.palIndex[best];
+            region.forEach(function (rp) {
+              var cell = state.grid[rp[0]][rp[1]];
+              cell.hex = e2.hex; cell.code = e2.code; cell.r = e2.r; cell.g = e2.g; cell.b = e2.b;
+              changed++;
+            });
+          }
+        }
+      }
+    }
+    toast(changed ? "已清理 " + changed + " 个杂色格" : "未发现明显杂色");
+  }
+
+  // 工具按钮
+  document.querySelectorAll("#editBar .et[data-tool]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll("#editBar .et[data-tool]").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      state.tool = b.getAttribute("data-tool");
+      toast("工具：" + ({ brush: "画笔", fill: "填充", rect: "矩形", pick: "取色" })[state.tool]);
+    });
+  });
+  $("brushSize").addEventListener("input", function () {
+    state.brushSize = Math.max(1, Math.min(9, parseInt($("brushSize").value, 10) || 1));
+    $("brushSize").value = state.brushSize;
+  });
+  $("brushShape").addEventListener("change", function () { state.brushShape = $("brushShape").value; });
+  $("btnUndo").addEventListener("click", undo);
+  $("btnMirrorH").addEventListener("click", function () { if (state.grid) mirrorGrid(true); });
+  $("btnMirrorV").addEventListener("click", function () { if (state.grid) mirrorGrid(false); });
+  $("btnHighlight").addEventListener("click", function () {
+    if (state.highlightHex) { state.highlightHex = null; this.classList.remove("on"); render(); toast("已关闭高亮"); return; }
+    if (!state.editHex) { toast("请先在色板中选择一个要高亮的颜色", true); return; }
+    state.highlightHex = state.editHex;
+    this.classList.add("on");
     render();
-    toast("已替换为 " + e2.code);
+    toast("已高亮颜色 " + state.palIndex[state.editHex].code);
+  });
+  $("btnClean").addEventListener("click", function () {
+    if (!state.grid) { toast("请先生成图纸", true); return; }
+    pushHistory();
+    cleanSpeckles();
+    render();
+  });
+
+  // 画布交互（画笔/填充/矩形/取色）
+  var pCanvas = $("previewCanvas");
+  var painting = false, rectStart = null, lastCell = null;
+  function cellFromEvent(e) {
+    var rect = pCanvas.getBoundingClientRect();
+    var x = Math.floor((e.clientX - rect.left) / rect.width * state.cols);
+    var y = Math.floor((e.clientY - rect.top) / rect.height * state.rows);
+    if (x < 0 || y < 0 || x >= state.cols || y >= state.rows) return null;
+    return { x: x, y: y };
+  }
+  pCanvas.addEventListener("pointerdown", function (e) {
+    if (!state.editMode || !state.grid) return;
+    var c = cellFromEvent(e);
+    if (!c) return;
+    if (state.tool === "brush") { pushHistory(); painting = true; paintStamp(c.x, c.y); render(); }
+    else if (state.tool === "fill") { pushHistory(); floodFill(c.x, c.y); render(); }
+    else if (state.tool === "rect") { pushHistory(); rectStart = c; }
+    else if (state.tool === "pick") { doPick(c.x, c.y); }
+  });
+  pCanvas.addEventListener("pointermove", function (e) {
+    var c = cellFromEvent(e);
+    if (c) lastCell = c;
+    if (!state.editMode || !state.grid || !painting || !c) return;
+    paintStamp(c.x, c.y);
+    render();
+  });
+  window.addEventListener("pointerup", function () {
+    if (rectStart && lastCell) {
+      fillRectCells(rectStart.x, rectStart.y, lastCell.x, lastCell.y);
+      render();
+    }
+    rectStart = null;
+    painting = false;
   });
 
   function exportList() {
