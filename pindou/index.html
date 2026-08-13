@@ -596,13 +596,28 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
   /* ================= 参数绑定 ================= */
   var gridSizeInput = $("gridSize");
   var mergeInput = $("mergeThresh");
+
+  // 实时预览：拖动参数后自动重新生成（已上传图片时）
+  var liveTimer = null;
+  function liveRegenerate() {
+    if (!isUnlocked()) return;
+    if (!state.img) return;
+    try { generate(); } catch (e) {}
+  }
+  function scheduleLive() {
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(liveRegenerate, 160);
+  }
+
   gridSizeInput.addEventListener("input", function () {
     state.gridSize = parseInt(gridSizeInput.value, 10);
     $("gridVal").textContent = state.gridSize;
+    scheduleLive();
   });
   mergeInput.addEventListener("input", function () {
     state.mergeThresh = parseInt(mergeInput.value, 10);
     $("mergeVal").textContent = state.mergeThresh;
+    scheduleLive();
   });
 
   // 模式选择
@@ -612,6 +627,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
       modeBtns.forEach(function (b) { b.classList.remove("on"); });
       btn.classList.add("on");
       state.mode = btn.getAttribute("data-mode");
+      liveRegenerate();
     });
   });
 
@@ -629,6 +645,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
       btn.classList.add("on");
       state.brand = b;
       if (state.editMode) buildEditSwatches();
+      liveRegenerate();
     });
     brandList.appendChild(btn);
   });
@@ -645,7 +662,11 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
   /* ================= 核心生成 ================= */
   $("btnGenerate").addEventListener("click", function () {
     if (!isUnlocked()) { showUnlockModal(); return; }
-    if (!state.img) { toast("请先上传图片", true); return; }
+    if (!state.img) {
+      if (state.grid) { toast("已导入图纸，可直接下载/编辑；若要重新生成请先上传图片", true); }
+      else { toast("请先上传图片", true); }
+      return;
+    }
     try {
       generate();
       toast("生成成功");
