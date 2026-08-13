@@ -1,6 +1,6 @@
 // functions/api/pindou-redeem.js
 // 拼豆图纸生成器卡密兑换 - Cloudflare Pages Function
-// 依赖: D1 数据库绑定 env.DB, 表 pindou_cards (见 scripts/pindou_schema.sql)
+// 依赖: D1 数据库绑定 env.DB (Pages 项目 Settings -> Functions -> D1 database bindings, 变量名 DB -> pindou-cards), 表 pindou_cards (见 scripts/pindou_schema.sql)
 // 前端 POST /api/pindou-redeem  {"code":"...","device_fp":"..."}
 // 返回 license: { valid, plan, plan_label, expires_at, device_fp }
 // 若 D1 未绑定(env.DB 不存在), 返回明确错误, 不影响其他功能
