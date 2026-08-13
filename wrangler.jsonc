@@ -10,5 +10,12 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "pindou-cards",
+      "database_id": "REPLACE_WITH_PINDOU_CARDS_DATABASE_ID"
+    }
   ]
 }

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拼豆图纸生成器 - 图片转拼豆图纸在线工具</title>
+<meta name="description" content="免费在线拼豆图纸生成器，上传任意图片一键生成可直接制作的拼豆图纸，支持 MARD/COCO/漫漫/盼盼/咪小窝 五大品牌色板291色，自动色号匹配、珠子用量统计、杂色清理、背景移除，导出高清PNG图纸与采购清单，纯本地运算隐私安全。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/pindou/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="拼豆图纸生成器 - 图片转拼豆图纸在线工具">
+<meta property="og:description" content="上传图片一键生成拼豆图纸：五大品牌291色自动匹配、用量统计、杂色清理、PNG图纸与采购清单导出，本地运算隐私安全。">
+<meta property="og:url" content="https://www.weiyingjun.top/pindou/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ec4899'/%3E%3Ctext x='50' y='70' font-size='36' text-anchor='middle' fill='white' font-family='Consolas,Microsoft YaHei,Arial'%3E%E6%8B%BC%E8%B1%86%3C/text%3E%3C/svg%3E">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #fdf2f8 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+.header-tags { margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.header-tags .htag { font-size: 12px; color: #db2777; background: #fce7f3; padding: 4px 12px; border-radius: 999px; }
+
+/* 卡密解锁条 */
+.unlock-bar { background: #fff; border: 1px solid #fbcfe8; border-radius: 12px; padding: 14px 18px; margin-top: 22px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.unlock-bar .unlock-tip { color: #9d174d; font-size: 13px; flex: 1; min-width: 220px; }
+.unlock-bar .unlock-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.unlock-bar input { padding: 8px 12px; border: 1px solid #f9a8d4; border-radius: 8px; font-size: 14px; outline: none; width: 210px; letter-spacing: 1px; text-transform: uppercase; }
+.unlock-bar input:focus { border-color: #ec4899; box-shadow: 0 0 0 3px rgba(236,72,153,.12); }
+.unlock-bar button { padding: 8px 18px; border: none; border-radius: 8px; background: #ec4899; color: #fff; font-size: 14px; cursor: pointer; font-weight: 600; }
+.unlock-bar button:hover { background: #db2777; }
+.unlock-status { color: #059669; font-size: 13px; font-weight: 600; }
+.unlock-status .expiry { color: #94a3b8; font-weight: 400; margin-left: 6px; }
+.buy-link { color: #db2777; text-decoration: none; border-bottom: 1px dashed #db2777; }
+
+/* 布局 */
+.main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 20px; margin-top: 22px; }
+@media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+.tool-card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 6px 24px rgba(31,45,61,0.08); }
+.tool-card h2 { font-size: 16px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.tool-card h2 .ico { font-size: 18px; }
+
+/* 上传区 */
+.upload-zone { border: 2px dashed #f9a8d4; border-radius: 12px; padding: 30px 16px; text-align: center; cursor: pointer; transition: all .2s; background: #fdf2f8; }
+.upload-zone:hover, .upload-zone.dragover { border-color: #ec4899; background: #fce7f3; }
+.upload-zone .up-ico { font-size: 38px; }
+.upload-zone .up-txt { margin-top: 10px; color: #64748b; font-size: 13px; line-height: 1.7; }
+.upload-zone .up-main { color: #be185d; font-weight: 600; font-size: 14px; }
+#fileInput { display: none; }
+.up-preview { margin-top: 12px; display: none; }
+.up-preview img { max-width: 100%; max-height: 160px; border-radius: 8px; border: 1px solid #f9a8d4; display: block; margin: 0 auto; }
+.up-preview .up-name { text-align: center; color: #64748b; font-size: 12px; margin-top: 6px; word-break: break-all; }
+
+/* 参数 */
+.param-group { margin-bottom: 16px; }
+.param-group label { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #475569; margin-bottom: 8px; }
+.param-group label .val { color: #db2777; font-weight: 700; font-size: 15px; }
+.param-group input[type=range] { width: 100%; accent-color: #ec4899; }
+.param-group select { width: 100%; padding: 9px 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: #fff; outline: none; }
+.param-group select:focus { border-color: #ec4899; }
+
+.mode-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.mode-list button { padding: 7px 12px; border: 1px solid #e2e8f0; background: #fff; border-radius: 999px; font-size: 12px; cursor: pointer; color: #475569; transition: all .15s; }
+.mode-list button.on { background: #ec4899; border-color: #ec4899; color: #fff; }
+
+.brand-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.brand-list button { padding: 7px 12px; border: 1px solid #e2e8f0; background: #fff; border-radius: 999px; font-size: 12px; cursor: pointer; color: #475569; transition: all .15s; }
+.brand-list button.on { background: #db2777; border-color: #db2777; color: #fff; }
+.brand-count { font-size: 11px; color: #94a3b8; margin-left: 3px; }
+
+.switch-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+.switch-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; cursor: pointer; padding: 6px 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; user-select: none; }
+.switch-btn.on { background: #fce7f3; border-color: #f9a8d4; color: #be185d; }
+
+/* 操作按钮 */
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.btn { flex: 1; min-width: 130px; padding: 12px 16px; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; font-weight: 600; color: #fff; background: #ec4899; transition: all .15s; }
+.btn:hover { background: #db2777; }
+.btn-secondary { background: #475569; }
+.btn-secondary:hover { background: #334155; }
+.btn-ghost { background: #fff; color: #475569; border: 1px solid #e2e8f0; }
+.btn-ghost:hover { border-color: #ec4899; color: #db2777; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* 画布区 */
+.canvas-wrap { position: relative; }
+.canvas-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.canvas-stats { font-size: 12px; color: #94a3b8; }
+.canvas-stats b { color: #db2777; }
+.canvas-box { overflow: auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; max-height: 72vh; }
+#previewCanvas { display: block; margin: 0 auto; image-rendering: pixelated; max-width: 100%; height: auto; }
+.canvas-placeholder { text-align: center; color: #94a3b8; font-size: 14px; padding: 90px 20px; }
+
+/* 用量统计 */
+.usage-panel { display: none; margin-top: 20px; }
+.usage-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.usage-item { display: flex; align-items: center; gap: 6px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; font-size: 12px; background: #fff; }
+.usage-item .sw { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,.1); }
+.usage-item .num { color: #64748b; }
+.usage-item .code { color: #db2777; font-weight: 700; }
+
+/* 说明区 */
+.about-card { margin-top: 26px; }
+.about-card h2 { font-size: 18px; color: #1f2d3d; margin: 18px 0 8px; }
+.about-card p { color: #475569; font-size: 14px; line-height: 1.9; margin-bottom: 8px; }
+.about-card .td-card { display: flex; gap: 12px; align-items: flex-start; background: #f8fafc; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+.about-card .td-card .td-ico { font-size: 22px; }
+.about-card .td-card b { display: block; color: #1f2d3d; margin-bottom: 3px; }
+.about-card .td-card p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.7; }
+.faq-item { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+.faq-item b { color: #1f2d3d; font-size: 14px; }
+.faq-item p { color: #64748b; font-size: 13px; line-height: 1.8; margin: 6px 0 0; }
+
+footer.site-footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid #f1f5f9; text-align: center; }
+footer .foot-nav { line-height: 2; font-size: 12px; color: #94a3b8; }
+footer .foot-nav a { color: #94a3b8; text-decoration: none; margin: 0 8px; white-space: nowrap; }
+footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
+
+/* 卡密弹窗 */
+.modal-mask { position: fixed; inset: 0; background: rgba(15,23,42,.55); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
+.modal-mask.show { display: flex; }
+.modal-box { background: #fff; border-radius: 16px; padding: 30px 26px; max-width: 420px; width: 100%; text-align: center; }
+.modal-box .m-ico { font-size: 40px; }
+.modal-box h3 { margin: 10px 0 6px; font-size: 19px; color: #1f2d3d; }
+.modal-box p { color: #64748b; font-size: 13px; line-height: 1.8; }
+.modal-box input { width: 100%; padding: 11px 14px; border: 1px solid #f9a8d4; border-radius: 10px; font-size: 16px; text-align: center; letter-spacing: 2px; outline: none; margin: 16px 0 12px; text-transform: uppercase; }
+.modal-box input:focus { border-color: #ec4899; box-shadow: 0 0 0 3px rgba(236,72,153,.12); }
+.modal-box .m-err { color: #dc2626; font-size: 12px; min-height: 18px; margin-bottom: 6px; }
+.modal-box .btn { width: 100%; margin-bottom: 8px; }
+.modal-close { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 22px; color: #94a3b8; cursor: pointer; }
+.modal-wrap { position: relative; }
+
+/* 提示 toast */
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1f2d3d; color: #fff; padding: 11px 22px; border-radius: 10px; font-size: 13px; z-index: 1000; opacity: 0; transition: all .3s; pointer-events: none; }
+.toast.show { opacity: 1; }
+.toast.err { background: #dc2626; }
+
+.legend-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.legend-item { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: #94a3b8; }
+.legend-item .sw { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.08); }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="container">
+
+  <header class="site-header">
+    <h1>拼豆图纸生成器</h1>
+    <p class="subtitle">上传任意图片，一键生成可直接制作的拼豆图纸，支持五大品牌 291 色自动匹配</p>
+    <div class="header-tags">
+      <span class="htag">图片转拼豆</span>
+      <span class="htag">五大品牌色板</span>
+      <span class="htag">自动配色</span>
+      <span class="htag">用量统计</span>
+      <span class="htag">PNG导出</span>
+    </div>
+  </header>
+
+  <!-- 卡密解锁条 -->
+  <div class="unlock-bar" id="unlockBar">
+    <div class="unlock-tip">
+      <span id="unlockTipText">🔒 生成图纸需要解锁，<a class="buy-link" href="https://www.weiyingjun.top/pindou/jc.html" target="_blank" rel="noopener">查看使用教程</a>，购买卡密可前往闲鱼搜索「拼豆图纸生成器」。</span>
+    </div>
+    <div class="unlock-form" id="unlockForm">
+      <input type="text" id="cardInput" placeholder="输入卡密解锁" maxlength="20" autocomplete="off">
+      <button type="button" id="btnUnlock">解锁</button>
+    </div>
+    <div class="unlock-status" id="unlockStatus" style="display:none;">✅ 已解锁<span class="expiry" id="unlockExpiry"></span></div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- 左侧：上传与参数 -->
+    <div>
+      <div class="tool-card">
+        <h2><span class="ico">🖼️</span> 上传图片</h2>
+        <div class="upload-zone" id="uploadZone">
+          <div class="up-ico">📁</div>
+          <div class="up-txt"><span class="up-main">点击上传或拖拽图片</span><br>支持 JPG / PNG / WebP / BMP</div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*">
+        <div class="up-preview" id="upPreview">
+          <img id="previewImg" alt="预览">
+          <div class="up-name" id="upName"></div>
+        </div>
+      </div>
+
+      <div class="tool-card" style="margin-top:16px;">
+        <h2><span class="ico">⚙️</span> 参数设置</h2>
+
+        <div class="param-group">
+          <label>横向方格数量 <span class="val" id="gridVal">50</span></label>
+          <input type="range" id="gridSize" min="10" max="300" step="1" value="50">
+        </div>
+
+        <div class="param-group">
+          <label>颜色合并阈值 <span class="val" id="mergeVal">30</span></label>
+          <input type="range" id="mergeThresh" min="0" max="100" step="1" value="30">
+          <div style="font-size:11px;color:#94a3b8;margin-top:4px;">数值越大，相近颜色合并越多、杂色越少</div>
+        </div>
+
+        <div class="param-group">
+          <label>处理模式</label>
+          <div class="mode-list" id="modeList">
+            <button data-mode="cartoon" class="on">卡通(主色)</button>
+            <button data-mode="real">真实(平均)</button>
+            <button data-mode="dither">抖动(误差扩散)</button>
+            <button data-mode="smooth">平滑(强化合并)</button>
+            <button data-mode="map">调色板映射</button>
+          </div>
+        </div>
+
+        <div class="param-group">
+          <label>品牌色板</label>
+          <div class="brand-list" id="brandList"></div>
+        </div>
+
+        <div class="param-group">
+          <label>显示选项</label>
+          <div class="switch-list">
+            <span class="switch-btn" id="swColorCode">🎨 显示色号</span>
+            <span class="switch-btn" id="swGrid">▦ 网格线</span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" id="btnGenerate">✨ 生成图纸</button>
+          <button class="btn btn-secondary" id="btnExportPNG">📥 下载图纸</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="btnExportList">🛒 导出采购清单</button>
+          <button class="btn btn-ghost" id="btnClear">🗑️ 清空</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧：画布 -->
+    <div>
+      <div class="tool-card canvas-wrap">
+        <div class="canvas-toolbar">
+          <div class="canvas-stats" id="canvasStats">尚未生成图纸</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost" id="btnZoomIn" style="padding:6px 12px;min-width:0;flex:0 0 auto;">➕</button>
+            <button class="btn btn-ghost" id="btnZoomOut" style="padding:6px 12px;min-width:0;flex:0 0 auto;">➖</button>
+          </div>
+        </div>
+        <div class="canvas-box" id="canvasBox">
+          <div class="canvas-placeholder" id="placeholder">
+            <div style="font-size:52px;margin-bottom:12px;">🧩</div>
+            上传图片后点击「生成图纸」，即可在这里预览拼豆图纸效果<br>支持显示色号、网格线，放大查看每个豆子的颜色
+          </div>
+          <canvas id="previewCanvas" style="display:none;"></canvas>
+        </div>
+        <div class="legend-row" id="legendRow" style="display:none;"></div>
+      </div>
+
+      <!-- 用量统计 -->
+      <div class="tool-card usage-panel" id="usagePanel">
+        <h2><span class="ico">🧮</span> 珠子用量统计</h2>
+        <div class="canvas-stats" id="usageTotal"></div>
+        <div class="usage-list" id="usageList"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 说明区 -->
+  <div class="about-card tool-card">
+    <h2>拼豆图纸生成器工具介绍</h2>
+    <p>本工具是一款免费在线的拼豆图纸生成器，上传任意照片或图片，即可自动生成可直接照着拼豆的图纸。工具内置 MARD、COCO、漫漫、盼盼、咪小窝 五大品牌共 291 个标准色号，通过感知色差算法将图片像素自动匹配到最接近的豆子颜色，同时自动统计每种颜色所需珠子的数量，生成采购清单，让您开工前心里有数。</p>
+    <p>所有计算均在浏览器本地完成，图片不会上传到任何服务器，隐私安全有保障。支持调整横向格子数量控制图纸精细度，调节颜色合并阈值清理杂色，还支持切换处理模式以适应卡通图、照片、像素画等不同素材。</p>
+
+    <h2>核心功能</h2>
+    <div class="td-card"><span class="td-ico">🎨</span><div><b>五大品牌色板</b><p>内置 MARD/COCO/漫漫/盼盼/咪小窝 291 色，自动匹配最接近原图的颜色效果。</p></div></div>
+    <div class="td-card"><span class="td-ico">🧮</span><div><b>自动珠子计数</b><p>自动统计每种颜色所需珠子数量，生成采购清单，开工前心里有数。</p></div></div>
+    <div class="td-card"><span class="td-ico">📥</span><div><b>一键导出图纸</b><p>导出带色号、网格与统计信息的高清 PNG 图纸，方便打印或保存。</p></div></div>
+    <div class="td-card"><span class="td-ico">⚡</span><div><b>即时调整</b><p>自由设置格子数量与颜色合并阈值，调节参数后快速重新生成。</p></div></div>
+
+    <h2>常见问题</h2>
+    <div class="faq-item"><b>图纸里每个格子代表什么？</b><p>每个格子代表一颗拼豆，图纸横向格子数量决定精细度。格数越多图案越精细，但需要的豆子也越多，制作难度越大。</p></div>
+    <div class="faq-item"><b>生成的图纸需要买多少颗珠子？</b><p>点击「导出采购清单」即可查看每种色号需要的数量，按清单购买即可，避免多买浪费。</p></div>
+    <div class="faq-item"><b>图片会被上传吗？</b><p>不会。所有图片处理和颜色匹配均在浏览器本地完成，您的图片不会传输到任何服务器。</p></div>
+    <div class="faq-item"><b>如何解锁生成功能？</b><p>在闲鱼购买卡密后，在页面顶部输入卡密即可解锁。1天/7天/永久卡按购买时长生效，一个卡密仅限一台设备使用。</p></div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="foot-nav">
+      <a href="/" rel="noopener noreferrer" style="color:#1e90ff;text-decoration:none;margin:0 8px;white-space:nowrap;">首页</a>
+      <a href="/check-word/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">违禁词检测</a>
+      <a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">IP查询</a>
+      <a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机密码</a>
+      <a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">年龄计算</a>
+      <a href="/pindou/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">拼豆图纸</a>
+      <a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">日期计算</a>
+      <a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">金额大写</a>
+      <a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本提取</a>
+      <a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本去重</a>
+      <a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">字符统计</a>
+      <a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">数据脱敏</a>
+      <a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">JSON格式化</a>
+      <a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">MD5批量加密</a>
+      <a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">短链接还原</a>
+      <a href="/bank-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">银行卡查询</a>
+      <a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">手机号查询</a>
+      <a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">身份证查询</a>
+      <a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机分组</a>
+      <a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机点名</a>
+    </div>
+    <div class="copyright">© 2026 实用资源整理站 · 拼豆图纸生成器 · 本地运算，图片不上传</div>
+  </footer>
+</div>
+
+<!-- 卡密弹窗 -->
+<div class="modal-mask" id="unlockModal">
+  <div class="modal-wrap modal-box">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="m-ico">🔑</div>
+    <h3>解锁拼豆图纸生成</h3>
+    <p>请输入您的卡密以解锁生成功能。<br>未购买？可在闲鱼搜索「拼豆图纸生成器」获取卡密。</p>
+    <input type="text" id="modalCardInput" placeholder="输入卡密" maxlength="20" autocomplete="off">
+    <div class="m-err" id="modalErr"></div>
+    <button class="btn" id="btnModalUnlock">解锁</button>
+  </div>
+</div>
+
+<script src="/pindou/data/palette.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var PALETTE = window.PINDOU_PALETTE;
+  var brandNames = PALETTE.brandNames;
+  var colorData = PALETTE.colors;
+
+  /* ================= 卡密状态 ================= */
+  var LICENSE_KEY = "pindou_license";
+  var curLic = null;
+
+  function loadLicense() {
+    try { curLic = JSON.parse(localStorage.getItem(LICENSE_KEY)); } catch (e) { curLic = null; }
+    if (curLic && curLic.expires_at && new Date(curLic.expires_at).getTime() < Date.now()) {
+      localStorage.removeItem(LICENSE_KEY);
+      curLic = null;
+    }
+  }
+  function isUnlocked() {
+    loadLicense();
+    return !!(curLic && curLic.valid);
+  }
+  function getDeviceFp() {
+    try {
+      var fp = localStorage.getItem("pindou_device_fp");
+      if (fp) return fp;
+      var rnd = (Math.random().toString(36).substring(2, 10) + Date.now().toString(36)).toUpperCase();
+      var parts = [navigator.userAgent, navigator.language, rnd].join("|");
+      var h = 0;
+      for (var i = 0; i < parts.length; i++) { h = ((h << 5) - h + parts.charCodeAt(i)) | 0; }
+      fp = "D" + Math.abs(h).toString(36).toUpperCase() + "-" + rnd;
+      localStorage.setItem("pindou_device_fp", fp);
+      return fp;
+    } catch (e) { return "D-UNKNOWN"; }
+  }
+  function updateUnlockUI() {
+    var unlocked = isUnlocked();
+    document.getElementById("unlockForm").style.display = unlocked ? "none" : "flex";
+    document.getElementById("unlockStatus").style.display = unlocked ? "block" : "none";
+    if (unlocked) {
+      var expiry = document.getElementById("unlockExpiry");
+      if (curLic.expires_at) {
+        var d = new Date(curLic.expires_at);
+        expiry.textContent = "有效期至 " + d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()) + " " + pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+      } else {
+        expiry.textContent = "永久使用";
+      }
+    }
+  }
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function redeemCard(code) {
+    return fetch("/api/pindou-redeem", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: code, device_fp: getDeviceFp() })
+    }).then(function (r) { return r.json(); });
+  }
+
+  function doUnlock(code) {
+    if (!code) return;
+    redeemCard(code).then(function (res) {
+      if (res && res.success) {
+        curLic = res.data;
+        try { localStorage.setItem(LICENSE_KEY, JSON.stringify(curLic)); } catch (e) {}
+        updateUnlockUI();
+        toast("✅ 解锁成功，" + (curLic.plan_label || "已激活"));
+      } else {
+        toast((res && res.error) || "卡密无效或已被使用", true);
+      }
+    }).catch(function () { toast("网络异常，请稍后重试", true); });
+  }
+
+  /* ================= 工具函数 ================= */
+  function $(id) { return document.getElementById(id); }
+  var toastTimer = null;
+  function toast(msg, isErr) {
+    var t = $("toast");
+    t.textContent = msg;
+    t.className = "toast show" + (isErr ? " err" : "");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.className = "toast"; }, 2600);
+  }
+
+  // sRGB -> linear RGB -> Oklab
+  function srgbToLin(c) {
+    c /= 255;
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  }
+  function linToSrgb(c) {
+    c = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+    return Math.round(Math.max(0, Math.min(1, c)) * 255);
+  }
+  function rgbToOklab(r, g, b) {
+    var lr = srgbToLin(r), lg = srgbToLin(g), lb = srgbToLin(b);
+    var l = 0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb;
+    var m = 0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb;
+    var s = 0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb;
+    var l_ = Math.cbrt(l), m_ = Math.cbrt(m), s_ = Math.cbrt(s);
+    return {
+      L: 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+      a: 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+      b: 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
+    };
+  }
+  function oklabToRgb(l, a, b) {
+    var l_ = l + 0.3963377774 * a + 0.2158037573 * b;
+    var m_ = l - 0.1055613458 * a - 0.0638541728 * b;
+    var s_ = l - 0.0894841775 * a - 1.2914855480 * b;
+    var l3 = l_ * l_ * l_, m3 = m_ * m_ * m_, s3 = s_ * s_ * s_;
+    return {
+      r: linToSrgb(+4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3),
+      g: linToSrgb(-1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3),
+      b: linToSrgb(-0.0041960863 * l3 - 0.7034186147 * m3 + 1.7076147010 * s3)
+    };
+  }
+  function oklabDist(x, y) {
+    var dl = x.L - y.L, da = x.a - y.a, db = x.b - y.b;
+    return dl * dl + da * da + db * db;
+  }
+
+  var paletteCache = null;
+  function getBrandPalette(brand) {
+    if (!paletteCache) paletteCache = {};
+    if (paletteCache[brand]) return paletteCache[brand];
+    var list = [];
+    var seenCode = {};
+    for (var hex in colorData) {
+      var code = colorData[hex][brand];
+      if (!code || code === "-") continue;
+      if (seenCode[code]) continue;
+      seenCode[code] = true;
+      var rgb = hexToRgb(hex);
+      if (!rgb) continue;
+      list.push({ hex: hex, code: code, r: rgb.r, g: rgb.g, b: rgb.b, lab: rgbToOklab(rgb.r, rgb.g, rgb.b) });
+    }
+    list.sort(function (a, b) { return a.code.localeCompare(b.code, undefined, { numeric: true }); });
+    paletteCache[brand] = list;
+    return list;
+  }
+  function hexToRgb(hex) {
+    var m = /^#([0-9a-fA-F]{6})$/.exec(hex);
+    if (!m) return null;
+    var n = parseInt(m[1], 16);
+    return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+  }
+  function nearestPalette(lab, brand) {
+    var list = getBrandPalette(brand);
+    var best = list[0], bestD = Infinity;
+    for (var i = 0; i < list.length; i++) {
+      var d = oklabDist(lab, list[i].lab);
+      if (d < bestD) { bestD = d; best = list[i]; if (d === 0) break; }
+    }
+    return best;
+  }
+
+  /* ================= 状态 ================= */
+  var state = {
+    img: null,          // HTMLImageElement
+    imgData: null,      // ImageData of loaded image
+    grid: null,         // 2D array of cell {r,g,b,code,hex,external}
+    cols: 0, rows: 0,
+    brand: "MARD",
+    mode: "cartoon",
+    gridSize: 50,
+    mergeThresh: 30,
+    showCode: true,
+    showGrid: true,
+    cellPx: 24,
+    useList: []
+  };
+
+  /* ================= 上传 ================= */
+  var uploadZone = $("uploadZone"), fileInput = $("fileInput");
+  uploadZone.addEventListener("click", function () { fileInput.click(); });
+  uploadZone.addEventListener("dragover", function (e) { e.preventDefault(); uploadZone.classList.add("dragover"); });
+  uploadZone.addEventListener("dragleave", function () { uploadZone.classList.remove("dragover"); });
+  uploadZone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    uploadZone.classList.remove("dragover");
+    var f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f && f.type.indexOf("image/") === 0) loadFile(f);
+  });
+  fileInput.addEventListener("change", function () { if (fileInput.files[0]) loadFile(fileInput.files[0]); });
+
+  function loadFile(file) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var img = new Image();
+      img.onload = function () {
+        state.img = img;
+        state.imgData = null;
+        $("previewImg").src = e.target.result;
+        $("upPreview").style.display = "block";
+        $("upName").textContent = file.name + " (" + img.width + "×" + img.height + ")";
+        toast("图片加载成功，点击「生成图纸」开始转换");
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ================= 参数绑定 ================= */
+  var gridSizeInput = $("gridSize");
+  var mergeInput = $("mergeThresh");
+  gridSizeInput.addEventListener("input", function () {
+    state.gridSize = parseInt(gridSizeInput.value, 10);
+    $("gridVal").textContent = state.gridSize;
+  });
+  mergeInput.addEventListener("input", function () {
+    state.mergeThresh = parseInt(mergeInput.value, 10);
+    $("mergeVal").textContent = state.mergeThresh;
+  });
+
+  // 模式选择
+  var modeBtns = document.querySelectorAll("#modeList button");
+  modeBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      modeBtns.forEach(function (b) { b.classList.remove("on"); });
+      btn.classList.add("on");
+      state.mode = btn.getAttribute("data-mode");
+    });
+  });
+
+  // 品牌选择
+  var brandList = $("brandList");
+  Object.keys(brandNames).forEach(function (b) {
+    var btn = document.createElement("button");
+    var cnt = 0;
+    for (var hex in colorData) { if (colorData[hex][b] && colorData[hex][b] !== "-") cnt++; }
+    btn.innerHTML = brandNames[b] + '<span class="brand-count">' + cnt + '色</span>';
+    btn.setAttribute("data-brand", b);
+    if (b === state.brand) btn.classList.add("on");
+    btn.addEventListener("click", function () {
+      brandList.querySelectorAll("button").forEach(function (x) { x.classList.remove("on"); });
+      btn.classList.add("on");
+      state.brand = b;
+    });
+    brandList.appendChild(btn);
+  });
+
+  // 显示选项
+  $("swColorCode").addEventListener("click", function () { state.showCode = !state.showCode; this.classList.toggle("on", state.showCode); if (state.grid) render(); });
+  $("swGrid").addEventListener("click", function () { state.showGrid = !state.showGrid; this.classList.toggle("on", state.showGrid); if (state.grid) render(); });
+
+  // 缩放
+  var zoom = 1;
+  $("btnZoomIn").addEventListener("click", function () { zoom = Math.min(4, zoom + 0.5); if (state.grid) render(); });
+  $("btnZoomOut").addEventListener("click", function () { zoom = Math.max(0.5, zoom - 0.5); if (state.grid) render(); });
+
+  /* ================= 核心生成 ================= */
+  $("btnGenerate").addEventListener("click", function () {
+    if (!isUnlocked()) { showUnlockModal(); return; }
+    if (!state.img) { toast("请先上传图片", true); return; }
+    try {
+      generate();
+      toast("生成成功");
+    } catch (e) { toast("生成失败：" + e.message, true); }
+  });
+
+  function getImageData(img) {
+    var c = document.createElement("canvas");
+    c.width = img.naturalWidth || img.width;
+    c.height = img.naturalHeight || img.height;
+    var ctx = c.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    return ctx.getImageData(0, 0, c.width, c.height);
+  }
+
+  function generate() {
+    var img = state.img;
+    var imgData = state.imgData || getImageData(img);
+    state.imgData = imgData;
+    var W = imgData.width, H = imgData.height;
+    var px = imgData.data;
+    var cols = state.gridSize;
+    var rows = Math.max(2, Math.round(H / W * cols));
+    state.cols = cols; state.rows = rows;
+
+    var grid = [];
+    for (var y = 0; y < rows; y++) {
+      var row = [];
+      for (var x = 0; x < cols; x++) {
+        row.push({ r: 255, g: 255, b: 255, a: 0, code: "", hex: "#FFFFFF", external: false, count: 0 });
+      }
+      grid.push(row);
+    }
+
+    // 步骤1：采样每格颜色
+    for (var gy = 0; gy < rows; gy++) {
+      var y0 = Math.floor(gy * H / rows), y1 = Math.max(y0 + 1, Math.floor((gy + 1) * H / rows));
+      for (var gx = 0; gx < cols; gx++) {
+        var x0 = Math.floor(gx * W / cols), x1 = Math.max(x0 + 1, Math.floor((gx + 1) * W / cols));
+        var rSum = 0, gSum = 0, bSum = 0, n = 0;
+        var hist = {};
+        var cell = grid[gy][gx];
+        for (var yy = y0; yy < y1; yy++) {
+          for (var xx = x0; xx < x1; xx++) {
+            var i = (yy * W + xx) * 4;
+            var a = px[i + 3];
+            if (a < 128) continue;
+            var r = px[i], g = px[i + 1], b = px[i + 2];
+            rSum += r; gSum += g; bSum += b; n++;
+            var key = (r >> 4) + "," + (g >> 4) + "," + (b >> 4);
+            hist[key] = (hist[key] || 0) + 1;
+            var j = (gy * cols + gx);
+            cell.count++;
+          }
+        }
+        if (n === 0) { cell.external = true; continue; }
+
+        if (state.mode === "real" || state.mode === "map") {
+          // 平均色
+          cell.r = Math.round(rSum / n); cell.g = Math.round(gSum / n); cell.b = Math.round(bSum / n);
+        } else {
+          // 主导色（卡通）
+          var bestKey = null, bestN = -1;
+          for (var k in hist) { if (hist[k] > bestN) { bestN = hist[k]; bestKey = k; } }
+          var parts = bestKey.split(",");
+          cell.r = (parseInt(parts[0], 10) << 4) + 8;
+          cell.g = (parseInt(parts[1], 10) << 4) + 8;
+          cell.b = (parseInt(parts[2], 10) << 4) + 8;
+        }
+      }
+    }
+
+    // 步骤2：抖动（误差扩散，仅 dither 模式）
+    if (state.mode === "dither") {
+      // 在输出色板上做 Floyd-Steinberg
+      var pal = getBrandPalette(state.brand);
+      for (var dy = 0; dy < rows; dy++) {
+        for (var dx = 0; dx < cols; dx++) {
+          var c = grid[dy][dx];
+          if (c.external) continue;
+          var oldPix = { r: c.r, g: c.g, b: c.b };
+          var oldLab = rgbToOklab(oldPix.r, oldPix.g, oldPix.b);
+          var near = nearestPalette(oldLab, state.brand);
+          c.r = near.r; c.g = near.g; c.b = near.b; c.hex = near.hex; c.code = near.code;
+          var errR = oldPix.r - c.r, errG = oldPix.g - c.g, errB = oldPix.b - c.b;
+          if (dx + 1 < cols) { grid[dy][dx + 1].r += errR * 7 / 16; grid[dy][dx + 1].g += errG * 7 / 16; grid[dy][dx + 1].b += errB * 7 / 16; }
+          if (dy + 1 < rows) {
+            if (dx > 0) { grid[dy + 1][dx - 1].r += errR * 3 / 16; grid[dy + 1][dx - 1].g += errG * 3 / 16; grid[dy + 1][dx - 1].b += errB * 3 / 16; }
+            grid[dy + 1][dx].r += errR * 5 / 16; grid[dy + 1][dx].g += errG * 5 / 16; grid[dy + 1][dx].b += errB * 5 / 16;
+            if (dx + 1 < cols) { grid[dy + 1][dx + 1].r += errR * 1 / 16; grid[dy + 1][dx + 1].g += errG * 1 / 16; grid[dy + 1][dx + 1].b += errB * 1 / 16; }
+          }
+        }
+      }
+    }
+
+    // 步骤3：色板映射（非 dither 模式）
+    if (state.mode !== "dither") {
+      for (var my = 0; my < rows; my++) {
+        for (var mx = 0; mx < cols; mx++) {
+          var mc = grid[my][mx];
+          if (mc.external) continue;
+          mc.r = Math.max(0, Math.min(255, Math.round(mc.r)));
+          mc.g = Math.max(0, Math.min(255, Math.round(mc.g)));
+          mc.b = Math.max(0, Math.min(255, Math.round(mc.b)));
+          var lab = rgbToOklab(mc.r, mc.g, mc.b);
+          var near = nearestPalette(lab, state.brand);
+          mc.r = near.r; mc.g = near.g; mc.b = near.b; mc.hex = near.hex; mc.code = near.code;
+        }
+      }
+    }
+
+    // 步骤4：区域合并清理杂色（smooth 模式强化）
+    if (state.mergeThresh > 0) {
+      mergeRegions(grid, rows, cols, state.mode === "smooth" ? state.mergeThresh + 15 : state.mergeThresh);
+    }
+
+    // 步骤5：背景移除
+    removeBackground(grid, rows, cols);
+
+    state.grid = grid;
+    render();
+    renderUsage();
+  }
+
+  // BFS 连通区域合并：相近颜色聚成区域，取众数色
+  function mergeRegions(grid, rows, cols, thresh) {
+    var seen = [];
+    for (var i = 0; i < rows; i++) seen.push(new Array(cols).fill(false));
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        if (seen[y][x] || grid[y][x].external) continue;
+        var seed = { r: grid[y][x].r, g: grid[y][x].g, b: grid[y][x].b };
+        var seedLab = rgbToOklab(seed.r, seed.g, seed.b);
+        var queue = [[y, x]];
+        var region = [];
+        var counts = {};
+        var sqT = thresh * thresh / 90000; // 阈值 0-100 映射为 Oklab 距离缩放
+        var maxD = 0.02 + sqT * 0.06;
+        var maxD2 = maxD * maxD;
+        while (queue.length) {
+          var cur = queue.pop();
+          var cy = cur[0], cx = cur[1];
+          if (cy < 0 || cx < 0 || cy >= rows || cx >= cols || seen[cy][cx]) continue;
+          var cc = grid[cy][cx];
+          if (cc.external) continue;
+          var d = oklabDist(seedLab, rgbToOklab(cc.r, cc.g, cc.b));
+          if (d > maxD2) continue;
+          seen[cy][cx] = true;
+          region.push([cy, cx]);
+          var key = cc.hex;
+          counts[key] = (counts[key] || 0) + 1;
+          queue.push([cy - 1, cx], [cy + 1, cx], [cy, cx - 1], [cy, cx + 1]);
+        }
+        if (region.length > 1) {
+          var bestHex = null, bestN = -1;
+          for (var k in counts) { if (counts[k] > bestN) { bestN = counts[k]; bestHex = k; } }
+          for (var r2 = 0; r2 < region.length; r2++) {
+            var yy = region[r2][0], xx = region[r2][1];
+            grid[yy][xx].hex = bestHex;
+            var br = hexToRgb(bestHex);
+            grid[yy][xx].r = br.r; grid[yy][xx].g = br.g; grid[yy][xx].b = br.b;
+            grid[yy][xx].code = colorData[bestHex] && colorData[bestHex][state.brand] || "";
+          }
+        }
+      }
+    }
+  }
+
+  // 背景移除：从边缘 flood-fill 近白色区域标记为 external
+  function removeBackground(grid, rows, cols) {
+    var queue = [];
+    var pushed = [];
+    for (var i = 0; i < rows; i++) pushed.push(new Array(cols).fill(false));
+    function pushCell(y, x) {
+      if (y < 0 || x < 0 || y >= rows || x >= cols) return;
+      if (pushed[y][x]) return;
+      pushed[y][x] = true;
+      queue.push([y, x]);
+    }
+    for (var x2 = 0; x2 < cols; x2++) { pushCell(0, x2); pushCell(rows - 1, x2); }
+    for (var y2 = 0; y2 < rows; y2++) { pushCell(y2, 0); pushCell(y2, cols - 1); }
+    var white = rgbToOklab(255, 255, 255);
+    var whiteD2 = 0.004; // 近白判定
+    while (queue.length) {
+      var cur = queue.pop();
+      var cy = cur[0], cx = cur[1];
+      var cc = grid[cy][cx];
+      if (cc.external) continue;
+      var d = oklabDist(white, rgbToOklab(cc.r, cc.g, cc.b));
+      if (d > whiteD2) continue;
+      cc.external = true;
+      pushCell(cy - 1, cx); pushCell(cy + 1, cx); pushCell(cy, cx - 1); pushCell(cy, cx + 1);
+    }
+  }
+
+  /* ================= 渲染 ================= */
+  function render() {
+    if (!state.grid) return;
+    var canvas = $("previewCanvas");
+    var cols = state.cols, rows = state.rows;
+    var cellPx = Math.round(state.cellPx * zoom);
+    var w = cols * cellPx, h = rows * cellPx;
+    canvas.width = w; canvas.height = h;
+    canvas.style.width = "100%";
+    canvas.style.maxWidth = w + "px";
+    $("placeholder").style.display = "none";
+    canvas.style.display = "block";
+
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, w, h);
+
+    var fontPx = Math.max(6, Math.round(cellPx * 0.42));
+    ctx.font = "bold " + fontPx + "px Consolas, monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    var useList = {};
+
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        var cell = grid[y][x];
+        var px2 = x * cellPx, py = y * cellPx;
+        if (cell.external) {
+          ctx.fillStyle = "#fafafa";
+          ctx.fillRect(px2, py, cellPx, cellPx);
+        } else {
+          ctx.fillStyle = cell.hex;
+          ctx.fillRect(px2, py, cellPx, cellPx);
+          if (state.showCode && cell.code && cellPx >= 12) {
+            ctx.fillStyle = isDark(cell.r, cell.g, cell.b) ? "#ffffff" : "#333333";
+            ctx.fillText(cell.code, px2 + cellPx / 2, py + cellPx / 2);
+          }
+          var key = cell.code;
+          if (!useList[key]) useList[key] = { hex: cell.hex, code: cell.code, n: 0 };
+          useList[key].n++;
+        }
+        if (state.showGrid) {
+          ctx.strokeStyle = "rgba(0,0,0,.12)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(px2 + .5, py + .5, cellPx - 1, cellPx - 1);
+        }
+      }
+    }
+
+    state.useList = [];
+    for (var k in useList) { state.useList.push(useList[k]); }
+    state.useList.sort(function (a, b) { return b.n - a.n; });
+
+    $("canvasStats").innerHTML = "图纸尺寸 <b>" + cols + " × " + rows + "</b> 格 · 使用 <b>" + state.useList.length + "</b> 种颜色 · 共 <b>" + totalBeads() + "</b> 颗豆";
+
+    renderLegend();
+    renderUsage();
+  }
+
+  function isDark(r, g, b) {
+    return (0.299 * r + 0.587 * g + 0.114 * b) < 140;
+  }
+  function totalBeads() {
+    var n = 0;
+    if (!state.grid) return 0;
+    for (var y = 0; y < state.rows; y++) for (var x = 0; x < state.cols; x++) if (!state.grid[y][x].external) n++;
+    return n;
+  }
+
+  function renderLegend() {
+    var row = $("legendRow");
+    row.innerHTML = "";
+    if (!state.grid) return;
+    var shown = {};
+    var count = 0;
+    for (var y = 0; y < state.rows && count < 24; y++) {
+      for (var x = 0; x < state.cols && count < 24; x++) {
+        var c = state.grid[y][x];
+        if (c.external || shown[c.code]) continue;
+        shown[c.code] = true;
+        count++;
+        var it = document.createElement("span");
+        it.className = "legend-item";
+        it.innerHTML = '<span class="sw" style="background:' + c.hex + '"></span>' + c.code + ' ' + c.hex;
+        row.appendChild(it);
+      }
+    }
+    row.style.display = count ? "flex" : "none";
+  }
+
+  function renderUsage() {
+    var panel = $("usagePanel");
+    if (!state.grid || state.useList.length === 0) {
+      panel.style.display = "none";
+      return;
+    }
+    panel.style.display = "block";
+    $("usageTotal").textContent = "共 " + totalBeads() + " 颗豆，需 " + state.useList.length + " 种颜色";
+    var listEl = $("usageList");
+    listEl.innerHTML = "";
+    state.useList.forEach(function (u) {
+      var it = document.createElement("div");
+      it.className = "usage-item";
+      it.innerHTML = '<span class="sw" style="background:' + u.hex + '"></span><b>' + u.code + '</b><span class="num">× ' + u.n + '</span>';
+      listEl.appendChild(it);
+    });
+  }
+
+  /* ================= 导出 ================= */
+  $("btnExportPNG").addEventListener("click", function () {
+    if (!isUnlocked()) { showUnlockModal(); return; }
+    if (!state.grid) { toast("请先生成图纸", true); return; }
+    exportPNG();
+  });
+  $("btnExportList").addEventListener("click", function () {
+    if (!isUnlocked()) { showUnlockModal(); return; }
+    if (!state.grid) { toast("请先生成图纸", true); return; }
+    exportList();
+  });
+  $("btnClear").addEventListener("click", function () {
+    state.grid = null; state.img = null; state.imgData = null; state.useList = [];
+    $("placeholder").style.display = "block";
+    $("previewCanvas").style.display = "none";
+    $("upPreview").style.display = "none";
+    $("usagePanel").style.display = "none";
+    $("legendRow").style.display = "none";
+    $("canvasStats").textContent = "尚未生成图纸";
+  });
+
+  function exportPNG() {
+    var cellPx = 32;
+    var canvas = document.createElement("canvas");
+    canvas.width = state.cols * cellPx;
+    canvas.height = state.rows * cellPx;
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var fontPx = Math.max(8, Math.round(cellPx * 0.4));
+    ctx.font = "bold " + fontPx + "px Consolas, monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (var y = 0; y < state.rows; y++) {
+      for (var x = 0; x < state.cols; x++) {
+        var cell = state.grid[y][x];
+        var px2 = x * cellPx, py = y * cellPx;
+        if (cell.external) {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(px2, py, cellPx, cellPx);
+        } else {
+          ctx.fillStyle = cell.hex;
+          ctx.fillRect(px2, py, cellPx, cellPx);
+          ctx.fillStyle = isDark(cell.r, cell.g, cell.b) ? "#ffffff" : "#333333";
+          ctx.fillText(cell.code, px2 + cellPx / 2, py + cellPx / 2);
+          ctx.strokeStyle = "rgba(0,0,0,.1)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(px2 + .5, py + .5, cellPx - 1, cellPx - 1);
+        }
+      }
+    }
+    var a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = "pindou-pattern-" + state.cols + "x" + state.rows + ".png";
+    a.click();
+    toast("图纸已导出");
+  }
+
+  function exportList() {
+    var brandName = brandNames[state.brand];
+    var lines = [];
+    lines.push("拼豆采购清单");
+    lines.push("品牌: " + brandName + "  色板: " + getBrandPalette(state.brand).length + "色");
+    lines.push("图纸: " + state.cols + " x " + state.rows + " 格, 共 " + totalBeads() + " 颗豆, " + state.useList.length + " 种颜色");
+    lines.push("");
+    lines.push("色号\t数量");
+    state.useList.forEach(function (u) {
+      lines.push(u.code + "\t" + u.n);
+    });
+    var blob = new Blob(["\ufeff" + lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "pindou-shopping-list-" + state.brand + ".txt";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast("采购清单已导出");
+  }
+
+  /* ================= 卡密弹窗 ================= */
+  function showUnlockModal() {
+    if (isUnlocked()) return;
+    $("unlockModal").classList.add("show");
+    setTimeout(function () { $("modalCardInput").focus(); }, 100);
+  }
+  $("modalClose").addEventListener("click", function () { $("unlockModal").classList.remove("show"); });
+  $("unlockModal").addEventListener("click", function (e) { if (e.target === this) this.classList.remove("show"); });
+  $("btnModalUnlock").addEventListener("click", function () {
+    var code = $("modalCardInput").value.trim();
+    if (!code) { $("modalErr").textContent = "请输入卡密"; return; }
+    redeemCard(code).then(function (res) {
+      if (res && res.success) {
+        curLic = res.data;
+        try { localStorage.setItem(LICENSE_KEY, JSON.stringify(curLic)); } catch (e) {}
+        $("unlockModal").classList.remove("show");
+        updateUnlockUI();
+        toast("✅ 解锁成功");
+      } else {
+        $("modalErr").textContent = (res && res.error) || "卡密无效";
+      }
+    }).catch(function () { $("modalErr").textContent = "网络异常，请稍后重试"; });
+  });
+  $("modalCardInput").addEventListener("keydown", function (e) { if (e.key === "Enter") $("btnModalUnlock").click(); });
+
+  // 顶部解锁按钮
+  $("btnUnlock").addEventListener("click", function () {
+    var code = $("cardInput").value.trim();
+    if (!code) { toast("请输入卡密", true); return; }
+    doUnlock(code);
+  });
+  $("cardInput").addEventListener("keydown", function (e) { if (e.key === "Enter") $("btnUnlock").click(); });
+
+  // 初始化
+  updateUnlockUI();
+})();
+</script>
+</body>
+</html>

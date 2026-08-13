@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>视频教程中心 - 拼豆图纸生成器</title>
+<meta name="description" content="拼豆图纸生成器核心功能视频教程，包含图片尺寸调整、颜色合并阈值、显示色号、查找替换颜色等进阶使用教学，帮助你高效完成拼豆创作。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/pindou/jc.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="视频教程中心 - 拼豆图纸生成器">
+<meta property="og:description" content="拼豆图纸生成器核心功能视频教程：尺寸调整、颜色合并、色号显示、查找替换颜色，高效完成拼豆创作。">
+<meta property="og:url" content="https://www.weiyingjun.top/pindou/jc.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ec4899'/%3E%3Ctext x='50' y='70' font-size='36' text-anchor='middle' fill='white' font-family='Consolas,Microsoft YaHei,Arial'%3E%E6%8B%BC%E8%B1%86%3C/text%3E%3C/svg%3E">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+  color: #111827;
+  background: radial-gradient(circle at top, #fdf2f8 0, #fafbfe 40%, #f3f4f6 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+.page { max-width: 1100px; margin: 0 auto; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px;
+  padding: 8px 14px; border-radius: 999px; font-size: 14px; color: #4b5563;
+  text-decoration: none; background: rgba(255,255,255,.95); border: 1px solid #f9a8d4;
+  transition: all .25s ease;
+}
+.back-link svg { width: 16px; height: 16px; }
+.back-link:hover { background: #fff; color: #db2777; box-shadow: 0 6px 14px rgba(236,72,153,.25); transform: translateY(-1px); }
+.card { background: rgba(255,255,255,.98); border-radius: 20px; padding: 28px 28px 24px; box-shadow: 0 20px 40px rgba(15,23,42,.12), 0 0 0 1px rgba(148,163,184,.18); backdrop-filter: blur(10px); }
+.card + .card { margin-top: 18px; }
+.card--title .header { margin-bottom: 0; }
+.header { margin-bottom: 24px; }
+.headline { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 999px; background: #fce7f3; color: #be185d; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+.headline-dot { width: 6px; height: 6px; border-radius: 999px; background: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,.25); }
+.title { font-size: 28px; font-weight: 700; letter-spacing: .02em; color: #0f172a; margin-bottom: 8px; }
+.title span { background: linear-gradient(120deg, #ec4899, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.subtitle { font-size: 14px; color: #6b7280; }
+.notice { margin-top: 16px; padding: 12px 16px; border-radius: 12px; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; font-size: 13px; line-height: 1.8; }
+.video-list { margin-top: 24px; display: flex; flex-direction: column; gap: 20px; }
+.video-item { border-radius: 18px; padding: 18px 18px 16px; background: radial-gradient(circle at top left, #fdf2f8, #f9fafb 55%, #f3e8ff 100%); box-shadow: 0 16px 35px rgba(15,23,42,.18), 0 0 0 1px rgba(148,163,184,.2); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr); gap: 20px; align-items: center; }
+.video-info { position: relative; }
+.video-kicker { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(252,231,243,.9); color: #be185d; font-size: 11px; font-weight: 600; margin-bottom: 10px; }
+.video-kicker-dot { width: 6px; height: 6px; border-radius: 999px; background: #ec4899; }
+.video-title { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+.video-sub { font-size: 13px; color: #4b5563; margin-bottom: 10px; }
+.video-wrap { position: relative; }
+.video-inner { position: relative; border-radius: 16px; overflow: hidden; background: #020617; padding-top: 56.25%; }
+.video-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; outline: none; border-radius: 16px; }
+footer.site-footer { max-width: 1100px; margin: 32px auto 0; padding-top: 24px; border-top: 1px solid #f1f5f9; text-align: center; }
+footer .foot-nav { line-height: 2; font-size: 12px; color: #94a3b8; }
+footer .foot-nav a { color: #94a3b8; text-decoration: none; margin: 0 8px; white-space: nowrap; }
+footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
+@media (max-width: 900px) { body { padding: 14px; } .card { padding: 22px 20px 20px; border-radius: 18px; } .title { font-size: 22px; } .video-item { grid-template-columns: minmax(0,1fr); gap: 14px; } }
+@media (max-width: 480px) { .title { font-size: 20px; } .subtitle { font-size: 13px; } .video-inner { padding-top: 75%; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a href="/pindou/" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5"></path>
+      <path d="M12 19l-7-7 7-7"></path>
+    </svg>
+    返回生成器
+  </a>
+
+  <div class="card card--title">
+    <header class="header">
+      <div class="headline"><span class="headline-dot"></span>视频教程中心 · 拼豆图纸进阶使用</div>
+      <h1 class="title">快速掌握 <span>核心功能操作</span></h1>
+      <p class="subtitle">以下是拼豆图纸生成器的重点功能视频教程，建议按照顺序观看：从图片尺寸调整，到颜色合并、显示色号，再到查找替换颜色。</p>
+    </header>
+    <div class="notice">
+      📌 教程视频正在录制中，视频陆续上传至本页。购买卡密解锁生成功能，即可边看教程边制作。<a href="https://www.weiyingjun.top/pindou/" style="color:#be185d;">前往生成器 →</a>
+    </div>
+  </div>
+
+  <main class="video-list">
+
+    <section class="video-item" aria-label="调整图片尺寸减少杂色教程">
+      <div class="video-info">
+        <h2 class="video-title">调整图片尺寸大小教程</h2>
+        <p class="video-sub">调整前把原图没有用的背景裁剪掉，确保主体尺寸精准，生成出的图纸更干净。</p>
+      </div>
+      <div class="video-wrap">
+        <div class="video-inner">
+          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
+            <source src="/pindou/videos/tutorial-size.mp4" type="video/mp4">
+            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="video-item" aria-label="颜色合并值功能教程">
+      <div class="video-info">
+        <h2 class="video-title">颜色合并值功能教程</h2>
+        <p class="video-sub">学习颜色合并值作用是什么，默认为 30，数值越大相近颜色合并越多，一般无需调或微调，适当调节杂色少即可。</p>
+      </div>
+      <div class="video-wrap">
+        <div class="video-inner">
+          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
+            <source src="/pindou/videos/tutorial-merge.mp4" type="video/mp4">
+            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="video-item" aria-label="显示色号和坐标功能教程">
+      <div class="video-info">
+        <h2 class="video-title">显示色号和坐标功能教程</h2>
+        <p class="video-sub">工具内有「显示色号」「网格线」功能，点击打开即可在图纸格子里显示色号，方便对照采购清单取豆。</p>
+      </div>
+      <div class="video-wrap">
+        <div class="video-inner">
+          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
+            <source src="/pindou/videos/tutorial-code.mp4" type="video/mp4">
+            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="video-item" aria-label="查找和替换颜色教程">
+      <div class="video-info">
+        <h2 class="video-title">查找和替换颜色教程</h2>
+        <p class="video-sub">通过色号快速找到图纸中该颜色的位置，可将图内杂色替换为你所需要的颜色，让配色更统一。</p>
+      </div>
+      <div class="video-wrap">
+        <div class="video-inner">
+          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
+            <source src="/pindou/videos/tutorial-replace.mp4" type="video/mp4">
+            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="video-item" aria-label="生成像素图尺寸小不清晰的原因">
+      <div class="video-info">
+        <h2 class="video-title">生成像素图尺寸小不清晰的原因</h2>
+        <p class="video-sub">详细讲解为什么有时生成出的图纸尺寸偏小、放大后会模糊不清，包括原图分辨率、格子数量、预览缩放等多方面原因，以及如何正确设置避免问题。</p>
+      </div>
+      <div class="video-wrap">
+        <div class="video-inner">
+          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
+            <source src="/pindou/videos/tutorial-quality.mp4" type="video/mp4">
+            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
+          </video>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-nav">
+    <a href="/" style="color:#1e90ff;text-decoration:none;margin:0 8px;white-space:nowrap;">首页</a>
+    <a href="/pindou/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">拼豆图纸</a>
+    <a href="/check-word/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">违禁词检测</a>
+    <a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">IP查询</a>
+    <a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机密码</a>
+    <a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">年龄计算</a>
+    <a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">日期计算</a>
+    <a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">金额大写</a>
+    <a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本提取</a>
+    <a href="/bank-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">银行卡查询</a>
+    <a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">手机号查询</a>
+    <a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">身份证查询</a>
+    <a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">短链接还原</a>
+    <a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">JSON格式化</a>
+    <a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">MD5批量加密</a>
+    <a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机分组</a>
+  </div>
+  <div class="copyright">© 2026 实用资源整理站 · 拼豆图纸生成器 · 本地运算，图片不上传</div>
+</footer>
+
+<script>
+(function () {
+  function attachVideoErrorHandlers() {
+    var videos = document.querySelectorAll(".video-player");
+    videos.forEach(function (video) {
+      video.addEventListener("error", function () {
+        var wrapper = this.closest(".video-inner");
+        if (wrapper && !wrapper.querySelector(".v-err")) {
+          var d = document.createElement("div");
+          d.className = "v-err";
+          d.style.cssText = "position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px;background:#020617;";
+          d.innerHTML = '<div style="font-size:30px;margin-bottom:10px;">🎬</div><p style="margin-bottom:6px;">教程视频上传中，敬请期待</p><p style="font-size:12px;opacity:.75;">可先前往生成器体验完整功能</p>';
+          wrapper.appendChild(d);
+        }
+      });
+    });
+  }
+  attachVideoErrorHandlers();
+})();
+</script>
+</body>
+</html>
