@@ -1363,11 +1363,12 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     });
   }
   $("btnEdit").addEventListener("click", function () {
+    var btn = this;
     guardAction(function () {
       if (!state.grid) { toast("请先生成图纸", true); return; }
       state.editMode = !state.editMode;
-      this.classList.toggle("on", state.editMode);
-      this.textContent = state.editMode ? "✏️ 编辑中" : "✏️ 编辑";
+      btn.classList.toggle("on", state.editMode);
+      btn.textContent = state.editMode ? "✏️ 编辑中" : "✏️ 编辑";
       $("editBar").style.display = state.editMode ? "block" : "none";
       if (state.editMode) {
         buildEditSwatches();
