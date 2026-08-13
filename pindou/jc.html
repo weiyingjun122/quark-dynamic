@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>视频教程中心 - 拼豆图纸生成器</title>
-<meta name="description" content="拼豆图纸生成器核心功能视频教程，包含图片尺寸调整、颜色合并阈值、显示色号、查找替换颜色等进阶使用教学，帮助你高效完成拼豆创作。">
+<title>使用教程 - 拼豆图纸生成器</title>
+<meta name="description" content="拼豆图纸生成器图文使用教程：从上传图片、调整格子数量与颜色合并、选择色板，到下载图纸、导出采购清单、手动编辑等全部功能详细步骤，配合界面示意图手把手教学。">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://www.weiyingjun.top/pindou/jc.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="视频教程中心 - 拼豆图纸生成器">
-<meta property="og:description" content="拼豆图纸生成器核心功能视频教程：尺寸调整、颜色合并、色号显示、查找替换颜色，高效完成拼豆创作。">
+<meta property="og:title" content="使用教程 - 拼豆图纸生成器">
+<meta property="og:description" content="拼豆图纸生成器完整图文教程：图片转图纸、参数调整、色板选择、导出下载、手动编辑，一步步教学。">
 <meta property="og:url" content="https://www.weiyingjun.top/pindou/jc.html">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="实用资源整理站">
@@ -19,7 +19,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  line-height: 1.6;
+  line-height: 1.7;
   color: #111827;
   background: radial-gradient(circle at top, #fdf2f8 0, #fafbfe 40%, #f3f4f6 100%);
   min-height: 100vh;
@@ -34,32 +34,49 @@ body {
 }
 .back-link svg { width: 16px; height: 16px; }
 .back-link:hover { background: #fff; color: #db2777; box-shadow: 0 6px 14px rgba(236,72,153,.25); transform: translateY(-1px); }
-.card { background: rgba(255,255,255,.98); border-radius: 20px; padding: 28px 28px 24px; box-shadow: 0 20px 40px rgba(15,23,42,.12), 0 0 0 1px rgba(148,163,184,.18); backdrop-filter: blur(10px); }
+.card { background: rgba(255,255,255,.98); border-radius: 20px; padding: 28px; box-shadow: 0 20px 40px rgba(15,23,42,.12), 0 0 0 1px rgba(148,163,184,.18); }
 .card + .card { margin-top: 18px; }
-.card--title .header { margin-bottom: 0; }
-.header { margin-bottom: 24px; }
-.headline { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 999px; background: #fce7f3; color: #be185d; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+.headline { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 999px; background: #fce7f3; color: #be185d; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
 .headline-dot { width: 6px; height: 6px; border-radius: 999px; background: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,.25); }
 .title { font-size: 28px; font-weight: 700; letter-spacing: .02em; color: #0f172a; margin-bottom: 8px; }
 .title span { background: linear-gradient(120deg, #ec4899, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .subtitle { font-size: 14px; color: #6b7280; }
 .notice { margin-top: 16px; padding: 12px 16px; border-radius: 12px; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; font-size: 13px; line-height: 1.8; }
-.video-list { margin-top: 24px; display: flex; flex-direction: column; gap: 20px; }
-.video-item { border-radius: 18px; padding: 18px 18px 16px; background: radial-gradient(circle at top left, #fdf2f8, #f9fafb 55%, #f3e8ff 100%); box-shadow: 0 16px 35px rgba(15,23,42,.18), 0 0 0 1px rgba(148,163,184,.2); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr); gap: 20px; align-items: center; }
-.video-info { position: relative; }
-.video-kicker { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(252,231,243,.9); color: #be185d; font-size: 11px; font-weight: 600; margin-bottom: 10px; }
-.video-kicker-dot { width: 6px; height: 6px; border-radius: 999px; background: #ec4899; }
-.video-title { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
-.video-sub { font-size: 13px; color: #4b5563; margin-bottom: 10px; }
-.video-wrap { position: relative; }
-.video-inner { position: relative; border-radius: 16px; overflow: hidden; background: #020617; padding-top: 56.25%; }
-.video-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; outline: none; border-radius: 16px; }
+.notice a { color: #be185d; }
+
+/* 目录 */
+.toc { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px; }
+.toc a { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; color: #334155; text-decoration: none; font-size: 13px; transition: all .2s; }
+.toc a:hover { border-color: #f9a8d4; color: #be185d; background: #fff; }
+.toc .n { display: inline-flex; width: 22px; height: 22px; align-items: center; justify-content: center; border-radius: 999px; background: #fce7f3; color: #be185d; font-size: 12px; font-weight: 700; flex: 0 0 auto; }
+
+/* 教程块 */
+.sec { scroll-margin-top: 16px; }
+.sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.sec-num { display: inline-flex; width: 34px; height: 34px; align-items: center; justify-content: center; border-radius: 12px; background: linear-gradient(135deg,#ec4899,#8b5cf6); color: #fff; font-size: 16px; font-weight: 700; flex: 0 0 auto; }
+.sec-head h2 { font-size: 20px; color: #0f172a; }
+.sec-desc { font-size: 13.5px; color: #6b7280; margin-bottom: 18px; }
+.sec-body { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); gap: 22px; align-items: start; }
+.figure { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; }
+.figure svg { width: 100%; height: auto; display: block; }
+.figure-cap { margin-top: 10px; font-size: 12px; color: #94a3b8; text-align: center; }
+.steps { list-style: none; counter-reset: st; }
+.steps li { position: relative; padding: 0 0 14px 34px; font-size: 14px; color: #374151; }
+.steps li::before {
+  counter-increment: st; content: counter(st);
+  position: absolute; left: 0; top: 2px; width: 24px; height: 24px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; background: #fce7f3; color: #be185d; font-size: 12px; font-weight: 700;
+}
+.steps li b { color: #be185d; }
+.steps li .uib { display: inline-block; padding: 0 6px; border-radius: 6px; background: #fce7f3; color: #be185d; font-size: 12px; font-weight: 600; }
+.tip { margin: 2px 0 0 34px; padding: 8px 12px; border-radius: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 12.5px; }
+.warn { margin: 2px 0 0 34px; padding: 8px 12px; border-radius: 10px; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; font-size: 12.5px; }
+@media (max-width: 900px) { body { padding: 14px; } .card { padding: 20px; border-radius: 18px; } .title { font-size: 22px; } .sec-body { grid-template-columns: minmax(0,1fr); gap: 14px; } }
 footer.site-footer { max-width: 1100px; margin: 32px auto 0; padding-top: 24px; border-top: 1px solid #f1f5f9; text-align: center; }
 footer .foot-nav { line-height: 2; font-size: 12px; color: #94a3b8; }
 footer .foot-nav a { color: #94a3b8; text-decoration: none; margin: 0 8px; white-space: nowrap; }
 footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
-@media (max-width: 900px) { body { padding: 14px; } .card { padding: 22px 20px 20px; border-radius: 18px; } .title { font-size: 22px; } .video-item { grid-template-columns: minmax(0,1fr); gap: 14px; } }
-@media (max-width: 480px) { .title { font-size: 20px; } .subtitle { font-size: 13px; } .video-inner { padding-top: 75%; } }
 </style>
 </head>
 <body>
@@ -67,101 +84,476 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 
   <a href="/pindou/" class="back-link">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M19 12H5"></path>
-      <path d="M12 19l-7-7 7-7"></path>
+      <path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path>
     </svg>
     返回生成器
   </a>
 
-  <div class="card card--title">
-    <header class="header">
-      <div class="headline"><span class="headline-dot"></span>视频教程中心 · 拼豆图纸进阶使用</div>
-      <h1 class="title">快速掌握 <span>核心功能操作</span></h1>
-      <p class="subtitle">以下是拼豆图纸生成器的重点功能视频教程，建议按照顺序观看：从图片尺寸调整，到颜色合并、显示色号，再到查找替换颜色。</p>
+  <div class="card">
+    <header>
+      <div class="headline"><span class="headline-dot"></span>拼豆图纸生成器 · 图文使用教程</div>
+      <h1 class="title">从图片到 <span>拼豆图纸</span> 全流程</h1>
+      <p class="subtitle">上传一张图片，几步就能生成可以直接照着拼的图纸。本教程用文字和示意图覆盖全部功能：参数调节、色板选择、下载导出、采购清单、导入图纸与手动编辑。</p>
     </header>
-    <div class="notice">
-      📌 教程视频正在录制中，视频陆续上传至本页。购买卡密解锁生成功能，即可边看教程边制作。<a href="https://www.weiyingjun.top/pindou/" style="color:#be185d;">前往生成器 →</a>
+    <nav class="toc">
+      <a href="#s1"><span class="n">1</span>快速上手全流程</a>
+      <a href="#s2"><span class="n">2</span>准备图片</a>
+      <a href="#s3"><span class="n">3</span>解锁与卡密</a>
+      <a href="#s4"><span class="n">4</span>横向方格数量</a>
+      <a href="#s5"><span class="n">5</span>颜色合并阈值</a>
+      <a href="#s6"><span class="n">6</span>处理模式</a>
+      <a href="#s7"><span class="n">7</span>品牌色板</a>
+      <a href="#s8"><span class="n">8</span>显示选项</a>
+      <a href="#s9"><span class="n">9</span>实时预览</a>
+      <a href="#s10"><span class="n">10</span>下载图纸</a>
+      <a href="#s11"><span class="n">11</span>采购清单</a>
+      <a href="#s12"><span class="n">12</span>导入图纸</a>
+      <a href="#s13"><span class="n">13</span>手动编辑</a>
+      <a href="#s14"><span class="n">14</span>常见问题</a>
+    </nav>
+  </div>
+
+  <!-- 1 快速上手 -->
+  <div class="card sec" id="s1">
+    <div class="sec-head"><span class="sec-num">1</span><h2>快速上手：全流程一览</h2></div>
+    <p class="sec-desc">整个使用过程只有 6 步，全程在浏览器本地完成，图片不会上传到任何服务器。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 120" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#c084fc"/></marker></defs>
+          <g font-size="12" font-weight="700" fill="#fff" text-anchor="middle">
+            <rect x="6" y="40" width="70" height="40" rx="10" fill="#ec4899"/><text x="41" y="62">上传图片</text>
+            <rect x="102" y="40" width="70" height="40" rx="10" fill="#ec4899"/><text x="137" y="62">解锁卡密</text>
+            <rect x="198" y="40" width="70" height="40" rx="10" fill="#8b5cf6"/><text x="233" y="62">调参数</text>
+            <rect x="294" y="40" width="70" height="40" rx="10" fill="#8b5cf6"/><text x="329" y="62">生成图纸</text>
+            <rect x="390" y="40" width="70" height="40" rx="10" fill="#db2777"/><text x="425" y="62">下载/清单</text>
+          </g>
+          <g stroke="#c084fc" stroke-width="2" marker-end="url(#arr)">
+            <line x1="78" y1="60" x2="100" y2="60"/><line x1="174" y1="60" x2="196" y2="60"/>
+            <line x1="270" y1="60" x2="292" y2="60"/><line x1="366" y1="60" x2="388" y2="60"/>
+          </g>
+          <text x="240" y="30" text-anchor="middle" fill="#94a3b8" font-size="11">全部在本地浏览器完成，隐私安全</text>
+          <text x="240" y="110" text-anchor="middle" fill="#c084fc" font-size="11">本地运算 · 图片不上传</text>
+        </svg>
+        <div class="figure-cap">图 1-1 使用流程总览</div>
+      </div>
+      <ol class="steps">
+        <li>进入 <b>拼豆图纸生成器</b> 页面，点击左侧「<span class="uib">上传图片</span>」区域，选择或拖入一张 JPG / PNG / WebP / BMP 图片。</li>
+        <li>如未解锁，在顶部输入卡密点击「<span class="uib">解锁</span>」；未购买可到闲鱼搜索「拼豆图纸生成器」获取。</li>
+        <li>在左侧「参数设置」里调整 <span class="uib">横向方格数量</span>、<span class="uib">颜色合并阈值</span>、处理模式和品牌色板。</li>
+        <li>点击「<span class="uib">✨ 生成图纸</span>」，右侧画布立即出现图纸预览。</li>
+        <li>点「<span class="uib">📥 下载图纸</span>」导出 PNG，或「<span class="uib">🛒 导出采购清单</span>」导出需购买的色号与数量。</li>
+        <li>照着图纸和清单购买珠子、开始拼豆。</li>
+      </ol>
     </div>
   </div>
 
-  <main class="video-list">
-
-    <section class="video-item" aria-label="调整图片尺寸减少杂色教程">
-      <div class="video-info">
-        <h2 class="video-title">调整图片尺寸大小教程</h2>
-        <p class="video-sub">调整前把原图没有用的背景裁剪掉，确保主体尺寸精准，生成出的图纸更干净。</p>
+  <!-- 2 准备图片 -->
+  <div class="card sec" id="s2">
+    <div class="sec-head"><span class="sec-num">2</span><h2>准备图片</h2></div>
+    <p class="sec-desc">原图质量决定图纸效果，先裁剪掉多余背景再生成，图纸会更干净。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <text x="120" y="18" text-anchor="middle" fill="#64748b">✂️ 裁剪前</text>
+          <rect x="30" y="28" width="180" height="120" rx="10" fill="#fde68a" stroke="#f59e0b" stroke-dasharray="5 4"/>
+          <rect x="70" y="50" width="80" height="80" rx="6" fill="#34d399" stroke="#059669"/>
+          <text x="110" y="98" text-anchor="middle" fill="#064e3b" font-size="12">图案</text>
+          <text x="120" y="130" text-anchor="middle" fill="#b45309" font-size="10">大块背景会占格子</text>
+          <path d="M226 88 H254" stroke="#c084fc" stroke-width="3" marker-end="url(#arrow2)"/>
+          <text x="340" y="18" text-anchor="middle" fill="#64748b">✅ 裁剪后</text>
+          <rect x="270" y="28" width="180" height="120" rx="10" fill="#fde68a" stroke="#f59e0b"/>
+          <rect x="300" y="48" width="90" height="80" rx="6" fill="#34d399" stroke="#059669"/>
+          <text x="345" y="100" text-anchor="middle" fill="#064e3b" font-size="12">图案充满画面</text>
+          <defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#c084fc"/></marker></defs>
+        </svg>
+        <div class="figure-cap">图 2-1 裁剪背景，让主体更突出</div>
       </div>
-      <div class="video-wrap">
-        <div class="video-inner">
-          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
-            <source src="/pindou/videos/tutorial-size.mp4" type="video/mp4">
-            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
-          </video>
+      <ol class="steps">
+        <li>用手机或电脑自带的看图工具，把图片四周没有用的空白、背景裁剪掉。</li>
+        <li>尽量让<b>主体占满画面</b>，四周留白越少越好。</li>
+        <li>图片像素越清晰越好，不要用被严重放大、模糊的马赛克图。</li>
+      </ol>
+      <div class="tip">提示：裁剪后主体更占画面，同样的格子数量下，图案细节更多、更清楚。</div>
+    </div>
+  </div>
+
+  <!-- 3 解锁与卡密 -->
+  <div class="card sec" id="s3">
+    <div class="sec-head"><span class="sec-num">3</span><h2>解锁与卡密</h2></div>
+    <p class="sec-desc">生成功能需要卡密解锁。卡密在闲鱼购买，支持 1 天 / 7 天 / 永久三种。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 120" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <rect x="10" y="20" width="460" height="90" rx="14" fill="#fff" stroke="#fbcfe8"/>
+          <text x="28" y="46" fill="#9d174d" font-size="12" font-weight="700">🔒 生成图纸需要解锁</text>
+          <text x="28" y="66" fill="#94a3b8" font-size="10.5">购买卡密可前往闲鱼搜索「拼豆图纸生成器」</text>
+          <rect x="28" y="76" width="210" height="26" rx="7" fill="#fff" stroke="#f9a8d4"/>
+          <text x="40" y="92" fill="#94a3b8" font-size="10">输入卡密（14位）</text>
+          <rect x="248" y="76" width="70" height="26" rx="7" fill="#ec4899"/>
+          <text x="283" y="92" fill="#fff" font-size="11" text-anchor="middle">解锁</text>
+          <text x="330" y="92" fill="#059669" font-size="11">✅ 已解锁 · 有效期至 2026-08-14 09:37</text>
+        </svg>
+        <div class="figure-cap">图 3-1 顶部解锁栏</div>
+      </div>
+      <ol class="steps">
+        <li>在页面顶部输入框粘贴卡密（不区分大小写），点击「<span class="uib">解锁</span>」。</li>
+        <li>解锁成功后会显示<span class="uib">有效期</span>：1 天卡 / 7 天卡按自然时长计算，永久卡显示「永久使用」。</li>
+        <li>一个卡密<b>绑定一台设备</b>，换设备需重新购买；到期后自动失效，需再购买新卡。</li>
+      </ol>
+      <div class="warn">注意：有效期以服务器时间为准，修改电脑系统时间无法延长卡密有效期。</div>
+    </div>
+  </div>
+
+  <!-- 4 横向方格数量 -->
+  <div class="card sec" id="s4">
+    <div class="sec-head"><span class="sec-num">4</span><h2>横向方格数量</h2></div>
+    <p class="sec-desc">控制图纸精细度的核心参数，默认 50，范围 10 - 300。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 120" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <text x="20" y="30" fill="#475569" font-size="12">横向方格数量</text>
+          <text x="460" y="30" text-anchor="end" fill="#db2777" font-size="15" font-weight="700">50</text>
+          <rect x="20" y="44" width="440" height="6" rx="3" fill="#fce7f3"/>
+          <rect x="20" y="44" width="220" height="6" rx="3" fill="#ec4899"/>
+          <circle cx="240" cy="47" r="11" fill="#fff" stroke="#ec4899" stroke-width="3"/>
+          <g>
+            <rect x="30" y="72" width="40" height="40" rx="4" fill="#fbcfe8"/>
+            <rect x="76" y="72" width="40" height="40" rx="4" fill="#f9a8d4"/>
+            <rect x="122" y="72" width="40" height="40" rx="4" fill="#f472b6"/>
+            <rect x="168" y="72" width="40" height="40" rx="4" fill="#ec4899"/>
+            <text x="240" y="90" text-anchor="middle" fill="#94a3b8">格子越多</text>
+            <text x="240" y="106" text-anchor="middle" fill="#94a3b8">细节越丰富、珠子越多</text>
+            <rect x="380" y="72" width="80" height="40" rx="4" fill="#e2e8f0"/>
+            <text x="420" y="95" text-anchor="middle" fill="#64748b" font-size="10">预览示意</text>
+          </g>
+        </svg>
+        <div class="figure-cap">图 4-1 横向方格数量滑块</div>
+      </div>
+      <ol class="steps">
+        <li>拖动「<span class="uib">横向方格数量</span>」滑块，实时改变图纸格子数（已上传图片时预览自动刷新）。</li>
+        <li>数值越大，图案越精细，但<b>需要的豆子越多、拼起来越耗时</b>。</li>
+        <li>数值越小，图案越粗犷、用豆越少。人物头像建议 50 - 80，风景图案建议 60 - 120。</li>
+      </ol>
+      <div class="tip">提示：生成后仍可拖动滑条即时看到效果，满意后再下载。</div>
+    </div>
+  </div>
+
+  <!-- 5 颜色合并阈值 -->
+  <div class="card sec" id="s5">
+    <div class="sec-head"><span class="sec-num">5</span><h2>颜色合并阈值</h2></div>
+    <p class="sec-desc">控制杂色多少的关键参数，默认 30，范围 0 - 100。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 130" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <text x="20" y="28" fill="#475569" font-size="12">颜色合并阈值</text>
+          <text x="460" y="28" text-anchor="end" fill="#db2777" font-size="15" font-weight="700">30</text>
+          <rect x="20" y="42" width="440" height="6" rx="3" fill="#fce7f3"/>
+          <rect x="20" y="42" width="330" height="6" rx="3" fill="#ec4899"/>
+          <circle cx="350" cy="45" r="11" fill="#fff" stroke="#ec4899" stroke-width="3"/>
+          <g transform="translate(20,66)">
+            <text x="0" y="0" fill="#64748b" font-size="10.5">数值大 → 相近色合并多、杂色少</text>
+            <rect x="0" y="10" width="200" height="36" rx="6" fill="#fee2e2" stroke="#f87171"/>
+            <rect x="10" y="18" width="14" height="14" fill="#f87171"/><rect x="28" y="18" width="14" height="14" fill="#fb7185"/>
+            <rect x="46" y="18" width="14" height="14" fill="#f87171"/><rect x="64" y="18" width="14" height="14" fill="#fb7185"/>
+            <rect x="82" y="18" width="14" height="14" fill="#f87171"/><rect x="100" y="18" width="14" height="14" fill="#f87171"/>
+            <rect x="118" y="18" width="14" height="14" fill="#fb7185"/><rect x="136" y="18" width="14" height="14" fill="#f87171"/>
+            <text x="150" y="30" fill="#b91c1c" font-size="10">杂色多</text>
+            <rect x="250" y="10" width="200" height="36" rx="6" fill="#dcfce7" stroke="#4ade80"/>
+            <rect x="260" y="18" width="14" height="14" fill="#f87171"/><rect x="278" y="18" width="14" height="14" fill="#f87171"/>
+            <rect x="296" y="18" width="14" height="14" fill="#f87171"/><rect x="314" y="18" width="14" height="14" fill="#f87171"/>
+            <rect x="332" y="18" width="14" height="14" fill="#f87171"/><rect x="350" y="18" width="14" height="14" fill="#f87171"/>
+            <rect x="368" y="18" width="14" height="14" fill="#f87171"/>
+            <text x="420" y="30" text-anchor="end" fill="#15803d" font-size="10">颜色统一</text>
+          </g>
+        </svg>
+        <div class="figure-cap">图 5-1 颜色合并阈值示例</div>
+      </div>
+      <ol class="steps">
+        <li>默认 30，一般<b>无需调整</b>；图纸杂色偏多时适当调大（如 40 - 60）。</li>
+        <li>数值越大，相近颜色合并越多，画面越干净，但会丢失细微层次。</li>
+        <li>若想要更多细节和层次，可略微调小。</li>
+      </ol>
+      <div class="tip">提示：调完滑条预览会实时刷新，找到杂色最少的点即可。</div>
+    </div>
+  </div>
+
+  <!-- 6 处理模式 -->
+  <div class="card sec" id="s6">
+    <div class="sec-head"><span class="sec-num">6</span><h2>处理模式</h2></div>
+    <p class="sec-desc">5 种模式对应不同素材，选择后预览立即更新。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <g>
+            <rect x="20" y="16" width="120" height="34" rx="999" fill="#ec4899"/><text x="80" y="37" text-anchor="middle" fill="#fff" font-size="12">卡通（主色）</text>
+            <rect x="148" y="16" width="110" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="203" y="37" text-anchor="middle" fill="#475569" font-size="12">真实（平均）</text>
+            <rect x="266" y="16" width="130" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="331" y="37" text-anchor="middle" fill="#475569" font-size="12">抖动（误差扩散）</text>
+            <rect x="20" y="58" width="130" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="85" y="79" text-anchor="middle" fill="#475569" font-size="12">平滑（强化合并）</text>
+            <rect x="158" y="58" width="150" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="233" y="79" text-anchor="middle" fill="#475569" font-size="12">调色板映射</text>
+          </g>
+          <rect x="20" y="104" width="440" height="36" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+          <text x="240" y="126" text-anchor="middle" fill="#94a3b8" font-size="11">素材类型：卡通动漫 / 照片 / 像素画 / 渐变图 / 剪影</text>
+        </svg>
+        <div class="figure-cap">图 6-1 处理模式选择</div>
+      </div>
+      <ol class="steps">
+        <li><b>卡通（主色）</b>：适合动漫、表情包等色块分明的图，默认推荐。</li>
+        <li><b>真实（平均）</b>：取每格平均色，适合照片、风景。</li>
+        <li><b>抖动（误差扩散）</b>：用相邻色混合模拟渐变色，适合渐变、皮肤质感。</li>
+        <li><b>平滑（强化合并）</b>：更强的颜色合并，画面最干净。</li>
+        <li><b>调色板映射</b>：纯色板最近色映射，颜色最接近原图。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 7 品牌色板 -->
+  <div class="card sec" id="s7">
+    <div class="sec-head"><span class="sec-num">7</span><h2>品牌色板</h2></div>
+    <p class="sec-desc">内置五大品牌共 291 色，生成时自动匹配最接近的色号。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 120" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <g>
+            <rect x="20" y="20" width="80" height="34" rx="999" fill="#db2777"/><text x="60" y="41" text-anchor="middle" fill="#fff" font-size="12">MARD</text>
+            <rect x="106" y="20" width="80" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="146" y="41" text-anchor="middle" fill="#475569" font-size="12">COCO</text>
+            <rect x="192" y="20" width="80" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="232" y="41" text-anchor="middle" fill="#475569" font-size="12">漫漫</text>
+            <rect x="278" y="20" width="80" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="318" y="41" text-anchor="middle" fill="#475569" font-size="12">盼盼</text>
+            <rect x="364" y="20" width="96" height="34" rx="999" fill="#fff" stroke="#e2e8f0"/><text x="412" y="41" text-anchor="middle" fill="#475569" font-size="12">咪小窝</text>
+          </g>
+          <rect x="20" y="70" width="440" height="36" rx="8" fill="#fdf2f8" stroke="#fbcfe8"/>
+          <text x="240" y="91" text-anchor="middle" fill="#9d174d" font-size="11.5">每个品牌 291 色，色号各不相同，按你手头的豆子品牌选择</text>
+        </svg>
+        <div class="figure-cap">图 7-1 品牌色板切换</div>
+      </div>
+      <ol class="steps">
+        <li>点击对应品牌按钮切换色板（MARD / COCO / 漫漫 / 盼盼 / 咪小窝）。</li>
+        <li>生成时自动把每个格子匹配到该品牌<b>最接近的色号</b>，格内显示色号（如 L01）。</li>
+        <li>选择和你手头珠子品牌一致的色板，采购清单才准确。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 8 显示选项 -->
+  <div class="card sec" id="s8">
+    <div class="sec-head"><span class="sec-num">8</span><h2>显示选项：色号 / 网格线 / 去除背景</h2></div>
+    <p class="sec-desc">三个开关控制图纸预览的显示方式，互不影响生成结果。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 130" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <g>
+            <rect x="20" y="20" width="120" height="30" rx="8" fill="#fce7f3" stroke="#f9a8d4"/><text x="80" y="39" text-anchor="middle" fill="#be185d" font-size="11.5">🎨 显示色号</text>
+            <rect x="150" y="20" width="110" height="30" rx="8" fill="#fce7f3" stroke="#f9a8d4"/><text x="205" y="39" text-anchor="middle" fill="#be185d" font-size="11.5">▦ 网格线</text>
+            <rect x="270" y="20" width="120" height="30" rx="8" fill="#fce7f3" stroke="#f9a8d4"/><text x="330" y="39" text-anchor="middle" fill="#be185d" font-size="11.5">🧽 去除背景</text>
+          </g>
+          <g transform="translate(20,70)">
+            <rect x="0" y="0" width="16" height="16" fill="#fca5a5"/><text x="20" y="13" fill="#b91c1c" font-size="10">L01</text>
+            <rect x="52" y="0" width="16" height="16" fill="#fbcfe8"/><text x="72" y="13" fill="#be185d" font-size="10">A07</text>
+            <rect x="104" y="0" width="16" height="16" fill="#bfdbfe"/><text x="124" y="13" fill="#1d4ed8" font-size="10">C01</text>
+            <text x="150" y="13" fill="#94a3b8" font-size="10.5">格内显示色号，方便对照取豆</text>
+          </g>
+        </svg>
+        <div class="figure-cap">图 8-1 显示选项开关</div>
+      </div>
+      <ol class="steps">
+        <li><b>显示色号</b>：在图纸格子里显示色号（如 L01）。</li>
+        <li><b>网格线</b>：显示格子分隔线，更清楚看到每一格。</li>
+        <li><b>去除背景</b>：自动把纯白背景识别为空白格（不占珠子）。想保留白底细节时关掉。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 9 实时预览 -->
+  <div class="card sec" id="s9">
+    <div class="sec-head"><span class="sec-num">9</span><h2>实时预览</h2></div>
+    <p class="sec-desc">已上传图片时，拖动参数立即刷新预览，无需反复点「生成图纸」。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 110" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <rect x="20" y="18" width="440" height="80" rx="12" fill="#fff" stroke="#e2e8f0"/>
+          <text x="40" y="42" fill="#475569" font-size="12">横向方格数量</text>
+          <rect x="40" y="54" width="260" height="6" rx="3" fill="#fce7f3"/>
+          <rect x="40" y="54" width="150" height="6" rx="3" fill="#ec4899"/>
+          <circle cx="190" cy="57" r="9" fill="#fff" stroke="#ec4899" stroke-width="3"/>
+          <text x="330" y="62" fill="#db2777" font-size="14" font-weight="700">⚡ 实时刷新</text>
+          <text x="40" y="86" fill="#94a3b8" font-size="10.5">拖动即重新生成预览 · 无需点击生成</text>
+        </svg>
+        <div class="figure-cap">图 9-1 实时预览</div>
+      </div>
+      <ol class="steps">
+        <li>拖动「横向方格数量」「颜色合并阈值」滑条，或切换处理模式 / 品牌，预览自动更新。</li>
+        <li>找到满意的效果后，再点「下载图纸」导出。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 10 下载图纸 -->
+  <div class="card sec" id="s10">
+    <div class="sec-head"><span class="sec-num">10</span><h2>下载图纸与导出设置</h2></div>
+    <p class="sec-desc">点击「📥 下载图纸」弹出导出设置，可按需勾选，导出高清 PNG。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <rect x="60" y="10" width="360" height="220" rx="14" fill="#fff" stroke="#e2e8f0"/>
+          <text x="80" y="36" fill="#0f172a" font-size="13" font-weight="700">下载图纸设置</text>
+          <g font-size="11">
+            <rect x="80" y="48" width="14" height="14" rx="3" fill="#ec4899"/><text x="102" y="60" fill="#334155">显示网格线</text>
+            <text x="240" y="60" fill="#94a3b8" font-size="10">间隔 1 格 · 颜色 ■</text>
+            <rect x="80" y="72" width="14" height="14" rx="3" fill="#fff" stroke="#e2e8f0"/><text x="102" y="84" fill="#334155">显示坐标数字</text>
+            <rect x="80" y="96" width="14" height="14" rx="3" fill="#fff" stroke="#e2e8f0"/><text x="102" y="108" fill="#334155">隐藏格内色号</text>
+            <rect x="80" y="120" width="14" height="14" rx="3" fill="#ec4899"/><text x="102" y="132" fill="#334155">包含色号统计</text>
+            <rect x="80" y="144" width="14" height="14" rx="3" fill="#fff" stroke="#e2e8f0"/><text x="102" y="156" fill="#334155">同时导出源数据 CSV</text>
+            <rect x="80" y="168" width="14" height="14" rx="3" fill="#fff" stroke="#e2e8f0"/><text x="102" y="180" fill="#334155">隐藏水印</text>
+            <rect x="80" y="194" width="320" height="26" rx="8" fill="#ec4899"/><text x="240" y="211" text-anchor="middle" fill="#fff" font-size="12">下载图纸</text>
+          </g>
+        </svg>
+        <div class="figure-cap">图 10-1 下载设置弹窗</div>
+      </div>
+      <ol class="steps">
+        <li>「<b>显示网格线</b>」：图纸每格有分隔线；下方可设置<b>间隔</b>（每 N 格一条深色线）和<b>颜色</b>。</li>
+        <li>「<b>显示坐标数字</b>」：在图纸上、左加行列数字，方便定位（适合大图）。</li>
+        <li>「<b>隐藏格内色号</b>」：图纸只保留颜色，不出色号（适合纯色图纸）。</li>
+        <li>「<b>包含色号统计</b>」：图下方附每种色号的用量列表。</li>
+        <li>「<b>同时导出源数据 CSV</b>」：额外导出一个 CSV，可用「导入图纸」重新编辑。</li>
+        <li>「<b>隐藏水印</b>」：去掉顶部横幅与底部来源文字。</li>
+      </ol>
+      <div class="warn">注意：图纸下方若有大片同色（如白色背景），缩小看会连成一块，放大后每个格子都是独立小方格，属正常现象。</div>
+    </div>
+  </div>
+
+  <!-- 11 采购清单 -->
+  <div class="card sec" id="s11">
+    <div class="sec-head"><span class="sec-num">11</span><h2>导出采购清单</h2></div>
+    <p class="sec-desc">一键统计每种色号需要多少颗豆，照着买不浪费。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <rect x="80" y="16" width="320" height="176" rx="12" fill="#fff" stroke="#e2e8f0"/>
+          <text x="100" y="42" fill="#0f172a" font-size="13" font-weight="700">拼豆采购清单</text>
+          <text x="100" y="62" fill="#94a3b8" font-size="10">品牌: COCO · 图纸: 50 × 50 格 · 共 1520 颗豆</text>
+          <g font-size="11">
+            <rect x="100" y="78" width="14" height="14" fill="#f87171"/><text x="120" y="90" fill="#be185d" font-weight="700">L01</text><text x="160" y="90" fill="#94a3b8">× 420</text>
+            <rect x="100" y="98" width="14" height="14" fill="#fbcfe8"/><text x="120" y="110" fill="#be185d" font-weight="700">A07</text><text x="160" y="110" fill="#94a3b8">× 305</text>
+            <rect x="100" y="118" width="14" height="14" fill="#bfdbfe"/><text x="120" y="130" fill="#be185d" font-weight="700">C01</text><text x="160" y="130" fill="#94a3b8">× 288</text>
+            <rect x="100" y="138" width="14" height="14" fill="#fde68a"/><text x="120" y="150" fill="#be185d" font-weight="700">E05</text><text x="160" y="150" fill="#94a3b8">× 210</text>
+            <rect x="100" y="158" width="14" height="14" fill="#e9d5ff"/><text x="120" y="170" fill="#be185d" font-weight="700">D09</text><text x="160" y="170" fill="#94a3b8">× 297</text>
+          </g>
+        </svg>
+        <div class="figure-cap">图 11-1 采购清单示例</div>
+      </div>
+      <ol class="steps">
+        <li>点击「<span class="uib">🛒 导出采购清单</span>」，下载一个 txt 文件。</li>
+        <li>文件里列出每个色号及所需数量，按清单购买即可。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 12 导入图纸 -->
+  <div class="card sec" id="s12">
+    <div class="sec-head"><span class="sec-num">12</span><h2>导入图纸（CSV）</h2></div>
+    <p class="sec-desc">用下载时勾选的「源数据 CSV」可重新导入，继续编辑或改品牌色板。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 120" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <rect x="30" y="30" width="90" height="60" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+          <text x="75" y="58" text-anchor="middle" fill="#b45309" font-size="11">CSV 文件</text>
+          <text x="75" y="74" text-anchor="middle" fill="#b45309" font-size="9">PINDOU_SRC v1</text>
+          <path d="M150 60 H190" stroke="#c084fc" stroke-width="3" marker-end="url(#arr3)"/>
+          <rect x="220" y="20" width="120" height="80" rx="10" fill="#fff" stroke="#f9a8d4"/>
+          <g>
+            <rect x="232" y="32" width="18" height="18" fill="#fca5a5"/><rect x="252" y="32" width="18" height="18" fill="#fbcfe8"/>
+            <rect x="232" y="52" width="18" height="18" fill="#fca5a5"/><rect x="252" y="52" width="18" height="18" fill="#fca5a5"/>
+            <rect x="272" y="52" width="18" height="18" fill="#bfdbfe"/><rect x="232" y="72" width="18" height="18" fill="#fff" stroke="#e2e8f0"/>
+          </g>
+          <text x="420" y="60" text-anchor="middle" fill="#be185d" font-size="11" font-weight="700">还原图纸</text>
+          <defs><marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#c084fc"/></marker></defs>
+        </svg>
+        <div class="figure-cap">图 12-1 导入源数据 CSV</div>
+      </div>
+      <ol class="steps">
+        <li>点击「<span class="uib">📤 导入图纸</span>」，选择之前导出的 CSV 文件。</li>
+        <li>图纸自动还原到画布，可继续手动编辑或重新下载。</li>
+        <li>导入后无需再上传图片，直接可下载 / 编辑。</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 13 手动编辑 -->
+  <div class="card sec" id="s13">
+    <div class="sec-head"><span class="sec-num">13</span><h2>手动编辑工具</h2></div>
+    <p class="sec-desc">点「✏️ 编辑」进入编辑模式，用 9 种工具微调图纸配色。</p>
+    <div class="sec-body">
+      <div class="figure">
+        <svg viewBox="0 0 480 230" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei" font-size="11">
+          <g font-size="11">
+            <rect x="20" y="16" width="74" height="28" rx="8" fill="#ec4899"/><text x="57" y="34" text-anchor="middle" fill="#fff">✏️ 画笔</text>
+            <rect x="100" y="16" width="74" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="137" y="34" text-anchor="middle" fill="#be185d">🪣 填充</text>
+            <rect x="180" y="16" width="74" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="217" y="34" text-anchor="middle" fill="#be185d">▭ 矩形</text>
+            <rect x="260" y="16" width="74" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="297" y="34" text-anchor="middle" fill="#be185d">💉 取色</text>
+            <rect x="340" y="16" width="74" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="377" y="34" text-anchor="middle" fill="#be185d">↩ 撤回</text>
+            <rect x="20" y="52" width="88" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="64" y="70" text-anchor="middle" fill="#be185d">↔ 水平镜像</text>
+            <rect x="114" y="52" width="88" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="158" y="70" text-anchor="middle" fill="#be185d">↕ 垂直镜像</text>
+            <rect x="208" y="52" width="100" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="258" y="70" text-anchor="middle" fill="#be185d">🔦 颜色高亮</text>
+            <rect x="314" y="52" width="100" height="28" rx="8" fill="#fff" stroke="#f9a8d4"/><text x="364" y="70" text-anchor="middle" fill="#be185d">🧹 替换杂色</text>
+          </g>
+          <rect x="20" y="96" width="440" height="120" rx="10" fill="#fff" stroke="#e2e8f0"/>
+          <g>
+            <rect x="34" y="110" width="20" height="20" fill="#f87171"/><rect x="56" y="110" width="20" height="20" fill="#fbcfe8"/>
+            <rect x="78" y="110" width="20" height="20" fill="#bfdbfe"/><rect x="100" y="110" width="20" height="20" fill="#fde68a"/>
+            <rect x="122" y="110" width="20" height="20" fill="#e9d5ff"/><rect x="144" y="110" width="20" height="20" fill="#a7f3d0"/>
+            <rect x="34" y="134" width="20" height="20" fill="#fbcfe8" stroke="#ec4899" stroke-width="2.5"/><rect x="56" y="134" width="20" height="20" fill="#fca5a5"/>
+            <rect x="78" y="134" width="20" height="20" fill="#c7d2fe"/><rect x="100" y="134" width="20" height="20" fill="#fed7aa"/>
+            <text x="34" y="192" fill="#94a3b8" font-size="10">色板（291 色）：先选颜色，再在图纸上点 / 拖操作</text>
+            <rect x="160" y="180" width="70" height="22" rx="6" fill="#fff" stroke="#e2e8f0"/><text x="195" y="195" text-anchor="middle" fill="#64748b" font-size="10">画笔大小 1</text>
+            <rect x="240" y="180" width="60" height="22" rx="6" fill="#fff" stroke="#e2e8f0"/><text x="270" y="195" text-anchor="middle" fill="#64748b" font-size="10">方形</text>
+          </g>
+        </svg>
+        <div class="figure-cap">图 13-1 编辑工具栏与色板</div>
+      </div>
+      <ol class="steps">
+        <li>点「<span class="uib">✏️ 编辑</span>」进入编辑模式，下方出现工具栏与 291 色色板。</li>
+        <li><b>画笔</b>：先选一个颜色，再在图纸上点 / 拖动连续涂色；可调<b>画笔大小</b>和<b>方形 / 圆形</b>。</li>
+        <li><b>填充</b>：点击后把同色连通区域整体换成当前颜色。</li>
+        <li><b>矩形</b>：按住拖出一个框，松开填充整块。</li>
+        <li><b>取色</b>：点击图纸格子，自动选中该格颜色作为画笔色。</li>
+        <li><b>撤回</b>：撤销上一步操作（最多 40 步）。</li>
+        <li><b>水平 / 垂直镜像</b>：一键翻转图案方向。</li>
+        <li><b>颜色高亮</b>：高亮当前所选颜色的所有格子，方便检查。</li>
+        <li><b>替换杂色</b>：自动把小面积的孤立杂点统一成周围主色。</li>
+      </ol>
+      <div class="tip">提示：改色后记得重新「下载图纸」，下载的内容为编辑后的效果。</div>
+    </div>
+  </div>
+
+  <!-- 14 FAQ -->
+  <div class="card sec" id="s14">
+    <div class="sec-head"><span class="sec-num">14</span><h2>常见问题</h2></div>
+    <div class="sec-body">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;">
+          <b style="color:#1f2d3d;font-size:14px;">图纸为什么不清晰、放大发糊？</b>
+          <p style="font-size:13px;color:#64748b;margin-top:4px;">原图清晰度或格子数量不足所致。提高「横向方格数量」或换更高清的图片；预览放大用画布上方的 ➕ 按钮。</p>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;">
+          <b style="color:#1f2d3d;font-size:14px;">下载图里有一大片白色/同色块？</b>
+          <p style="font-size:13px;color:#64748b;margin-top:4px;">那是图案本身的大面积同色（如白色背景），放大到 100% 每格都有网格线、是独立小方格，属正常。缩略查看时细线会模糊。</p>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;">
+          <b style="color:#1f2d3d;font-size:14px;">为什么生成按钮提示要先上传图片？</b>
+          <p style="font-size:13px;color:#64748b;margin-top:4px;">「生成图纸」需要图片来源；如果是从 CSV 导入的图纸，直接下载 / 编辑即可，无需再生成。</p>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;">
+          <b style="color:#1f2d3d;font-size:14px;">卡密到期了怎么办？</b>
+          <p style="font-size:13px;color:#64748b;margin-top:4px;">到闲鱼购买新卡密重新解锁。到期判定以服务器时间为准，改系统时间无效。</p>
+        </div>
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;">
+          <b style="color:#1f2d3d;font-size:14px;">一个卡密能在几个设备用？</b>
+          <p style="font-size:13px;color:#64748b;margin-top:4px;">一个卡密仅限一台设备使用，兑换后绑定设备；换设备需重新购买。</p>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section class="video-item" aria-label="颜色合并值功能教程">
-      <div class="video-info">
-        <h2 class="video-title">颜色合并值功能教程</h2>
-        <p class="video-sub">学习颜色合并值作用是什么，默认为 30，数值越大相近颜色合并越多，一般无需调或微调，适当调节杂色少即可。</p>
-      </div>
-      <div class="video-wrap">
-        <div class="video-inner">
-          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
-            <source src="/pindou/videos/tutorial-merge.mp4" type="video/mp4">
-            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
-          </video>
-        </div>
-      </div>
-    </section>
-
-    <section class="video-item" aria-label="显示色号和坐标功能教程">
-      <div class="video-info">
-        <h2 class="video-title">显示色号和坐标功能教程</h2>
-        <p class="video-sub">工具内有「显示色号」「网格线」功能，点击打开即可在图纸格子里显示色号，方便对照采购清单取豆。</p>
-      </div>
-      <div class="video-wrap">
-        <div class="video-inner">
-          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
-            <source src="/pindou/videos/tutorial-code.mp4" type="video/mp4">
-            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
-          </video>
-        </div>
-      </div>
-    </section>
-
-    <section class="video-item" aria-label="查找和替换颜色教程">
-      <div class="video-info">
-        <h2 class="video-title">查找和替换颜色教程</h2>
-        <p class="video-sub">通过色号快速找到图纸中该颜色的位置，可将图内杂色替换为你所需要的颜色，让配色更统一。</p>
-      </div>
-      <div class="video-wrap">
-        <div class="video-inner">
-          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
-            <source src="/pindou/videos/tutorial-replace.mp4" type="video/mp4">
-            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
-          </video>
-        </div>
-      </div>
-    </section>
-
-    <section class="video-item" aria-label="生成像素图尺寸小不清晰的原因">
-      <div class="video-info">
-        <h2 class="video-title">生成像素图尺寸小不清晰的原因</h2>
-        <p class="video-sub">详细讲解为什么有时生成出的图纸尺寸偏小、放大后会模糊不清，包括原图分辨率、格子数量、预览缩放等多方面原因，以及如何正确设置避免问题。</p>
-      </div>
-      <div class="video-wrap">
-        <div class="video-inner">
-          <video class="video-player" controls preload="metadata" playsinline webkit-playsinline>
-            <source src="/pindou/videos/tutorial-quality.mp4" type="video/mp4">
-            您的浏览器不支持视频播放，请尝试更换浏览器或使用电脑端打开。
-          </video>
-        </div>
-      </div>
-    </section>
-
-  </main>
 </div>
 
 <footer class="site-footer">
@@ -175,36 +567,20 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     <a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">日期计算</a>
     <a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">金额大写</a>
     <a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本提取</a>
+    <a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本去重</a>
+    <a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">字符统计</a>
+    <a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">数据脱敏</a>
+    <a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">JSON格式化</a>
+    <a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">MD5批量加密</a>
+    <a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">短链接还原</a>
     <a href="/bank-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">银行卡查询</a>
     <a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">手机号查询</a>
     <a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">身份证查询</a>
-    <a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">短链接还原</a>
-    <a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">JSON格式化</a>
-    <a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">MD5批量加密</a>
     <a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机分组</a>
+    <a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机点名</a>
   </div>
   <div class="copyright">© 2026 实用资源整理站 · 拼豆图纸生成器 · 本地运算，图片不上传</div>
 </footer>
 
-<script>
-(function () {
-  function attachVideoErrorHandlers() {
-    var videos = document.querySelectorAll(".video-player");
-    videos.forEach(function (video) {
-      video.addEventListener("error", function () {
-        var wrapper = this.closest(".video-inner");
-        if (wrapper && !wrapper.querySelector(".v-err")) {
-          var d = document.createElement("div");
-          d.className = "v-err";
-          d.style.cssText = "position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px;background:#020617;";
-          d.innerHTML = '<div style="font-size:30px;margin-bottom:10px;">🎬</div><p style="margin-bottom:6px;">教程视频上传中，敬请期待</p><p style="font-size:12px;opacity:.75;">可先前往生成器体验完整功能</p>';
-          wrapper.appendChild(d);
-        }
-      });
-    });
-  }
-  attachVideoErrorHandlers();
-})();
-</script>
 </body>
 </html>
