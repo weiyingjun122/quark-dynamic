@@ -51,12 +51,12 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/上海滩杀人事件_5人封闭.html</loc>
+        <loc>https://www.weiyingjun.top/search/一座城.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/search/一座城.html</loc>
+        <loc>https://www.weiyingjun.top/search/上海滩杀人事件_5人封闭.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -171,6 +171,11 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://www.weiyingjun.top/search/致命圣诞节5人封闭.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://www.weiyingjun.top/search/惊人院：怪胎公馆.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -182,11 +187,6 @@
     </url>
     <url>
         <loc>https://www.weiyingjun.top/search/精神病院4.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://www.weiyingjun.top/search/致命圣诞节5人封闭.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
