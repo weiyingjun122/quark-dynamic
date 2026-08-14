@@ -42,8 +42,9 @@ export async function onRequest(context) {
 
     try {
         // 取该设备最近一次兑换的许可证
+        // 排序: 先取永久卡(expires_at 为 NULL), 再按其到期时间倒序, 避免过期卡(非NULL且更早)压过永久卡
         const row = await env.DB.prepare(
-            "SELECT plan, redeemed_at, expires_at FROM pindou_cards WHERE status = 'redeemed' AND device_fp = ? ORDER BY expires_at DESC LIMIT 1"
+            "SELECT plan, redeemed_at, expires_at FROM pindou_cards WHERE status = 'redeemed' AND device_fp = ? ORDER BY (expires_at IS NULL) DESC, expires_at DESC LIMIT 1"
         ).bind(device_fp).first();
 
         return jsonRes(200, {
