@@ -7,3 +7,6 @@
 
 __pycache__/
 *.pyc
+
+# WPS/Excel 临时锁文件
+~$*
