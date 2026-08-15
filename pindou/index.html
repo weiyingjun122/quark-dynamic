@@ -82,6 +82,9 @@ header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
 .switch-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
 .switch-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; cursor: pointer; padding: 6px 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; user-select: none; }
 .switch-btn.on { background: #fce7f3; border-color: #f9a8d4; color: #be185d; }
+.preset-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.preset-btn { flex: 1; min-width: 120px; padding: 10px 12px; border: 1px dashed #f9a8d4; border-radius: 8px; background: #fff0f7; color: #be185d; font-size: 13px; font-weight: 600; cursor: pointer; }
+.preset-btn:hover { background: #fce7f3; }
 
 /* 操作按钮 */
 .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
@@ -236,6 +239,14 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 
       <div class="tool-card" style="margin-top:16px;">
         <h2><span class="ico">⚙️</span> 参数设置</h2>
+
+        <div class="param-group">
+          <label>一键预设（人像建议用高清）</label>
+          <div class="preset-row">
+            <button type="button" class="preset-btn" id="btnPresetPortrait">👤 人像模式(高清)</button>
+            <button type="button" class="preset-btn" id="btnPresetDefault">🔄 常规(快速)</button>
+          </div>
+        </div>
 
         <div class="param-group">
           <label>横向方格数量 <span class="val" id="gridVal">50</span></label>
@@ -728,6 +739,27 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     });
   });
 
+  // 一键预设
+  function applyPreset(grid, merge, mode) {
+    state.gridSize = grid;
+    state.mergeThresh = merge;
+    state.mode = mode;
+    $("gridSize").value = grid;
+    $("gridVal").textContent = grid;
+    $("mergeThresh").value = merge;
+    $("mergeVal").textContent = merge;
+    modeBtns.forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-mode") === mode); });
+    liveRegenerate();
+  }
+  $("btnPresetPortrait").addEventListener("click", function () {
+    applyPreset(300, 0, "cartoon");
+    toast("人像模式：格数300 / 合并阈值0 / 卡通");
+  });
+  $("btnPresetDefault").addEventListener("click", function () {
+    applyPreset(50, 30, "cartoon");
+    toast("已恢复常规模式");
+  });
+
   // 品牌选择
   var brandList = $("brandList");
   Object.keys(brandNames).forEach(function (b) {
@@ -753,9 +785,15 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
   $("swBg").addEventListener("click", function () {
     state.autoRemoveBg = !state.autoRemoveBg;
     this.classList.toggle("on", state.autoRemoveBg);
-    if (state.grid && state.autoRemoveBg) {
-      removeBackground(state.grid, state.rows, state.cols);
-      render();
+    if (state.grid) {
+      if (state.sampledGrid) {
+        state.grid = state.sampledGrid.map(function (row) { return row.map(function (c) { return Object.assign({}, c); }); });
+        if (state.autoRemoveBg) removeBackground(state.grid, state.rows, state.cols);
+        render();
+      } else if (state.autoRemoveBg) {
+        removeBackground(state.grid, state.rows, state.cols);
+        render();
+      }
     }
     toast(state.autoRemoveBg ? "已开启去除背景" : "已关闭去除背景");
   });
@@ -901,6 +939,13 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
       mergeRegions(grid, rows, cols, state.mode === "smooth" ? state.mergeThresh + 15 : state.mergeThresh);
     }
 
+    // 保存"未去背景"快照，用于切换开关时恢复
+    state.sampledGrid = grid.map(function (row) {
+      return row.map(function (c) {
+        return { r: c.r, g: c.g, b: c.b, a: c.a, code: c.code, hex: c.hex, external: c.external, count: c.count };
+      });
+    });
+
     // 步骤5：背景移除
     if (state.autoRemoveBg) removeBackground(grid, rows, cols);
 
@@ -953,7 +998,7 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     }
   }
 
-  // 背景移除：从边缘 flood-fill 近白色区域标记为 external
+  // 背景移除：从边缘 flood-fill 近白色/浅中性色区域标记为 external
   function removeBackground(grid, rows, cols) {
     var queue = [];
     var pushed = [];
@@ -967,14 +1012,18 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
     for (var x2 = 0; x2 < cols; x2++) { pushCell(0, x2); pushCell(rows - 1, x2); }
     for (var y2 = 0; y2 < rows; y2++) { pushCell(y2, 0); pushCell(y2, cols - 1); }
     var white = rgbToOklab(255, 255, 255);
-    var whiteD2 = 0.004; // 近白判定
+    function isBackground(lab) {
+      // 足够亮 + 近中性(低彩度) + 离纯白够近 → 视为浅色/白色背景
+      var chroma2 = lab.a * lab.a + lab.b * lab.b;
+      return lab.L > 0.85 && chroma2 < 0.0025 && oklabDist(white, lab) < 0.03;
+    }
     while (queue.length) {
       var cur = queue.pop();
       var cy = cur[0], cx = cur[1];
       var cc = grid[cy][cx];
       if (cc.external) continue;
-      var d = oklabDist(white, rgbToOklab(cc.r, cc.g, cc.b));
-      if (d > whiteD2) continue;
+      var lab = rgbToOklab(cc.r, cc.g, cc.b);
+      if (!isBackground(lab)) continue;
       cc.external = true;
       pushCell(cy - 1, cx); pushCell(cy + 1, cx); pushCell(cy, cx - 1); pushCell(cy, cx + 1);
     }
