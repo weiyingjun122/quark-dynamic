@@ -1336,6 +1336,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(location.search);
     const q = params.get('q');
     if(q){
+        // 带 ?q= 参数时，设置 noindex 防止搜索引擎收录参数页
+        const metaRobots = document.querySelector('meta[name="robots"]');
+        if(metaRobots) metaRobots.setAttribute('content', 'noindex, nofollow');
+        const canonicalLink = document.querySelector('link[rel="canonical"]');
+        if(canonicalLink) canonicalLink.setAttribute('href', location.href);
+        
         document.getElementById('searchInput').value = q;
         // 稍微延迟一下，确保数据加载完成
         setTimeout(() => performSearch(q), 200);
