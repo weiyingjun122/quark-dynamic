@@ -17,7 +17,8 @@ export async function onRequest(context) {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Max-Age": "86400",
         "Vary": "Origin, Accept-Encoding",
-        "Security-Header": "api-request"
+        "Security-Header": "api-request",
+        "X-Robots-Tag": "noindex, nofollow"
     };
 
     // 处理 OPTIONS 预检请求
