@@ -656,7 +656,7 @@ def generate_index_page(generated_pages):
     print(f"✅ 生成索引页: {output_path}")
 
 def generate_sitemap(generated_pages):
-    """生成站点地图"""
+    """生成站点地图 - 包含所有 HTML 文件"""
     sitemap = f'''<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
@@ -670,10 +670,14 @@ def generate_sitemap(generated_pages):
         <priority>0.8</priority>
     </url>'''
     
-    for page in generated_pages:
+    # 扫描 search 目录下所有 HTML 文件，而非仅用 generated_pages
+    search_dir = CONFIG['local']['output_dir']
+    all_html_files = sorted([f for f in os.listdir(search_dir) if f.endswith('.html')])
+    
+    for filename in all_html_files:
         sitemap += f'''
     <url>
-        <loc>{CONFIG['seo']['site_url']}/search/{page['file']}</loc>
+        <loc>{CONFIG['seo']['site_url']}/search/{filename}</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>'''
@@ -681,11 +685,11 @@ def generate_sitemap(generated_pages):
     sitemap += '''
 </urlset>'''
     
-    sitemap_path = os.path.join(CONFIG['local']['output_dir'], "sitemap.xml")
+    sitemap_path = os.path.join(search_dir, "sitemap.xml")
     with open(sitemap_path, 'w', encoding='utf-8') as f:
         f.write(sitemap)
     
-    print(f"✅ 生成站点地图: {sitemap_path}")
+    print(f"✅ 生成站点地图: {sitemap_path} ({len(all_html_files)} 个页面)")
 
 # ==================== 主函数 ====================
 
