@@ -75,6 +75,8 @@ export async function onRequest(context) {
             return await handlePing(corsHeaders);
         case 'request':
             return await handleRequest(request, env, corsHeaders);
+        case 'stats':
+            return await handleStats(request, env, corsHeaders);
         case 'clear-stats':
             return await handleClearStats(request, env, corsHeaders);
         case 'set-stats':
@@ -1809,5 +1811,41 @@ async function handleIpWhitelist(request, env, corsHeaders) {
         message: '访问 /api/ip-whitelist?action=add 将当前IP加入白名单，action=remove 删除白名单IP'
     }), {
         headers: { "Content-Type": "application/json", ...corsHeaders }
+    });
+}
+
+// ============================================================
+// 访问统计接口
+// ============================================================
+async function handleStats(request, env, corsHeaders) {
+    const today = new Date().toISOString().slice(0, 10);
+    const totalKey = 'stats:total';
+    const todayKey = `stats:${today}`;
+
+    if (request.method === 'GET') {
+        const totalStr = await env.SEARCH_STATS.get(totalKey);
+        const todayStr = await env.SEARCH_STATS.get(todayKey);
+        const total = totalStr ? parseInt(totalStr) : 0;
+        const todayCount = todayStr ? parseInt(todayStr) : 0;
+        return new Response(JSON.stringify({ success: true, total, today: todayCount, date: today }), {
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+    }
+
+    if (request.method === 'POST') {
+        const totalStr = await env.SEARCH_STATS.get(totalKey);
+        const todayStr = await env.SEARCH_STATS.get(todayKey);
+        const total = (totalStr ? parseInt(totalStr) : 0) + 1;
+        const todayCount = (todayStr ? parseInt(todayStr) : 0) + 1;
+        await env.SEARCH_STATS.put(totalKey, String(total));
+        await env.SEARCH_STATS.put(todayKey, String(todayCount), { expirationTtl: 86400 * 7 });
+        return new Response(JSON.stringify({ success: true, total, today: todayCount }), {
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+    }
+
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+        status: 405,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
 }
