@@ -27,7 +27,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
 .navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
 .navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
-.navbar-links { display: flex; gap: 24px; }
+.navbar-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
 .navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
 .navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
 @media (max-width: 600px) { .navbar-brand { font-size: 14px; } .navbar-links { gap: 16px; } .navbar-links a { font-size: 14px; } }
@@ -135,7 +135,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 }
 .ppt-helper {
     position: fixed;
-    top: 15px;
+    top: 70px;
     left: 400px;
     z-index: 10000;
     cursor: pointer;
