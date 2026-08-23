@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费在线工具集合_实用工具导航</title>
+<meta name="description" content="提供违禁词检测、IP归属地查询、手机号批量查询、身份证校验、随机分组点名、密码生成、文本处理等多种免费在线工具，浏览器本地运行，隐私安全。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.weiyingjun.top/tools/">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; padding-top: 56px; }
+
+/* 导航栏 */
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
+.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
+.navbar-links { display: flex; gap: 24px; }
+.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
+
+/* 页面内容 */
+.container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+.page-title { text-align: center; margin-bottom: 30px; }
+.page-title h1 { font-size: 24px; color: #333; }
+.page-title p { font-size: 14px; color: #999; margin-top: 8px; }
+
+/* 分类 */
+.category { margin-bottom: 35px; }
+.category-title { font-size: 16px; color: #1e90ff; font-weight: bold; margin-bottom: 15px; padding-left: 10px; border-left: 3px solid #1e90ff; }
+
+/* 工具卡片网格 */
+.tool-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.tool-card { background: #fff; border-radius: 12px; padding: 20px 14px; text-align: center; text-decoration: none; color: #333; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: all 0.2s; border: 1px solid #f0f0f0; }
+.tool-card:hover { transform: translateY(-3px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); border-color: #1e90ff; }
+.tool-card .icon { font-size: 32px; margin-bottom: 10px; }
+.tool-card .name { font-size: 14px; font-weight: bold; color: #333; margin-bottom: 6px; }
+.tool-card .desc { font-size: 12px; color: #999; line-height: 1.4; }
+
+/* 响应式 */
+@media (max-width: 700px) {
+    .tool-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .tool-card { padding: 16px 10px; }
+    .tool-card .icon { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/">首页</a>
+            <a href="/tools/" class="active">工具</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-title">
+        <h1>免费在线工具集合</h1>
+        <p>所有工具浏览器本地运行，不上传任何数据，隐私安全</p>
+    </div>
+
+    <!-- 文本工具 -->
+    <div class="category">
+        <div class="category-title">文本工具</div>
+        <div class="tool-cards">
+            <a href="/check-word/" class="tool-card">
+                <div class="icon">🚫</div>
+                <div class="name">违禁词检测</div>
+                <div class="desc">检测AI、咸鱼、抖音、小红书平台违禁词</div>
+            </a>
+            <a href="/extract/" class="tool-card">
+                <div class="icon">📝</div>
+                <div class="name">文本提取</div>
+                <div class="desc">提取手机号、邮箱、链接、身份证号</div>
+            </a>
+            <a href="/text-unique/" class="tool-card">
+                <div class="icon">🔤</div>
+                <div class="name">文本去重</div>
+                <div class="desc">批量去除重复行</div>
+            </a>
+            <a href="/char-count/" class="tool-card">
+                <div class="icon">🔢</div>
+                <div class="name">字符数统计</div>
+                <div class="desc">实时统计字符、中文、英文、数字</div>
+            </a>
+            <a href="/json-format/" class="tool-card">
+                <div class="icon">📦</div>
+                <div class="name">JSON格式化</div>
+                <div class="desc">美化压缩JSON代码</div>
+            </a>
+            <a href="/md5-batch/" class="tool-card">
+                <div class="icon">🔐</div>
+                <div class="name">MD5批量加密</div>
+                <div class="desc">批量生成MD5哈希值</div>
+            </a>
+            <a href="/short-link/" class="tool-card">
+                <div class="icon">🔗</div>
+                <div class="name">短链接还原</div>
+                <div class="desc">解析短网址真实跳转目标</div>
+            </a>
+            <a href="/data-masking/" class="tool-card">
+                <div class="icon">🛡️</div>
+                <div class="name">数据脱敏</div>
+                <div class="desc">批量手机号、身份证、姓名打码</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 查询工具 -->
+    <div class="category">
+        <div class="category-title">查询工具</div>
+        <div class="tool-cards">
+            <a href="/ip/" class="tool-card">
+                <div class="icon">📍</div>
+                <div class="name">IP归属地查询</div>
+                <div class="desc">自动显示当前访客IP及地理位置</div>
+            </a>
+            <a href="/phone-batch/" class="tool-card">
+                <div class="icon">📱</div>
+                <div class="name">手机号归属地查询</div>
+                <div class="desc">支持500个号码批量查询</div>
+            </a>
+            <a href="/id-card/" class="tool-card">
+                <div class="icon">🪪</div>
+                <div class="name">身份证查询校验</div>
+                <div class="desc">身份证号码合法性校验与归属地查询</div>
+            </a>
+            <a href="/bank-card/" class="tool-card">
+                <div class="icon">💳</div>
+                <div class="name">银行卡BIN查询</div>
+                <div class="desc">查询银行卡开户行与卡类型</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 计算工具 -->
+    <div class="category">
+        <div class="category-title">计算工具</div>
+        <div class="tool-cards">
+            <a href="/age/" class="tool-card">
+                <div class="icon">🎂</div>
+                <div class="name">年龄计算器</div>
+                <div class="desc">计算周岁、虚岁、生肖、星座</div>
+            </a>
+            <a href="/bmi/" class="tool-card">
+                <div class="icon">⚖️</div>
+                <div class="name">BMI计算器</div>
+                <div class="desc">身体质量指数计算与健康评估</div>
+            </a>
+            <a href="/date-calc/" class="tool-card">
+                <div class="icon">📅</div>
+                <div class="name">日期计算器</div>
+                <div class="desc">计算日期间隔与推算日期</div>
+            </a>
+            <a href="/money/" class="tool-card">
+                <div class="icon">💰</div>
+                <div class="name">数字转大写金额</div>
+                <div class="desc">阿拉伯数字转人民币大写</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 实用工具 -->
+    <div class="category">
+        <div class="category-title">实用工具</div>
+        <div class="tool-cards">
+            <a href="/random-group/" class="tool-card">
+                <div class="icon">👥</div>
+                <div class="name">名单随机分组</div>
+                <div class="desc">按人数或按组数一键随机分组</div>
+            </a>
+            <a href="/random-pick/" class="tool-card">
+                <div class="icon">🎲</div>
+                <div class="name">随机点名</div>
+                <div class="desc">支持不重复抽取、点名记录</div>
+            </a>
+            <a href="/password/" class="tool-card">
+                <div class="icon">🔑</div>
+                <div class="name">随机密码生成</div>
+                <div class="desc">生成高强度安全密码</div>
+            </a>
+            <a href="/pindou/" class="tool-card">
+                <div class="icon">🧩</div>
+                <div class="name">拼豆图纸生成</div>
+                <div class="desc">图片转拼豆图纸</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

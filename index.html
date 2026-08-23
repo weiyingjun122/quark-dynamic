@@ -23,6 +23,15 @@
 <style>
 body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; display: flex; flex-direction: column; align-items: center; padding-top: 80px; margin:0; }
 
+/* 导航栏 */
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
+.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
+.navbar-links { display: flex; gap: 24px; }
+.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
+@media (max-width: 600px) { .navbar-brand { font-size: 14px; } .navbar-links { gap: 16px; } .navbar-links a { font-size: 14px; } }
+
 /* logo */
 .logo { text-align: center; margin-bottom: 40px; flex-shrink: 0; }
 .logo img { max-width: 150px; height: auto; display: block; margin: 0 auto; }
@@ -186,6 +195,17 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 </head>
 <body>
 
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/" class="active">首页</a>
+            <a href="/tools/">工具</a>
+        </div>
+    </div>
+</nav>
+
 <!-- PPT助手 - 固定在左上角 -->
 <div class="ppt-helper" onclick="performSearch('PPT模板')">
     <img src="static/ppt.png" alt="PPT助手">
@@ -209,36 +229,6 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <button id="searchBtn">搜索</button>
 </div>
 
-<!-- 自有工具入口 -->
-<style>
-.tool-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; width:100%; max-width:900px; margin:0 auto 20px; }
-.tool-grid a { display:flex; align-items:center; justify-content:center; gap:6px; padding:10px 6px; background:#f0f6ff; color:#1e90ff; border-radius:20px; text-decoration:none; font-size:13px; border:1px solid #d0e3ff; transition:all 0.2s; box-sizing:border-box; white-space:nowrap; }
-.tool-grid a:hover { background:#1e90ff; color:#fff; border-color:#1e90ff; }
-@media (max-width: 600px){ .tool-grid { grid-template-columns:repeat(3,1fr); gap:10px; } }
-@media (max-width: 400px){ .tool-grid { grid-template-columns:repeat(2,1fr); gap:8px; } }
-</style>
-<div class="tool-grid">
-    <a href="/check-word/" target="_blank" rel="noopener">🚫 违禁词检测查询</a>
-    <a href="/ip/" target="_blank" rel="noopener">📍 IP归属地查询</a>
-    <a href="/phone-batch/" target="_blank" rel="noopener">📱 手机号归属地查询</a>
-    <a href="/id-card/" target="_blank" rel="noopener">🪪 身份证查询校验</a>
-    <a href="/random-group/" target="_blank" rel="noopener">👥 名单随机分组</a>
-    <a href="/random-pick/" target="_blank" rel="noopener">🎲 随机点名</a>
-    <a href="/password/" target="_blank" rel="noopener">🔑 随机密码生成</a>
-    <a href="/age/" target="_blank" rel="noopener">🎂 年龄计算器</a>
-    <a href="/bmi/" target="_blank" rel="noopener">⚖️ BMI计算器</a>
-    <a href="/date-calc/" target="_blank" rel="noopener">📅 日期计算器</a>
-    <a href="/money/" target="_blank" rel="noopener">💰 数字转大写</a>
-    <a href="/extract/" target="_blank" rel="noopener">📝 文本提取工具</a>
-    <a href="/text-unique/" target="_blank" rel="noopener">🔤 文本去重工具</a>
-    <a href="/char-count/" target="_blank" rel="noopener">🔢 字符数统计</a>
-    <a href="/data-masking/" target="_blank" rel="noopener">🛡️ 数据脱敏工具</a>
-    <a href="/json-format/" target="_blank" rel="noopener">📦 JSON格式化工具</a>
-    <a href="/md5-batch/" target="_blank" rel="noopener">🔐 MD5批量加密</a>
-    <a href="/short-link/" target="_blank" rel="noopener">🔗 短链接还原</a>
-    <a href="/bank-card/" target="_blank" rel="noopener">💳 银行卡BIN查询</a>
-    <a href="/pindou/" target="_blank" rel="noopener">🧩 拼豆图纸生成</a>
-</div>
 
 <!-- 第一排：今日更新 剧本杀热搜 剧本杀人数 -->
 <div class="hot-row">
@@ -313,28 +303,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
   <p style="font-size:14px;color:#666;line-height:2;margin-bottom:15px;">
     实用资源整理站提供多种免费在线工具，所有工具均在浏览器本地运行，不上传任何数据，隐私安全有保障。
   </p>
-  <ul style="font-size:14px;color:#666;line-height:2.2;list-style:none;padding:0;">
-    <li><a href="/check-word/" style="color:#1e90ff;">违禁词检测工具</a> - 在线检测AI、咸鱼、抖音、小红书平台违禁词</li>
-    <li><a href="/ip/" style="color:#1e90ff;">IP归属地查询</a> - 自动显示当前访客IP及地理位置</li>
-    <li><a href="/phone-batch/" style="color:#1e90ff;">手机号归属地批量查询</a> - 支持500个号码批量查询</li>
-    <li><a href="/id-card/" style="color:#1e90ff;">身份证查询校验</a> - 身份证号码合法性校验与归属地查询</li>
-    <li><a href="/random-group/" style="color:#1e90ff;">名单随机分组</a> - 按人数或按组数一键随机分组</li>
-    <li><a href="/random-pick/" style="color:#1e90ff;">随机点名</a> - 支持不重复抽取、点名记录</li>
-    <li><a href="/age/" style="color:#1e90ff;">年龄计算器</a> - 计算周岁、虚岁、生肖、星座</li>
-    <li><a href="/bmi/" style="color:#1e90ff;">BMI计算器</a> - 身体质量指数计算与健康评估</li>
-    <li><a href="/date-calc/" style="color:#1e90ff;">日期计算器</a> - 计算日期间隔与推算日期</li>
-    <li><a href="/password/" style="color:#1e90ff;">随机密码生成器</a> - 生成高强度安全密码</li>
-    <li><a href="/extract/" style="color:#1e90ff;">文本提取工具</a> - 提取手机号、邮箱、链接、身份证号</li>
-    <li><a href="/text-unique/" style="color:#1e90ff;">文本去重工具</a> - 批量去除重复行</li>
-    <li><a href="/char-count/" style="color:#1e90ff;">字符数统计</a> - 实时统计字符、中文、英文、数字</li>
-    <li><a href="/data-masking/" style="color:#1e90ff;">数据脱敏工具</a> - 批量手机号、身份证、姓名打码</li>
-    <li><a href="/json-format/" style="color:#1e90ff;">JSON格式化工具</a> - 美化压缩JSON代码</li>
-    <li><a href="/md5-batch/" style="color:#1e90ff;">MD5批量加密</a> - 批量生成MD5哈希值</li>
-    <li><a href="/short-link/" style="color:#1e90ff;">短链接还原</a> - 解析短网址真实跳转目标</li>
-    <li><a href="/bank-card/" style="color:#1e90ff;">银行卡BIN查询</a> - 查询银行卡开户行与卡类型</li>
-    <li><a href="/money/" style="color:#1e90ff;">数字转大写金额</a> - 阿拉伯数字转人民币大写</li>
-    <li><a href="/pindou/" style="color:#1e90ff;">拼豆图纸生成器</a> - 图片转拼豆图纸</li>
-  </ul>
+  <p style="font-size:14px;"><a href="/tools/" style="color:#1e90ff;font-weight:bold;">👉 点击查看全部工具</a></p>
   <p style="font-size:13px;color:#999;margin-top:15px;">请启用JavaScript以使用完整功能，包括夸克网盘资源搜索、热搜榜等。</p>
 </div>
 </noscript>
