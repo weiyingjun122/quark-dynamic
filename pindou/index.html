@@ -189,9 +189,26 @@ footer .copyright { margin-top: 10px; color: #94a3b8; font-size: 12px; }
 .edit-sw .esw:hover { transform: scale(1.15); }
 .edit-sw .esw.on { outline: 2px solid #ec4899; outline-offset: 1px; }
 .edit-sw .esw .esw-code { display: none; }
+/* 导航栏 */
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
+.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
+.navbar-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
+body { padding-top: 56px !important; }
 </style>
 </head>
 <body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/">首页</a>
+            <a href="/tools/" class="active">工具</a>
+        </div>
+    </div>
+</nav>
 
 <div class="toast" id="toast"></div>
 
