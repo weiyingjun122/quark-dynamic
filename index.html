@@ -784,65 +784,41 @@ async function performSearch(keyword) {
     // 3. 在本地数据中查找资源
     if (localData.length === 0) await loadData();
 
-    // 匹配逻辑：先检查 search_aliases，再检查 title 和 keywords
-    const item = localData.find(d => {
-        // 如果有 search_aliases，用别名匹配（双向匹配）
+    // 匹配逻辑：先检查 search_aliases，再检查 title 和 keywords（返回所有匹配）
+    const matchedItems = localData.filter(d => {
         if (d.search_aliases && d.search_aliases.length > 0) {
             return d.search_aliases.some(alias => 
                 keyword.toLowerCase().includes(alias.toLowerCase()) ||
                 alias.toLowerCase().includes(keyword.toLowerCase())
             );
         }
-        // 没有别名时，用 title 或 keywords 匹配
         return d.title.toLowerCase().includes(keyword.toLowerCase()) ||
             (d.keywords && d.keywords.some(k => k.toLowerCase().includes(keyword.toLowerCase())));
     });
 
-    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
     const isLoggedIn = !!getStoredAuth();
     let html = '';
 
-    if (item) {
-        // 找到资源 - 需要登录后才能查看
-        // 先检查是否还能查看（已登录用户）
-        if (isLoggedIn) {
-            const auth = getStoredAuth();
-            try {
-                const checkRes = await fetch('/api/auth/check', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${auth.token}`
-                    }
-                });
-                const checkData = await checkRes.json();
-                
-                if (!checkData.allowed) {
-                    // 今日次数已用完
-                    alert(checkData.error || '今天已用过1次了，明天再来吧！');
-                    updateTransferStatus();
-                    modal.style.display = 'none';
-                    return;
-                }
-            } catch (e) {
-                console.warn('检查查看次数失败:', e);
-            }
-        }
+    if (matchedItems.length > 0) {
+        // 找到资源 - 展示标题列表
+        html = `<h3>✅ 找到 ${matchedItems.length} 个相关资源</h3>`;
+        html += `<p style="color:#999;font-size:13px;margin:10px 0;">点击标题查看资源</p>`;
+        html += '<div class="result-list" style="margin:15px 0;">';
 
-        html = `<h3>✅ 找到资源：${highlight(item.title, keyword)}</h3>`;
+        matchedItems.forEach(item => {
+            html += `<div class="result-item" onclick="handleViewResource(this)" 
+                style="padding:12px 15px;margin:8px 0;border:1px solid #e0e0e0;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;"
+                data-id="${item.id}" data-title="${item.title}" data-link="${item.share_link}" data-qrcode="${item.qrcode || ''}">
+                <span style="flex:1;font-size:15px;color:#333;">${highlight(item.title, keyword)}</span>
+                <span style="color:#999;font-size:13px;margin-left:10px;">›</span>
+            </div>`;
+        });
+
+        html += '</div>';
 
         if (!isLoggedIn) {
-            // 未登录：提示登录
-            html += `<p style="color:#666;margin:15px 0;">请先登录后再查看资源</p>
+            html += `<p style="color:#ff6b35;margin:15px 0;">请先登录后点击资源查看详情</p>
                      <button onclick="showAuthModal()" class="btn" style="background:#1e90ff;">🔐 登录/注册</button>`;
-        } else if (isMobile) {
-            // 手机端已登录：显示跳转按钮
-            html += `<p style="color:#666;margin:15px 0;">资源已准备好，请点击下方按钮访问资源</p>
-                     <a href="${item.share_link}" target="_blank" class="btn">打开夸克APP保存</a>`;
-        } else {
-            // 电脑端已登录：显示二维码（需手机扫码）
-            html += `<p style="color:#666;">请使用夸克或微信扫描下方二维码用手机访问资源</p>
-                     <img src="${item.qrcode}" style="width:200px;height:200px;display:block;margin:10px auto;">`;
         }
     } else {
         // 未找到资源
@@ -856,20 +832,8 @@ async function performSearch(keyword) {
     modalBody.innerHTML = html;
     modal.style.display = 'flex';
 
-    // 更新用户面板的剩余次数
-    if (item && isLoggedIn) {
-        updateTransferStatus();
-    }
-
-    // 绑定转存按钮事件（仅当按钮存在时）
-    if (item && isLoggedIn) {
-        document.getElementById('transferBtn').addEventListener('click', function() {
-            handleTransfer(keyword);
-        });
-    }
-
     // 未找到资源时绑定求资源按钮事件
-    if (!item) {
+    if (matchedItems.length === 0) {
         document.getElementById('requestBtn').addEventListener('click', async function() {
             const btn = this;
             if (btn.disabled) return;
@@ -899,6 +863,69 @@ async function performSearch(keyword) {
             btn.textContent = '📮 求资源';
         });
     }
+}
+
+// 点击资源标题时：检查次数 → 扣次 → 展示链接/二维码
+async function handleViewResource(el) {
+    const isLoggedIn = !!getStoredAuth();
+    if (!isLoggedIn) {
+        showAuthModal();
+        return;
+    }
+
+    const auth = getStoredAuth();
+    const resourceId = el.dataset.id;
+    const title = el.dataset.title;
+    const shareLink = el.dataset.link;
+    const qrCode = el.dataset.qrcode;
+
+    // 1. 先检查是否还能查看
+    try {
+        const checkRes = await fetch('/api/auth/check', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.token}`
+            }
+        });
+        const checkData = await checkRes.json();
+        
+        if (!checkData.allowed) {
+            alert(checkData.error || '今天已用过2次了，明天再来吧！');
+            updateTransferStatus();
+            return;
+        }
+    } catch (e) {
+        console.warn('检查查看次数失败:', e);
+    }
+
+    // /api/auth/check 已经扣次了，不需要额外请求
+
+    // 3. 更新剩余次数
+    updateTransferStatus();
+
+    // 4. 展示资源详情
+    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+    let detailHtml = '';
+
+    if (isMobile) {
+        detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
+            <p style="color:#666;margin:15px 0;">请点击下方按钮访问资源</p>
+            <a href="${shareLink}" target="_blank" class="btn">打开夸克APP保存</a>`;
+    } else {
+        if (qrCode) {
+            detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
+                <p style="color:#666;">请使用夸克或微信扫描下方二维码用手机访问资源</p>
+                <img src="${qrCode}" style="width:200px;height:200px;display:block;margin:10px auto;">`;
+        } else {
+            detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
+                <p style="color:#666;margin:15px 0;">资源链接</p>
+                <a href="${shareLink}" target="_blank" class="btn" style="word-break:break-all;">${shareLink}</a>`;
+        }
+    }
+
+    // 在弹窗内展示详情
+    document.getElementById('modalBody').innerHTML = detailHtml;
 }
 
 // 诊断400错误的函数
