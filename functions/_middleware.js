@@ -2,7 +2,8 @@
 // 全局中间件：
 // 1. HTTP -> HTTPS 301 重定向
 // 2. 非 www 域名（weiyingjun.top）301 重定向到 www.weiyingjun.top
-// 3. 为搜索查询页（?q=xxx）添加 noindex 标记
+// 3. /search/xxx 重定向到 /search/xxx.html（避免重复收录）
+// 4. 为搜索查询页（?q=xxx）添加 noindex 标记
 export async function onRequest(context) {
     const url = new URL(context.request.url);
     const host = url.hostname.toLowerCase();
@@ -19,7 +20,14 @@ export async function onRequest(context) {
         return Response.redirect(url.toString(), 301);
     }
 
-    // 3. 搜索查询页添加 noindex
+    // 3. /search/xxx 重定向到 /search/xxx.html（避免重复收录）
+    const pathMatch = url.pathname.match(/^\/search\/([^/]+)$/);
+    if (pathMatch && !url.pathname.endsWith('.html')) {
+        url.pathname = url.pathname + '.html';
+        return Response.redirect(url.toString(), 301);
+    }
+
+    // 4. 搜索查询页添加 noindex
     if (url.searchParams.has('q')) {
         const response = await context.next();
         const newResponse = new Response(response.body, response);
