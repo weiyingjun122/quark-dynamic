@@ -37,6 +37,9 @@ on:
       - 'bank-card/**'
       - 'bmi/**'
       - 'pindou/**'
+      - 'compress-image/**'
+      - 'convert-jpg/**'
+      - 'resize-image/**'
       - 'tools/**'
       - 'functions/**'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
