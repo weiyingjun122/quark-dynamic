@@ -265,15 +265,20 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
           canvas.height = img.naturalHeight;
           var ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0);
-          var mimeType = item.file.type === "image/png" ? "image/png" : "image/jpeg";
-          var q = mimeType === "image/png" ? undefined : quality / 100;
+          var q = quality / 100;
           canvas.toBlob(function (blob) {
             if (!blob) { item.status = "error"; resolve(); return; }
-            item.blob = blob;
-            item.compressedSize = blob.size;
+            // 如果压缩后更大，保留原文件
+            if (blob.size >= item.originalSize) {
+              item.blob = item.file;
+              item.compressedSize = item.originalSize;
+            } else {
+              item.blob = blob;
+              item.compressedSize = blob.size;
+            }
             item.status = "done";
             resolve();
-          }, mimeType, q);
+          }, "image/jpeg", q);
         };
         img.onerror = function () { item.status = "error"; resolve(); };
         img.src = reader.result;
