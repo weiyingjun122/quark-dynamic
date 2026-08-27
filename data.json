@@ -6798,5 +6798,17 @@
     "share_link": "https://pan.quark.cn/s/35f57081c370",
     "qrcode": "static/qrcode/566.png",
     "type": "学习资料"
+  },
+  {
+    "id": "567",
+    "title": "季风吹过橘色的海2苦夏",
+    "keywords": [
+      "剧本杀"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/6b6be0d93ec9",
+    "qrcode": "static/qrcode/567.png",
+    "type": "剧本杀",
+    "count": 6
   }
 ]
