@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>条形码生成器 - 免费在线生成条形码</title>
+<meta name="description" content="免费在线条形码生成器，支持CODE128、EAN13、UPC等多种格式，输入数字即可生成条形码图片，本地生成不上传。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/barcode/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="条形码生成器 - 免费在线生成条形码">
+<meta property="og:description" content="免费在线条形码生成器，支持CODE128、EAN13、UPC等多种格式，本地生成不上传。">
+<meta property="og:url" content="https://www.weiyingjun.top/barcode/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3E码%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"条形码生成器","url":"https://www.weiyingjun.top/barcode/","description":"免费在线条形码生成器，支持CODE128、EAN13、UPC等多种格式，本地生成不上传","applicationCategory":"UtilityApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"browserRequirements":"Requires a modern web browser with JavaScript support"}
+</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #eff6ff 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+  padding-top: 56px;
+}
+.container { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+.header-tags { margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.header-tags .htag { font-size: 12px; color: #2563eb; background: #dbeafe; padding: 4px 12px; border-radius: 999px; }
+.tool-card { background: #fff; border-radius: 16px; padding: 26px; margin-top: 26px; box-shadow: 0 6px 24px rgba(31,45,61,0.08); }
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #dfe3ee; background: #fff; color: #475569;
+  padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all .15s;
+}
+.action-btn:hover { border-color: #2563eb; color: #2563eb; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+label { font-size: 13px; color: #475569; font-weight: 500; }
+input[type="text"], input[type="number"], select {
+  width: 100%; padding: 10px 14px; border: 1px solid #dfe3ee; border-radius: 10px;
+  font-size: 14px; outline: none; transition: border-color .15s; font-family: inherit;
+}
+input[type="text"]:focus, input[type="number"]:focus { border-color: #2563eb; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+.options-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #475569; }
+.chip select { padding: 5px 8px; border: 1px solid #dfe3ee; border-radius: 7px; font-size: 13px; color: #334155; background: #fff; outline: none; }
+.chip select:focus { border-color: #2563eb; }
+.example-box {
+  background: #f8fafc; border: 1px dashed #dfe3ee; border-radius: 10px;
+  padding: 14px; margin: 12px 0; font-size: 13px; color: #64748b; line-height: 1.8;
+}
+.example-box code { background: #e0e7ff; color: #3730a3; padding: 2px 6px; border-radius: 4px; font-family: Consolas, Menlo, monospace; font-size: 12px; }
+.btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+.btn {
+  padding: 12px 26px; font-size: 15px; border: none; border-radius: 10px;
+  background: #2563eb; color: #fff; cursor: pointer; transition: background .2s; white-space: nowrap;
+}
+.btn:hover { background: #1d4ed8; }
+.btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+.result-box { margin-top: 22px; display: none; text-align: center; }
+.result-box svg { max-width: 100%; border: 8px solid #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.1); border-radius: 8px; background: #fff; }
+.download-row { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.mini-btn {
+  border: 1px solid #e2e5ee; background: #fff; color: #475569;
+  padding: 8px 18px; border-radius: 7px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: all .15s;
+}
+.mini-btn:hover { border-color: #2563eb; color: #2563eb; }
+.error-msg { display: none; margin-top: 16px; padding: 12px 14px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 10px; font-size: 14px; }
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #2563eb, #60a5fa); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #bfdbfe, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #f0f6ff);
+  border: 1px solid #e0eaff; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(37,99,235,.10); border-color: #bfdbfe; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #eff6ff, #dbeafe); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+@media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
+.td-step { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px; position: relative; }
+.td-step .step-num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.td-step .step-txt { font-size: 13px; color: #475569; line-height: 1.7; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #2563eb; text-decoration: none; }
+#toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); background: rgba(0,0,0,.8); color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toast.show { opacity: 1; }
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
+.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
+.navbar-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 999; align-items: center; justify-content: center; }
+.modal.show { display: flex; }
+.modal-box { background: #fff; border-radius: 12px; padding: 24px; width: min(90vw, 360px); text-align: center; animation: pop .18s ease; }
+@keyframes pop { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-box h3 { font-size: 18px; margin-bottom: 14px; color: #1f2d3d; }
+.modal-box #pageqrcode { display: inline-block; padding: 8px; background: #fff; }
+.modal-box #pageqrcode img, .modal-box #pageqrcode canvas { margin: 0 auto; }
+.modal-tip { font-size: 13px; color: #94a3b8; margin: 12px 0; }
+.btn-close { padding: 9px 26px; font-size: 14px; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer; transition: background .2s; }
+.btn-close:hover { background: #e2e8f0; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/">首页</a>
+            <a href="/tools/" class="active">工具</a>
+        </div>
+    </div>
+</nav>
+
+<header class="site-header">
+  <h1>条形码生成器</h1>
+  <p class="subtitle">支持CODE128、EAN13、UPC等多种格式，输入数字即可生成条形码图片</p>
+  <div class="header-tags">
+    <span class="htag">📊 CODE128</span>
+    <span class="htag">🛒 EAN13/UPC</span>
+    <span class="htag">⬇️ SVG下载</span>
+    <span class="htag">🔒 本地生成</span>
+  </div>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+    <div class="toolbar">
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnCopyLink" class="action-btn" title="复制本工具链接">复制链接</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="barcodeValue">输入编码内容</label>
+      <input type="text" id="barcodeValue" placeholder="请输入条形码编码内容，如：1234567890128">
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label for="barcodeFormat">条形码格式</label>
+        <select id="barcodeFormat">
+          <option value="CODE128" selected>CODE128（通用）</option>
+          <option value="EAN13">EAN-13（商品码）</option>
+          <option value="EAN8">EAN-8（短商品码）</option>
+          <option value="UPC">UPC-A（美国商品码）</option>
+          <option value="CODE39">CODE39</option>
+          <option value="ITF">ITF-14</option>
+          <option value="MSI">MSI</option>
+          <option value="pharmacode">Pharmacode</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="barcodeWidth">线条宽度</label>
+        <select id="barcodeWidth">
+          <option value="1">1（细）</option>
+          <option value="2" selected>2（标准）</option>
+          <option value="3">3（粗）</option>
+          <option value="4">4（加粗）</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="options-row">
+      <label class="chip">条形码高度
+        <select id="barcodeHeight">
+          <option value="80">80</option>
+          <option value="100" selected>100</option>
+          <option value="120">120</option>
+          <option value="150">150</option>
+        </select>
+      </label>
+      <label class="chip">显示文字
+        <select id="barcodeText">
+          <option value="true" selected>显示</option>
+          <option value="false">隐藏</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="example-box" id="formatHint">
+      💡 CODE128 支持所有 ASCII 字符，适用于通用场景。输入任意字母或数字即可生成。
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-generate">生成条形码</button>
+      <button class="btn ghost" id="btn-clear">清空</button>
+    </div>
+
+    <div class="result-box" id="result-box">
+      <div id="barcodeOutput"></div>
+      <div class="download-row">
+        <button class="mini-btn" id="btn-download-svg">下载 SVG</button>
+        <button class="mini-btn" id="btn-download-png">下载 PNG</button>
+      </div>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <div class="disclaimer">所有条形码生成均在浏览器本地完成，不上传任何数据，请放心使用。</div>
+
+  <div class="tool-desc">
+    <h2>条形码生成器介绍</h2>
+    <p>本工具是一款免费在线的条形码生成器，支持CODE128、EAN-13、EAN-8、UPC-A、CODE39等多种国际标准条形码格式。输入编码内容即可快速生成条形码图片，支持SVG和PNG格式下载。适用于商品标签、库存管理、物流追踪、资产标识等多种场景。</p>
+
+    <h3>工具特点</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📊</span><div><b>多种格式支持</b><p>支持CODE128、EAN13、EAN8、UPC、CODE39、ITF等多种国际标准条形码格式。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎨</span><div><b>自定义参数</b><p>可自定义线条宽度、条形码高度、是否显示文字等参数，满足不同需求。</p></div></div>
+      <div class="td-card"><span class="td-ico">⬇️</span><div><b>多种下载格式</b><p>支持下载SVG矢量格式和PNG位图格式，适用于打印和屏幕显示。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全生成</b><p>全部在浏览器本地完成，数据不上传服务器，隐私零风险。</p></div></div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">输入条形码编码内容，选择需要的条形码格式（如CODE128、EAN13等）。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">设置条形码的线条宽度、高度以及是否显示文字。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「生成条形码」，可下载SVG或PNG格式的条形码图片。</div></li>
+    </ol>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>EAN-13和CODE128有什么区别？</b><p>EAN-13是商品条码标准，必须是13位数字，常用于零售商品；CODE128是通用条码，支持所有ASCII字符，适用于物流、仓储等场景。</p></div>
+      <div class="faq-item"><b>生成的条形码会被上传吗？</b><p>不会。所有条形码生成均在浏览器本地完成，数据不经过任何服务器，可放心使用。</p></div>
+      <div class="faq-item"><b>SVG和PNG有什么区别？</b><p>SVG是矢量格式，放大不失真，适合印刷和高质量输出；PNG是位图格式，适合日常使用和屏幕显示。</p></div>
+      <div class="faq-item"><b>如何选择合适的条形码格式？</b><p>零售商品用EAN13/UPC，物流仓储用CODE128，内部管理用CODE39，根据实际需求选择。</p></div>
+    </div>
+  </div>
+</main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "EAN-13和CODE128有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "EAN-13是商品条码标准，必须是13位数字；CODE128是通用条码，支持所有ASCII字符。" } },
+    { "@type": "Question", "name": "生成的条形码会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有条形码生成均在浏览器本地完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "SVG和PNG有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "SVG是矢量格式，放大不失真；PNG是位图格式，适合日常使用。" } },
+    { "@type": "Question", "name": "如何选择合适的条形码格式？", "acceptedAnswer": { "@type": "Answer", "text": "零售商品用EAN13/UPC，物流仓储用CODE128，内部管理用CODE39。" } }
+  ]
+}
+</script>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+    <p style="margin-top:10px;line-height:2;"><a href="/about.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">关于本站</a><a href="/privacy.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">隐私政策</a><a href="/contact.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;">联系我们</a></p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var valueInput = document.getElementById("barcodeValue");
+  var formatSelect = document.getElementById("barcodeFormat");
+  var widthSelect = document.getElementById("barcodeWidth");
+  var heightSelect = document.getElementById("barcodeHeight");
+  var textSelect = document.getElementById("barcodeText");
+  var formatHint = document.getElementById("formatHint");
+  var btnGenerate = document.getElementById("btn-generate");
+  var btnClear = document.getElementById("btn-clear");
+  var resultBox = document.getElementById("result-box");
+  var barcodeOutput = document.getElementById("barcodeOutput");
+  var errorMsg = document.getElementById("error-msg");
+
+  var FORMAT_HINTS = {
+    CODE128: "CODE128 支持所有 ASCII 字符，适用于通用场景。输入任意字母或数字即可生成。",
+    EAN13: "EAN-13 必须是 12 或 13 位纯数字。最后一位为校验位，可自动计算。",
+    EAN8: "EAN-8 必须是 7 或 8 位纯数字。最后一位为校验位，可自动计算。",
+    UPC: "UPC-A 必须是 11 或 12 位纯数字。最后一位为校验位，可自动计算。",
+    CODE39: "CODE39 支持大写字母、数字和部分特殊字符（- . $ / + % 空格），适用于内部管理。",
+    ITF: "ITF-14 必须是 13 或 14 位纯数字，适用于物流包装。",
+    MSI: "MSI 支持纯数字，常用于库存管理和超市货架。",
+    pharmacode: "Pharmacode 支持 3-131070 之间的纯数字，用于制药行业。"
+  };
+
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+
+  function copyText(text, doneMsg) {
+    function ok() { toast(doneMsg || "复制成功"); }
+    function fail() { toast("复制失败"); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function () { fallbackCopy(text, ok, fail); });
+    } else { fallbackCopy(text, ok, fail); }
+  }
+
+  function fallbackCopy(text, ok, fail) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); ok(); } catch (e) { fail(); }
+    document.body.removeChild(ta);
+  }
+
+  function showError(msg) { errorMsg.textContent = msg; errorMsg.style.display = "block"; resultBox.style.display = "none"; }
+  function hideError() { errorMsg.style.display = "none"; }
+
+  formatSelect.addEventListener("change", function () {
+    formatHint.textContent = "💡 " + (FORMAT_HINTS[formatSelect.value] || "");
+  });
+
+  function generate() {
+    var value = valueInput.value.trim();
+    if (!value) { showError("请输入条形码编码内容"); return; }
+    hideError();
+
+    var format = formatSelect.value;
+    var width = parseInt(widthSelect.value) || 2;
+    var height = parseInt(heightSelect.value) || 100;
+    var showText = textSelect.value === "true";
+
+    barcodeOutput.innerHTML = "";
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.id = "barcodeSvg";
+    barcodeOutput.appendChild(svg);
+
+    try {
+      JsBarcode("#barcodeSvg", value, {
+        format: format,
+        width: width,
+        height: height,
+        displayValue: showText,
+        fontSize: 16,
+        margin: 10,
+        background: "#ffffff",
+        lineColor: "#000000"
+      });
+      resultBox.style.display = "block";
+    } catch (e) {
+      showError("生成条形码失败：" + e.message);
+      barcodeOutput.innerHTML = "";
+    }
+  }
+
+  function downloadSVG() {
+    var svg = barcodeOutput.querySelector("svg");
+    if (!svg) { toast("请先生成条形码"); return; }
+    var serializer = new XMLSerializer();
+    var svgStr = serializer.serializeToString(svg);
+    var blob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "barcode_" + Date.now() + ".svg";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 200);
+    toast("已下载 SVG");
+  }
+
+  function downloadPNG() {
+    var svg = barcodeOutput.querySelector("svg");
+    if (!svg) { toast("请先生成条形码"); return; }
+    var serializer = new XMLSerializer();
+    var svgStr = serializer.serializeToString(svg);
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+    var img = new Image();
+    img.onload = function () {
+      canvas.width = img.width * 2;
+      canvas.height = img.height * 2;
+      ctx.scale(2, 2);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, img.width, img.height);
+      ctx.drawImage(img, 0, 0);
+      var a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = "barcode_" + Date.now() + ".png";
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { document.body.removeChild(a); }, 200);
+      toast("已下载 PNG");
+    };
+    img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgStr)));
+  }
+
+  btnGenerate.addEventListener("click", generate);
+  btnClear.addEventListener("click", function () {
+    valueInput.value = "";
+    resultBox.style.display = "none";
+    errorMsg.style.display = "none";
+    valueInput.focus();
+  });
+  document.getElementById("btn-download-svg").addEventListener("click", downloadSVG);
+  document.getElementById("btn-download-png").addEventListener("click", downloadPNG);
+
+  var btnQr = document.getElementById("btnQr");
+  if (btnQr) btnQr.addEventListener("click", function () {
+    var q = document.getElementById("pageqrcode");
+    q.innerHTML = "";
+    if (window.QRCode) { new QRCode(q, { text: location.href, width: 180, height: 180 }); }
+    else { q.textContent = "二维码组件加载失败"; }
+    document.getElementById("qrModal").classList.add("show");
+  });
+
+  var btnCopyLink = document.getElementById("btnCopyLink");
+  if (btnCopyLink) btnCopyLink.addEventListener("click", function () { copyText(location.origin + location.pathname); });
+
+  document.addEventListener("click", function (e) {
+    var closeBtn = e.target.closest && e.target.closest(".btn-close");
+    if (closeBtn) {
+      var m = document.getElementById(closeBtn.getAttribute("data-close"));
+      if (m) m.classList.remove("show");
+      return;
+    }
+    if (e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("show");
+  });
+
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+})();
+</script>
+
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="pageqrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn-close" data-close="qrModal">关闭</button>
+  </div>
+</div>
+</body>
+</html>
