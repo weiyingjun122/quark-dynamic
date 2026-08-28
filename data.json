@@ -6810,5 +6810,16 @@
     "qrcode": "static/qrcode/567.png",
     "type": "剧本杀",
     "count": 6
+  },
+  {
+    "id": "568",
+    "title": "2027考研英语课程资源大全",
+    "keywords": [
+      "学习资料"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/869c0d46cdbb",
+    "qrcode": "static/qrcode/568.png",
+    "type": "学习资料"
   }
 ]
