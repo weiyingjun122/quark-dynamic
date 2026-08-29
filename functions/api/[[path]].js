@@ -77,6 +77,8 @@ export async function onRequest(context) {
             return await handleRequest(request, env, corsHeaders);
         case 'stats':
             return await handleStats(request, env, corsHeaders);
+        case 'qr':
+            return await handleQr(request, env, corsHeaders);
         case 'clear-stats':
             return await handleClearStats(request, env, corsHeaders);
         case 'set-stats':
@@ -1848,4 +1850,42 @@ async function handleStats(request, env, corsHeaders) {
         status: 405,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
+}
+
+// ============================================================
+// 二维码图片接口 - 不缓存，更新即时生效
+// ============================================================
+async function handleQr(request, env, corsHeaders) {
+    const url = new URL(request.url);
+    const type = url.pathname.split('/').pop();
+    
+    const qrMap = {
+        'wechat': 'static/wechat_qrcode.png'
+    };
+    
+    const filePath = qrMap[type];
+    if (!filePath) {
+        return new Response('Not found', { status: 404 });
+    }
+    
+    try {
+        const response = await fetch(new URL(`https://www.weiyingjun.top/${filePath}`));
+        if (!response.ok) {
+            return new Response('Image not found', { status: 404 });
+        }
+        
+        const contentType = response.headers.get('content-type') || 'image/png';
+        const body = await response.arrayBuffer();
+        
+        return new Response(body, {
+            headers: {
+                'Content-Type': contentType,
+                'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+                'Pragma': 'no-cache',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    } catch (e) {
+        return new Response('Error loading image', { status: 500 });
+    }
 }
