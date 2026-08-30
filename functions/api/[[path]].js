@@ -568,6 +568,35 @@ async function handleDebug(request, env, corsHeaders) {
     const url = new URL(request.url);
     const type = url.searchParams.get('type');
 
+    // 用户数量统计（快速）
+    if (type === 'users-count') {
+        try {
+            const list = await env.SEARCH_STATS.list({ prefix: 'user:', limit: 1000 });
+            const total = list.keys.length;
+            const listComplete = list.list_complete;
+            let count = total;
+            if (!listComplete) {
+                let cursor = list.cursor;
+                while (cursor) {
+                    const next = await env.SEARCH_STATS.list({ prefix: 'user:', limit: 1000, cursor });
+                    count += next.keys.length;
+                    cursor = next.list_complete ? undefined : next.cursor;
+                }
+            }
+            return new Response(JSON.stringify({
+                type: 'users-count',
+                total: count
+            }), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        } catch (e) {
+            return new Response(JSON.stringify({ error: e.message }), {
+                status: 500,
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        }
+    }
+
     // 列出所有注册用户
     if (type === 'users') {
         try {
@@ -576,17 +605,8 @@ async function handleDebug(request, env, corsHeaders) {
             do {
                 const list = await env.SEARCH_STATS.list({ prefix: 'user:', limit: 1000, cursor });
                 for (const key of list.keys) {
-                    const userData = await env.SEARCH_STATS.get(key.name);
-                    if (userData) {
-                        try {
-                            const user = JSON.parse(userData);
-                            users.push({
-                                username: user.username,
-                                userId: user.userId,
-                                createdAt: user.createdAt
-                            });
-                        } catch {}
-                    }
+                    const username = key.name.replace('user:', '');
+                    users.push({ username, key: key.name });
                 }
                 cursor = list.list_complete ? undefined : list.cursor;
             } while (cursor);
