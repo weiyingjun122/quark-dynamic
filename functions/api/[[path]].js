@@ -570,70 +570,101 @@ async function handleDebug(request, env, corsHeaders) {
 
     // 列出所有注册用户
     if (type === 'users') {
-        const list = await env.SEARCH_STATS.list({ prefix: 'user:' });
-        const users = [];
-        for (const key of list.keys) {
-            const userData = await env.SEARCH_STATS.get(key.name);
-            if (userData) {
-                const user = JSON.parse(userData);
-                users.push({
-                    username: user.username,
-                    userId: user.userId,
-                    createdAt: user.createdAt
-                });
+        try {
+            const list = await env.SEARCH_STATS.list({ prefix: 'user:' });
+            const users = [];
+            for (const key of list.keys) {
+                const userData = await env.SEARCH_STATS.get(key.name);
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    users.push({
+                        username: user.username,
+                        userId: user.userId,
+                        createdAt: user.createdAt
+                    });
+                }
             }
+            return new Response(JSON.stringify({
+                type: 'users',
+                total: users.length,
+                users: users
+            }, null, 2), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        } catch (e) {
+            return new Response(JSON.stringify({
+                error: 'Failed to list users',
+                message: e.message,
+                hint: 'KV list() may not be available. Check KV namespace binding in Cloudflare dashboard.'
+            }, null, 2), {
+                status: 500,
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
         }
-        return new Response(JSON.stringify({
-            type: 'users',
-            total: users.length,
-            users: users
-        }, null, 2), {
-            headers: { "Content-Type": "application/json", ...corsHeaders }
-        });
     }
 
     // 列出所有设备注册记录
     if (type === 'devices') {
-        const list = await env.SEARCH_STATS.list({ prefix: 'device_reg:' });
-        const devices = [];
-        for (const key of list.keys) {
-            const data = await env.SEARCH_STATS.get(key.name);
-            if (data) {
-                devices.push({
-                    key: key.name,
-                    ...JSON.parse(data)
-                });
+        try {
+            const list = await env.SEARCH_STATS.list({ prefix: 'device_reg:' });
+            const devices = [];
+            for (const key of list.keys) {
+                const data = await env.SEARCH_STATS.get(key.name);
+                if (data) {
+                    devices.push({
+                        key: key.name,
+                        ...JSON.parse(data)
+                    });
+                }
             }
+            return new Response(JSON.stringify({
+                type: 'devices',
+                total: devices.length,
+                devices: devices
+            }, null, 2), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        } catch (e) {
+            return new Response(JSON.stringify({
+                error: 'Failed to list devices',
+                message: e.message
+            }, null, 2), {
+                status: 500,
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
         }
-        return new Response(JSON.stringify({
-            type: 'devices',
-            total: devices.length,
-            devices: devices
-        }, null, 2), {
-            headers: { "Content-Type": "application/json", ...corsHeaders }
-        });
     }
 
     // 列出所有IP注册记录
     if (type === 'ips') {
-        const list = await env.SEARCH_STATS.list({ prefix: 'ip_reg:' });
-        const ips = [];
-        for (const key of list.keys) {
-            const data = await env.SEARCH_STATS.get(key.name);
-            if (data) {
-                ips.push({
-                    key: key.name,
-                    ...JSON.parse(data)
-                });
+        try {
+            const list = await env.SEARCH_STATS.list({ prefix: 'ip_reg:' });
+            const ips = [];
+            for (const key of list.keys) {
+                const data = await env.SEARCH_STATS.get(key.name);
+                if (data) {
+                    ips.push({
+                        key: key.name,
+                        ...JSON.parse(data)
+                    });
+                }
             }
+            return new Response(JSON.stringify({
+                type: 'ips',
+                total: ips.length,
+                ips: ips
+            }, null, 2), {
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+        } catch (e) {
+            return new Response(JSON.stringify({
+                error: 'Failed to list IPs',
+                message: e.message
+            }, null, 2), {
+                status: 500,
+                headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
         }
-        return new Response(JSON.stringify({
-            type: 'ips',
-            total: ips.length,
-            ips: ips
-        }, null, 2), {
-            headers: { "Content-Type": "application/json", ...corsHeaders }
-        });
     }
 
     // 重置用户密码
