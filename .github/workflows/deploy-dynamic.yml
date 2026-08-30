@@ -120,14 +120,21 @@ jobs:
           cd ..
           echo "SEO 页面生成完成"
 
-      # 7️⃣ 同步违禁词库（uutool + 开源词库 -> check-word/js/words.js）
+      # 7️⃣ 同步违禁词库（uutool -> check-word/word/）
       - name: Sync check-word library (uutool)
         run: |
           cd check-word
           node scripts/sync_uutool.js
           cd ..
 
-      # 8️⃣ 更新违禁词库
+      # 7.5️⃣ 合并懒人工具词库（lanren-tools.com -> check-word/word/）
+      - name: Merge lazy-tools word library
+        run: |
+          cd check-word
+          python scripts/merge_lazytools.py
+          cd ..
+
+      # 8️⃣ 更新违禁词库（GitHub远程 + 本地合并 -> check-word/js/words.js）
       - name: Update check-word library
         run: |
           cd check-word

@@ -69,6 +69,24 @@ SOURCES = [
         "fmt": "md",
         "target": "xiaohongshu",
     },
+    # B站（哔哩哔哩）平台规则词库
+    {
+        "url": "https://raw.githubusercontent.com/Duanjyy/content-compliance-checker/main/references/platform-bilibili.md",
+        "fmt": "md",
+        "target": "bilibili",
+    },
+    # 公众号（微信公众号）平台规则词库
+    {
+        "url": "https://raw.githubusercontent.com/Duanjyy/content-compliance-checker/main/references/platform-wechat.md",
+        "fmt": "md",
+        "target": "gongzhonghao",
+    },
+    # 通用敏感词库（补充各平台底座）
+    {
+        "url": "https://raw.githubusercontent.com/Duanjyy/content-compliance-checker/main/references/sensitive-words.md",
+        "fmt": "md",
+        "target": "base",
+    },
 ]
 
 # 词库归属: target -> 本地文件名
@@ -78,6 +96,12 @@ TARGET_FILES = {
     "ai": "ai.txt",
     "douyin": "douyin.txt",
     "xiaohongshu": "xiaohongshu.txt",
+    "bilibili": "bilibili.txt",
+    "gongzhonghao": "gongzhonghao.txt",
+    "kuaishou": "kuaishou.txt",
+    "taobao": "taobao.txt",
+    "pinduoduo": "pinduoduo.txt",
+    "jd": "jd.txt",
 }
 
 # uutool.cn 同步词库文件 -> 归属词库（由 scripts/sync_uutool.js 生成）
@@ -88,7 +112,7 @@ UUTOOL_FILES = {
 }
 
 # 最终各平台 = base ∪ 平台专有
-PLATFORMS = ["ai", "xianyu", "douyin", "xiaohongshu"]
+PLATFORMS = ["ai", "xianyu", "douyin", "xiaohongshu", "bilibili", "gongzhonghao", "kuaishou", "taobao", "pinduoduo", "jd"]
 
 
 def fetch(url, timeout=30):
