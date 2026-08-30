@@ -571,22 +571,28 @@ async function handleDebug(request, env, corsHeaders) {
     // 列出所有注册用户
     if (type === 'users') {
         try {
-            const list = await env.SEARCH_STATS.list({ prefix: 'user:' });
+            const limit = parseInt(url.searchParams.get('limit') || '100');
+            const cursor = url.searchParams.get('cursor') || undefined;
+            const list = await env.SEARCH_STATS.list({ prefix: 'user:', limit, cursor });
             const users = [];
             for (const key of list.keys) {
                 const userData = await env.SEARCH_STATS.get(key.name);
                 if (userData) {
-                    const user = JSON.parse(userData);
-                    users.push({
-                        username: user.username,
-                        userId: user.userId,
-                        createdAt: user.createdAt
-                    });
+                    try {
+                        const user = JSON.parse(userData);
+                        users.push({
+                            username: user.username,
+                            userId: user.userId,
+                            createdAt: user.createdAt
+                        });
+                    } catch {}
                 }
             }
             return new Response(JSON.stringify({
                 type: 'users',
                 total: users.length,
+                listComplete: list.list_complete,
+                cursor: list.cursor || null,
                 users: users
             }, null, 2), {
                 headers: { "Content-Type": "application/json", ...corsHeaders }
@@ -594,8 +600,7 @@ async function handleDebug(request, env, corsHeaders) {
         } catch (e) {
             return new Response(JSON.stringify({
                 error: 'Failed to list users',
-                message: e.message,
-                hint: 'KV list() may not be available. Check KV namespace binding in Cloudflare dashboard.'
+                message: e.message
             }, null, 2), {
                 status: 500,
                 headers: { "Content-Type": "application/json", ...corsHeaders }
@@ -606,20 +611,26 @@ async function handleDebug(request, env, corsHeaders) {
     // 列出所有设备注册记录
     if (type === 'devices') {
         try {
-            const list = await env.SEARCH_STATS.list({ prefix: 'device_reg:' });
+            const limit = parseInt(url.searchParams.get('limit') || '100');
+            const cursor = url.searchParams.get('cursor') || undefined;
+            const list = await env.SEARCH_STATS.list({ prefix: 'device_reg:', limit, cursor });
             const devices = [];
             for (const key of list.keys) {
                 const data = await env.SEARCH_STATS.get(key.name);
                 if (data) {
-                    devices.push({
-                        key: key.name,
-                        ...JSON.parse(data)
-                    });
+                    try {
+                        devices.push({
+                            key: key.name,
+                            ...JSON.parse(data)
+                        });
+                    } catch {}
                 }
             }
             return new Response(JSON.stringify({
                 type: 'devices',
                 total: devices.length,
+                listComplete: list.list_complete,
+                cursor: list.cursor || null,
                 devices: devices
             }, null, 2), {
                 headers: { "Content-Type": "application/json", ...corsHeaders }
@@ -638,20 +649,26 @@ async function handleDebug(request, env, corsHeaders) {
     // 列出所有IP注册记录
     if (type === 'ips') {
         try {
-            const list = await env.SEARCH_STATS.list({ prefix: 'ip_reg:' });
+            const limit = parseInt(url.searchParams.get('limit') || '100');
+            const cursor = url.searchParams.get('cursor') || undefined;
+            const list = await env.SEARCH_STATS.list({ prefix: 'ip_reg:', limit, cursor });
             const ips = [];
             for (const key of list.keys) {
                 const data = await env.SEARCH_STATS.get(key.name);
                 if (data) {
-                    ips.push({
-                        key: key.name,
-                        ...JSON.parse(data)
-                    });
+                    try {
+                        ips.push({
+                            key: key.name,
+                            ...JSON.parse(data)
+                        });
+                    } catch {}
                 }
             }
             return new Response(JSON.stringify({
                 type: 'ips',
                 total: ips.length,
+                listComplete: list.list_complete,
+                cursor: list.cursor || null,
                 ips: ips
             }, null, 2), {
                 headers: { "Content-Type": "application/json", ...corsHeaders }
