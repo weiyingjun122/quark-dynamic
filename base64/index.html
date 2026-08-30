@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base64编解码工具 - 在线Base64编码解码转换器</title>
+<meta name="description" content="免费在线Base64编解码工具，支持文本与Base64互相转换，完整支持中文、特殊字符等UTF-8编码，一键复制结果，本地处理不上传服务器，安全可靠。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/base64/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Base64编解码工具 - 在线Base64编码解码转换器">
+<meta property="og:description" content="免费在线Base64编解码工具，支持文本与Base64互相转换，完整支持中文UTF-8编码，本地处理不上传服务器。">
+<meta property="og:url" content="https://www.weiyingjun.top/base64/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3EB%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Base64编解码工具","url":"https://www.weiyingjun.top/base64/","description":"免费在线Base64编解码工具，支持文本与Base64互相转换，完整支持中文UTF-8编码","applicationCategory":"UtilityApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"browserRequirements":"Requires a modern web browser with JavaScript support"}
+</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #eff6ff 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+
+.header-tags { margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.header-tags .htag { font-size: 12px; color: #2563eb; background: #dbeafe; padding: 4px 12px; border-radius: 999px; }
+
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #dfe3ee;
+  background: #fff;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.action-btn:hover { border-color: #2563eb; color: #2563eb; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; color: #475569; }
+#srcText {
+  width: 100%; min-height: 200px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
+  background: #fafbff;
+}
+#srcText:focus { border-color: #2563eb; background: #fff; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+.btn {
+  padding: 12px 26px; font-size: 15px; border: none; border-radius: 10px;
+  background: #2563eb; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #1d4ed8; }
+.btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.result-area { margin-top: 22px; }
+.result-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.result-head h2 { font-size: 16px; color: #1f2d3d; }
+.result-wrap { position: relative; }
+#resultText {
+  width: 100%; min-height: 120px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
+  background: #f0f7ff;
+}
+.btn-copy-result {
+  position: absolute; top: 8px; right: 8px;
+  padding: 4px 10px; font-size: 12px; border: 1px solid #bfdbfe; border-radius: 6px;
+  background: #fff; color: #2563eb; cursor: pointer; transition: all .15s;
+}
+.btn-copy-result:hover { background: #dbeafe; }
+
+.error-msg { display: none; margin-top: 16px; padding: 12px 14px; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 10px; font-size: 14px; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #2563eb, #60a5fa); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #bfdbfe, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #f0f6ff);
+  border: 1px solid #e0eaff; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(37,99,235,.10); border-color: #bfdbfe; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #eff6ff, #dbeafe); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+@media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
+.td-step { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px; position: relative; }
+.td-step .step-num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.td-step .step-txt { font-size: 13px; color: #475569; line-height: 1.7; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #2563eb; text-decoration: none; }
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 999; align-items: center; justify-content: center; }
+.modal.show { display: flex; }
+.modal-box { background: #fff; border-radius: 12px; padding: 24px; width: min(90vw, 360px); text-align: center; animation: pop .18s ease; }
+@keyframes pop { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-box h3 { font-size: 18px; margin-bottom: 14px; color: #1f2d3d; }
+.modal-box #qrcode { display: inline-block; padding: 8px; background: #fff; }
+.modal-box #qrcode img, .modal-box #qrcode canvas { margin: 0 auto; }
+.modal-tip { font-size: 13px; color: #94a3b8; margin: 12px 0; }
+.btn-close { padding: 9px 26px; font-size: 14px; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer; transition: background .2s; }
+.btn-close:hover { background: #e2e8f0; }
+
+.donate-box { width: min(92vw, 480px); }
+.donate-cards { display: flex; gap: 16px; justify-content: center; margin: 12px 0 16px; }
+.pay-card { flex: 1; max-width: 210px; border-radius: 12px; padding: 14px 12px 16px; display: flex; flex-direction: column; align-items: center; color: #fff; }
+.pay-card-wechat { background: #07c160; }
+.pay-card-alipay { background: #1677ff; }
+.pay-card-head { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.pay-logo { width: 22px; height: 22px; }
+.pay-qr { width: 100%; max-width: 160px; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 8px; padding: 4px; }
+.pay-main { font-size: 15px; margin: 12px 0 8px; }
+.pay-sub { font-size: 12px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.5); padding: 4px 10px; border-radius: 999px; }
+@media (max-width: 520px) {
+  .donate-cards { flex-direction: column; align-items: center; }
+  .pay-card { width: 100%; max-width: 260px; }
+  .donate-box { width: min(92vw, 340px); }
+}
+
+#toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); background: rgba(0,0,0,.8); color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toast.show { opacity: 1; }
+/* 导航栏 */
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
+.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
+.navbar-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
+body { padding-top: 56px !important; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/">首页</a>
+            <a href="/tools/" class="active">工具</a>
+        </div>
+    </div>
+</nav>
+
+<header class="site-header">
+  <h1>Base64编解码工具</h1>
+  <p class="subtitle">免费在线Base64编码与解码转换器，完整支持中文及UTF-8字符，输入即出结果</p>
+  <div class="header-tags">
+    <span class="htag">编码</span>
+    <span class="htag">解码</span>
+    <span class="htag">文本转换</span>
+    <span class="htag">本地处理</span>
+  </div>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+
+    <div class="toolbar">
+      <div class="actions">
+        <button id="btnQr" class="action-btn" title="生成当前页面二维码">二维码</button>
+        <button id="btnDonate" class="action-btn" title="支持本站">打赏支持</button>
+        <button id="btnCopyLink" class="action-btn" title="复制本工具链接">复制链接</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="srcText">输入需要编码或解码的内容</label>
+      <textarea id="srcText" placeholder="在此输入文本进行Base64编码，或输入Base64字符串进行解码。例如：&#10;编码：你好，世界 Hello World!&#10;解码：5L2g5aW977yM5LiW5pW7IEhlbGxvIFdvcmxkIQ=="></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-encode">编码 →</button>
+      <button class="btn" id="btn-decode">← 解码</button>
+      <button class="btn ghost" id="btn-clear">清空</button>
+    </div>
+
+    <div class="result-area">
+      <div class="result-head">
+        <h2>转换结果</h2>
+      </div>
+      <div class="result-wrap">
+        <textarea id="resultText" readonly placeholder="转换结果将显示在这里..."></textarea>
+        <button class="btn-copy-result" id="btn-copy">复制</button>
+      </div>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <div class="disclaimer">所有编解码均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
+
+  <div class="tool-desc">
+    <h2>Base64编解码工具介绍</h2>
+    <p>本工具是一款免费在线的Base64编码解码工具，可以将任意文本内容（包括中文、日文、韩文、Emoji、特殊符号等）转换为标准的Base64编码字符串，也可以将Base64编码字符串还原为原始文本。完整支持UTF-8编码，确保中文字符在编解码过程中不丢失、不乱码。</p>
+    <p>适用于API接口调试、邮件附件编码、数据传输加密、网页嵌入图片、URL安全参数传输、配置文件序列化等场景。所有处理均在浏览器本地完成，数据不经过任何服务器，隐私安全有保障。</p>
+
+    <h3>工具特点</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🔄</span><div><b>双向转换</b><p>支持文本编码为Base64，也支持Base64解码为原始文本，一键切换方向。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>实时响应</b><p>点击按钮即刻完成转换，无需等待，高效快捷。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>一键复制</b><p>转换结果支持一键复制到剪贴板，方便直接使用。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">在输入框中粘贴或输入需要编码的文本，或输入Base64字符串准备解码。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">点击「编码」将文本转为Base64，或点击「解码」将Base64还原为文本。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">查看结果区域的转换结果，点击「复制」即可复制到剪贴板使用。</div></li>
+    </ol>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>Base64编码是什么？</b><p>Base64是一种基于64个可打印字符来表示二进制数据的编码方式，常用于在HTTP协议、邮件系统等纯文本环境中安全传输二进制数据。编码后的字符串仅包含A-Z、a-z、0-9、+、/和=符号。</p></div>
+      <div class="faq-item"><b>工具支持中文字符吗？</b><p>完全支持。本工具采用UTF-8编码处理中文、日文、韩文、Emoji等多字节字符，编码后可完整还原，不会出现乱码或丢失字符的问题。</p></div>
+      <div class="faq-item"><b>编码后的字符串末尾的等号是什么？</b><p>等号（=）是Base64的填充字符，用于确保编码后的字符串长度是4的倍数。这是Base64标准规范的一部分，不影响编解码功能。</p></div>
+      <div class="faq-item"><b>编解码的数据会被上传吗？</b><p>不会。所有编解码操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
+      <div class="faq-item"><b>Base64是加密算法吗？</b><p>不是。Base64是编码方式而非加密算法，任何人都可以轻松解码Base64字符串。如需真正的数据加密，请使用AES、RSA等加密算法。</p></div>
+    </div>
+  </div>
+
+</main>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Base64编码是什么？", "acceptedAnswer": { "@type": "Answer", "text": "Base64是一种基于64个可打印字符来表示二进制数据的编码方式，常用于在HTTP协议、邮件系统等纯文本环境中安全传输二进制数据。编码后的字符串仅包含A-Z、a-z、0-9、+、/和=符号。" } },
+    { "@type": "Question", "name": "工具支持中文字符吗？", "acceptedAnswer": { "@type": "Answer", "text": "完全支持。本工具采用UTF-8编码处理中文、日文、韩文、Emoji等多字节字符，编码后可完整还原，不会出现乱码或丢失字符的问题。" } },
+    { "@type": "Question", "name": "编码后的字符串末尾的等号是什么？", "acceptedAnswer": { "@type": "Answer", "text": "等号（=）是Base64的填充字符，用于确保编码后的字符串长度是4的倍数。这是Base64标准规范的一部分，不影响编解码功能。" } },
+    { "@type": "Question", "name": "编解码的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有编解码操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "Base64是加密算法吗？", "acceptedAnswer": { "@type": "Answer", "text": "不是。Base64是编码方式而非加密算法，任何人都可以轻松解码Base64字符串。如需真正的数据加密，请使用AES、RSA等加密算法。" } }
+  ]
+}
+</script>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+    <p style="margin-top:10px;line-height:2;"><a href="/check-word/" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">违禁词检测</a><a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">IP查询</a><a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机密码</a><a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">年龄计算</a><a href="/bmi/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">BMI计算器</a><a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">金额大写</a><a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本提取</a><a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">日期计算</a><a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本去重</a><a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">字符统计</a><a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">数据脱敏</a><a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">JSON格式化</a><a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">MD5批量加密</a><a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">短链接还原</a><a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">手机号查询</a><a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">身份证查询</a><a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机分组</a><a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机点名</a><a href="/base64/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">Base64编解码</a><a href="/timestamp/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">时间戳转换</a><a href="/chinese-converter/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">中文简繁转换</a><a href="/text-replace/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本批量替换</a></p>
+    <p style="margin-top:8px;"><a href="/about.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">关于本站</a><a href="/privacy.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">隐私政策</a><a href="/contact.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">联系我们</a></p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var srcText = document.getElementById("srcText");
+  var resultText = document.getElementById("resultText");
+  var errorMsg = document.getElementById("error-msg");
+  var btnEncode = document.getElementById("btn-encode");
+  var btnDecode = document.getElementById("btn-decode");
+  var btnClear = document.getElementById("btn-clear");
+  var btnCopy = document.getElementById("btn-copy");
+
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+
+  function copyText(text, doneMsg) {
+    function ok() { toast(doneMsg || "复制成功"); }
+    function fail() { toast("复制失败"); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, function () { fallbackCopy(text, ok, fail); });
+    } else { fallbackCopy(text, ok, fail); }
+  }
+  function fallbackCopy(text, ok, fail) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); ok(); } catch (e) { fail(); }
+    document.body.removeChild(ta);
+  }
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.style.display = "block";
+  }
+  function hideError() {
+    errorMsg.style.display = "none";
+    errorMsg.textContent = "";
+  }
+
+  function encodeBase64(text) {
+    var bytes = new TextEncoder().encode(text);
+    var binary = "";
+    for (var i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+  function decodeBase64(base64) {
+    var binary = atob(base64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+
+  if (btnEncode) btnEncode.addEventListener("click", function () {
+    hideError();
+    var text = srcText.value || "";
+    if (!text.trim()) { showError("请先输入需要编码的文本内容"); return; }
+    try {
+      resultText.value = encodeBase64(text);
+      toast("编码成功");
+    } catch (e) {
+      showError("编码失败：" + e.message);
+    }
+  });
+
+  if (btnDecode) btnDecode.addEventListener("click", function () {
+    hideError();
+    var text = srcText.value || "";
+    if (!text.trim()) { showError("请先输入需要解码的Base64字符串"); return; }
+    try {
+      resultText.value = decodeBase64(text.replace(/\s+/g, ""));
+      toast("解码成功");
+    } catch (e) {
+      showError("解码失败：输入的字符串不是有效的Base64格式");
+    }
+  });
+
+  if (btnClear) btnClear.addEventListener("click", function () {
+    srcText.value = "";
+    resultText.value = "";
+    hideError();
+    srcText.focus();
+  });
+
+  if (btnCopy) btnCopy.addEventListener("click", function () {
+    var val = resultText.value || "";
+    if (!val.trim()) { toast("暂无内容可复制"); return; }
+    copyText(val);
+  });
+
+  // 二维码 / 打赏 / 复制链接
+  var btnQr = document.getElementById("btnQr");
+  var btnDonate = document.getElementById("btnDonate");
+  var btnCopyLink = document.getElementById("btnCopyLink");
+  if (btnQr) btnQr.addEventListener("click", function () {
+    var q = document.getElementById("qrcode");
+    q.innerHTML = "";
+    if (window.QRCode) { new QRCode(q, { text: location.href, width: 180, height: 180 }); }
+    else { q.textContent = "二维码组件加载失败，请复制链接使用"; }
+    document.getElementById("qrModal").classList.add("show");
+  });
+  if (btnDonate) btnDonate.addEventListener("click", function () {
+    document.getElementById("donateModal").classList.add("show");
+  });
+  if (btnCopyLink) btnCopyLink.addEventListener("click", function () { copyText(location.origin + location.pathname); });
+  document.addEventListener("click", function (e) {
+    var closeBtn = e.target.closest && e.target.closest(".btn-close");
+    if (closeBtn) {
+      var m = document.getElementById(closeBtn.getAttribute("data-close"));
+      if (m) m.classList.remove("show");
+      return;
+    }
+    if (e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("show");
+  });
+
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+})();
+</script>
+
+<!-- 二维码弹窗 -->
+<div class="modal" id="qrModal">
+  <div class="modal-box">
+    <h3>扫码访问</h3>
+    <div id="qrcode"></div>
+    <p class="modal-tip">用手机扫一扫，即可访问本工具</p>
+    <button class="btn-close" data-close="qrModal">关闭</button>
+  </div>
+</div>
+
+<!-- 打赏弹窗 -->
+<div class="modal" id="donateModal">
+  <div class="modal-box donate-box">
+    <h3>打赏支持</h3>
+    <p class="modal-tip">喜欢就支持一下，我们会更努力!</p>
+    <div class="donate-cards">
+      <div class="pay-card pay-card-wechat">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+          <span>微信支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-wechat.png" alt="微信收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用微信付款</p>
+      </div>
+      <div class="pay-card pay-card-alipay">
+        <div class="pay-card-head">
+          <svg viewBox="0 0 24 24" class="pay-logo" aria-hidden="true"><path fill="currentColor" d="M19.695 15.07c3.426 1.158 4.203 1.22 4.203 1.22V3.846c0-2.124-1.705-3.845-3.81-3.845H3.914C1.808.001.102 1.722.102 3.846v16.31c0 2.123 1.706 3.845 3.813 3.845h16.173c2.105 0 3.81-1.722 3.81-3.845v-.157s-6.19-2.602-9.315-4.119c-2.096 2.602-4.8 4.181-7.607 4.181-4.75 0-6.361-4.19-4.112-6.949.49-.602 1.324-1.175 2.617-1.497 2.025-.502 5.247.313 8.266 1.317a16.796 16.796 0 0 0 1.341-3.302H5.781v-.952h4.799V6.975H4.77v-.953h5.81V3.591s0-.409.411-.409h2.347v2.84h5.744v.951h-5.744v1.704h4.69a19.453 19.453 0 0 1-1.986 5.06c1.424.52 2.702 1.011 3.654 1.333m-13.81-2.032c-.596.06-1.71.325-2.321.869-1.83 1.608-.735 4.55 2.968 4.55 2.151 0 4.301-1.388 5.99-3.61-2.403-1.182-4.438-2.028-6.637-1.809"/></svg>
+          <span>支付宝支付</span>
+        </div>
+        <img class="pay-qr" src="images/donate-alipay.png" alt="支付宝收款码">
+        <p class="pay-main">扫描二维码付款</p>
+        <p class="pay-sub">欢迎使用支付宝付款</p>
+      </div>
+    </div>
+    <button class="btn-close" data-close="donateModal">关闭</button>
+  </div>
+</div>
+</body>
+</html>

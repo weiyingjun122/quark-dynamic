@@ -46,6 +46,10 @@ on:
       - 'qrcode-batch/**'
       - 'barcode/**'
       - 'barcode-batch/**'
+      - 'base64/**'
+      - 'timestamp/**'
+      - 'chinese-converter/**'
+      - 'text-replace/**'
       - 'tools/**'
       - 'functions/**'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
@@ -161,6 +165,10 @@ jobs:
             git add bank-card/ 2>/dev/null || true
             git add bmi/ 2>/dev/null || true
             git add pindou/ 2>/dev/null || true
+            git add base64/ 2>/dev/null || true
+            git add timestamp/ 2>/dev/null || true
+            git add chinese-converter/ 2>/dev/null || true
+            git add text-replace/ 2>/dev/null || true
 
             if ! git diff --cached --quiet; then
                 echo "有变更，提交并推送..."
