@@ -571,28 +571,28 @@ async function handleDebug(request, env, corsHeaders) {
     // 列出所有注册用户
     if (type === 'users') {
         try {
-            const limit = parseInt(url.searchParams.get('limit') || '100');
-            const cursor = url.searchParams.get('cursor') || undefined;
-            const list = await env.SEARCH_STATS.list({ prefix: 'user:', limit, cursor });
             const users = [];
-            for (const key of list.keys) {
-                const userData = await env.SEARCH_STATS.get(key.name);
-                if (userData) {
-                    try {
-                        const user = JSON.parse(userData);
-                        users.push({
-                            username: user.username,
-                            userId: user.userId,
-                            createdAt: user.createdAt
-                        });
-                    } catch {}
+            let cursor = undefined;
+            do {
+                const list = await env.SEARCH_STATS.list({ prefix: 'user:', limit: 1000, cursor });
+                for (const key of list.keys) {
+                    const userData = await env.SEARCH_STATS.get(key.name);
+                    if (userData) {
+                        try {
+                            const user = JSON.parse(userData);
+                            users.push({
+                                username: user.username,
+                                userId: user.userId,
+                                createdAt: user.createdAt
+                            });
+                        } catch {}
+                    }
                 }
-            }
+                cursor = list.list_complete ? undefined : list.cursor;
+            } while (cursor);
             return new Response(JSON.stringify({
                 type: 'users',
                 total: users.length,
-                listComplete: list.list_complete,
-                cursor: list.cursor || null,
                 users: users
             }, null, 2), {
                 headers: { "Content-Type": "application/json", ...corsHeaders }
