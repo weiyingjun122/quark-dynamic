@@ -3,128 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <title>夸克网盘热搜资源榜｜每日更新</title>
-
 <meta name="description" content="夸克网盘热门资源搜索榜，实时统计大家都在搜什么，学习资料、影视资源、考试资料一站直达。">
 <meta name="keywords" content="夸克网盘,夸克资源,夸克搜索,网盘资源,热搜榜">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f6f7fb;
-    margin: 0;
-    padding: 20px;
-}
-.container {
-    max-width: 720px;
-    margin: auto;
-}
-h1 {
-    text-align: center;
-}
-.hot-list {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.08);
-}
-.hot-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-}
-.hot-item:last-child {
-    border-bottom: none;
-}
-.hot-item a {
-    color: #1e90ff;
-    text-decoration: none;
-    font-size: 16px;
-}
-.hot-item a:hover {
-    text-decoration: underline;
-}
-.count {
-    color: #999;
-}
-.footer {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f6f7fb; margin: 0; padding: 20px; }
+.container { max-width: 720px; margin: auto; }
+h1 { text-align: center; font-size: 22px; }
+.subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+.hot-list { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 8px 30px rgba(0,0,0,.08); }
+.hot-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.hot-item:last-child { border-bottom: none; }
+.rank { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; margin-right: 12px; flex-shrink: 0; background: #f0f0f0; color: #999; }
+.rank.top1 { background: #ff4d4f; color: #fff; }
+.rank.top2 { background: #ff7a45; color: #fff; }
+.rank.top3 { background: #ffa940; color: #fff; }
+.hot-item a { color: #333; text-decoration: none; font-size: 15px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hot-item a:hover { color: #1e90ff; }
+.count { color: #999; font-size: 13px; margin-left: 8px; white-space: nowrap; }
+.level { font-size: 13px; margin-left: 6px; white-space: nowrap; }
+.footer { margin-top: 20px; text-align: center; font-size: 13px; color: #999; }
+.footer a { color: #1e90ff; text-decoration: none; }
+.loading { text-align: center; color: #999; padding: 40px 0; }
+.empty { text-align: center; color: #999; padding: 40px 0; }
+.error { text-align: center; color: #ff4d4f; padding: 40px 0; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
-
 <body>
 <div class="container">
     <h1>🔥 夸克网盘热搜资源榜</h1>
-    <p style="text-align:center;color:#666">
-        实时统计大家最常搜索的资源关键词
-    </p>
+    <p class="subtitle">实时统计全站用户最常搜索的资源关键词</p>
 
     <div class="hot-list" id="hotList">
-        <p style="text-align:center">加载中...</p>
+        <div class="loading">加载中...</div>
     </div>
 
     <div class="footer">
-        <a href="/" style="color:#1e90ff">返回搜索首页</a>
+        <p>数据来自全站用户搜索统计，每 5 分钟自动更新</p>
+        <a href="/">返回搜索首页</a>
     </div>
 </div>
 
 <script>
-/*
-  ⚠️ 说明：
-  1. 这里仍然使用 localStorage（单用户）
-  2. 后面升级 Worker 时，这里只换数据源
-  3. 可以配置 FILTER_KEYWORDS 来过滤不需要展示的关键词
- */
-
-const FILTER_KEYWORDS = [
-    // 在这里添加需要过滤的关键词
-    // 例如：'敏感词', '广告', '不需要的关键词'
-];
-
-function getHotList(limit = 50) {
+async function fetchHotList() {
     try {
-        const map = JSON.parse(localStorage.getItem('search_keywords')) || {};
-        return Object.entries(map)
-            .filter(([kw]) => !FILTER_KEYWORDS.includes(kw))
-            .sort((a, b) => b[1].count - a[1].count)
-            .slice(0, limit);
-    } catch {
-        return [];
+        const res = await fetch('/api/hot');
+        if (!res.ok) throw new Error('请求失败');
+        return await res.json();
+    } catch (e) {
+        return null;
     }
 }
 
-function render() {
-    const hot = getHotList();
+function render(list) {
     const box = document.getElementById('hotList');
 
-    if (!hot.length) {
-        box.innerHTML = '<p style="text-align:center">暂无热搜数据</p>';
+    if (list === null) {
+        box.innerHTML = '<div class="error">数据加载失败，请稍后刷新重试</div>';
+        return;
+    }
+
+    if (!list.length) {
+        box.innerHTML = '<div class="empty">暂无热搜数据，快去搜索你想找的资源吧！</div>';
         return;
     }
 
     let html = '';
-    hot.forEach(([kw, v], i) => {
+    list.forEach((item, i) => {
+        const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
         html += `
         <div class="hot-item">
-            <a href="/?q=${encodeURIComponent(kw)}" title="${kw} 夸克网盘资源">
-                ${i + 1}. ${kw}
-            </a>
-            <span class="count">${v.count} 次</span>
-        </div>
-        `;
+            <div class="rank ${rankClass}">${i + 1}</div>
+            <a href="/?q=${encodeURIComponent(item.word)}" title="${item.word} 夸克网盘资源">${item.word}</a>
+            <span class="count">${item.count} 次</span>
+            <span class="level">${item.level}</span>
+        </div>`;
     });
 
     box.innerHTML = html;
 }
 
-render();
-</script>
+async function load() {
+    const list = await fetchHotList();
+    render(list);
+}
 
+load();
+setInterval(load, 5 * 60 * 1000);
+</script>
 </body>
 </html>
