@@ -366,15 +366,20 @@ function sendToWechat(keyword) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ keyword: keyword })
-    }).then(res => res.json()).then(data => {
+    }).then(res => {
+        console.log('Response status:', res.status);
+        return res.json();
+    }).then(data => {
+        console.log('Response data:', data);
         if (data.success) {
             alert('已发送需求，我们会尽快处理！');
             closeModal('requestModal');
         } else {
             alert('发送失败：' + (data.error || '请稍后重试'));
         }
-    }).catch(() => {
-        alert('网络错误，请稍后重试');
+    }).catch(err => {
+        console.error('Fetch error:', err);
+        alert('网络错误：' + err.message);
     });
 }
 
