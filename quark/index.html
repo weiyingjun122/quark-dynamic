@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-adsense-account" content="ca-pub-6726656035929687">
+<title>资源搜索 - 实用资源整理站</title>
+<meta name="description" content="实用资源整理站资源搜索功能，搜索学习资料、模板、工具等资源。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="baidu-site-verification" content="codeva-lM0uaxFMIG" />
+<link rel="canonical" href="https://www.weiyingjun.top/quark/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="资源搜索 - 实用资源整理站">
+<meta property="og:description" content="实用资源整理站资源搜索功能，搜索学习资料、模板、工具等资源。">
+<meta property="og:url" content="https://www.weiyingjun.top/quark/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebSite","name":"实用资源整理站","url":"https://www.weiyingjun.top/","description":"免费在线工具与资源搜索","inLanguage":"zh-CN"},
+{"@type":"WebPage","name":"资源搜索","url":"https://www.weiyingjun.top/quark/","isPartOf":{"@type":"WebSite","url":"https://www.weiyingjun.top/"}}
+]}
+</script>
+<style>
+body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; display: flex; flex-direction: column; align-items: center; padding-top: 80px; margin:0; }
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
+.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
+.navbar-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
+.logo { text-align: center; margin-bottom: 40px; flex-shrink: 0; }
+.logo img { max-width: 150px; height: auto; display: block; margin: 0 auto; }
+.logo h1 { margin-top: 10px; font-size: 28px; color: #333; }
+.search-container { display: flex; justify-content: center; margin-bottom: 20px; flex-wrap: nowrap; width: 90%; max-width: 480px; }
+.search-container input[type="text"] { flex: 1; padding: 12px; font-size: 16px; border-radius: 5px 0 0 5px; border: 1px solid #ccc; outline: none; }
+.search-container button { padding: 12px 24px; font-size: 16px; border-radius: 0 5px 5px 0; border: none; background-color: #1e90ff; color: white; cursor: pointer; transition: background 0.3s; }
+.search-container button:hover { background-color: #0f78d1; }
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+.modal-content { background-color: #fff; padding: 30px; border-radius: 12px; text-align: center; max-width: 90%; width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); position: relative; max-height: 80vh; overflow-y: auto; }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #999; }
+.user-panel { position: fixed; top: 15px; right: 15px; z-index: 10000; }
+.user-btn { padding: 8px 16px; background: #1e90ff; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 14px; }
+.user-btn:hover { background: #0f78d1; }
+.user-info { display: flex; align-items: center; gap: 10px; background: #fff; padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.user-info .username { color: #333; font-size: 14px; }
+.user-info .logout-btn { padding: 4px 10px; background: #ff6b6b; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-size: 12px; }
+.transfer-count { font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/">首页</a>
+            <a href="/tools/">工具</a>
+            <a href="/quark/" class="active">资源搜索</a>
+            <a href="/blog/">博客</a>
+        </div>
+    </div>
+</nav>
+<div class="user-panel" id="userPanel">
+    <button class="user-btn" id="userBtn" onclick="showAuthModal()">登录/注册</button>
+</div>
+<div class="logo">
+    <img src="/static/logo.png" alt="资源搜索" onerror="this.style.display='none'">
+    <h1>资源搜索</h1>
+</div>
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="请输入关键词搜索资源...">
+    <button id="searchBtn">搜索</button>
+</div>
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+        <div id="modalBody"></div>
+    </div>
+</div>
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
+        <div id="authModalBody"></div>
+    </div>
+</div>
+<script>
+let currentUser = null;
+const TOKEN_KEY = 'quark_user_token';
+const USER_KEY = 'quark_user_info';
+let modal, modalBody, authModal, authModalBody, userPanel;
+
+function getStoredAuth() {
+    const token = localStorage.getItem(TOKEN_KEY);
+    const user = localStorage.getItem(USER_KEY);
+    if (token && user) {
+        try { return { token, user: JSON.parse(user) }; } catch { return null; }
+    }
+    return null;
+}
+
+function saveAuth(token, user) {
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+}
+
+function clearAuth() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    currentUser = null;
+}
+
+function updateUserPanel() {
+    const auth = getStoredAuth();
+    if (auth && auth.user) {
+        currentUser = auth.user;
+        const isVip = auth.user.isVip;
+        const vipTag = isVip ? '<span style="background:gold;color:#333;padding:2px 8px;border-radius:10px;font-size:12px;margin-left:5px;">VIP</span>' : '';
+        const transferInfo = isVip ? '<span class="transfer-count" style="background:gold;color:#333;">VIP无限次数</span>' : '<span class="transfer-count" id="transferCount">今日剩余: --</span>';
+        userPanel.innerHTML = `<div class="user-info"><span class="username">${auth.user.username}</span>${vipTag}${transferInfo}<button class="logout-btn" onclick="handleLogout()">登出</button></div>`;
+        if (!isVip) updateTransferStatus();
+    } else {
+        userPanel.innerHTML = `<button class="user-btn" id="userBtn" onclick="showAuthModal()">登录/注册</button>`;
+    }
+}
+
+async function updateTransferStatus() {
+    const auth = getStoredAuth();
+    if (!auth) return;
+    try {
+        const res = await fetch('/api/auth/status', { headers: { 'Authorization': `Bearer ${auth.token}` } });
+        const data = await res.json();
+        if (data.success) {
+            const countEl = document.getElementById('transferCount');
+            if (countEl) {
+                const remaining = Math.max(0, data.remaining);
+                countEl.textContent = `今日剩余: ${remaining}次`;
+                if (remaining === 0) { countEl.style.background = '#ffe0e0'; countEl.style.color = '#e74c3c'; }
+            }
+        }
+    } catch (e) { console.warn('获取转存状态失败:', e.message); }
+}
+
+function showAuthModal() {
+    const auth = getStoredAuth();
+    if (auth && auth.user) { updateUserPanel(); return; }
+    authModalBody.innerHTML = `<h3 style="margin-top:0;color:#333;">用户登录</h3><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">用户名</label><input type="text" id="loginUsername" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="请输入用户名"></div><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">密码</label><input type="password" id="loginPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="请输入密码"></div><button onclick="handleLogin()" style="width:100%;padding:12px;background:#1e90ff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin-bottom:10px;">登录</button><p style="color:#666;font-size:14px;">还没有账号？<a href="javascript:void(0)" onclick="showRegister()" style="color:#1e90ff;">立即注册</a></p>`;
+    authModal.style.display = 'flex';
+}
+
+function showRegister() {
+    authModalBody.innerHTML = `<h3 style="margin-top:0;color:#333;">用户注册</h3><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">用户名</label><input type="text" id="regUsername" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="3-20个字符"></div><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">密码</label><input type="password" id="regPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="至少6个字符"></div><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">确认密码</label><input type="password" id="regConfirmPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="再次输入密码"></div><button onclick="handleRegister()" style="width:100%;padding:12px;background:#28a745;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin-bottom:10px;">注册</button><p style="color:#666;font-size:14px;">已有账号？<a href="javascript:void(0)" onclick="showAuthModal()" style="color:#1e90ff;">立即登录</a></p>`;
+}
+
+async function handleRegister() {
+    const username = document.getElementById('regUsername').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const confirmPassword = document.getElementById('regConfirmPassword').value;
+    if (!username || !password) { alert('请填写完整信息'); return; }
+    if (password !== confirmPassword) { alert('两次密码输入不一致'); return; }
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) { deviceId = 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('device_id', deviceId); }
+    try {
+        const res = await fetch('/api/auth/register?t=' + Date.now(), { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-Device-ID': deviceId }, body: JSON.stringify({ username, password }) });
+        const data = await res.json();
+        if (data.success) { alert('注册成功，请登录'); showAuthModal(); } else { alert(data.error || '注册失败'); }
+    } catch (e) { alert('网络错误: ' + e.message); }
+}
+
+async function handleLogin() {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    if (!username || !password) { alert('请填写用户名和密码'); return; }
+    try {
+        const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
+        const data = await res.json();
+        if (data.success) { saveAuth(data.token, { userId: data.userId, username: data.username, isVip: data.isVip }); authModal.style.display = 'none'; updateUserPanel(); } else { alert(data.error || '登录失败'); }
+    } catch (e) { alert('网络错误: ' + e.message); }
+}
+
+async function handleLogout() {
+    const auth = getStoredAuth();
+    if (auth) { try { await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': `Bearer ${auth.token}` } }); } catch (e) {} }
+    clearAuth(); updateUserPanel();
+}
+
+let lastSearchKeyword = '';
+async function performSearch(keyword) {
+    if (!keyword) return;
+    lastSearchKeyword = keyword;
+    const auth = getStoredAuth();
+    if (!auth) { alert('请先登录后再搜索'); showAuthModal(); return; }
+    try {
+        const res = await fetch('/api/search?q=' + encodeURIComponent(keyword), { headers: { 'Authorization': `Bearer ${auth.token}` } });
+        const data = await res.json();
+        if (data.success) { document.getElementById('modalBody').innerHTML = `<h3>搜索结果</h3><div style="text-align:left;margin-top:15px;">${data.results.map(r => `<p><a href="${r.url}" target="_blank">${r.name}</a></p>`).join('')}</div>`; modal.style.display = 'flex'; } else { alert(data.error || '搜索失败'); }
+    } catch (e) { alert('网络错误: ' + e.message); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    modal = document.getElementById('modal');
+    modalBody = document.getElementById('modalBody');
+    authModal = document.getElementById('authModal');
+    authModalBody = document.getElementById('authModalBody');
+    userPanel = document.getElementById('userPanel');
+    updateUserPanel();
+    document.getElementById('searchBtn').addEventListener('click', () => performSearch(document.getElementById('searchInput').value.trim()));
+    document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') document.getElementById('searchBtn').click(); });
+    const urlParams = new URLSearchParams(window.location.search);
+    const q = urlParams.get('q');
+    if (q) { document.getElementById('searchInput').value = q; setTimeout(() => performSearch(q), 200); }
+});
+</script>
+</body>
+</html>
