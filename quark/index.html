@@ -38,7 +38,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .search-container button:hover { background-color: #0f78d1; }
 .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
 .modal-content { background-color: #fff; padding: 30px; border-radius: 12px; text-align: center; max-width: 90%; width: 420px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); position: relative; max-height: 80vh; overflow-y: auto; }
-.close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #999; }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #999; z-index: 10; }
 .user-panel { position: fixed; top: 15px; right: 15px; z-index: 10000; }
 .user-btn { padding: 8px 16px; background: #1e90ff; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 14px; }
 .user-btn:hover { background: #0f78d1; }
@@ -48,18 +48,20 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .transfer-count { font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; }
 .hot-keyword { display: inline-block; padding: 6px 12px; margin: 4px; background: #f0f6ff; border-radius: 20px; cursor: pointer; color: #1e90ff; font-size: 14px; }
 .hot-keyword:hover { background: #1e90ff; color: #fff; }
-.result-item { background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: left; }
-.result-item h3 { margin: 0 0 8px 0; font-size: 16px; color: #333; }
-.result-item .type-tag { font-size: 12px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; }
-.result-item .btn { display: inline-block; margin-top: 8px; padding: 8px 16px; background: #1e90ff; color: #fff; border-radius: 5px; text-decoration: none; font-size: 14px; }
-.result-item .btn:hover { background: #0f78d1; }
-.qr-code { margin-top: 8px; }
-.qr-code img { max-width: 150px; border: 1px solid #eee; border-radius: 8px; }
-.request-form { text-align: left; }
-.request-form input, .request-form textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px; box-sizing: border-box; font-size: 14px; }
-.request-form textarea { height: 80px; resize: vertical; }
-.request-form button { width: 100%; padding: 12px; background: #28a745; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-.request-form button:hover { background: #218838; }
+.title-list { text-align: left; max-height: 50vh; overflow-y: auto; }
+.title-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between; }
+.title-item:last-child { border-bottom: none; }
+.title-item:hover { background: #f8f9fa; }
+.title-item .name { font-size: 15px; color: #333; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.title-item .type { font-size: 12px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+.title-item .arrow { color: #ccc; margin-left: 8px; }
+.qr-modal-body { text-align: center; }
+.qr-modal-body img { max-width: 200px; border: 1px solid #eee; border-radius: 8px; margin: 10px 0; }
+.qr-modal-body .hint { font-size: 13px; color: #666; margin-top: 10px; }
+.request-modal-body { text-align: center; }
+.request-modal-body img { max-width: 180px; border-radius: 8px; margin: 15px 0; }
+.request-btn { display: inline-block; padding: 12px 30px; background: #07c160; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; transition: background 0.3s; }
+.request-btn:hover { background: #06ad56; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
@@ -94,13 +96,19 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <span class="hot-keyword" onclick="searchKeyword('PS教程')">PS教程</span>
 </div>
 <div id="resultModal" class="modal">
-    <div class="modal-content" style="width:500px;">
+    <div class="modal-content" style="width:480px;">
         <span class="close-btn" onclick="closeModal('resultModal')">&times;</span>
         <div id="resultModalBody"></div>
     </div>
 </div>
+<div id="qrModal" class="modal">
+    <div class="modal-content" style="width:320px;">
+        <span class="close-btn" onclick="closeModal('qrModal')">&times;</span>
+        <div id="qrModalBody"></div>
+    </div>
+</div>
 <div id="requestModal" class="modal">
-    <div class="modal-content" style="width:420px;">
+    <div class="modal-content" style="width:400px;">
         <span class="close-btn" onclick="closeModal('requestModal')">&times;</span>
         <div id="requestModalBody"></div>
     </div>
@@ -115,7 +123,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 let currentUser = null;
 const TOKEN_KEY = 'quark_user_token';
 const USER_KEY = 'quark_user_info';
-let resultModal, resultModalBody, requestModal, requestModalBody, authModal, authModalBody, userPanel;
+let resultModal, resultModalBody, qrModal, qrModalBody, requestModal, requestModalBody, authModal, authModalBody, userPanel;
 let allResources = [];
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -254,77 +262,97 @@ function performSearch() {
 
 function showResultModal(results, keyword) {
     let html = `<h3 style="margin-top:0;color:#333;">找到 ${results.length} 个相关资源</h3>`;
-    html += `<p style="color:#666;font-size:13px;margin-bottom:15px;">关键词：${keyword}</p>`;
+    html += `<p style="color:#666;font-size:13px;margin-bottom:10px;">关键词：${keyword}</p>`;
+    html += `<div class="title-list">`;
     
-    results.forEach(item => {
+    results.forEach((item, index) => {
         const title = item.title || '未知资源';
         const type = item.type || '';
-        const shareLink = item.share_link || '#';
-        const qrcode = item.qrcode || '';
-        
-        html += `<div class="result-item">`;
-        html += `<h3>${title} ${type ? '<span class="type-tag">' + type + '</span>' : ''}</h3>`;
-        
-        if (isMobile) {
-            html += `<a href="${shareLink}" target="_blank" class="btn">打开链接</a>`;
-        } else {
-            if (qrcode) {
-                html += `<div class="qr-code"><img src="/${qrcode}" alt="扫码获取"></div>`;
-                html += `<p style="font-size:12px;color:#999;margin-top:5px;">手机扫码获取资源</p>`;
-            } else {
-                html += `<a href="${shareLink}" target="_blank" class="btn">打开链接</a>`;
-            }
-        }
-        
-        html += `</div>`;
+        html += `<div class="title-item" onclick="handleTitleClick(${index})">
+            <span class="name">${title}</span>
+            ${type ? '<span class="type">' + type + '</span>' : ''}
+            <span class="arrow">›</span>
+        </div>`;
     });
     
+    html += `</div>`;
     resultModalBody.innerHTML = html;
+    resultModal.dataset.results = JSON.stringify(results);
     resultModal.style.display = 'flex';
 }
 
-function showRequestModal(keyword) {
-    let html = `<h3 style="margin-top:0;color:#333;">未找到相关资源</h3>`;
-    html += `<p style="color:#666;font-size:14px;margin-bottom:15px;">抱歉，没有找到"${keyword}"相关资源</p>`;
-    html += `<div class="request-form">`;
-    html += `<p style="color:#333;font-size:14px;font-weight:bold;">提交资源需求</p>`;
-    html += `<input type="text" id="reqKeyword" value="${keyword}" placeholder="资源名称">`;
-    html += `<input type="text" id="reqContact" placeholder="您的联系方式（QQ/微信）">`;
-    html += `<textarea id="reqDesc" placeholder="补充说明（选填）"></textarea>`;
-    html += `<button onclick="submitRequest()">提交需求</button>`;
+function handleTitleClick(index) {
+    const results = JSON.parse(resultModal.dataset.results || '[]');
+    const item = results[index];
+    if (!item) return;
+    
+    if (isMobile) {
+        window.open(item.share_link || '#', '_blank');
+    } else {
+        showQrModal(item);
+    }
+}
+
+function showQrModal(item) {
+    const title = item.title || '未知资源';
+    const qrcode = item.qrcode || '';
+    const shareLink = item.share_link || '#';
+    
+    let html = `<div class="qr-modal-body">`;
+    html += `<h3 style="margin-top:0;color:#333;font-size:16px;">${title}</h3>`;
+    
+    if (qrcode) {
+        html += `<img src="/${qrcode}" alt="扫码获取">`;
+        html += `<div class="hint">打开手机夸克 → 扫一扫 → 保存资源</div>`;
+    } else {
+        html += `<p style="color:#999;">暂无二维码</p>`;
+        html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:10px;padding:10px 20px;background:#1e90ff;color:#fff;border-radius:5px;text-decoration:none;">直接打开链接</a>`;
+    }
+    
     html += `</div>`;
-    html += `<p style="color:#999;font-size:12px;margin-top:15px;">我们会尽快处理您的需求</p>`;
+    qrModalBody.innerHTML = html;
+    qrModal.style.display = 'flex';
+}
+
+function showRequestModal(keyword) {
+    let html = `<div class="request-modal-body">`;
+    html += `<h3 style="margin-top:0;color:#333;">未找到相关资源</h3>`;
+    html += `<p style="color:#666;font-size:14px;margin-bottom:10px;">抱歉，没有找到"${keyword}"相关资源</p>`;
+    html += `<button class="request-btn" onclick="sendToWechat('${keyword}')">求资源</button>`;
+    html += `<p style="color:#999;font-size:12px;margin-top:15px;">点击按钮发送需求到企业微信</p>`;
+    html += `<img src="/static/wechat_qrcode.png" alt="微信群二维码" onerror="this.style.display='none'" style="max-width:180px;margin-top:15px;border-radius:8px;">`;
+    html += `<p style="color:#999;font-size:12px;">或扫码加入微信群</p>`;
+    html += `</div>`;
     
     requestModalBody.innerHTML = html;
     requestModal.style.display = 'flex';
 }
 
-async function submitRequest() {
-    const keyword = document.getElementById('reqKeyword').value.trim();
-    const contact = document.getElementById('reqContact').value.trim();
-    const desc = document.getElementById('reqDesc').value.trim();
+function sendToWechat(keyword) {
+    const wechatApiUrl = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=YOUR_KEY_HERE';
     
-    if (!keyword || !contact) {
-        alert('请填写资源名称和联系方式');
-        return;
-    }
-    
-    try {
-        await fetch('/api/request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ keyword, contact, desc })
-        });
-        alert('提交成功，我们会尽快处理！');
+    fetch(wechatApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            msgtype: 'text',
+            text: {
+                content: `【资源请求】\n用户请求资源：${keyword}\n来源：资源搜索页面\n时间：${new Date().toLocaleString('zh-CN')}`
+            }
+        })
+    }).then(() => {
+        alert('已发送需求，我们会尽快处理！');
         closeModal('requestModal');
-    } catch (e) {
-        alert('提交失败，请稍后重试');
-    }
+    }).catch(() => {
+        alert('发送失败，请稍后重试');
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     resultModal = document.getElementById('resultModal');
     resultModalBody = document.getElementById('resultModalBody');
+    qrModal = document.getElementById('qrModal');
+    qrModalBody = document.getElementById('qrModalBody');
     requestModal = document.getElementById('requestModal');
     requestModalBody = document.getElementById('requestModalBody');
     authModal = document.getElementById('authModal');

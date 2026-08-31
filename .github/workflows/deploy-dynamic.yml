@@ -50,6 +50,9 @@ on:
       - 'timestamp/**'
       - 'chinese-converter/**'
       - 'text-replace/**'
+      - 'quark/**'
+      - 'hot/**'
+      - 'blog/**'
       - 'tools/**'
       - 'functions/**'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
@@ -176,6 +179,9 @@ jobs:
             git add timestamp/ 2>/dev/null || true
             git add chinese-converter/ 2>/dev/null || true
             git add text-replace/ 2>/dev/null || true
+            git add quark/ 2>/dev/null || true
+            git add hot/ 2>/dev/null || true
+            git add blog/ 2>/dev/null || true
 
             if ! git diff --cached --quiet; then
                 echo "有变更，提交并推送..."
