@@ -10,6 +10,7 @@ import re
 import requests
 from datetime import datetime
 from urllib.parse import quote
+from pypinyin import lazy_pinyin, Style
 
 # ==================== 配置 ====================
 # 获取当前脚本所在目录和项目根目录
@@ -72,17 +73,31 @@ def get_qrcode_url(resource):
             return f"/static/qrcode/{qrcode}"
     return ""
 
-def generate_seo_page(keyword, count, resources):
+def chinese_to_pinyin_slug(text):
+    """将中文转换为拼音slug作为文件名"""
+    # 提取拼音首字母大写
+    pinyin_list = lazy_pinyin(text, style=Style.NORMAL)
+    # 过滤非字母数字字符，用-连接
+    slug = '-'.join([p for p in pinyin_list if p.strip()])
+    # 只保留字母数字和连字符
+    slug = re.sub(r'[^a-z0-9-]', '', slug.lower())
+    # 去除多余连字符
+    slug = re.sub(r'-+', '-', slug).strip('-')
+    return slug if slug else 'page'
+
+def generate_seo_page(keyword, count, resources, used_slugs=None):
     """生成单个关键词的SEO页面"""
-    # 生成安全的文件名（用于磁盘存储）
-    safe_filename = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '', keyword)
-    safe_filename = re.sub(r'\s+', '_', safe_filename.strip())
-    if not safe_filename:
-        safe_filename = f"keyword_{hash(keyword) % 10000}"
-    # URL编码文件名用于磁盘存储
-    url_encoded_filename = quote(safe_filename) + ".html"
-    # 中文文件名用于href（浏览器会自动编码）
-    display_filename = safe_filename + ".html"
+    # 使用拼音生成ASCII文件名
+    slug = chinese_to_pinyin_slug(keyword)
+    # 处理重名：加数字后缀
+    if used_slugs is not None:
+        original_slug = slug
+        counter = 2
+        while slug in used_slugs:
+            slug = f"{original_slug}-{counter}"
+            counter += 1
+        used_slugs.add(slug)
+    safe_filename = slug + ".html"
     
     # 生成资源列表
     resource_items = ""
@@ -141,7 +156,7 @@ def generate_seo_page(keyword, count, resources):
     <meta name="description" content="免费提供{keyword}相关资源下载，共{len(resources)}个{keyword}相关资源。">
     <meta name="keywords" content="{keyword},资源下载,{keyword}下载,{keyword}资源">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{CONFIG['seo']['site_url']}/search/{url_encoded_filename}">
+    <link rel="canonical" href="{CONFIG['seo']['site_url']}/search/{safe_filename}">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
     
     <style>
@@ -517,8 +532,8 @@ def generate_seo_page(keyword, count, resources):
 </body>
 </html>"""
     
-    # 保存文件（使用URL编码的文件名）
-    output_path = os.path.join(CONFIG['local']['output_dir'], url_encoded_filename)
+    # 保存文件
+    output_path = os.path.join(CONFIG['local']['output_dir'], safe_filename)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -528,8 +543,8 @@ def generate_seo_page(keyword, count, resources):
         'keyword': keyword,
         'count': count,
         'resource_count': len(resources),
-        'file': display_filename,  # 用于href的中文文件名
-        'url': f"/search/{quote(keyword)}.html"
+        'file': safe_filename,
+        'url': f"/search/{safe_filename}"
     }
 
 # ==================== 索引和站点地图函数 ====================
@@ -771,6 +786,7 @@ def main():
     print(f"输出目录已创建: {os.path.exists(output_dir)}")
     
     generated_pages = []
+    used_slugs = set()
     
     for keyword, count in hot_keywords:
         print(f"  处理: '{keyword}' ({count}次搜索)")
@@ -811,7 +827,7 @@ def main():
         print(f"    ✅ 找到 {len(matched_resources)} 个相关资源")
         
         # 生成HTML页面
-        page_info = generate_seo_page(keyword, count, matched_resources)
+        page_info = generate_seo_page(keyword, count, matched_resources, used_slugs)
         if page_info:
             generated_pages.append(page_info)
     
