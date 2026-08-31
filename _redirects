@@ -1,0 +1,2 @@
+# Serve .htm files directly, bypassing clean_urls
+/search/*.htm  /search/*.htm  200
