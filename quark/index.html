@@ -286,10 +286,43 @@ function handleTitleClick(index) {
     const item = results[index];
     if (!item) return;
     
-    if (isMobile) {
-        window.open(item.share_link || '#', '_blank');
-    } else {
-        showQrModal(item);
+    const auth = getStoredAuth();
+    if (!auth) {
+        alert('请先登录后再查看资源');
+        closeModal('resultModal');
+        showAuthModal();
+        return;
+    }
+    
+    checkAndViewResource(item);
+}
+
+async function checkAndViewResource(item) {
+    const auth = getStoredAuth();
+    if (!auth) return;
+    
+    try {
+        const res = await fetch('/api/auth/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + auth.token
+            }
+        });
+        const data = await res.json();
+        
+        if (data.success && data.allowed) {
+            if (isMobile) {
+                window.open(item.share_link || '#', '_blank');
+            } else {
+                showQrModal(item);
+            }
+            updateTransferStatus();
+        } else {
+            alert(data.error || '今天查看次数已用完，明天再来吧！');
+        }
+    } catch (e) {
+        alert('网络错误，请稍后重试');
     }
 }
 
@@ -340,11 +373,19 @@ function sendToWechat(keyword) {
                 content: `【资源请求】\n用户请求资源：${keyword}\n来源：资源搜索页面\n时间：${new Date().toLocaleString('zh-CN')}`
             }
         })
-    }).then(() => {
-        alert('已发送需求，我们会尽快处理！');
-        closeModal('requestModal');
+    }).then(res => {
+        if (res.ok) {
+            alert('已发送需求，我们会尽快处理！');
+            closeModal('requestModal');
+        } else {
+            res.json().then(data => {
+                alert('发送失败：' + (data.errmsg || '请稍后重试'));
+            }).catch(() => {
+                alert('发送失败，请稍后重试');
+            });
+        }
     }).catch(() => {
-        alert('发送失败，请稍后重试');
+        alert('网络错误，请检查网络连接');
     });
 }
 
