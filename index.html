@@ -203,6 +203,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
         <div class="navbar-links">
             <a href="/" class="active">首页</a>
             <a href="/tools/">工具</a>
+            <a href="/blog/">博客</a>
         </div>
     </div>
 </nav>
@@ -233,6 +234,79 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 <!-- 站点介绍 -->
 <div style="width:100%;max-width:900px;margin:0 auto 20px;padding:16px 20px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);font-size:14px;color:#666;line-height:1.8;">
     <p><strong style="color:#333;">实用资源整理站</strong> 提供夸克网盘资源搜索与免费在线工具。输入关键词即可搜索影视、课程、电子书等资源，支持24个浏览器端小工具：违禁词检测、IP归属地查询、手机号批量查询、身份证校验、随机分组点名、密码生成、Base64编解码、时间戳转换、简繁转换、文本批量替换等，所有工具本地运行，不上传数据，隐私安全。</p>
+</div>
+
+<!-- 静态内容区：为搜索引擎爬虫提供可索引的文本内容 -->
+<div class="static-content-section" style="width:100%;max-width:900px;margin:0 auto 30px;">
+    
+    <!-- 工具分类介绍 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:24px;margin-bottom:20px;">
+        <h2 style="font-size:18px;color:#333;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1e90ff;">免费在线工具合集</h2>
+        <p style="font-size:14px;color:#555;line-height:2;margin-bottom:16px;">
+            本站提供24个完全免费的在线工具，覆盖文本处理、数据查询、图片编辑、二维码生成等多个场景。所有工具均采用纯前端技术实现，数据在浏览器本地完成处理，不会上传到任何服务器，关闭页面后数据自动清除，真正实现隐私安全。
+        </p>
+        
+        <!-- 文本工具 -->
+        <div style="margin-bottom:18px;">
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">📝 文本处理工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>违禁词检测</strong>：支持小红书、抖音、B站、公众号等10个平台的违禁词库，帮助内容创作者在发布前检查文案是否包含敏感词汇，避免限流或封号。<strong>文本批量替换</strong>：支持正则表达式的批量查找替换，一次性处理大量文本内容。<strong>简繁转换</strong>：基于2011年《通用规范汉字表》的简繁互转，适用于跨地区内容适配。<strong>Base64编解码</strong>：支持中英文混合内容的编解码，常用于前端开发和数据传输。<strong>文本提取</strong>：从大段文本中批量提取手机号、邮箱、链接、身份证号等关键信息。<strong>文本去重</strong>：快速删除重复行，保留唯一值。<strong>字符数统计</strong>：精确统计中英文字符、数字、标点的数量。
+            </p>
+        </div>
+        
+        <!-- 查询工具 -->
+        <div style="margin-bottom:18px;">
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">🔍 数据查询工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>IP归属地查询</strong>：输入IP地址即可查看归属地、运营商信息。<strong>手机号归属地查询</strong>：支持批量查询手机号的归属省份和运营商。<strong>身份证查询校验</strong>：验证身份证号码格式是否正确，查看归属地信息。<strong>银行卡BIN查询</strong>：通过银行卡号前6位查询发卡行信息。<strong>短链接还原</strong>：将短链接还原为原始地址，识别跳转目标。
+            </p>
+        </div>
+        
+        <!-- 实用工具 -->
+        <div style="margin-bottom:18px;">
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">🛠️ 实用小工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>随机密码生成</strong>：按需生成指定长度和复杂度的密码。<strong>年龄计算器</strong>：根据出生日期精确计算年龄、星座、生肖。<strong>BMI计算器</strong>：输入身高体重快速计算身体质量指数。<strong>日期计算器</strong>：计算两个日期之间的天数差，或推算指定天数后的日期。<strong>数字转大写金额</strong>：将数字金额转换为中文大写，适用于财务票据。<strong>JSON格式化</strong>：一键美化或压缩JSON数据。<strong>MD5批量加密</strong>：批量计算文本的MD5哈希值。
+            </p>
+        </div>
+        
+        <!-- 图片与二维码 -->
+        <div>
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">📱 图片与二维码工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>图片压缩</strong>：在保持画质的前提下减小图片文件大小。<strong>图片转JPG</strong>：将PNG、WebP等格式转换为JPG。<strong>调整图片大小</strong>：按比例或指定尺寸缩放图片。<strong>二维码生成</strong>：将文本、链接生成二维码图片。<strong>WiFi二维码</strong>：生成包含WiFi密码的二维码，手机扫码即可连接。<strong>二维码解码</strong>：识别图片中的二维码内容。<strong>批量二维码</strong>：一次性生成多个二维码。<strong>条形码生成</strong>：生成商品条形码。<strong>批量条形码</strong>：批量生成条形码。
+            </p>
+        </div>
+    </div>
+    
+    <!-- 隐私与安全 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:24px;margin-bottom:20px;">
+        <h2 style="font-size:18px;color:#333;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #27ae60;">隐私与安全承诺</h2>
+        <p style="font-size:14px;color:#555;line-height:2;">
+            本站所有工具均采用<strong>纯前端技术</strong>实现，所有数据处理（包括文本分析、图片压缩、二维码生成等）均在您的浏览器本地完成。您的输入数据<strong>不会上传到任何服务器</strong>，关闭页面后所有临时数据自动清除。我们不收集、不存储、不传输任何用户输入的个人信息。这种设计从根本上保障了您的数据隐私安全，即使在公共电脑上使用也无需担心数据泄露。
+        </p>
+    </div>
+    
+    <!-- 常见问题 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:24px;">
+        <h2 style="font-size:18px;color:#333;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #f39c12;">常见问题</h2>
+        <div style="margin-bottom:12px;">
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：这些工具真的免费吗？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：是的，本站所有工具完全免费，无需注册登录，没有使用次数限制。</p>
+        </div>
+        <div style="margin-bottom:12px;">
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：我的数据安全吗？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：非常安全。所有工具均在浏览器本地运行，数据不会上传到服务器。关闭页面后数据自动清除。</p>
+        </div>
+        <div style="margin-bottom:12px;">
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：手机上可以使用吗？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：可以。本站所有工具均支持手机浏览器访问，采用响应式设计，适配各种屏幕尺寸。</p>
+        </div>
+        <div>
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：如何反馈问题或建议？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：请访问<a href="/contact.html" style="color:#1e90ff;">联系我们</a>页面，我们会尽快回复。</p>
+        </div>
+    </div>
 </div>
 
 
@@ -1363,13 +1437,6 @@ window.addEventListener('DOMContentLoaded', () => {
     <p>您在此获取的资源源于网络分享，旨在方便学习交流。请尊重知识产权，合理使用，支持正版。请勿将资源用于商业或违规用途</p>
     <p>感谢您的理解与配合！</p>
     </div>-->
-
-    <!-- 页面底部免责声明 -->
-    <div class="site-disclaimer">
-        <h4>温馨提示</h4>
-        <p>您在此获取的资源源于网络分享，旨在方便学习交流。请尊重知识产权，合理使用，支持正版。请勿将资源用于商业或违规用途</p>
-        <p>感谢您的理解与配合！</p>
-    </div>
 
     <!-- 站内工具导航 -->
     <div style="width:100%;max-width:900px;margin:0 auto 10px;text-align:center;font-size:13px;color:#666;line-height:2.2;">

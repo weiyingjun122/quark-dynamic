@@ -52,13 +52,32 @@ footer.site-footer a { color: #1e90ff; text-decoration: none; }
 <div class="wrap">
   <div class="card">
     <h2>本站简介</h2>
-    <p>实用资源整理站（weiyingjun.top）是一个免费在线工具集合网站，提供多种日常实用小工具，帮助大家解决学习、工作、生活中的小问题。</p>
+    <p>实用资源整理站（weiyingjun.top）是一个免费在线工具集合网站，致力于为学生、职场人士、开发者、内容创作者等群体提供简单易用的浏览器端工具。</p>
     <p>我们始终坚持一个核心理念：<b>永久免费、无需登录、数据不上传</b>。所有工具均直接在您的浏览器本地完成运算，名单、号码、文本等输入内容不会经过任何服务器，关闭页面即全部清除，隐私安全有保障。</p>
-    <p>网站包含资源搜索和实用工具两大板块。资源搜索支持夸克网盘影视、课程、电子书等资源的一键检索；实用工具涵盖文本处理、数据查询、图片编辑、二维码生成等多个类别，持续更新中。</p>
+    <p>网站包含实用工具和资源搜索两大板块。实用工具涵盖文本处理、数据查询、图片编辑、二维码生成等多个类别，持续更新中；资源搜索支持夸克网盘影视、课程、电子书等资源的一键检索。</p>
   </div>
 
   <div class="card">
-    <h2>现有工具（29个）</h2>
+    <h2>为什么做这个网站？</h2>
+    <p>在日常工作和学习中，我们经常需要使用一些小工具：检查文案中是否有违禁词、批量查询手机号归属地、将文本转换为Base64、生成二维码等。这些需求虽然简单，但市面上很多工具要么需要下载安装，要么需要注册登录，甚至有些工具会收集用户数据。</p>
+    <p>我们希望提供一个<b>打开即用、用完即走</b>的工具站。不需要安装任何软件，不需要注册账号，打开浏览器就能使用。所有数据都在本地处理，用户无需担心隐私泄露问题。</p>
+    <p>从2024年建站至今，我们已经推出了24个实用工具，覆盖了文本处理、数据查询、图片编辑、二维码生成等多个场景。未来我们还会继续开发更多实用工具，帮助大家更高效地完成工作和学习任务。</p>
+  </div>
+
+  <div class="card">
+    <h2>技术实现</h2>
+    <p>本站所有工具均采用<b>纯前端技术</b>实现，主要使用HTML、CSS和JavaScript，不依赖后端服务器。这种架构带来了几个显著优势：</p>
+    <ul>
+      <li><b>隐私安全</b>：数据在浏览器本地处理，不经过任何服务器</li>
+      <li><b>响应速度快</b>：无需等待服务器响应，所有计算在本地完成</li>
+      <li><b>离线可用</b>：首次加载后，部分工具可离线使用</li>
+      <li><b>成本低</b>：无需服务器资源，可以长期免费提供服务</li>
+    </ul>
+    <p>网站部署在Cloudflare Pages上，全球CDN加速，确保各地用户都能快速访问。违禁词检测工具的词库定期从多个开源项目同步更新，确保覆盖最新的平台规则。</p>
+  </div>
+
+  <div class="card">
+    <h2>现有工具（24个）</h2>
     <p style="font-size:13px;color:#94a3b8;margin-bottom:12px;">所有工具浏览器本地运行，不上传任何数据</p>
     <div class="tools-list">
       <a class="tool-pill" href="/check-word/">🚫 违禁词检测</a>
@@ -80,22 +99,18 @@ footer.site-footer a { color: #1e90ff; text-decoration: none; }
       <a class="tool-pill" href="/md5-batch/">🔐 MD5批量加密</a>
       <a class="tool-pill" href="/short-link/">🔗 短链接还原</a>
       <a class="tool-pill" href="/bank-card/">💳 银行卡BIN查询</a>
-      <a class="tool-pill" href="/pindou/">🧩 拼豆图纸生成</a>
-      <a class="tool-pill" href="/compress-image/">🖼️ 图片压缩</a>
-      <a class="tool-pill" href="/convert-jpg/">🔄 图片转JPG</a>
-      <a class="tool-pill" href="/resize-image/">📐 调整图片大小</a>
+      <a class="tool-pill" href="/base64/">🔄 Base64编解码</a>
+      <a class="tool-pill" href="/timestamp/">⏱️ 时间戳转换</a>
+      <a class="tool-pill" href="/chinese-converter/">🀄 简繁转换</a>
+      <a class="tool-pill" href="/text-replace/">✏️ 文本批量替换</a>
       <a class="tool-pill" href="/qrcode/">📱 二维码生成</a>
-      <a class="tool-pill" href="/wifi-qrcode/">📶 WiFi二维码</a>
-      <a class="tool-pill" href="/qrcode-decode/">🔍 二维码解码</a>
-      <a class="tool-pill" href="/qrcode-batch/">📦 批量二维码</a>
-      <a class="tool-pill" href="/barcode/">📊 条形码生成</a>
-      <a class="tool-pill" href="/barcode-batch/">📋 批量条形码</a>
     </div>
   </div>
 
   <div class="card">
-    <h2>联系方式</h2>
+    <h2>联系我们</h2>
     <p>如您有任何问题、反馈或合作意向，欢迎访问 <a href="/contact.html" style="color:#1e90ff;">联系我们</a> 页面给我们留言，我们会尽快回复。</p>
+    <p>如果您在使用过程中发现了Bug，或者有新工具的需求，也欢迎通过上述方式告知我们。您的反馈是我们持续改进的动力。</p>
   </div>
 
   <div class="card">
