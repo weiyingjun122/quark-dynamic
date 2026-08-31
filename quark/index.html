@@ -96,7 +96,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <span class="hot-keyword" onclick="searchKeyword('PS教程')">PS教程</span>
 </div>
 <div id="resultModal" class="modal">
-    <div class="modal-content" style="width:480px;">
+    <div class="modal-content" style="width:480px;border:2px solid #1e90ff;">
         <span class="close-btn" onclick="closeModal('resultModal')">&times;</span>
         <div id="resultModalBody"></div>
     </div>
@@ -350,11 +350,10 @@ function showQrModal(item) {
 function showRequestModal(keyword) {
     let html = `<div class="request-modal-body">`;
     html += `<h3 style="margin-top:0;color:#333;">未找到相关资源</h3>`;
-    html += `<p style="color:#666;font-size:14px;margin-bottom:10px;">抱歉，没有找到"${keyword}"相关资源</p>`;
+    html += `<p style="color:#666;font-size:14px;margin-bottom:15px;">抱歉，没有找到"${keyword}"相关资源</p>`;
     html += `<button class="request-btn" onclick="sendToWechat('${keyword}')">求资源</button>`;
-    html += `<p style="color:#999;font-size:12px;margin-top:15px;">点击按钮发送需求到企业微信</p>`;
-    html += `<img src="/static/wechat_qrcode.png?t=${Date.now()}" alt="微信群二维码" onerror="this.style.display='none'" style="max-width:180px;margin-top:15px;border-radius:8px;">`;
-    html += `<p style="color:#999;font-size:12px;">或扫码加入微信群</p>`;
+    html += `<img src="/static/wechat_qrcode.png?t=${Date.now()}" alt="微信群二维码" onerror="this.style.display='none'" style="max-width:220px;margin-top:20px;border-radius:8px;">`;
+    html += `<p style="color:#999;font-size:12px;margin-top:10px;">扫码加入微信群获取资源</p>`;
     html += `</div>`;
     
     requestModalBody.innerHTML = html;
