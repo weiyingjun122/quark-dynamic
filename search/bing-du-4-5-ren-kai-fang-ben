@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病毒 4-5人开放本资源下载 - 实用资源整理站</title>
+    <meta name="description" content="免费提供病毒 4-5人开放本相关资源下载，共1个病毒 4-5人开放本相关资源。">
+    <meta name="keywords" content="病毒 4-5人开放本,资源下载,病毒 4-5人开放本下载,病毒 4-5人开放本资源">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.weiyingjun.top/search/bing-du-4-5-ren-kai-fang-ben">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f8f9fa; line-height: 1.6; color: #333; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; text-align: center; }
+        .keyword-title { font-size: 28px; margin-bottom: 10px; }
+        .stats { font-size: 16px; opacity: 0.9; }
+        .resource-item { background: white; border-radius: 10px; padding: 20px; margin: 20px 0; box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+        .resource-header { display: flex; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .resource-index { background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0; }
+        .resource-title { font-size: 20px; color: #333; flex-grow: 1; }
+        .highlight { color: #e74c3c; font-weight: bold; background: #ffebee; padding: 2px 6px; border-radius: 3px; }
+        .resource-content { display: none; }
+        .mobile .mobile-content { display: block !important; }
+        .mobile .desktop-content { display: none !important; }
+        .desktop .mobile-content { display: none !important; }
+        .desktop .desktop-content { display: block !important; }
+        .mobile-download { text-align: center; padding: 20px 0; }
+        .device-tip { color: #666; margin-bottom: 15px; font-size: 16px; }
+        .download-link { display: inline-block; background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%); color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; font-size: 16px; font-weight: bold; margin: 10px 0; transition: all 0.3s; }
+        .download-link:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3); }
+        .link-info { background: #f5f5f5; padding: 10px; border-radius: 6px; margin-top: 15px; font-size: 13px; color: #666; word-break: break-all; }
+        .desktop-download { text-align: center; padding: 20px 0; }
+        .qrcode-container { background: white; padding: 15px; border-radius: 8px; display: inline-block; box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin: 10px 0; }
+        .qrcode-img { width: 200px; height: 200px; object-fit: contain; }
+        .action-buttons { display: flex; justify-content: center; gap: 15px; margin: 30px 0; flex-wrap: wrap; }
+        .action-btn { background: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 50px; font-size: 14px; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .action-btn:hover { background: #0056b3; transform: translateY(-2px); }
+        .action-btn.secondary { background: #6c757d; }
+        .action-btn.secondary:hover { background: #545b62; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px; }
+        .footer-links { margin-top: 10px; }
+        .footer-links a { color: #667eea; text-decoration: none; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
+    </style>
+
+    <script>
+        function detectDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent.toLowerCase());
+            if (isMobile) {
+                document.body.classList.add('mobile');
+                document.body.classList.remove('desktop');
+            } else {
+                document.body.classList.add('desktop');
+                document.body.classList.remove('mobile');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            detectDevice();
+            window.addEventListener('resize', detectDevice);
+            const qrcodeImages = document.querySelectorAll('.qrcode-img');
+            qrcodeImages.forEach(img => {
+                img.onerror = function() {
+                    this.onerror = null;
+                    const container = this.parentNode;
+                    container.innerHTML = '<div style="padding:20px;color:#999;">二维码加载失败，请尝试其他资源</div>';
+                };
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1 class="keyword-title">"病毒 4-5人开放本" 资源免费下载</h1>
+        <div class="stats">
+            搜索热度: 45次 | 相关资源: 1个
+        </div>
+    </div>
+
+    <div class="resources-container">
+        <h2 style="text-align: center; margin: 20px 0; color: #444;">相关资源列表</h2>
+        
+        <div class="resource-item">
+            <div class="resource-header">
+                <span class="resource-index">1.</span>
+                <h3 class="resource-title"><span class="highlight">病毒 4-5人开放本</span></h3>
+            </div>
+            <div class="resource-content mobile-content">
+                <div class="mobile-download">
+                    <p class="device-tip">手机用户可直接下载</p>
+                    <a href="https://pan.quark.cn/s/cb0d8c38ffa0" class="download-link" target="_blank" rel="nofollow">
+                        打开APP保存
+                    </a>
+                    <div class="link-info">
+                        <small>下载链接: https://pan.quark.cn/s/cb0d8c38ffa0...</small>
+                    </div>
+                </div>
+            </div>
+            <div class="resource-content desktop-content">
+                <div class="desktop-download">
+                    <p class="device-tip">电脑用户请使用手机扫描二维码下载</p>
+                    <div class="qrcode-container">
+                        <img src="/static/qrcode/103.png" alt="下载二维码" class="qrcode-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="action-buttons">
+        <a href="/search/bing-du-4-5-ren-kai-fang-ben" class="action-btn">
+            搜索更多"病毒 4-5人开放本"资源
+        </a>
+        <a href="/search/" class="action-btn secondary">
+            查看所有热门关键词
+        </a>
+        <a href="/" class="action-btn secondary">
+            返回首页
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 实用资源整理站 | 生成时间: 2026-08-31 15:59</p>
+        <div class="footer-links">
+            <a href="/search/">所有热门关键词</a>
+            <a href="/">返回首页</a>
+        </div>
+        <p style="margin-top: 10px; font-size: 12px; color: #999;">
+            自动适配设备类型，手机显示下载链接，电脑显示二维码
+        </p>
+    </div>
+</body>
+</html>
