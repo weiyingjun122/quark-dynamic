@@ -158,7 +158,6 @@ jobs:
             git add update.json 2>/dev/null || true
             git add static/status.json 2>/dev/null || true
             git add static/qrcode/* 2>/dev/null || true
-            git add search/ 2>/dev/null || true
             git add check-word/ 2>/dev/null || true
             git add id-card/ 2>/dev/null || true
             git add random-group/ 2>/dev/null || true
@@ -182,7 +181,6 @@ jobs:
             git add chinese-converter/ 2>/dev/null || true
             git add text-replace/ 2>/dev/null || true
             git add quark/ 2>/dev/null || true
-            git add hot/ 2>/dev/null || true
             git add blog/ 2>/dev/null || true
 
             if ! git diff --cached --quiet; then
