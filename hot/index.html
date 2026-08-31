@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>夸克网盘热搜资源榜｜每日更新</title>
-<meta name="description" content="夸克网盘热门资源搜索榜，实时统计大家都在搜什么，学习资料、影视资源、考试资料一站直达。">
-<meta name="keywords" content="夸克网盘,夸克资源,夸克搜索,网盘资源,热搜榜">
+<title>热搜资源榜｜每日更新</title>
+<meta name="description" content="热门资源搜索榜，实时统计大家都在搜什么，学习资料、模板、工具一站直达。">
+<meta name="keywords" content="热搜榜,热门搜索,资源搜索,学习资料">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f6f7fb; margin: 0; padding: 20px; }
@@ -32,7 +32,7 @@ h1 { text-align: center; font-size: 22px; }
 </head>
 <body>
 <div class="container">
-    <h1>🔥 夸克网盘热搜资源榜</h1>
+    <h1>🔥 热搜资源榜</h1>
     <p class="subtitle">实时统计全站用户最常搜索的资源关键词</p>
 
     <div class="hot-list" id="hotList">
@@ -41,7 +41,7 @@ h1 { text-align: center; font-size: 22px; }
 
     <div class="footer">
         <p>数据来自全站用户搜索统计，每 5 分钟自动更新</p>
-        <a href="/">返回搜索首页</a>
+        <a href="/quark/">前往搜索</a> | <a href="/">返回首页</a>
     </div>
 </div>
 
@@ -75,7 +75,7 @@ function render(list) {
         html += `
         <div class="hot-item">
             <div class="rank ${rankClass}">${i + 1}</div>
-            <a href="/?q=${encodeURIComponent(item.word)}" title="${item.word} 夸克网盘资源">${item.word}</a>
+            <a href="/quark/?q=${encodeURIComponent(item.word)}" title="${item.word} 资源搜索">${item.word}</a>
             <span class="count">${item.count} 次</span>
             <span class="level">${item.level}</span>
         </div>`;

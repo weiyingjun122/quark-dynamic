@@ -46,6 +46,16 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .user-info .username { color: #333; font-size: 14px; }
 .user-info .logout-btn { padding: 4px 10px; background: #ff6b6b; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-size: 12px; }
 .transfer-count { font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; }
+#searchResults { width: 90%; max-width: 900px; margin: 20px auto; }
+.result-item { background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.result-item h3 { margin: 0 0 8px 0; font-size: 16px; color: #333; }
+.result-item p { margin: 0; font-size: 13px; color: #666; }
+.result-item a { color: #1e90ff; text-decoration: none; }
+.result-item a:hover { text-decoration: underline; }
+.btn { display: inline-block; margin-top: 10px; padding: 8px 16px; background: #1e90ff; color: #fff; border-radius: 5px; text-decoration: none; font-size: 14px; }
+.btn:hover { background: #0f78d1; }
+.hot-keyword { display: inline-block; padding: 6px 12px; margin: 4px; background: #f0f6ff; border-radius: 20px; cursor: pointer; color: #1e90ff; font-size: 14px; }
+.hot-keyword:hover { background: #1e90ff; color: #fff; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
@@ -72,6 +82,14 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <input type="text" id="searchInput" placeholder="请输入关键词搜索资源...">
     <button id="searchBtn">搜索</button>
 </div>
+<div id="hotKeywords" style="width:90%;max-width:900px;text-align:center;margin-bottom:20px;">
+    <span style="color:#999;font-size:13px;">热门搜索：</span>
+    <span class="hot-keyword" onclick="searchKeyword('PPT模板')">PPT模板</span>
+    <span class="hot-keyword" onclick="searchKeyword('简历模板')">简历模板</span>
+    <span class="hot-keyword" onclick="searchKeyword('Python教程')">Python教程</span>
+    <span class="hot-keyword" onclick="searchKeyword('PS教程')">PS教程</span>
+</div>
+<div id="searchResults"></div>
 <div id="modal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="document.getElementById('modal').style.display='none'">&times;</span>
@@ -89,6 +107,7 @@ let currentUser = null;
 const TOKEN_KEY = 'quark_user_token';
 const USER_KEY = 'quark_user_info';
 let modal, modalBody, authModal, authModalBody, userPanel;
+let allResources = [];
 
 function getStoredAuth() {
     const token = localStorage.getItem(TOKEN_KEY);
@@ -184,17 +203,53 @@ async function handleLogout() {
     clearAuth(); updateUserPanel();
 }
 
-let lastSearchKeyword = '';
-async function performSearch(keyword) {
-    if (!keyword) return;
-    lastSearchKeyword = keyword;
-    const auth = getStoredAuth();
-    if (!auth) { alert('请先登录后再搜索'); showAuthModal(); return; }
+async function loadResources() {
     try {
-        const res = await fetch('/api/search?q=' + encodeURIComponent(keyword), { headers: { 'Authorization': `Bearer ${auth.token}` } });
-        const data = await res.json();
-        if (data.success) { document.getElementById('modalBody').innerHTML = `<h3>搜索结果</h3><div style="text-align:left;margin-top:15px;">${data.results.map(r => `<p><a href="${r.url}" target="_blank">${r.name}</a></p>`).join('')}</div>`; modal.style.display = 'flex'; } else { alert(data.error || '搜索失败'); }
-    } catch (e) { alert('网络错误: ' + e.message); }
+        const res = await fetch('/data.json');
+        allResources = await res.json();
+        console.log('加载资源:', allResources.length, '条');
+    } catch (e) {
+        console.error('加载资源失败:', e);
+        allResources = [];
+    }
+}
+
+function searchKeyword(keyword) {
+    document.getElementById('searchInput').value = keyword;
+    performSearch();
+}
+
+function performSearch() {
+    const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (!keyword) { document.getElementById('searchResults').innerHTML = ''; return; }
+    
+    const results = allResources.filter(item => {
+        const title = (item.title || '').toLowerCase();
+        const keywords = (item.keywords || []).join(' ').toLowerCase();
+        const aliases = (item.search_aliases || []).join(' ').toLowerCase();
+        return title.includes(keyword) || keywords.includes(keyword) || aliases.includes(keyword);
+    });
+    
+    const resultsDiv = document.getElementById('searchResults');
+    if (results.length === 0) {
+        resultsDiv.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">未找到相关资源</div>';
+        return;
+    }
+    
+    let html = `<div style="margin-bottom:10px;color:#666;font-size:14px;">找到 ${results.length} 个结果</div>`;
+    results.forEach(item => {
+        const title = item.title || '未知资源';
+        const type = item.type || '';
+        const shareUrl = item.share_url || item.url || '#';
+        html += `<div class="result-item">
+            <h3>${title} ${type ? '<span style="font-size:12px;color:#999;background:#f0f0f0;padding:2px 6px;border-radius:4px;">' + type + '</span>' : ''}</h3>
+            <a href="${shareUrl}" target="_blank" class="btn">打开链接</a>
+        </div>`;
+    });
+    resultsDiv.innerHTML = html;
+    
+    // 记录搜索
+    fetch('/api/record', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: keyword }) }).catch(() => {});
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -204,11 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
     authModalBody = document.getElementById('authModalBody');
     userPanel = document.getElementById('userPanel');
     updateUserPanel();
-    document.getElementById('searchBtn').addEventListener('click', () => performSearch(document.getElementById('searchInput').value.trim()));
-    document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') document.getElementById('searchBtn').click(); });
+    loadResources();
+    
+    document.getElementById('searchBtn').addEventListener('click', performSearch);
+    document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') performSearch(); });
+    
     const urlParams = new URLSearchParams(window.location.search);
     const q = urlParams.get('q');
-    if (q) { document.getElementById('searchInput').value = q; setTimeout(() => performSearch(q), 200); }
+    if (q) { document.getElementById('searchInput').value = q; setTimeout(performSearch, 500); }
 });
 </script>
 </body>
