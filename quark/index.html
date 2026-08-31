@@ -353,7 +353,7 @@ function showRequestModal(keyword) {
     html += `<p style="color:#666;font-size:14px;margin-bottom:10px;">抱歉，没有找到"${keyword}"相关资源</p>`;
     html += `<button class="request-btn" onclick="sendToWechat('${keyword}')">求资源</button>`;
     html += `<p style="color:#999;font-size:12px;margin-top:15px;">点击按钮发送需求到企业微信</p>`;
-    html += `<img src="/static/wechat_qrcode.png" alt="微信群二维码" onerror="this.style.display='none'" style="max-width:180px;margin-top:15px;border-radius:8px;">`;
+    html += `<img src="/static/wechat_qrcode.png?t=${Date.now()}" alt="微信群二维码" onerror="this.style.display='none'" style="max-width:180px;margin-top:15px;border-radius:8px;">`;
     html += `<p style="color:#999;font-size:12px;">或扫码加入微信群</p>`;
     html += `</div>`;
     
