@@ -74,12 +74,13 @@ def get_qrcode_url(resource):
 
 def generate_seo_page(keyword, count, resources):
     """生成单个关键词的SEO页面"""
-    # 生成安全的文件名
+    # 生成安全的文件名（使用URL编码避免中文文件名问题）
     safe_filename = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '', keyword)
     safe_filename = re.sub(r'\s+', '_', safe_filename.strip())
     if not safe_filename:
         safe_filename = f"keyword_{hash(keyword) % 10000}"
-    safe_filename += ".html"
+    # 对文件名进行URL编码
+    safe_filename = quote(safe_filename) + ".html"
     
     # 生成资源列表
     resource_items = ""
