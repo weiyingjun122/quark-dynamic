@@ -83,7 +83,7 @@ def generate_seo_page(keyword, count, resources, used_slugs=None):
             slug = f"{original_slug}-{counter}"
             counter += 1
         used_slugs.add(slug)
-    safe_filename = slug + ".html"
+    safe_filename = slug + ".htm"
 
     resource_items = ""
     for i, resource in enumerate(resources[:CONFIG['seo']['max_resources']], 1):
@@ -391,7 +391,7 @@ def generate_sitemap(generated_pages):
 
     search_dir = CONFIG['local']['output_dir']
     exclude_files = {'index.html', 'sitemap.xml'}
-    all_files = sorted([f for f in os.listdir(search_dir) if f not in exclude_files and f.endswith('.html') and os.path.isfile(os.path.join(search_dir, f))])
+    all_files = sorted([f for f in os.listdir(search_dir) if f not in exclude_files and f.endswith('.htm') and os.path.isfile(os.path.join(search_dir, f))])
 
     for filename in all_files:
         sitemap += f'''
