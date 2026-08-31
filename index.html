@@ -716,7 +716,7 @@ async function performSearch(keyword) {
     // 1. 修改 URL
     const newUrl = `?q=${encodeURIComponent(keyword)}`;
     window.history.pushState({path:newUrl}, '', newUrl);
-    document.title = `${keyword} - 夸克资源搜索`;
+    document.title = `${keyword} - 资源搜索`;
 
     // 2. 上报统计到 Pages API
     console.log('📊 发送统计请求...');
@@ -875,11 +875,11 @@ async function handleViewResource(el) {
     if (isMobile) {
         detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
             <p style="color:#666;margin:15px 0;">请点击下方按钮访问资源</p>
-            <a href="${shareLink}" target="_blank" class="btn">打开夸克APP保存</a>`;
+            <a href="${shareLink}" target="_blank" class="btn">打开链接</a>`;
     } else {
         if (qrCode) {
             detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
-                <p style="color:#666;">请使用夸克或微信扫描下方二维码用手机访问资源</p>
+                <p style="color:#666;">请使用微信或浏览器扫描下方二维码用手机访问资源</p>
                 <img src="${qrCode}" style="width:200px;height:200px;display:block;margin:10px auto;">`;
         } else {
             detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>

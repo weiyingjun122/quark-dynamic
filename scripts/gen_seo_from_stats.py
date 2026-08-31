@@ -29,7 +29,7 @@ CONFIG = {
         "qrcode_dir": os.path.join(PROJECT_ROOT, "static/qrcode")  # 修复路径
     },
     "seo": {
-        "site_name": "夸克网盘资源搜索",
+        "site_name": "实用资源整理站",
         "site_url": "https://www.weiyingjun.top",
         "max_resources": 20
     }
@@ -108,7 +108,7 @@ def generate_seo_page(keyword, count, resources):
                 <div class="mobile-download">
                     <p class="device-tip">📱 手机用户可直接下载</p>
                     <a href="{link}" class="download-link" target="_blank" rel="nofollow">
-                        打开夸克APP保存
+                        打开链接
                     </a>
                     <div class="link-info">
                         <small>下载链接: {link[:50]}...</small>
@@ -119,7 +119,7 @@ def generate_seo_page(keyword, count, resources):
             <!-- 电脑端内容（默认隐藏，手机隐藏） -->
             <div class="resource-content desktop-content">
                 <div class="desktop-download">
-                    <p class="device-tip">💻 电脑用户请使用夸克或微信扫描二维码下载</p>
+                    <p class="device-tip">💻 电脑用户请使用微信或浏览器扫描二维码下载</p>
                     <div class="qrcode-container">
                         <img src="{qrcode_url}" alt="下载二维码" class="qrcode-img">
                     </div>
@@ -136,7 +136,7 @@ def generate_seo_page(keyword, count, resources):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{keyword}资源下载 - {CONFIG['seo']['site_name']}</title>
     <meta name="description" content="免费提供{keyword}相关资源下载，共{len(resources)}个{keyword}相关资源。">
-    <meta name="keywords" content="{keyword},夸克网盘,{keyword}下载,{keyword}资源">
+    <meta name="keywords" content="{keyword},资源下载,{keyword}下载,{keyword}资源">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{CONFIG['seo']['site_url']}/search/{safe_filename}">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
@@ -538,7 +538,7 @@ def generate_index_page(generated_pages):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>热门搜索关键词 - 夸克网盘资源</title>
+    <title>热门搜索关键词 - 实用资源整理站</title>
     <meta name="description" content="根据用户搜索热度自动生成的热门关键词资源页面。">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
     <style>
