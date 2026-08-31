@@ -55,7 +55,6 @@ on:
       - 'blog/**'
       - 'tools/**'
       - 'functions/**'
-      - 'search/**'
       - '_routes.json'
       - '_redirects'
   # 已停用内置 schedule（不可靠，改为 cron-job.org 每天 11:00 触发 workflow_dispatch）
@@ -115,16 +114,16 @@ jobs:
           python build_update.py
           cd ..
 
-      # 6️⃣ 生成 SEO 页面
-      - name: Generate SEO Pages
-        run: |
-          echo "开始生成 SEO 页面..."
-          ROOT_DIR=$(pwd)
-          mkdir -p "$ROOT_DIR/search"
-          cd scripts
-          python gen_seo_from_stats.py
-          cd ..
-          echo "SEO 页面生成完成"
+      # 6️⃣ 生成 SEO 页面（已停用 - 搜索页移至子域名）
+      # - name: Generate SEO Pages
+      #   run: |
+      #     echo "开始生成 SEO 页面..."
+      #     ROOT_DIR=$(pwd)
+      #     mkdir -p "$ROOT_DIR/search"
+      #     cd scripts
+      #     python gen_seo_from_stats.py
+      #     cd ..
+      #     echo "SEO 页面生成完成"
 
       # 7️⃣ 同步违禁词库（uutool -> check-word/word/）
       - name: Sync check-word library (uutool)

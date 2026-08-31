@@ -12,11 +12,6 @@
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://www.weiyingjun.top/hot/</loc>
-        <changefreq>daily</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
         <loc>https://www.weiyingjun.top/about</loc>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
