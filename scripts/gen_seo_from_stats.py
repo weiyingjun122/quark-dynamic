@@ -74,13 +74,15 @@ def get_qrcode_url(resource):
 
 def generate_seo_page(keyword, count, resources):
     """生成单个关键词的SEO页面"""
-    # 生成安全的文件名（使用URL编码避免中文文件名问题）
+    # 生成安全的文件名（用于磁盘存储）
     safe_filename = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '', keyword)
     safe_filename = re.sub(r'\s+', '_', safe_filename.strip())
     if not safe_filename:
         safe_filename = f"keyword_{hash(keyword) % 10000}"
-    # 对文件名进行URL编码
-    safe_filename = quote(safe_filename) + ".html"
+    # URL编码文件名用于磁盘存储
+    url_encoded_filename = quote(safe_filename) + ".html"
+    # 中文文件名用于href（浏览器会自动编码）
+    display_filename = safe_filename + ".html"
     
     # 生成资源列表
     resource_items = ""
@@ -139,7 +141,7 @@ def generate_seo_page(keyword, count, resources):
     <meta name="description" content="免费提供{keyword}相关资源下载，共{len(resources)}个{keyword}相关资源。">
     <meta name="keywords" content="{keyword},资源下载,{keyword}下载,{keyword}资源">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{CONFIG['seo']['site_url']}/search/{safe_filename}">
+    <link rel="canonical" href="{CONFIG['seo']['site_url']}/search/{url_encoded_filename}">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
     
     <style>
@@ -515,8 +517,8 @@ def generate_seo_page(keyword, count, resources):
 </body>
 </html>"""
     
-    # 保存文件
-    output_path = os.path.join(CONFIG['local']['output_dir'], safe_filename)
+    # 保存文件（使用URL编码的文件名）
+    output_path = os.path.join(CONFIG['local']['output_dir'], url_encoded_filename)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -526,8 +528,8 @@ def generate_seo_page(keyword, count, resources):
         'keyword': keyword,
         'count': count,
         'resource_count': len(resources),
-        'file': safe_filename,
-        'url': f"/search/{safe_filename}"
+        'file': display_filename,  # 用于href的中文文件名
+        'url': f"/search/{quote(keyword)}.html"
     }
 
 # ==================== 索引和站点地图函数 ====================
