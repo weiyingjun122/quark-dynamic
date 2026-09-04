@@ -6821,5 +6821,16 @@
     "share_link": "https://pan.quark.cn/s/869c0d46cdbb",
     "qrcode": "static/qrcode/568.png",
     "type": "学习资料"
+  },
+  {
+    "id": "569",
+    "title": "飞哥与小佛",
+    "keywords": [
+      "动漫"
+    ],
+    "search_aliases": [],
+    "share_link": "https://pan.quark.cn/s/51df7e9e2745",
+    "qrcode": "static/qrcode/569.png",
+    "type": "动漫"
   }
 ]
