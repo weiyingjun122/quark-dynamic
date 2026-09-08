@@ -110,6 +110,13 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .fav-overlay.show { display: block; }
 .user-panel .fav-link { cursor: pointer; color: #1e90ff; font-size: 12px; margin-left: 8px; }
 .user-panel .fav-link:hover { text-decoration: underline; }
+.random-btn { display: inline-block; padding: 6px 14px; background: #fff; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; color: #666; font-size: 13px; transition: all 0.2s; margin-bottom: 8px; }
+.random-btn:hover { border-color: #1e90ff; color: #1e90ff; }
+.guess-list { text-align: left; margin-top: 15px; }
+.guess-title { font-size: 13px; color: #999; margin-bottom: 8px; }
+.guess-item { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 14px; color: #333; transition: background 0.2s; }
+.guess-item:hover { background: #f8f9fa; color: #1e90ff; }
+.view-count { font-size: 11px; color: #999; margin-top: 5px; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
@@ -135,6 +142,9 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 <div class="search-container">
     <input type="text" id="searchInput" placeholder="请输入关键词搜索资源...">
     <button id="searchBtn">搜索</button>
+</div>
+<div style="text-align:center;margin-bottom:8px;">
+    <button class="random-btn" onclick="randomRecommend()">🎲 随机推荐</button>
 </div>
 <div class="category-nav" id="categoryNav">
     <span class="category-tag active" data-category="all" onclick="filterByCategory('all', this)">全部</span>
@@ -344,6 +354,59 @@ function removeFavorite(id, el) {
     }
 }
 
+function randomRecommend() {
+    if (!resourcesLoaded || allResources.length === 0) {
+        alert('资源加载中，请稍后再试');
+        return;
+    }
+    const randomIndex = Math.floor(Math.random() * allResources.length);
+    const item = allResources[randomIndex];
+    const auth = getStoredAuth();
+    if (!auth) {
+        showAuthModal();
+        return;
+    }
+    checkAndViewResource(item);
+}
+
+const VIEW_KEY = 'quark_view_counts';
+
+function getViewCounts() {
+    try {
+        return JSON.parse(localStorage.getItem(VIEW_KEY) || '{}');
+    } catch {
+        return {};
+    }
+}
+
+function getViewCount(id) {
+    const counts = getViewCounts();
+    const base = Math.floor(Math.random() * 50) + 10;
+    return (counts[id] || 0) + base;
+}
+
+function recordView(id) {
+    const counts = getViewCounts();
+    counts[id] = (counts[id] || 0) + 1;
+    localStorage.setItem(VIEW_KEY, JSON.stringify(counts));
+}
+
+function getGuessList(keyword) {
+    if (!resourcesLoaded || allResources.length === 0) return [];
+    const lowerKeyword = (keyword || '').toLowerCase();
+    let pool = allResources;
+    if (lowerKeyword) {
+        pool = allResources.filter(item => {
+            const title = (item.title || '').toLowerCase();
+            const keywords = (item.keywords || []).join(' ').toLowerCase();
+            return title.includes(lowerKeyword) || keywords.includes(lowerKeyword);
+        });
+    }
+    if (pool.length === 0) pool = allResources;
+    const shuffled = pool.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 5);
+}
+
 let currentCategory = 'all';
 let currentCount = 'all';
 let resourcesLoaded = false;
@@ -551,6 +614,17 @@ function performSearch() {
     fetch('/api/record', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: keyword }) }).catch(() => {});
 }
 
+let searchTimer = null;
+function debounceSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        const keyword = document.getElementById('searchInput').value.trim();
+        if (keyword && keyword.length >= 2) {
+            performSearch();
+        }
+    }, 300);
+}
+
 function showResultModal(results, keyword) {
     let html = `<h3 style="margin-top:0;color:#333;">找到 ${results.length} 个相关资源</h3>`;
     html += `<p style="color:#666;font-size:13px;margin-bottom:10px;">关键词：${keyword}</p>`;
@@ -633,9 +707,11 @@ function showQrModal(item) {
     const title = item.title || '未知资源';
     const qrcode = item.qrcode || '';
     const shareLink = item.share_link || '#';
+    const viewCount = getViewCount(item.id);
     
     let html = `<div class="qr-modal-body">`;
     html += `<h3 style="margin-top:0;color:#333;font-size:16px;">${title}</h3>`;
+    html += `<div class="view-count">已有 ${viewCount} 人查看</div>`;
     
     if (qrcode) {
         html += `<img src="/${qrcode}" alt="扫码获取">`;
@@ -648,15 +724,27 @@ function showQrModal(item) {
     html += `</div>`;
     qrModalBody.innerHTML = html;
     qrModal.style.display = 'flex';
+    recordView(item.id);
 }
 
 function showRequestModal(keyword) {
+    const guessList = getGuessList(keyword);
     let html = `<div class="request-modal-body">`;
     html += `<h3 style="margin-top:0;color:#333;">未找到相关资源</h3>`;
     html += `<p style="color:#666;font-size:14px;margin-bottom:15px;">抱歉，没有找到"${keyword}"相关资源</p>`;
-    html += `<button class="request-btn" onclick="sendToWechat('${keyword}')">求资源</button>`;
+    html += `<button class="request-btn" onclick="sendToWechat('${keyword.replace(/'/g, "\\'")}')">求资源</button>`;
     html += `<img src="/static/wechat_qrcode.png?t=${Date.now()}" alt="微信群二维码" onerror="this.style.display='none'">`;
     html += `<p style="color:#999;font-size:12px;margin-top:10px;">扫码加入微信群获取资源</p>`;
+    
+    if (guessList.length > 0) {
+        html += `<div class="guess-list">`;
+        html += `<div class="guess-title">猜你想搜：</div>`;
+        guessList.forEach(item => {
+            html += `<div class="guess-item" onclick="closeModal('requestModal');searchKeyword('${(item.title || '').replace(/'/g, "\\'")}')">${item.title || '未知资源'}</div>`;
+        });
+        html += `</div>`;
+    }
+    
     html += `</div>`;
     
     requestModalBody.innerHTML = html;
@@ -702,6 +790,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('searchBtn').addEventListener('click', performSearch);
     document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') performSearch(); });
+    document.getElementById('searchInput').addEventListener('input', debounceSearch);
     
     const urlParams = new URLSearchParams(window.location.search);
     const q = urlParams.get('q');
