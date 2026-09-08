@@ -144,14 +144,7 @@ async function loadTodayUpdates() {
     try {
         const res = await fetch('/update.json');
         const updates = await res.json();
-        const now = new Date();
-        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        todayUpdates = updates.filter(item => {
-            if (!item.date) return false;
-            const d = new Date(item.date);
-            return d >= weekAgo && d <= now;
-        });
-        todayUpdates.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        todayUpdates = updates.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         if (todayUpdates.length > 0) {
             const hint = document.getElementById('updateHint');
             const countText = document.getElementById('updateCountText');
