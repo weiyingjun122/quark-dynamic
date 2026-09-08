@@ -62,6 +62,18 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .request-modal-body img { max-width: 220px; border-radius: 8px; margin: 15px auto; display: block; }
 .request-btn { display: inline-block; padding: 12px 30px; background: #07c160; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; transition: background 0.3s; margin: 10px auto; }
 .request-btn:hover { background: #06ad56; }
+.update-hint { text-align: center; margin-bottom: 8px; width: 90%; max-width: 480px; }
+.update-hint-text { font-size: 13px; color: #1e90ff; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 15px; background: #f0f6ff; transition: all 0.2s; }
+.update-hint-text:hover { background: #1e90ff; color: #fff; }
+.update-hint-text .arrow-icon { display: inline-block; transition: transform 0.2s; margin-left: 4px; }
+.update-hint-text.expanded .arrow-icon { transform: rotate(180deg); }
+.update-list { display: none; margin-top: 8px; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; width: 100%; }
+.update-list.show { display: block; }
+.update-item { padding: 10px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.2s; }
+.update-item:last-child { border-bottom: none; }
+.update-item:hover { background: #f8f9fa; }
+.update-item .name { font-size: 14px; color: #333; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.update-item .type { font-size: 11px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
@@ -87,6 +99,13 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 <div class="search-container">
     <input type="text" id="searchInput" placeholder="请输入关键词搜索资源...">
     <button id="searchBtn">搜索</button>
+</div>
+<div class="update-hint" id="updateHint" style="display:none;">
+    <span class="update-hint-text" id="updateHintText" onclick="toggleUpdateList()">
+        <span id="updateCountText"></span>
+        <span class="arrow-icon">▼</span>
+    </span>
+    <div class="update-list" id="updateList"></div>
 </div>
 <div id="resultModal" class="modal">
     <div class="modal-content" style="width:480px;border:2px solid #1e90ff;">
@@ -118,7 +137,45 @@ const TOKEN_KEY = 'quark_user_token';
 const USER_KEY = 'quark_user_info';
 let resultModal, resultModalBody, qrModal, qrModalBody, requestModal, requestModalBody, authModal, authModalBody, userPanel;
 let allResources = [];
+let todayUpdates = [];
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+async function loadTodayUpdates() {
+    try {
+        const res = await fetch('/update.json');
+        const updates = await res.json();
+        const today = new Date().toISOString().slice(0, 10);
+        todayUpdates = updates.filter(item => item.date === today);
+        if (todayUpdates.length > 0) {
+            const hint = document.getElementById('updateHint');
+            const countText = document.getElementById('updateCountText');
+            const list = document.getElementById('updateList');
+            countText.textContent = `今日更新 ${todayUpdates.length} 个资源`;
+            list.innerHTML = todayUpdates.map((item, i) => `
+                <div class="update-item" onclick="searchKeyword('${(item.name || '').replace(/'/g, "\\'")}')">
+                    <span class="name">${item.name || '未知资源'}</span>
+                    ${item.type ? '<span class="type">' + item.type + '</span>' : ''}
+                </div>
+            `).join('');
+            hint.style.display = 'block';
+        }
+    } catch (e) {
+        console.warn('加载今日更新失败:', e.message);
+    }
+}
+
+function toggleUpdateList() {
+    const list = document.getElementById('updateList');
+    const text = document.getElementById('updateHintText');
+    const isShow = list.classList.contains('show');
+    if (isShow) {
+        list.classList.remove('show');
+        text.classList.remove('expanded');
+    } else {
+        list.classList.add('show');
+        text.classList.add('expanded');
+    }
+}
 
 function getStoredAuth() {
     const token = localStorage.getItem(TOKEN_KEY);
@@ -387,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
     userPanel = document.getElementById('userPanel');
     updateUserPanel();
     loadResources();
+    loadTodayUpdates();
     
     document.getElementById('searchBtn').addEventListener('click', performSearch);
     document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') performSearch(); });
