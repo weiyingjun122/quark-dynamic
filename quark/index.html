@@ -450,11 +450,7 @@ async function checkAndViewResource(item) {
         const data = await res.json();
         
         if (data.success && data.allowed) {
-            if (isMobile) {
-                window.open(item.share_link || '#', '_blank');
-            } else {
-                showQrModal(item);
-            }
+            showQrModal(item);
             updateTransferStatus();
         } else {
             alert(data.error || '今天查看次数已用完，明天再来吧！');
@@ -475,10 +471,10 @@ function showQrModal(item) {
     if (qrcode) {
         html += `<img src="/${qrcode}" alt="扫码获取">`;
         html += `<div class="hint">打开手机夸克 → 扫一扫 → 保存资源</div>`;
-    } else {
-        html += `<p style="color:#999;">暂无二维码</p>`;
-        html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:10px;padding:10px 20px;background:#1e90ff;color:#fff;border-radius:5px;text-decoration:none;">直接打开链接</a>`;
     }
+    
+    html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:12px;padding:12px 24px;background:#1e90ff;color:#fff;border-radius:25px;text-decoration:none;font-size:14px;">打开夸克网盘链接</a>`;
+    html += `<div style="margin-top:15px;"><button onclick="closeModal('qrModal')" style="padding:8px 20px;background:#f0f0f0;color:#666;border:none;border-radius:20px;cursor:pointer;font-size:13px;">返回继续搜索</button></div>`;
     
     html += `</div>`;
     qrModalBody.innerHTML = html;
