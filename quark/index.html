@@ -713,7 +713,6 @@ function showQrModal(item) {
     const viewCount = getViewCount(item.id);
     
     let html = `<div class="qr-modal-body">`;
-    html += `<div style="font-size:10px;color:#ccc;margin-bottom:5px;">debug: isMobile=${isMobile}</div>`;
     html += `<h3 style="margin-top:0;color:#333;font-size:16px;">${title}</h3>`;
     html += `<div class="view-count">已有 ${viewCount} 人查看</div>`;
     
@@ -805,8 +804,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const q = urlParams.get('q');
     if (q) { document.getElementById('searchInput').value = q; setTimeout(performSearch, 500); }
-    
-    console.log('[Quark] Version 2.1 | isMobile:', isMobile, '| UA:', navigator.userAgent);
 });
 </script>
 </body>
