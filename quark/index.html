@@ -90,6 +90,26 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .history-tag:hover { border-color: #1e90ff; color: #1e90ff; }
 .history-clear { padding: 4px 10px; background: none; border: none; cursor: pointer; color: #999; font-size: 12px; }
 .history-clear:hover { color: #e74c3c; }
+.fav-btn { background: none; border: none; cursor: pointer; font-size: 18px; color: #ddd; transition: color 0.2s; padding: 0 4px; }
+.fav-btn:hover { color: #e74c3c; }
+.fav-btn.active { color: #e74c3c; }
+.fav-panel { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #fff; box-shadow: -2px 0 12px rgba(0,0,0,0.15); z-index: 10001; transition: right 0.3s; display: flex; flex-direction: column; }
+.fav-panel.show { right: 0; }
+.fav-panel-header { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+.fav-panel-header h3 { margin: 0; font-size: 16px; color: #333; }
+.fav-panel-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
+.fav-panel-body { flex: 1; overflow-y: auto; padding: 10px; }
+.fav-item { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+.fav-item:hover { background: #f8f9fa; }
+.fav-item .name { font-size: 14px; color: #333; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fav-item .type { font-size: 11px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+.fav-item .fav-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; margin-left: 8px; }
+.fav-item .fav-remove:hover { color: #e74c3c; }
+.fav-empty { text-align: center; color: #999; padding: 40px 0; font-size: 14px; }
+.fav-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 10000; }
+.fav-overlay.show { display: block; }
+.user-panel .fav-link { cursor: pointer; color: #1e90ff; font-size: 12px; margin-left: 8px; }
+.user-panel .fav-link:hover { text-decoration: underline; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
@@ -170,6 +190,14 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
         <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
         <div id="authModalBody"></div>
     </div>
+</div>
+<div class="fav-overlay" id="favOverlay" onclick="closeFavPanel()"></div>
+<div class="fav-panel" id="favPanel">
+    <div class="fav-panel-header">
+        <h3>我的收藏</h3>
+        <button class="fav-panel-close" onclick="closeFavPanel()">&times;</button>
+    </div>
+    <div class="fav-panel-body" id="favPanelBody"></div>
 </div>
 <script>
 let currentUser = null;
@@ -253,6 +281,67 @@ function renderSearchHistory() {
         history.map(kw => `<span class="history-tag" onclick="searchKeyword('${kw.replace(/'/g, "\\'")}')">${kw}</span>`).join('') +
         `<button class="history-clear" onclick="clearSearchHistory()">清除</button>`;
     container.classList.add('show');
+}
+
+const FAV_KEY = 'quark_favorites';
+
+function getFavorites() {
+    try {
+        return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    } catch {
+        return [];
+    }
+}
+
+function isFavorite(id) {
+    return getFavorites().some(item => item.id === id);
+}
+
+function toggleFavorite(id, title, type, el) {
+    let favs = getFavorites();
+    const index = favs.findIndex(item => item.id === id);
+    if (index >= 0) {
+        favs.splice(index, 1);
+        if (el) el.classList.remove('active');
+    } else {
+        favs.push({ id, title, type });
+        if (el) el.classList.add('active');
+    }
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+}
+
+function openFavPanel() {
+    const favs = getFavorites();
+    const body = document.getElementById('favPanelBody');
+    if (favs.length === 0) {
+        body.innerHTML = `<div class="fav-empty">暂无收藏资源</div>`;
+    } else {
+        body.innerHTML = favs.map(item => `
+            <div class="fav-item">
+                <span class="name" onclick="searchKeyword('${(item.title || '').replace(/'/g, "\\'")}')">${item.title || '未知资源'}</span>
+                ${item.type ? '<span class="type">' + item.type + '</span>' : ''}
+                <button class="fav-remove" onclick="removeFavorite('${item.id}', this)" title="取消收藏">&times;</button>
+            </div>
+        `).join('');
+    }
+    document.getElementById('favPanel').classList.add('show');
+    document.getElementById('favOverlay').classList.add('show');
+}
+
+function closeFavPanel() {
+    document.getElementById('favPanel').classList.remove('show');
+    document.getElementById('favOverlay').classList.remove('show');
+}
+
+function removeFavorite(id, el) {
+    let favs = getFavorites();
+    favs = favs.filter(item => item.id !== id);
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    const item = el.closest('.fav-item');
+    if (item) item.remove();
+    if (favs.length === 0) {
+        document.getElementById('favPanelBody').innerHTML = `<div class="fav-empty">暂无收藏资源</div>`;
+    }
 }
 
 let currentCategory = 'all';
@@ -339,7 +428,7 @@ function updateUserPanel() {
         const isVip = auth.user.isVip;
         const vipTag = isVip ? '<span style="background:gold;color:#333;padding:2px 8px;border-radius:10px;font-size:12px;margin-left:5px;">VIP</span>' : '';
         const transferInfo = isVip ? '<span class="transfer-count" style="background:gold;color:#333;">VIP无限次数</span>' : '<span class="transfer-count" id="transferCount">今日剩余: --</span>';
-        userPanel.innerHTML = `<div class="user-info"><span class="username">${auth.user.username}</span>${vipTag}${transferInfo}<button class="logout-btn" onclick="handleLogout()">登出</button></div>`;
+        userPanel.innerHTML = `<div class="user-info"><span class="username">${auth.user.username}</span>${vipTag}${transferInfo}<span class="fav-link" onclick="openFavPanel()">我的收藏</span><button class="logout-btn" onclick="handleLogout()">登出</button></div>`;
         if (!isVip) updateTransferStatus();
     } else {
         userPanel.innerHTML = `<button class="user-btn" id="userBtn" onclick="showAuthModal()">登录/注册</button>`;
@@ -472,17 +561,19 @@ function showResultModal(results, keyword) {
         const type = item.type || '';
         const count = item.count;
         const keywords = (item.keywords || []).slice(0, 3).join(' · ');
+        const isFav = isFavorite(item.id);
         let desc = '';
         if (type === '剧本杀' && count) {
             desc = `<span style="font-size:11px;color:#e74c3c;margin-left:6px;">${count}人本</span>`;
         } else if (keywords) {
             desc = `<span style="font-size:11px;color:#999;margin-left:6px;">${keywords}</span>`;
         }
-        html += `<div class="title-item" onclick="handleTitleClick(${index})">
-            <span class="name">${title}</span>
+        html += `<div class="title-item">
+            <span class="name" onclick="handleTitleClick(${index})">${title}</span>
             ${type ? '<span class="type">' + type + '</span>' : ''}
             ${desc}
-            <span class="arrow">›</span>
+            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${item.id}','${(title).replace(/'/g, "\\'")}','${type}',this)" title="收藏">♥</button>
+            <span class="arrow" onclick="handleTitleClick(${index})">›</span>
         </div>`;
     });
     
