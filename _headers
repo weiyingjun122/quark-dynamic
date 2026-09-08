@@ -20,7 +20,8 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /*.html
-  Cache-Control: public, max-age=300
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  Pragma: no-cache
 
 /*.css
   Cache-Control: public, max-age=86400
