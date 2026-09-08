@@ -142,7 +142,7 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 
 async function loadTodayUpdates() {
     try {
-        const res = await fetch('/update.json');
+        const res = await fetch('/update.json?v=' + Date.now());
         const updates = await res.json();
         todayUpdates = updates.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         if (todayUpdates.length > 0) {
@@ -276,7 +276,7 @@ async function handleLogout() {
 
 async function loadResources() {
     try {
-        const res = await fetch('/data.json');
+        const res = await fetch('/data.json?v=' + Date.now());
         allResources = await res.json();
     } catch (e) {
         allResources = [];
