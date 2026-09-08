@@ -608,7 +608,7 @@ function performSearch() {
     
     if (results.length > 0) {
         showResultModal(results, keyword);
-    } else {
+    } else if (isManualSearch) {
         showRequestModal(keyword);
     }
     
@@ -616,8 +616,10 @@ function performSearch() {
 }
 
 let searchTimer = null;
+let isManualSearch = false;
 function debounceSearch() {
     clearTimeout(searchTimer);
+    isManualSearch = false;
     searchTimer = setTimeout(() => {
         const keyword = document.getElementById('searchInput').value.trim();
         if (keyword && keyword.length >= 2) {
@@ -709,16 +711,12 @@ function showQrModal(item) {
     const qrcode = item.qrcode || '';
     const shareLink = item.share_link || '#';
     const viewCount = getViewCount(item.id);
-    const ua = navigator.userAgent;
-    const isIOS = /iPad|iPhone|iPod/.test(ua);
-    const isAndroid = /Android/.test(ua);
-    const isMobileDevice = isIOS || isAndroid || /Mobile/.test(ua);
     
     let html = `<div class="qr-modal-body">`;
     html += `<h3 style="margin-top:0;color:#333;font-size:16px;">${title}</h3>`;
     html += `<div class="view-count">已有 ${viewCount} 人查看</div>`;
     
-    if (isMobileDevice) {
+    if (isMobile) {
         html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:15px;padding:14px 28px;background:#1e90ff;color:#fff;border-radius:25px;text-decoration:none;font-size:15px;">打开夸克网盘链接</a>`;
         html += `<div class="hint" style="margin-top:10px;">点击链接直接转存资源</div>`;
     } else {
@@ -799,8 +797,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTodayUpdates();
     renderSearchHistory();
     
-    document.getElementById('searchBtn').addEventListener('click', performSearch);
-    document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') performSearch(); });
+    document.getElementById('searchBtn').addEventListener('click', () => { isManualSearch = true; clearTimeout(searchTimer); performSearch(); });
+    document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') { isManualSearch = true; clearTimeout(searchTimer); performSearch(); } });
     document.getElementById('searchInput').addEventListener('input', debounceSearch);
     
     const urlParams = new URLSearchParams(window.location.search);
