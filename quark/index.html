@@ -208,6 +208,7 @@ function toggleUpdateList() {
 
 let currentCategory = 'all';
 let currentCount = 'all';
+let resourcesLoaded = false;
 
 function filterByCategory(category, el) {
     currentCategory = category;
@@ -239,6 +240,11 @@ function browseByFilter() {
     const keyword = document.getElementById('searchInput').value.trim();
     if (keyword) {
         performSearch();
+        return;
+    }
+    
+    if (!resourcesLoaded) {
+        alert('资源加载中，请稍后再试');
         return;
     }
     
@@ -359,8 +365,10 @@ async function loadResources() {
     try {
         const res = await fetch('/data.json?v=' + Date.now());
         allResources = await res.json();
+        resourcesLoaded = true;
     } catch (e) {
         allResources = [];
+        resourcesLoaded = true;
     }
 }
 
@@ -372,6 +380,11 @@ function searchKeyword(keyword) {
 function performSearch() {
     const keyword = document.getElementById('searchInput').value.trim();
     if (!keyword) return;
+    
+    if (!resourcesLoaded) {
+        alert('资源加载中，请稍后再试');
+        return;
+    }
     
     const lowerKeyword = keyword.toLowerCase();
     let results = allResources.filter(item => {
