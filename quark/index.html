@@ -574,6 +574,7 @@ async function loadResources() {
 }
 
 function searchKeyword(keyword) {
+    clearTimeout(searchTimer);
     document.getElementById('searchInput').value = keyword;
     performSearch();
 }
@@ -708,17 +709,27 @@ function showQrModal(item) {
     const qrcode = item.qrcode || '';
     const shareLink = item.share_link || '#';
     const viewCount = getViewCount(item.id);
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isAndroid = /Android/.test(ua);
+    const isMobileDevice = isIOS || isAndroid || /Mobile/.test(ua);
     
     let html = `<div class="qr-modal-body">`;
     html += `<h3 style="margin-top:0;color:#333;font-size:16px;">${title}</h3>`;
     html += `<div class="view-count">已有 ${viewCount} 人查看</div>`;
     
-    if (qrcode) {
-        html += `<img src="/${qrcode}" alt="扫码获取">`;
-        html += `<div class="hint">打开手机夸克 → 扫一扫 → 保存资源</div>`;
+    if (isMobileDevice) {
+        html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:15px;padding:14px 28px;background:#1e90ff;color:#fff;border-radius:25px;text-decoration:none;font-size:15px;">打开夸克网盘链接</a>`;
+        html += `<div class="hint" style="margin-top:10px;">点击链接直接转存资源</div>`;
+    } else {
+        if (qrcode) {
+            html += `<img src="/${qrcode}" alt="扫码获取">`;
+            html += `<div class="hint">打开手机夸克 → 扫一扫 → 保存资源</div>`;
+        } else {
+            html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:15px;padding:14px 28px;background:#1e90ff;color:#fff;border-radius:25px;text-decoration:none;font-size:15px;">打开夸克网盘链接</a>`;
+        }
     }
     
-    html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:12px;padding:12px 24px;background:#1e90ff;color:#fff;border-radius:25px;text-decoration:none;font-size:14px;">打开夸克网盘链接</a>`;
     html += `<div style="margin-top:15px;"><button onclick="closeModal('qrModal')" style="padding:8px 20px;background:#f0f0f0;color:#666;border:none;border-radius:20px;cursor:pointer;font-size:13px;">返回继续搜索</button></div>`;
     
     html += `</div>`;
