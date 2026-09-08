@@ -406,9 +406,18 @@ function showResultModal(results, keyword) {
     results.forEach((item, index) => {
         const title = item.title || '未知资源';
         const type = item.type || '';
+        const count = item.count;
+        const keywords = (item.keywords || []).slice(0, 3).join(' · ');
+        let desc = '';
+        if (type === '剧本杀' && count) {
+            desc = `<span style="font-size:11px;color:#e74c3c;margin-left:6px;">${count}人本</span>`;
+        } else if (keywords) {
+            desc = `<span style="font-size:11px;color:#999;margin-left:6px;">${keywords}</span>`;
+        }
         html += `<div class="title-item" onclick="handleTitleClick(${index})">
             <span class="name">${title}</span>
             ${type ? '<span class="type">' + type + '</span>' : ''}
+            ${desc}
             <span class="arrow">›</span>
         </div>`;
     });
