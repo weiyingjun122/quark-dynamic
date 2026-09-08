@@ -74,6 +74,15 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .update-item:hover { background: #f8f9fa; }
 .update-item .name { font-size: 14px; color: #333; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .update-item .type { font-size: 11px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+.category-nav { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; width: 90%; max-width: 480px; flex-wrap: wrap; }
+.category-tag { padding: 6px 14px; background: #f0f6ff; border-radius: 20px; cursor: pointer; color: #1e90ff; font-size: 13px; transition: all 0.2s; border: none; }
+.category-tag:hover { background: #1e90ff; color: #fff; }
+.category-tag.active { background: #1e90ff; color: #fff; }
+.count-nav { display: none; justify-content: center; gap: 6px; margin-bottom: 8px; width: 90%; max-width: 480px; flex-wrap: wrap; }
+.count-nav.show { display: flex; }
+.count-tag { padding: 5px 12px; background: #fff; border: 1px solid #ddd; border-radius: 15px; cursor: pointer; color: #666; font-size: 12px; transition: all 0.2s; }
+.count-tag:hover { border-color: #1e90ff; color: #1e90ff; }
+.count-tag.active { background: #1e90ff; border-color: #1e90ff; color: #fff; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
@@ -99,6 +108,27 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 <div class="search-container">
     <input type="text" id="searchInput" placeholder="请输入关键词搜索资源...">
     <button id="searchBtn">搜索</button>
+</div>
+<div class="category-nav" id="categoryNav">
+    <span class="category-tag active" data-category="all" onclick="filterByCategory('all', this)">全部</span>
+    <span class="category-tag" data-category="剧本杀" onclick="filterByCategory('剧本杀', this)">剧本杀</span>
+    <span class="category-tag" data-category="剧集" onclick="filterByCategory('剧集', this)">剧集</span>
+    <span class="category-tag" data-category="动漫" onclick="filterByCategory('动漫', this)">动漫</span>
+    <span class="category-tag" data-category="电影" onclick="filterByCategory('电影', this)">电影</span>
+    <span class="category-tag" data-category="短剧" onclick="filterByCategory('短剧', this)">短剧</span>
+    <span class="category-tag" data-category="其他" onclick="filterByCategory('其他', this)">其他</span>
+</div>
+<div class="count-nav" id="countNav">
+    <span class="count-tag active" data-count="all" onclick="filterByCount('all', this)">全部</span>
+    <span class="count-tag" data-count="1" onclick="filterByCount(1, this)">1人</span>
+    <span class="count-tag" data-count="2" onclick="filterByCount(2, this)">2人</span>
+    <span class="count-tag" data-count="3" onclick="filterByCount(3, this)">3人</span>
+    <span class="count-tag" data-count="4" onclick="filterByCount(4, this)">4人</span>
+    <span class="count-tag" data-count="5" onclick="filterByCount(5, this)">5人</span>
+    <span class="count-tag" data-count="6" onclick="filterByCount(6, this)">6人</span>
+    <span class="count-tag" data-count="7" onclick="filterByCount(7, this)">7人</span>
+    <span class="count-tag" data-count="8" onclick="filterByCount(8, this)">8人</span>
+    <span class="count-tag" data-count="10" onclick="filterByCount(10, this)">10人</span>
 </div>
 <div class="update-hint" id="updateHint" style="display:none;">
     <span class="update-hint-text" id="updateHintText" onclick="toggleUpdateList()">
@@ -174,6 +204,37 @@ function toggleUpdateList() {
         list.classList.add('show');
         text.classList.add('expanded');
     }
+}
+
+let currentCategory = 'all';
+let currentCount = 'all';
+
+function filterByCategory(category, el) {
+    currentCategory = category;
+    document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    
+    const countNav = document.getElementById('countNav');
+    if (category === '剧本杀') {
+        countNav.classList.add('show');
+    } else {
+        countNav.classList.remove('show');
+        currentCount = 'all';
+        document.querySelectorAll('.count-tag').forEach(t => t.classList.remove('active'));
+        document.querySelector('.count-tag[data-count="all"]').classList.add('active');
+    }
+    
+    const keyword = document.getElementById('searchInput').value.trim();
+    if (keyword) performSearch();
+}
+
+function filterByCount(count, el) {
+    currentCount = count;
+    document.querySelectorAll('.count-tag').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    
+    const keyword = document.getElementById('searchInput').value.trim();
+    if (keyword) performSearch();
 }
 
 function getStoredAuth() {
@@ -293,12 +354,20 @@ function performSearch() {
     if (!keyword) return;
     
     const lowerKeyword = keyword.toLowerCase();
-    const results = allResources.filter(item => {
+    let results = allResources.filter(item => {
         const title = (item.title || '').toLowerCase();
         const keywords = (item.keywords || []).join(' ').toLowerCase();
         const aliases = (item.search_aliases || []).join(' ').toLowerCase();
         return title.includes(lowerKeyword) || keywords.includes(lowerKeyword) || aliases.includes(lowerKeyword);
     });
+    
+    if (currentCategory !== 'all') {
+        results = results.filter(item => item.type === currentCategory);
+    }
+    
+    if (currentCategory === '剧本杀' && currentCount !== 'all') {
+        results = results.filter(item => item.count === currentCount);
+    }
     
     if (results.length > 0) {
         showResultModal(results, keyword);
