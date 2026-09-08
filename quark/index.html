@@ -487,6 +487,12 @@ function showResultModal(results, keyword) {
     });
     
     html += `</div>`;
+    
+    const auth = getStoredAuth();
+    if (!auth) {
+        html += `<p style="color:#999;font-size:12px;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0;">登录后即可免费查看资源（每日2次）<a href="javascript:void(0)" onclick="closeModal('resultModal');showAuthModal();" style="color:#1e90ff;margin-left:5px;">立即登录</a></p>`;
+    }
+    
     resultModalBody.innerHTML = html;
     resultModal.dataset.results = JSON.stringify(results);
     resultModal.style.display = 'flex';
@@ -499,7 +505,6 @@ function handleTitleClick(index) {
     
     const auth = getStoredAuth();
     if (!auth) {
-        alert('请先登录后再查看资源');
         closeModal('resultModal');
         showAuthModal();
         return;
