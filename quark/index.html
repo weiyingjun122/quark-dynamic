@@ -224,8 +224,7 @@ function filterByCategory(category, el) {
         document.querySelector('.count-tag[data-count="all"]').classList.add('active');
     }
     
-    const keyword = document.getElementById('searchInput').value.trim();
-    if (keyword) performSearch();
+    browseByFilter();
 }
 
 function filterByCount(count, el) {
@@ -233,8 +232,29 @@ function filterByCount(count, el) {
     document.querySelectorAll('.count-tag').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
     
+    browseByFilter();
+}
+
+function browseByFilter() {
     const keyword = document.getElementById('searchInput').value.trim();
-    if (keyword) performSearch();
+    if (keyword) {
+        performSearch();
+        return;
+    }
+    
+    let results = allResources;
+    if (currentCategory !== 'all') {
+        results = results.filter(item => item.type === currentCategory);
+    }
+    if (currentCategory === '剧本杀' && currentCount !== 'all') {
+        results = results.filter(item => item.count === currentCount);
+    }
+    
+    if (results.length > 0) {
+        showResultModal(results, currentCategory === 'all' ? '全部资源' : currentCategory);
+    } else {
+        showRequestModal(currentCategory === 'all' ? '' : currentCategory);
+    }
 }
 
 function getStoredAuth() {
