@@ -132,11 +132,6 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .hot-keyword-item { padding: 5px 12px; background: #fff; border: 1px solid #f0f0f0; border-radius: 15px; cursor: pointer; font-size: 12px; color: #666; transition: all 0.2s; }
 .hot-keyword-item:hover { border-color: #1e90ff; color: #1e90ff; }
 .hot-keyword-item .hot-icon { color: #ff6b6b; margin-right: 3px; }
-.category-count-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; width: 90%; max-width: 480px; flex-wrap: wrap; }
-.category-count-item { padding: 10px 16px; background: #fff; border-radius: 10px; cursor: pointer; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; min-width: 80px; }
-.category-count-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); transform: translateY(-1px); }
-.category-count-item .cat-name { font-size: 13px; color: #333; font-weight: bold; }
-.category-count-item .cat-num { font-size: 11px; color: #999; margin-top: 2px; }
 .breadcrumb { font-size: 12px; color: #999; margin-bottom: 10px; width: 90%; max-width: 480px; }
 .breadcrumb a { color: #1e90ff; text-decoration: none; }
 .breadcrumb a:hover { text-decoration: underline; }
@@ -210,7 +205,6 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <span class="count-tag" data-count="8" onclick="filterByCount(8, this)">8人</span>
     <span class="count-tag" data-count="10" onclick="filterByCount(10, this)">10人</span>
 </div>
-<div class="category-count-nav" id="categoryCountNav"></div>
 <div class="hot-keywords" id="hotKeywords" style="display:none;">
     <div class="hot-keywords-title">🔥 热搜关键词</div>
     <div class="hot-keywords-list" id="hotKeywordsList"></div>
@@ -466,26 +460,12 @@ function getGuessList(keyword) {
     return shuffled.slice(0, 5);
 }
 
-const HOT_KEYWORDS = ['老友记','绝命毒师','权力的游戏','海贼王','名侦探柯南','哈利波特','漫威','三体','流浪地球','庆余年','狂飙','漫长的季节','周处除三害','沙丘','奥本海默','甄嬛传','琅琊榜','知否知否'];
 function renderHotKeywords() {
-    const container = document.getElementById('hotKeywordsList');
-    const shuffled = HOT_KEYWORDS.sort(() => 0.5 - Math.random()).slice(0, 8);
-    container.innerHTML = shuffled.map((kw, i) => `<span class="hot-keyword-item" onclick="searchKeyword('${kw}')"><span class="hot-icon">${i < 3 ? '🔥' : ''}</span>${kw}</span>`).join('');
-    document.getElementById('hotKeywords').style.display = 'block';
-}
-
-function renderCategoryCounts() {
     if (!resourcesLoaded || allResources.length === 0) return;
-    const counts = {};
-    allResources.forEach(item => {
-        const type = item.type || '其他';
-        counts[type] = (counts[type] || 0) + 1;
-    });
-    const container = document.getElementById('categoryCountNav');
-    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    container.innerHTML = sorted.map(([type, count]) => 
-        `<div class="category-count-item" onclick="filterByCategory('${type}', document.querySelector('[data-category=\\'${type}\\']'))"><div class="cat-name">${type}</div><div class="cat-num">${count}个资源</div></div>`
-    ).join('');
+    const shuffled = [...allResources].sort(() => 0.5 - Math.random()).slice(0, 8);
+    const container = document.getElementById('hotKeywordsList');
+    container.innerHTML = shuffled.map((item, i) => `<span class="hot-keyword-item" onclick="searchKeyword('${(item.title || '').replace(/'/g, "\\'")}')"><span class="hot-icon">${i < 3 ? '🔥' : ''}</span>${item.title || '未知资源'}</span>`).join('');
+    document.getElementById('hotKeywords').style.display = 'block';
 }
 
 let batchMode = false;
@@ -761,7 +741,6 @@ async function loadResources() {
         const res = await fetch('/data.json?v=' + Date.now());
         allResources = await res.json();
         resourcesLoaded = true;
-        renderCategoryCounts();
         renderHotKeywords();
     } catch (e) {
         allResources = [];
