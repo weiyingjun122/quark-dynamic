@@ -9,16 +9,25 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="baidu-site-verification" content="codeva-lM0uaxFMIG" />
 <link rel="canonical" href="https://www.weiyingjun.top/quark/">
+<link rel="manifest" href="/quark/manifest.json">
+<meta name="theme-color" content="#1e90ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="资源搜索">
 <meta property="og:type" content="website">
 <meta property="og:title" content="资源搜索 - 实用资源整理站">
 <meta property="og:description" content="实用资源整理站资源搜索功能，搜索学习资料、模板、工具等资源。">
 <meta property="og:url" content="https://www.weiyingjun.top/quark/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="实用资源整理站">
+<meta property="og:image" content="https://www.weiyingjun.top/static/logo.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="资源搜索 - 实用资源整理站">
+<meta name="twitter:description" content="实用资源整理站资源搜索功能，搜索学习资料、模板、工具等资源。">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"WebSite","name":"实用资源整理站","url":"https://www.weiyingjun.top/","description":"免费在线工具与资源搜索","inLanguage":"zh-CN"},
-{"@type":"WebPage","name":"资源搜索","url":"https://www.weiyingjun.top/quark/","isPartOf":{"@type":"WebSite","url":"https://www.weiyingjun.top/"}}
+{"@type":"WebSite","name":"实用资源整理站","url":"https://www.weiyingjun.top/","description":"免费在线工具与资源搜索","inLanguage":"zh-CN","potentialAction":{"@type":"SearchAction","target":"https://www.weiyingjun.top/quark/?q={search_term_string}","query-input":"required name=search_term_string"}},
+{"@type":"WebPage","name":"资源搜索","url":"https://www.weiyingjun.top/quark/","isPartOf":{"@type":"WebSite","url":"https://www.weiyingjun.top/"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.weiyingjun.top/"},{"@type":"ListItem","position":2,"name":"资源搜索","item":"https://www.weiyingjun.top/quark/"}]}}
 ]}
 </script>
 <style>
@@ -117,6 +126,40 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .guess-item { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 14px; color: #333; transition: background 0.2s; }
 .guess-item:hover { background: #f8f9fa; color: #1e90ff; }
 .view-count { font-size: 11px; color: #999; margin-top: 5px; }
+.hot-keywords { text-align: center; margin-bottom: 15px; width: 90%; max-width: 480px; }
+.hot-keywords-title { font-size: 13px; color: #999; margin-bottom: 8px; }
+.hot-keywords-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.hot-keyword-item { padding: 5px 12px; background: #fff; border: 1px solid #f0f0f0; border-radius: 15px; cursor: pointer; font-size: 12px; color: #666; transition: all 0.2s; }
+.hot-keyword-item:hover { border-color: #1e90ff; color: #1e90ff; }
+.hot-keyword-item .hot-icon { color: #ff6b6b; margin-right: 3px; }
+.category-count-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; width: 90%; max-width: 480px; flex-wrap: wrap; }
+.category-count-item { padding: 10px 16px; background: #fff; border-radius: 10px; cursor: pointer; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; min-width: 80px; }
+.category-count-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); transform: translateY(-1px); }
+.category-count-item .cat-name { font-size: 13px; color: #333; font-weight: bold; }
+.category-count-item .cat-num { font-size: 11px; color: #999; margin-top: 2px; }
+.breadcrumb { font-size: 12px; color: #999; margin-bottom: 10px; width: 90%; max-width: 480px; }
+.breadcrumb a { color: #1e90ff; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.share-btns { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+.share-btn { padding: 6px 14px; border-radius: 15px; border: none; cursor: pointer; font-size: 12px; color: #fff; transition: opacity 0.2s; }
+.share-btn:hover { opacity: 0.85; }
+.share-btn.wechat { background: #07c160; }
+.share-btn.weibo { background: #e6162d; }
+.share-btn.copy-link { background: #1e90ff; }
+.batch-fav-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 12px 20px; box-shadow: 0 -2px 8px rgba(0,0,0,0.1); z-index: 9998; justify-content: center; align-items: center; gap: 15px; }
+.batch-fav-bar.show { display: flex; }
+.batch-fav-bar .batch-count { font-size: 14px; color: #333; }
+.batch-fav-bar button { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-size: 13px; }
+.batch-fav-bar .batch-fav-btn { background: #ff6b6b; color: #fff; }
+.batch-fav-bar .batch-cancel-btn { background: #f0f0f0; color: #666; }
+.batch-select-btn { background: none; border: 1px solid #ddd; border-radius: 15px; padding: 4px 10px; cursor: pointer; font-size: 12px; color: #666; transition: all 0.2s; }
+.batch-select-btn:hover { border-color: #1e90ff; color: #1e90ff; }
+.batch-select-btn.active { background: #1e90ff; color: #fff; border-color: #1e90ff; }
+.checkbox-item { width: 16px; height: 16px; margin-right: 6px; cursor: pointer; accent-color: #1e90ff; }
+.resource-desc { font-size: 11px; color: #999; margin-top: 3px; line-height: 1.4; }
+.remind-btn { padding: 8px 20px; background: #ff9800; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; transition: background 0.2s; margin-top: 10px; }
+.remind-btn:hover { background: #e68900; }
+.remind-btn.subscribed { background: #ccc; cursor: default; }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
@@ -167,6 +210,11 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <span class="count-tag" data-count="8" onclick="filterByCount(8, this)">8人</span>
     <span class="count-tag" data-count="10" onclick="filterByCount(10, this)">10人</span>
 </div>
+<div class="category-count-nav" id="categoryCountNav"></div>
+<div class="hot-keywords" id="hotKeywords" style="display:none;">
+    <div class="hot-keywords-title">🔥 热搜关键词</div>
+    <div class="hot-keywords-list" id="hotKeywordsList"></div>
+</div>
 <div class="search-history" id="searchHistory">
     <span class="search-history-label">搜索历史：</span>
 </div>
@@ -194,6 +242,17 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
         <span class="close-btn" onclick="closeModal('requestModal')">&times;</span>
         <div id="requestModalBody"></div>
     </div>
+</div>
+<div id="shareModal" class="modal">
+    <div class="modal-content" style="width:360px;">
+        <span class="close-btn" onclick="closeModal('shareModal')">&times;</span>
+        <div id="shareModalBody"></div>
+    </div>
+</div>
+<div class="batch-fav-bar" id="batchFavBar">
+    <span class="batch-count">已选 <span id="batchCountNum">0</span> 项</span>
+    <button class="batch-fav-btn" onclick="batchAddFavorite()">收藏选中</button>
+    <button class="batch-cancel-btn" onclick="toggleBatchMode()">取消</button>
 </div>
 <div id="authModal" class="modal">
     <div class="modal-content">
@@ -407,6 +466,141 @@ function getGuessList(keyword) {
     return shuffled.slice(0, 5);
 }
 
+const HOT_KEYWORDS = ['老友记','绝命毒师','权力的游戏','海贼王','名侦探柯南','哈利波特','漫威','三体','流浪地球','庆余年','狂飙','漫长的季节','周处除三害','沙丘','奥本海默','甄嬛传','琅琊榜','知否知否'];
+function renderHotKeywords() {
+    const container = document.getElementById('hotKeywordsList');
+    const shuffled = HOT_KEYWORDS.sort(() => 0.5 - Math.random()).slice(0, 8);
+    container.innerHTML = shuffled.map((kw, i) => `<span class="hot-keyword-item" onclick="searchKeyword('${kw}')"><span class="hot-icon">${i < 3 ? '🔥' : ''}</span>${kw}</span>`).join('');
+    document.getElementById('hotKeywords').style.display = 'block';
+}
+
+function renderCategoryCounts() {
+    if (!resourcesLoaded || allResources.length === 0) return;
+    const counts = {};
+    allResources.forEach(item => {
+        const type = item.type || '其他';
+        counts[type] = (counts[type] || 0) + 1;
+    });
+    const container = document.getElementById('categoryCountNav');
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    container.innerHTML = sorted.map(([type, count]) => 
+        `<div class="category-count-item" onclick="filterByCategory('${type}', document.querySelector('[data-category=\\'${type}\\']'))"><div class="cat-name">${type}</div><div class="cat-num">${count}个资源</div></div>`
+    ).join('');
+}
+
+let batchMode = false;
+let selectedItems = new Set();
+function toggleBatchMode() {
+    batchMode = !batchMode;
+    selectedItems.clear();
+    document.getElementById('batchFavBar').classList.toggle('show', batchMode);
+    document.getElementById('batchCountNum').textContent = '0';
+    document.querySelectorAll('.checkbox-item').forEach(cb => { cb.checked = false; });
+}
+
+function toggleSelectItem(id, checkbox) {
+    if (checkbox.checked) { selectedItems.add(id); } else { selectedItems.delete(id); }
+    document.getElementById('batchCountNum').textContent = selectedItems.size;
+}
+
+function batchAddFavorite() {
+    if (selectedItems.size === 0) { alert('请先选择要收藏的资源'); return; }
+    let favs = getFavorites();
+    let added = 0;
+    selectedItems.forEach(id => {
+        const item = allResources.find(r => r.id === id);
+        if (item && !favs.some(f => f.id === id)) {
+            favs.push({ id: item.id, title: item.title, type: item.type });
+            added++;
+        }
+    });
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    alert(`已收藏 ${added} 个资源`);
+    toggleBatchMode();
+    document.querySelectorAll('.fav-btn').forEach(btn => {
+        const id = btn.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        if (id && isFavorite(id)) btn.classList.add('active');
+    });
+}
+
+function shareResource(title, shareLink) {
+    const shareModal = document.getElementById('shareModal');
+    const body = document.getElementById('shareModalBody');
+    const shareUrl = shareLink || window.location.href;
+    const shareText = `推荐一个好用的资源：${title}`;
+    let html = `<h3 style="margin-top:0;color:#333;">分享资源</h3>`;
+    html += `<p style="color:#666;font-size:14px;margin-bottom:15px;">${title}</p>`;
+    html += `<div class="share-btns">`;
+    html += `<button class="share-btn wechat" onclick="shareToWechat('${title.replace(/'/g, "\\'")}','${shareUrl.replace(/'/g, "\\'")}')">微信</button>`;
+    html += `<button class="share-btn weibo" onclick="shareToWeibo('${title.replace(/'/g, "\\'")}','${shareUrl.replace(/'/g, "\\'")}')">微博</button>`;
+    html += `<button class="share-btn copy-link" onclick="copyShareLink('${shareUrl.replace(/'/g, "\\'")}')">复制链接</button>`;
+    html += `</div>`;
+    body.innerHTML = html;
+    shareModal.style.display = 'flex';
+}
+
+function shareToWechat(title, url) {
+    let html = `<h3 style="margin-top:0;color:#333;">分享到微信</h3>`;
+    html += `<p style="color:#666;font-size:13px;margin-bottom:10px;">截图分享给好友或扫码</p>`;
+    html += `<div style="background:#f8f8f8;padding:15px;border-radius:8px;margin:10px 0;font-size:13px;color:#333;text-align:left;">${title}<br><span style="color:#1e90ff;font-size:12px;">${url}</span></div>`;
+    html += `<button onclick="closeModal('shareModal')" style="padding:8px 20px;background:#f0f0f0;border:none;border-radius:15px;cursor:pointer;font-size:13px;">关闭</button>`;
+    document.getElementById('shareModalBody').innerHTML = html;
+}
+
+function shareToWeibo(title, url) {
+    const weiboUrl = `https://service.weibo.com/share/share.php?title=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+    window.open(weiboUrl, '_blank', 'width=600,height=400');
+    closeModal('shareModal');
+}
+
+function copyShareLink(url) {
+    navigator.clipboard.writeText(url).then(() => {
+        alert('链接已复制到剪贴板');
+        closeModal('shareModal');
+    }).catch(() => {
+        const input = document.createElement('input');
+        input.value = url;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        alert('链接已复制到剪贴板');
+        closeModal('shareModal');
+    });
+}
+
+const REMIND_KEY = 'quark_remind_categories';
+function getRemindedCategories() {
+    try { return JSON.parse(localStorage.getItem(REMIND_KEY) || '[]'); } catch { return []; }
+}
+function toggleRemind(category) {
+    let reminded = getRemindedCategories();
+    const idx = reminded.indexOf(category);
+    if (idx >= 0) { reminded.splice(idx, 1); } else { reminded.push(category); }
+    localStorage.setItem(REMIND_KEY, JSON.stringify(reminded));
+    updateRemindButtons();
+}
+function updateRemindButtons() {
+    const reminded = getRemindedCategories();
+    document.querySelectorAll('.remind-btn').forEach(btn => {
+        const cat = btn.dataset.category;
+        if (reminded.includes(cat)) { btn.classList.add('subscribed'); btn.textContent = '已订阅'; }
+        else { btn.classList.remove('subscribed'); btn.textContent = '订阅更新'; }
+    });
+}
+
+function updateSeoTitle(title) {
+    if (title) {
+        document.title = `${title} - 资源搜索 | 实用资源整理站`;
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if (ogTitle) ogTitle.setAttribute('content', `${title} - 资源搜索`);
+        if (ogDesc) ogDesc.setAttribute('content', `搜索${title}相关资源，获取夸克网盘链接，一键转存。`);
+    } else {
+        document.title = '资源搜索 - 实用资源整理站';
+    }
+}
+
 let currentCategory = 'all';
 let currentCount = 'all';
 let resourcesLoaded = false;
@@ -562,11 +756,13 @@ async function handleLogout() {
     clearAuth(); updateUserPanel();
 }
 
-async function loadResources() {
+function loadResources() {
     try {
         const res = await fetch('/data.json?v=' + Date.now());
         allResources = await res.json();
         resourcesLoaded = true;
+        renderCategoryCounts();
+        renderHotKeywords();
     } catch (e) {
         allResources = [];
         resourcesLoaded = true;
@@ -581,7 +777,7 @@ function searchKeyword(keyword) {
 
 function performSearch() {
     const keyword = document.getElementById('searchInput').value.trim();
-    if (!keyword) return;
+    if (!keyword) { updateSeoTitle(null); return; }
     
     if (!resourcesLoaded) {
         alert('资源加载中，请稍后再试');
@@ -631,7 +827,8 @@ function debounceSearch() {
 function showResultModal(results, keyword) {
     let html = `<h3 style="margin-top:0;color:#333;">找到 ${results.length} 个相关资源</h3>`;
     html += `<p style="color:#666;font-size:13px;margin-bottom:10px;">关键词：${keyword}</p>`;
-    html += `<div class="title-list">`;
+    html += `<div style="margin-bottom:10px;text-align:right;"><button class="batch-select-btn" onclick="toggleBatchMode()">批量收藏</button></div>`;
+    html += `<div class="title-list" id="resultList">`;
     
     results.forEach((item, index) => {
         const title = item.title || '未知资源';
@@ -645,12 +842,23 @@ function showResultModal(results, keyword) {
         } else if (keywords) {
             desc = `<span style="font-size:11px;color:#999;margin-left:6px;">${keywords}</span>`;
         }
-        html += `<div class="title-item">
+        let extraDesc = '';
+        if (type && type !== '剧本杀') {
+            extraDesc = `<div class="resource-desc">${type}资源 · ${keywords || '高质量资源'}</div>`;
+        } else if (type === '剧本杀') {
+            extraDesc = `<div class="resource-desc">${count}人剧本杀 · 推理体验</div>`;
+        }
+        html += `<div class="title-item" style="flex-wrap:wrap;">
             <span class="name" onclick="handleTitleClick(${index})">${title}</span>
             ${type ? '<span class="type">' + type + '</span>' : ''}
             ${desc}
-            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${item.id}','${(title).replace(/'/g, "\\'")}','${type}',this)" title="收藏">♥</button>
-            <span class="arrow" onclick="handleTitleClick(${index})">›</span>
+            ${extraDesc}
+            <div style="display:flex;align-items:center;gap:4px;">
+                <input type="checkbox" class="checkbox-item" onchange="toggleSelectItem('${item.id}', this)" ${batchMode ? '' : 'style="display:none"'}>
+                <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${item.id}','${(title).replace(/'/g, "\\'")}','${type}',this)" title="收藏">♥</button>
+                <button style="background:none;border:none;cursor:pointer;font-size:12px;color:#1e90ff;padding:0 4px;" onclick="event.stopPropagation();shareResource('${(title).replace(/'/g, "\\'")}','${(item.share_link || '').replace(/'/g, "\\'")}')" title="分享">↗</button>
+                <span class="arrow" onclick="handleTitleClick(${index})">›</span>
+            </div>
         </div>`;
     });
     
@@ -664,6 +872,7 @@ function showResultModal(results, keyword) {
     resultModalBody.innerHTML = html;
     resultModal.dataset.results = JSON.stringify(results);
     resultModal.style.display = 'flex';
+    updateSeoTitle(keyword);
 }
 
 function handleTitleClick(index) {
@@ -804,6 +1013,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const q = urlParams.get('q');
     if (q) { document.getElementById('searchInput').value = q; setTimeout(performSearch, 500); }
+    
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/quark/sw.js').catch(() => {});
+    }
 });
 </script>
 </body>

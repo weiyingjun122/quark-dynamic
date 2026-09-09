@@ -40,3 +40,9 @@
 
 /*.ico
   Cache-Control: public, max-age=604800
+
+/quark/manifest.json
+  Cache-Control: public, max-age=86400
+
+/quark/sw.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
