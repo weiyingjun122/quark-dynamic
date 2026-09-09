@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quark-v3';
+const CACHE_NAME = 'quark-v4';
 const STATIC_ASSETS = [
   '/quark/',
   '/quark/manifest.json',
@@ -23,11 +23,27 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-  if (url.pathname.startsWith('/api/') || url.pathname === '/data.json' || url.pathname === '/update.json' || url.pathname === '/ads.txt') {
+  
+  // 这些资源永远不缓存，直接走网络
+  const noCachePaths = ['/api/', '/data.json', '/update.json', '/ads.txt', '/quark/sw.js'];
+  if (noCachePaths.some(p => url.pathname === p || url.pathname.startsWith(p))) {
     event.respondWith(fetch(event.request));
     return;
   }
+  
+  // 静态资源（logo等）长期缓存
+  // 其他资源用stale-while-revalidate策略
   event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
+    caches.match(event.request).then(cached => {
+      const fetchPromise = fetch(event.request).then(response => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => cached);
+      
+      return cached || fetchPromise;
+    })
   );
 });

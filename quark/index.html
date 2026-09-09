@@ -971,7 +971,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (q) { document.getElementById('searchInput').value = q; setTimeout(performSearch, 500); }
     
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/quark/sw.js').catch(() => {});
+        navigator.serviceWorker.register('/quark/sw.js?v=' + Date.now()).catch(() => {});
     }
 });
 </script>
