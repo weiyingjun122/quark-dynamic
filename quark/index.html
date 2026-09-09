@@ -756,7 +756,7 @@ async function handleLogout() {
     clearAuth(); updateUserPanel();
 }
 
-function loadResources() {
+async function loadResources() {
     try {
         const res = await fetch('/data.json?v=' + Date.now());
         allResources = await res.json();
