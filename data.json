@@ -1007,7 +1007,8 @@
     "share_link": "https://pan.quark.cn/s/e8091058af8c",
     "qrcode": "static/qrcode/81.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "82",
@@ -1071,7 +1072,8 @@
     "share_link": "https://pan.quark.cn/s/34740225d834",
     "qrcode": "static/qrcode/86.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "惊悚"
   },
   {
     "id": "87",
@@ -1083,7 +1085,8 @@
     "share_link": "https://pan.quark.cn/s/96c9d2d2cbb5",
     "qrcode": "static/qrcode/87.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "88",
@@ -1107,7 +1110,8 @@
     "share_link": "https://pan.quark.cn/s/e9b40651eb72",
     "qrcode": "static/qrcode/89.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "90",
@@ -2341,7 +2345,8 @@
     "share_link": "https://pan.quark.cn/s/5def8c0d2715",
     "qrcode": "static/qrcode/191.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "192",
@@ -2353,7 +2358,8 @@
     "share_link": "https://pan.quark.cn/s/b42ce9b6b675",
     "qrcode": "static/qrcode/192.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "193",
@@ -2365,7 +2371,8 @@
     "share_link": "https://pan.quark.cn/s/983af58cdff9",
     "qrcode": "static/qrcode/193.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "194",
@@ -2377,7 +2384,8 @@
     "share_link": "https://pan.quark.cn/s/8029bf8be6c2",
     "qrcode": "static/qrcode/194.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "195",
@@ -2389,7 +2397,8 @@
     "share_link": "https://pan.quark.cn/s/27b1c6b2f6e3",
     "qrcode": "static/qrcode/195.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "196",
@@ -2401,7 +2410,8 @@
     "share_link": "https://pan.quark.cn/s/c73ff22a6f6f",
     "qrcode": "static/qrcode/196.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "197",
@@ -2425,7 +2435,8 @@
     "share_link": "https://pan.quark.cn/s/eb9d59102705",
     "qrcode": "static/qrcode/198.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "欢乐"
   },
   {
     "id": "199",
@@ -2441,7 +2452,8 @@
     "share_link": "https://pan.quark.cn/s/cd96eb3e7191",
     "qrcode": "static/qrcode/199.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "200",
@@ -2453,7 +2465,8 @@
     "share_link": "https://pan.quark.cn/s/006d3dede28d",
     "qrcode": "static/qrcode/200.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "201",
@@ -2465,7 +2478,8 @@
     "share_link": "https://pan.quark.cn/s/af63167eaef6",
     "qrcode": "static/qrcode/201.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "202",
@@ -2477,7 +2491,8 @@
     "share_link": "https://pan.quark.cn/s/2015da7140db",
     "qrcode": "static/qrcode/202.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "203",
@@ -2501,7 +2516,8 @@
     "share_link": "https://pan.quark.cn/s/83bc320afdd6",
     "qrcode": "static/qrcode/204.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "推理"
   },
   {
     "id": "205",
@@ -2513,7 +2529,8 @@
     "share_link": "https://pan.quark.cn/s/7c9a51360216",
     "qrcode": "static/qrcode/205.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "欢乐"
   },
   {
     "id": "206",
@@ -2525,7 +2542,8 @@
     "share_link": "https://pan.quark.cn/s/e7a16341e78f",
     "qrcode": "static/qrcode/206.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "恐怖"
   },
   {
     "id": "207",
@@ -2552,7 +2570,8 @@
     "share_link": "https://pan.quark.cn/s/992407d06077",
     "qrcode": "static/qrcode/208.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "推理"
   },
   {
     "id": "209",
@@ -2564,7 +2583,8 @@
     "share_link": "https://pan.quark.cn/s/be629be38438",
     "qrcode": "static/qrcode/209.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "推理"
   },
   {
     "id": "210",
@@ -2588,7 +2608,8 @@
     "share_link": "https://pan.quark.cn/s/f068a4ced401",
     "qrcode": "static/qrcode/211.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "恐怖"
   },
   {
     "id": "212",
@@ -2624,7 +2645,8 @@
     "share_link": "https://pan.quark.cn/s/218996f5cd30",
     "qrcode": "static/qrcode/214.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "情感"
   },
   {
     "id": "215",
@@ -2636,7 +2658,8 @@
     "share_link": "https://pan.quark.cn/s/4cebee2c01de",
     "qrcode": "static/qrcode/215.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "216",
@@ -2648,7 +2671,8 @@
     "share_link": "https://pan.quark.cn/s/dadeb31fb09f",
     "qrcode": "static/qrcode/216.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "217",
@@ -2672,7 +2696,8 @@
     "share_link": "https://pan.quark.cn/s/f3eb88190670",
     "qrcode": "static/qrcode/218.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "219",
@@ -2684,7 +2709,8 @@
     "share_link": "https://pan.quark.cn/s/ba2e3c99b0cf",
     "qrcode": "static/qrcode/219.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "220",
@@ -2696,7 +2722,8 @@
     "share_link": "https://pan.quark.cn/s/0f4cc8400664",
     "qrcode": "static/qrcode/220.png",
     "type": "剧本杀",
-    "count": 3
+    "count": 3,
+    "juben_type": "推理"
   },
   {
     "id": "221",
@@ -2744,7 +2771,8 @@
     "share_link": "https://pan.quark.cn/s/f85e451fb168",
     "qrcode": "static/qrcode/224.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "恐怖"
   },
   {
     "id": "225",
@@ -2756,7 +2784,8 @@
     "share_link": "https://pan.quark.cn/s/93ea0249dd1f",
     "qrcode": "static/qrcode/225.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "欢乐"
   },
   {
     "id": "226",
@@ -2768,7 +2797,8 @@
     "share_link": "https://pan.quark.cn/s/02738644fbb5",
     "qrcode": "static/qrcode/226.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "欢乐"
   },
   {
     "id": "227",
@@ -2780,7 +2810,8 @@
     "share_link": "https://pan.quark.cn/s/46caa6ce526f",
     "qrcode": "static/qrcode/227.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "228",
@@ -2792,7 +2823,8 @@
     "share_link": "https://pan.quark.cn/s/0b1910713cde",
     "qrcode": "static/qrcode/228.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "229",
@@ -2804,7 +2836,8 @@
     "share_link": "https://pan.quark.cn/s/2fe0fac65ac5",
     "qrcode": "static/qrcode/229.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "230",
@@ -2816,7 +2849,8 @@
     "share_link": "https://pan.quark.cn/s/961d5f728ef9",
     "qrcode": "static/qrcode/230.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "231",
@@ -2828,7 +2862,8 @@
     "share_link": "https://pan.quark.cn/s/116669ccefed",
     "qrcode": "static/qrcode/231.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "232",
@@ -2855,7 +2890,8 @@
     "share_link": "https://pan.quark.cn/s/c35721a520bf",
     "qrcode": "static/qrcode/233.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "惊悚"
   },
   {
     "id": "234",
@@ -2891,7 +2927,8 @@
     "share_link": "https://pan.quark.cn/s/680ba05f1702",
     "qrcode": "static/qrcode/236.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "机制"
   },
   {
     "id": "237",
@@ -2915,7 +2952,8 @@
     "share_link": "https://pan.quark.cn/s/1ea4d15f4f5b",
     "qrcode": "static/qrcode/238.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "239",
@@ -2927,7 +2965,8 @@
     "share_link": "https://pan.quark.cn/s/0e90176f8d40",
     "qrcode": "static/qrcode/239.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "机制"
   },
   {
     "id": "240",
@@ -2939,7 +2978,8 @@
     "share_link": "https://pan.quark.cn/s/b4b2ba001848",
     "qrcode": "static/qrcode/240.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "欢乐"
   },
   {
     "id": "241",
@@ -2951,7 +2991,8 @@
     "share_link": "https://pan.quark.cn/s/714851fdaa7b",
     "qrcode": "static/qrcode/241.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "242",
@@ -2989,7 +3030,8 @@
     "share_link": "https://pan.quark.cn/s/fdcec916c728",
     "qrcode": "static/qrcode/244.png",
     "type": "剧本杀",
-    "count": 10
+    "count": 10,
+    "juben_type": "欢乐"
   },
   {
     "id": "245",
@@ -3001,7 +3043,8 @@
     "share_link": "https://pan.quark.cn/s/e4ebbf1f83ec",
     "qrcode": "static/qrcode/245.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "246",
@@ -3013,7 +3056,8 @@
     "share_link": "https://pan.quark.cn/s/ecba0a7aa4cf",
     "qrcode": "static/qrcode/246.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "情感"
   },
   {
     "id": "247",
@@ -3025,7 +3069,8 @@
     "share_link": "https://pan.quark.cn/s/7ddddaa87f15",
     "qrcode": "static/qrcode/247.png",
     "type": "剧本杀",
-    "count": 10
+    "count": 10,
+    "juben_type": "机制"
   },
   {
     "id": "248",
@@ -3037,7 +3082,8 @@
     "share_link": "https://pan.quark.cn/s/19f585188e01",
     "qrcode": "static/qrcode/248.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "249",
@@ -3049,7 +3095,8 @@
     "share_link": "https://pan.quark.cn/s/11ed3ae4030e",
     "qrcode": "static/qrcode/249.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "情感"
   },
   {
     "id": "250",
@@ -3061,7 +3108,8 @@
     "share_link": "https://pan.quark.cn/s/4160afceb5eb",
     "qrcode": "static/qrcode/250.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "251",
@@ -3073,7 +3121,8 @@
     "share_link": "https://pan.quark.cn/s/1a2d133997cc",
     "qrcode": "static/qrcode/251.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "欢乐"
   },
   {
     "id": "252",
@@ -3097,7 +3146,8 @@
     "share_link": "https://pan.quark.cn/s/4dbc36c2466e",
     "qrcode": "static/qrcode/253.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "254",
@@ -3112,7 +3162,8 @@
     "share_link": "https://pan.quark.cn/s/0b14d6a09434",
     "qrcode": "static/qrcode/254.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "255",
@@ -3124,7 +3175,8 @@
     "share_link": "https://pan.quark.cn/s/148a125f8001",
     "qrcode": "static/qrcode/255.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "256",
@@ -3136,7 +3188,8 @@
     "share_link": "https://pan.quark.cn/s/e30eb1f6554e",
     "qrcode": "static/qrcode/256.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "257",
@@ -3148,7 +3201,8 @@
     "share_link": "https://pan.quark.cn/s/3b82750f834e",
     "qrcode": "static/qrcode/257.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "258",
@@ -3172,7 +3226,8 @@
     "share_link": "https://pan.quark.cn/s/f5f1bd605ce9",
     "qrcode": "static/qrcode/259.png",
     "type": "剧本杀",
-    "count": 1
+    "count": 1,
+    "juben_type": "推理"
   },
   {
     "id": "260",
@@ -3184,7 +3239,8 @@
     "share_link": "https://pan.quark.cn/s/a0c2016b9435",
     "qrcode": "static/qrcode/260.png",
     "type": "剧本杀",
-    "count": 2
+    "count": 2,
+    "juben_type": "推理"
   },
   {
     "id": "261",
@@ -3208,7 +3264,8 @@
     "share_link": "https://pan.quark.cn/s/ba02f7bd6ee5",
     "qrcode": "static/qrcode/262.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "科幻"
   },
   {
     "id": "263",
@@ -3220,7 +3277,8 @@
     "share_link": "https://pan.quark.cn/s/0330b3122066",
     "qrcode": "static/qrcode/263.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "推理"
   },
   {
     "id": "264",
@@ -3232,7 +3290,8 @@
     "share_link": "https://pan.quark.cn/s/68718f8fd946",
     "qrcode": "static/qrcode/264.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "古风"
   },
   {
     "id": "265",
@@ -3283,7 +3342,8 @@
     "share_link": "https://pan.quark.cn/s/5fd668fc89c5",
     "qrcode": "static/qrcode/268.png",
     "type": "剧本杀",
-    "count": 1
+    "count": 1,
+    "juben_type": "恐怖"
   },
   {
     "id": "269",
@@ -3370,7 +3430,8 @@
     "share_link": "https://pan.quark.cn/s/2dfea09f9d3b",
     "qrcode": "static/qrcode/275.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "恐怖"
   },
   {
     "id": "276",
@@ -3382,7 +3443,8 @@
     "share_link": "https://pan.quark.cn/s/fec73f86ad73",
     "qrcode": "static/qrcode/276.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "仙侠"
   },
   {
     "id": "277",
@@ -3394,7 +3456,8 @@
     "share_link": "https://pan.quark.cn/s/ce0ebdaf9769",
     "qrcode": "static/qrcode/277.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "恐怖"
   },
   {
     "id": "278",
@@ -3466,7 +3529,8 @@
     "share_link": "https://pan.quark.cn/s/35224c9dc920",
     "qrcode": "static/qrcode/283.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "284",
@@ -3478,7 +3542,8 @@
     "share_link": "https://pan.quark.cn/s/e47bc9790b4d",
     "qrcode": "static/qrcode/284.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "欢乐"
   },
   {
     "id": "285",
@@ -3514,7 +3579,8 @@
     "share_link": "https://pan.quark.cn/s/359281711734",
     "qrcode": "static/qrcode/287.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "惊悚"
   },
   {
     "id": "288",
@@ -3526,7 +3592,8 @@
     "share_link": "https://pan.quark.cn/s/936af0ed13b7",
     "qrcode": "static/qrcode/288.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "恐怖"
   },
   {
     "id": "289",
@@ -3637,7 +3704,8 @@
     "share_link": "https://pan.quark.cn/s/6768302b432d",
     "qrcode": "static/qrcode/297.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "恐怖"
   },
   {
     "id": "298",
@@ -3685,7 +3753,8 @@
     "share_link": "https://pan.quark.cn/s/2f4a53784eb5",
     "qrcode": "static/qrcode/301.png",
     "type": "剧本杀",
-    "count": 1
+    "count": 1,
+    "juben_type": "推理"
   },
   {
     "id": "302",
@@ -3716,7 +3785,8 @@
     "share_link": "https://pan.quark.cn/s/333de6750214",
     "qrcode": "static/qrcode/303.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "推理"
   },
   {
     "id": "304",
@@ -3848,7 +3918,8 @@
     "share_link": "https://pan.quark.cn/s/c17a6159f1cf",
     "qrcode": "static/qrcode/314.png",
     "type": "剧本杀",
-    "count": 8
+    "count": 8,
+    "juben_type": "恐怖"
   },
   {
     "id": "315",
@@ -5440,7 +5511,8 @@
     "share_link": "https://pan.quark.cn/s/d3b05e00c02e",
     "qrcode": "static/qrcode/454.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "欢乐"
   },
   {
     "id": "455",
@@ -5476,7 +5548,8 @@
     "share_link": "https://pan.quark.cn/s/e7e289b429d1",
     "qrcode": "static/qrcode/457.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "机制"
   },
   {
     "id": "458",
@@ -5536,7 +5609,8 @@
     "share_link": "https://pan.quark.cn/s/75a3b9508b8f",
     "qrcode": "static/qrcode/462.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "463",
@@ -5594,7 +5668,8 @@
     "share_link": "https://pan.quark.cn/s/e7e922931dc7",
     "qrcode": "static/qrcode/467.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "468",
@@ -5606,7 +5681,8 @@
     "share_link": "https://pan.quark.cn/s/931d2b0fe589",
     "qrcode": "static/qrcode/468.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "469",
@@ -5630,7 +5706,8 @@
     "share_link": "https://pan.quark.cn/s/96b934ac748c",
     "qrcode": "static/qrcode/470.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "推理"
   },
   {
     "id": "471",
@@ -5642,7 +5719,8 @@
     "share_link": "https://pan.quark.cn/s/bce6ef2d3d90",
     "qrcode": "static/qrcode/471.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "472",
@@ -5654,7 +5732,8 @@
     "share_link": "https://pan.quark.cn/s/666771fc225b",
     "qrcode": "static/qrcode/472.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "推理"
   },
   {
     "id": "473",
@@ -5666,7 +5745,8 @@
     "share_link": "https://pan.quark.cn/s/e322eb23918a",
     "qrcode": "static/qrcode/473.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "恐怖"
   },
   {
     "id": "474",
@@ -5678,7 +5758,8 @@
     "share_link": "https://pan.quark.cn/s/a91f8b159631",
     "qrcode": "static/qrcode/474.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "475",
@@ -5690,7 +5771,8 @@
     "share_link": "https://pan.quark.cn/s/37808472b217",
     "qrcode": "static/qrcode/475.png",
     "type": "剧本杀",
-    "count": 4
+    "count": 4,
+    "juben_type": "恐怖"
   },
   {
     "id": "476",
@@ -5702,7 +5784,8 @@
     "share_link": "https://pan.quark.cn/s/98d108d70517",
     "qrcode": "static/qrcode/476.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "恐怖"
   },
   {
     "id": "477",
@@ -5714,7 +5797,8 @@
     "share_link": "https://pan.quark.cn/s/dc3d2d0575ae",
     "qrcode": "static/qrcode/477.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "玄幻/机制"
   },
   {
     "id": "478",
@@ -5726,7 +5810,8 @@
     "share_link": "https://pan.quark.cn/s/767d5570cd79",
     "qrcode": "static/qrcode/478.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "悬疑"
   },
   {
     "id": "479",
@@ -5738,7 +5823,8 @@
     "share_link": "https://pan.quark.cn/s/e847a78fec93",
     "qrcode": "static/qrcode/479.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "480",
@@ -5750,7 +5836,8 @@
     "share_link": "https://pan.quark.cn/s/7cc871fd1e13",
     "qrcode": "static/qrcode/480.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "481",
@@ -5785,7 +5872,8 @@
     "share_link": "https://pan.quark.cn/s/796dd609eaad",
     "qrcode": "static/qrcode/483.png",
     "type": "剧本杀",
-    "count": 10
+    "count": 10,
+    "juben_type": "欢乐"
   },
   {
     "id": "484",
@@ -5929,7 +6017,8 @@
     "share_link": "https://pan.quark.cn/s/aae6cb9bfe41",
     "qrcode": "static/qrcode/496.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "497",
@@ -5941,7 +6030,8 @@
     "share_link": "https://pan.quark.cn/s/13554a561c72",
     "qrcode": "static/qrcode/497.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "古风"
   },
   {
     "id": "498",
@@ -5953,7 +6043,8 @@
     "share_link": "https://pan.quark.cn/s/c16bc0af552e",
     "qrcode": "static/qrcode/498.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "欢乐"
   },
   {
     "id": "499",
@@ -5968,7 +6059,8 @@
     "share_link": "https://pan.quark.cn/s/c6ef2550a3da",
     "qrcode": "static/qrcode/499.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "500",
@@ -5991,7 +6083,8 @@
     "share_link": "https://pan.quark.cn/s/6610ed22512e",
     "qrcode": "static/qrcode/501.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "古风"
   },
   {
     "id": "502",
@@ -6003,7 +6096,8 @@
     "share_link": "https://pan.quark.cn/s/1fcb804f0150",
     "qrcode": "static/qrcode/502.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "恐怖"
   },
   {
     "id": "503",
@@ -6015,7 +6109,8 @@
     "share_link": "https://pan.quark.cn/s/35428ac34206",
     "qrcode": "static/qrcode/503.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "504",
@@ -6027,7 +6122,8 @@
     "share_link": "https://pan.quark.cn/s/7d325a5e9c3d",
     "qrcode": "static/qrcode/504.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "505",
@@ -6039,7 +6135,8 @@
     "share_link": "https://pan.quark.cn/s/a0c50ac4062d",
     "qrcode": "static/qrcode/505.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "还原"
   },
   {
     "id": "506",
@@ -6051,7 +6148,8 @@
     "share_link": "https://pan.quark.cn/s/28d6b6a2f072",
     "qrcode": "static/qrcode/506.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "恐怖"
   },
   {
     "id": "507",
@@ -6066,7 +6164,8 @@
     "share_link": "https://pan.quark.cn/s/f7774ffd6157",
     "qrcode": "static/qrcode/507.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "508",
@@ -6078,7 +6177,8 @@
     "share_link": "https://pan.quark.cn/s/417d7b41d5ce",
     "qrcode": "static/qrcode/508.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "509",
@@ -6090,7 +6190,8 @@
     "share_link": "https://pan.quark.cn/s/990b7177392f",
     "qrcode": "static/qrcode/509.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "510",
@@ -6102,7 +6203,8 @@
     "share_link": "https://pan.quark.cn/s/8001e90b0b96",
     "qrcode": "static/qrcode/510.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "511",
@@ -6114,7 +6216,8 @@
     "share_link": "https://pan.quark.cn/s/d1ecb413aaf3",
     "qrcode": "static/qrcode/511.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "日式/推理"
   },
   {
     "id": "512",
@@ -6138,7 +6241,8 @@
     "share_link": "https://pan.quark.cn/s/f39f28442fb1",
     "qrcode": "static/qrcode/513.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "514",
@@ -6176,7 +6280,8 @@
     "share_link": "https://pan.quark.cn/s/3cb81ddaf501",
     "qrcode": "static/qrcode/516.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "517",
@@ -6188,7 +6293,8 @@
     "share_link": "https://pan.quark.cn/s/90d96d395a84",
     "qrcode": "static/qrcode/517.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "518",
@@ -6200,7 +6306,8 @@
     "share_link": "https://pan.quark.cn/s/256b6bee5294",
     "qrcode": "static/qrcode/518.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "519",
@@ -6215,7 +6322,8 @@
     "share_link": "https://pan.quark.cn/s/0b145b0c3c73",
     "qrcode": "static/qrcode/519.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "520",
@@ -6227,7 +6335,8 @@
     "share_link": "https://pan.quark.cn/s/66442ff38eb1",
     "qrcode": "static/qrcode/520.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "古风"
   },
   {
     "id": "521",
@@ -6239,7 +6348,8 @@
     "share_link": "https://pan.quark.cn/s/30e3087f9685",
     "qrcode": "static/qrcode/521.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "522",
@@ -6263,7 +6373,8 @@
     "share_link": "https://pan.quark.cn/s/bf8609aea9c7",
     "qrcode": "static/qrcode/523.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "情感"
   },
   {
     "id": "524",
@@ -6275,7 +6386,8 @@
     "share_link": "https://pan.quark.cn/s/59dae98979cd",
     "qrcode": "static/qrcode/524.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "现代欢乐本"
   },
   {
     "id": "525",
@@ -6287,7 +6399,8 @@
     "share_link": "https://pan.quark.cn/s/2acbaeeee408",
     "qrcode": "static/qrcode/525.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "古风"
   },
   {
     "id": "526",
@@ -6299,7 +6412,8 @@
     "share_link": "https://pan.quark.cn/s/0c8001b09ec5",
     "qrcode": "static/qrcode/526.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "527",
@@ -6311,7 +6425,8 @@
     "share_link": "https://pan.quark.cn/s/e371c53d8bbd",
     "qrcode": "static/qrcode/527.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "528",
@@ -6323,7 +6438,8 @@
     "share_link": "https://pan.quark.cn/s/f9f1a734c277",
     "qrcode": "static/qrcode/528.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "529",
@@ -6349,7 +6465,8 @@
     "share_link": "https://pan.quark.cn/s/e8cb872e3bf3",
     "qrcode": "static/qrcode/530.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "531",
@@ -6361,7 +6478,8 @@
     "share_link": "https://pan.quark.cn/s/090f5f5206c5",
     "qrcode": "static/qrcode/531.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "532",
@@ -6373,7 +6491,8 @@
     "share_link": "https://pan.quark.cn/s/c5d5fff3ec00",
     "qrcode": "static/qrcode/532.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "情感"
   },
   {
     "id": "533",
@@ -6385,7 +6504,8 @@
     "share_link": "https://pan.quark.cn/s/4bc5ec8b5dee",
     "qrcode": "static/qrcode/533.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "534",
@@ -6397,7 +6517,8 @@
     "share_link": "https://pan.quark.cn/s/7a0fb33da2cc",
     "qrcode": "static/qrcode/534.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "情感"
   },
   {
     "id": "535",
@@ -6409,7 +6530,8 @@
     "share_link": "https://pan.quark.cn/s/3b7095e9fcf7",
     "qrcode": "static/qrcode/535.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "536",
@@ -6421,7 +6543,8 @@
     "share_link": "https://pan.quark.cn/s/cbec5b40475d",
     "qrcode": "static/qrcode/536.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "537",
@@ -6433,7 +6556,8 @@
     "share_link": "https://pan.quark.cn/s/f8d67521cedd",
     "qrcode": "static/qrcode/537.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "推理"
   },
   {
     "id": "538",
@@ -6445,7 +6569,8 @@
     "share_link": "https://pan.quark.cn/s/5ae04db230de",
     "qrcode": "static/qrcode/538.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "539",
@@ -6457,7 +6582,8 @@
     "share_link": "https://pan.quark.cn/s/809c1725495c",
     "qrcode": "static/qrcode/539.png",
     "type": "剧本杀",
-    "count": 5
+    "count": 5,
+    "juben_type": "科幻"
   },
   {
     "id": "540",
@@ -6480,7 +6606,8 @@
     "share_link": "https://pan.quark.cn/s/8d60329b9400",
     "qrcode": "static/qrcode/541.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "542",
@@ -6492,7 +6619,8 @@
     "share_link": "https://pan.quark.cn/s/b91f58b83a77",
     "qrcode": "static/qrcode/542.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "543",
@@ -6507,7 +6635,8 @@
     "share_link": "https://pan.quark.cn/s/4a630320eb91",
     "qrcode": "static/qrcode/543.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "544",
@@ -6522,7 +6651,8 @@
     "share_link": "https://pan.quark.cn/s/bbd1269dee05",
     "qrcode": "static/qrcode/544.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "545",
@@ -6546,7 +6676,8 @@
     "share_link": "https://pan.quark.cn/s/d477ab363f5b",
     "qrcode": "static/qrcode/546.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "547",
@@ -6558,7 +6689,8 @@
     "share_link": "https://pan.quark.cn/s/9eea94d2021f",
     "qrcode": "static/qrcode/547.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "欢乐"
   },
   {
     "id": "548",
@@ -6570,7 +6702,8 @@
     "share_link": "https://pan.quark.cn/s/98217a80acf2",
     "qrcode": "static/qrcode/548.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "549",
@@ -6582,7 +6715,8 @@
     "share_link": "https://pan.quark.cn/s/5ed7f8c04c1a",
     "qrcode": "static/qrcode/549.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "推理"
   },
   {
     "id": "550",
@@ -6594,7 +6728,8 @@
     "share_link": "https://pan.quark.cn/s/010744a54042",
     "qrcode": "static/qrcode/550.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "惊悚"
   },
   {
     "id": "551",
@@ -6606,7 +6741,8 @@
     "share_link": "https://pan.quark.cn/s/b106935fd45d",
     "qrcode": "static/qrcode/551.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "还原"
   },
   {
     "id": "552",
@@ -6741,7 +6877,8 @@
     "share_link": "https://pan.quark.cn/s/41c56905a332",
     "qrcode": "static/qrcode/561.png",
     "type": "剧本杀",
-    "count": 7
+    "count": 7,
+    "juben_type": "惊悚"
   },
   {
     "id": "562",
@@ -6753,7 +6890,8 @@
     "share_link": "https://pan.quark.cn/s/eebbc27e7ac2",
     "qrcode": "static/qrcode/562.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "563",
@@ -6809,7 +6947,8 @@
     "share_link": "https://pan.quark.cn/s/6b6be0d93ec9",
     "qrcode": "static/qrcode/567.png",
     "type": "剧本杀",
-    "count": 6
+    "count": 6,
+    "juben_type": "情感"
   },
   {
     "id": "568",
