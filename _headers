@@ -1,45 +1,9 @@
-/api/*
+/*
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
   Pragma: no-cache
-
-/ads.txt
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-  Pragma: no-cache
-
-/update.json
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-  Pragma: no-cache
-
-/data.json
-  Cache-Control: public, max-age=3600
-
-/static/wechat_qrcode.png
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
 
 /static/*
   Cache-Control: public, max-age=31536000, immutable
-
-/*.html
-  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
-  Pragma: no-cache
-
-/*.css
-  Cache-Control: public, max-age=86400
-
-/*.js
-  Cache-Control: public, max-age=86400
-
-/*.png
-  Cache-Control: public, max-age=604800
-
-/*.jpg
-  Cache-Control: public, max-age=604800
-
-/*.svg
-  Cache-Control: public, max-age=604800
-
-/*.ico
-  Cache-Control: public, max-age=604800
 
 /quark/manifest.json
   Cache-Control: public, max-age=86400
