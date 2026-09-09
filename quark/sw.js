@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quark-v1';
+const CACHE_NAME = 'quark-v3';
 const STATIC_ASSETS = [
   '/quark/',
   '/quark/manifest.json',
@@ -23,7 +23,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
-  if (url.pathname.startsWith('/api/') || url.pathname === '/data.json' || url.pathname === '/update.json') {
+  if (url.pathname.startsWith('/api/') || url.pathname === '/data.json' || url.pathname === '/update.json' || url.pathname === '/ads.txt') {
     event.respondWith(fetch(event.request));
     return;
   }
