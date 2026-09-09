@@ -58,12 +58,12 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .hot-keyword { display: inline-block; padding: 6px 12px; margin: 4px; background: #f0f6ff; border-radius: 20px; cursor: pointer; color: #1e90ff; font-size: 14px; }
 .hot-keyword:hover { background: #1e90ff; color: #fff; }
 .title-list { text-align: left; max-height: 50vh; overflow-y: auto; }
-.title-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between; }
+.title-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; }
 .title-item:last-child { border-bottom: none; }
 .title-item:hover { background: #f8f9fa; }
-.title-item .name { font-size: 15px; color: #e74c3c; font-weight: bold; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.title-item .type { font-size: 12px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
-.title-item .arrow { color: #ccc; margin-left: 8px; }
+.title-item .name { font-size: 15px; color: #e74c3c; font-weight: bold; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.title-item .type { font-size: 12px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; flex-shrink: 0; }
+.title-item .arrow { color: #ccc; margin-left: 8px; flex-shrink: 0; }
 .qr-modal-body { text-align: center; }
 .qr-modal-body img { max-width: 200px; border: 1px solid #eee; border-radius: 8px; margin: 10px 0; }
 .qr-modal-body .hint { font-size: 13px; color: #666; margin-top: 10px; }
@@ -126,12 +126,7 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .guess-item { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 14px; color: #333; transition: background 0.2s; }
 .guess-item:hover { background: #f8f9fa; color: #1e90ff; }
 .view-count { font-size: 11px; color: #999; margin-top: 5px; }
-.hot-keywords { text-align: center; margin-bottom: 15px; width: 90%; max-width: 480px; }
-.hot-keywords-title { font-size: 13px; color: #999; margin-bottom: 8px; }
-.hot-keywords-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-.hot-keyword-item { padding: 5px 12px; background: #fff; border: 1px solid #f0f0f0; border-radius: 15px; cursor: pointer; font-size: 12px; color: #666; transition: all 0.2s; }
-.hot-keyword-item:hover { border-color: #1e90ff; color: #1e90ff; }
-.hot-keyword-item .hot-icon { color: #ff6b6b; margin-right: 3px; }
+.hot-keywords { text-align: center; margin-bottom: 15px; width: 90%; max-width: 480px; display: none; }
 .breadcrumb { font-size: 12px; color: #999; margin-bottom: 10px; width: 90%; max-width: 480px; }
 .breadcrumb a { color: #1e90ff; text-decoration: none; }
 .breadcrumb a:hover { text-decoration: underline; }
@@ -151,7 +146,6 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .batch-select-btn:hover { border-color: #1e90ff; color: #1e90ff; }
 .batch-select-btn.active { background: #1e90ff; color: #fff; border-color: #1e90ff; }
 .checkbox-item { width: 16px; height: 16px; margin-right: 6px; cursor: pointer; accent-color: #1e90ff; }
-.resource-desc { font-size: 11px; color: #999; margin-top: 3px; line-height: 1.4; }
 .remind-btn { padding: 8px 20px; background: #ff9800; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; transition: background 0.2s; margin-top: 10px; }
 .remind-btn:hover { background: #e68900; }
 .remind-btn.subscribed { background: #ccc; cursor: default; }
@@ -204,10 +198,6 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
     <span class="count-tag" data-count="7" onclick="filterByCount(7, this)">7人</span>
     <span class="count-tag" data-count="8" onclick="filterByCount(8, this)">8人</span>
     <span class="count-tag" data-count="10" onclick="filterByCount(10, this)">10人</span>
-</div>
-<div class="hot-keywords" id="hotKeywords" style="display:none;">
-    <div class="hot-keywords-title">🔥 热搜关键词</div>
-    <div class="hot-keywords-list" id="hotKeywordsList"></div>
 </div>
 <div class="search-history" id="searchHistory">
     <span class="search-history-label">搜索历史：</span>
@@ -458,14 +448,6 @@ function getGuessList(keyword) {
     if (pool.length === 0) pool = allResources;
     const shuffled = pool.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 5);
-}
-
-function renderHotKeywords() {
-    if (!resourcesLoaded || allResources.length === 0) return;
-    const shuffled = [...allResources].sort(() => 0.5 - Math.random()).slice(0, 8);
-    const container = document.getElementById('hotKeywordsList');
-    container.innerHTML = shuffled.map((item, i) => `<span class="hot-keyword-item" onclick="searchKeyword('${(item.title || '').replace(/'/g, "\\'")}')"><span class="hot-icon">${i < 3 ? '🔥' : ''}</span>${item.title || '未知资源'}</span>`).join('');
-    document.getElementById('hotKeywords').style.display = 'block';
 }
 
 let batchMode = false;
@@ -741,7 +723,6 @@ async function loadResources() {
         const res = await fetch('/data.json?v=' + Date.now());
         allResources = await res.json();
         resourcesLoaded = true;
-        renderHotKeywords();
     } catch (e) {
         allResources = [];
         resourcesLoaded = true;
@@ -817,27 +798,17 @@ function showResultModal(results, keyword) {
         const isFav = isFavorite(item.id);
         let desc = '';
         if (type === '剧本杀' && count) {
-            desc = `<span style="font-size:11px;color:#e74c3c;margin-left:6px;">${count}人本</span>`;
+            desc = `<span style="font-size:11px;color:#e74c3c;margin-left:6px;flex-shrink:0;">${count}人本</span>`;
         } else if (keywords) {
-            desc = `<span style="font-size:11px;color:#999;margin-left:6px;">${keywords}</span>`;
+            desc = `<span style="font-size:11px;color:#999;margin-left:6px;flex-shrink:0;">${keywords}</span>`;
         }
-        let extraDesc = '';
-        if (type && type !== '剧本杀') {
-            extraDesc = `<div class="resource-desc">${type}资源 · ${keywords || '高质量资源'}</div>`;
-        } else if (type === '剧本杀') {
-            extraDesc = `<div class="resource-desc">${count}人剧本杀 · 推理体验</div>`;
-        }
-        html += `<div class="title-item" style="flex-wrap:wrap;">
+        html += `<div class="title-item">
             <span class="name" onclick="handleTitleClick(${index})">${title}</span>
             ${type ? '<span class="type">' + type + '</span>' : ''}
             ${desc}
-            ${extraDesc}
-            <div style="display:flex;align-items:center;gap:4px;">
-                <input type="checkbox" class="checkbox-item" onchange="toggleSelectItem('${item.id}', this)" ${batchMode ? '' : 'style="display:none"'}>
-                <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${item.id}','${(title).replace(/'/g, "\\'")}','${type}',this)" title="收藏">♥</button>
-                <button style="background:none;border:none;cursor:pointer;font-size:12px;color:#1e90ff;padding:0 4px;" onclick="event.stopPropagation();shareResource('${(title).replace(/'/g, "\\'")}','${(item.share_link || '').replace(/'/g, "\\'")}')" title="分享">↗</button>
-                <span class="arrow" onclick="handleTitleClick(${index})">›</span>
-            </div>
+            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${item.id}','${(title).replace(/'/g, "\\'")}','${type}',this)" title="收藏">♥</button>
+            <button style="background:none;border:none;cursor:pointer;font-size:12px;color:#1e90ff;padding:0 4px;flex-shrink:0;" onclick="event.stopPropagation();shareResource('${(title).replace(/'/g, "\\'")}','${(item.share_link || '').replace(/'/g, "\\'")}')" title="分享">↗</button>
+            <span class="arrow" onclick="handleTitleClick(${index})">›</span>
         </div>`;
     });
     
