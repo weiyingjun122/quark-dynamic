@@ -794,11 +794,17 @@ function showResultModal(results, keyword) {
         const title = item.title || '未知资源';
         const type = item.type || '';
         const count = item.count;
+        const jubenType = item.juben_type || '';
         const keywords = (item.keywords || []).slice(0, 3).join(' · ');
         const isFav = isFavorite(item.id);
         let desc = '';
-        if (type === '剧本杀' && count) {
-            desc = `<span style="font-size:11px;color:#e74c3c;margin-left:6px;flex-shrink:0;">${count}人本</span>`;
+        if (type === '剧本杀') {
+            const parts = [];
+            if (count) parts.push(`${count}人本`);
+            if (jubenType) parts.push(jubenType);
+            if (parts.length > 0) {
+                desc = `<span style="font-size:11px;color:#e74c3c;margin-left:6px;flex-shrink:0;">${parts.join(' · ')}</span>`;
+            }
         } else if (keywords) {
             desc = `<span style="font-size:11px;color:#999;margin-left:6px;flex-shrink:0;">${keywords}</span>`;
         }
