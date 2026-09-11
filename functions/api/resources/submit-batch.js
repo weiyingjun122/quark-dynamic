@@ -91,7 +91,17 @@ export async function onRequestPost(context) {
     return Response.json({ success: false, error: `单次最多提交${batchLimit}条` });
   }
 
-  const blockedWords = ['赌博', '色情', '暴力', '枪支', '毒品', '诈骗', '洗钱'];
+  const blockedWords = [
+    '赌博', '色情', '暴力', '枪支', '毒品', '诈骗', '洗钱',
+    '成人', 'AV', 'av', '黄片', '黄色', 'Porn', 'porn', 'sex', 'Sex',
+    '枪械', '弹药', '炸药', '管制刀具', '违禁品',
+    '代开发票', '洗钱', '套现', '外挂', '私服',
+    '传销', '非法集资', '高利贷', '裸贷',
+    '代孕', '买卖人体器官', '贩卖人口',
+    '翻墙', 'VPN', 'vpn', '科学上网',
+    '私服', '外挂', '作弊',
+    '盗版', '破解版', '注册机', 'KeyGen', 'keygen'
+  ];
   const submittedBy = user.username;
   const results = [];
 
