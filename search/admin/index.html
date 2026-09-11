@@ -157,11 +157,11 @@ function loadList(status) {
 
     // 加载所有状态计数
     ['pending', 'approved', 'rejected'].forEach(function(s) {
-      fetch('/api/resources/admin?status=' + s, {
+      fetch('/api/resources/admin?status=' + s + '&limit=1', {
         headers: { 'Authorization': 'Bearer ' + adminToken }
       }).then(function(r) { return r.json(); }).then(function(d) {
-        if (d.success) document.getElementById('tab' + cap(s)).textContent = (d.results || []).length;
-        if (s === 'pending') document.getElementById('pendingCount').textContent = (d.results || []).length;
+        if (d.success) document.getElementById('tab' + cap(s)).textContent = d.total || 0;
+        if (s === 'pending') document.getElementById('pendingCount').textContent = d.total || 0;
       }).catch(function(){});
     });
 

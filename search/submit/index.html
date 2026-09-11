@@ -22,15 +22,33 @@ header{text-align:center;margin-bottom:24px}
 h1{font-size:26px;color:#1f2d3d;margin-bottom:8px}
 .subtitle{color:#64748b;font-size:14px;line-height:1.6}
 
+.auth-box{background:#fff;border-radius:16px;padding:32px;max-width:420px;margin:40px auto;box-shadow:0 4px 20px rgba(0,0,0,0.06)}
+.auth-box h2{text-align:center;margin-bottom:20px;color:#1f2d3d}
+.auth-tabs{display:flex;margin-bottom:20px;border-bottom:2px solid #e2e8f0}
+.auth-tab{flex:1;text-align:center;padding:10px;cursor:pointer;font-size:15px;color:#64748b;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.auth-tab.active{color:#2563eb;border-bottom-color:#2563eb;font-weight:600}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:13px;color:#64748b;margin-bottom:5px;font-weight:500}
+.form-group input{width:100%;padding:11px 14px;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;outline:none;transition:border-color .2s;background:#f8fafc}
+.form-group input:focus{border-color:#2563eb;background:#fff}
+.btn-primary{width:100%;padding:12px;font-size:15px;border:none;border-radius:10px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,0.3)}
+.error-msg{color:#ef4444;font-size:13px;margin-top:8px;display:none}
+
+.user-bar{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.user-info{display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600}
+.user-name{font-size:14px;color:#1f2d3d;font-weight:500}
+.user-links{display:flex;gap:8px}
+.user-links a{font-size:12px;color:#64748b;text-decoration:none;padding:5px 10px;border-radius:6px;background:#f8fafc;transition:all .2s}
+.user-links a:hover{background:#eff6ff;color:#2563eb}
+
 .card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 16px rgba(31,45,61,0.08);margin-bottom:20px}
 .card h2{font-size:17px;color:#1f2d3d;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .card h2::before{content:"";display:inline-block;width:4px;height:16px;background:linear-gradient(180deg,#2563eb,#60a5fa);border-radius:2px}
 
-.form-group{margin-bottom:14px}
-.form-group label{display:block;font-size:13px;color:#64748b;margin-bottom:6px;font-weight:500}
-.form-group input,.form-group textarea{width:100%;padding:10px 14px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;outline:none;transition:border-color .2s;font-family:inherit}
-.form-group input:focus,.form-group textarea:focus{border-color:#2563eb}
-.form-group textarea{min-height:280px;resize:vertical;font-family:Consolas,Menlo,monospace;font-size:13px;line-height:1.7}
+.card .form-group textarea{width:100%;padding:10px 14px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;outline:none;transition:border-color .2s;font-family:inherit;min-height:280px;resize:vertical;font-family:Consolas,Menlo,monospace;font-size:13px;line-height:1.7}
+.card .form-group textarea:focus{border-color:#2563eb}
 
 .batch-hint{background:#f0f6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#1e40af;line-height:1.7}
 .batch-hint code{background:#dbeafe;padding:1px 5px;border-radius:4px;font-size:12px}
@@ -69,58 +87,99 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 </head>
 <body>
 <nav class="navbar">
-    <div class="navbar-inner">
-        <a href="/" class="navbar-brand">实用资源整理站</a>
-        <div class="navbar-links">
-            <a href="/">首页</a>
-            <a href="/search/">资源搜索</a>
-            <a href="/search/submit/" class="active">提交资源</a>
-            <a href="/blog/">博客</a>
-        </div>
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand">实用资源整理站</a>
+    <div class="navbar-links">
+      <a href="/">首页</a>
+      <a href="/search/">资源搜索</a>
+      <a href="/search/submit/" class="active">提交资源</a>
+      <a href="/blog/">博客</a>
     </div>
+  </div>
 </nav>
 
 <main class="container">
-  <header>
-    <h1>提交资源</h1>
-    <p class="subtitle">批量提交你发现的优质资源链接，审核通过后会展示给所有用户</p>
-  </header>
-
-  <div class="card">
-    <h2>批量提交资源</h2>
-    <div class="batch-hint">
-      <strong>格式说明：</strong>每行一个资源，格式为 <code>资源名称 | 链接 | 类型</code><br>
-      类型可选：学习资料、工具软件、模板素材、影视资源、其他（默认"其他"）<br>
-      也可直接粘贴链接，会自动识别
+  <!-- 未登录：显示登录/注册 -->
+  <div id="authSection">
+    <header>
+      <h1>提交资源</h1>
+      <p class="subtitle">登录后即可提交资源，审核通过后展示给所有用户</p>
+    </header>
+    <div class="auth-box">
+      <h2 id="authTitle">登录</h2>
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchAuth('login')">登录</div>
+        <div class="auth-tab" onclick="switchAuth('register')">注册</div>
+      </div>
+      <div id="loginForm">
+        <div class="form-group"><label>用户名 / 邮箱</label><input type="text" id="loginInput" placeholder="请输入"></div>
+        <div class="form-group"><label>密码</label><input type="password" id="loginPwd" placeholder="请输入密码" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <div class="error-msg" id="loginError"></div>
+        <button class="btn-primary" onclick="doLogin()">登录</button>
+        <p style="text-align:center;margin-top:12px;font-size:13px;color:#94a3b8">还没有账户？<a href="javascript:switchAuth('register')" style="color:#2563eb;text-decoration:none">立即注册</a></p>
+      </div>
+      <div id="registerForm" style="display:none">
+        <div class="form-group"><label>用户名 *</label><input type="text" id="regUsername" placeholder="3-20位字母数字下划线"></div>
+        <div class="form-group"><label>邮箱 *</label><input type="email" id="regEmail" placeholder="用于登录"></div>
+        <div class="form-group"><label>密码 *</label><input type="password" id="regPwd" placeholder="至少6个字符"></div>
+        <div class="form-group"><label>确认密码 *</label><input type="password" id="regPwd2" placeholder="再次输入" onkeydown="if(event.key==='Enter')doRegister()"></div>
+        <div class="error-msg" id="regError"></div>
+        <button class="btn-primary" onclick="doRegister()">注册</button>
+        <p style="text-align:center;margin-top:12px;font-size:13px;color:#94a3b8">已有账户？<a href="javascript:switchAuth('login')" style="color:#2563eb;text-decoration:none">去登录</a></p>
+      </div>
     </div>
-    <div class="form-group">
-      <label>资源列表 *</label>
-      <textarea id="batchInput" placeholder="Python入门教程 | https://pan.quark.cn/xxx | 学习资料&#10;VSCode编辑器 | https://pan.quark.cn/yyy | 工具软件&#10;简历模板合集 | https://www.alipan.com/s/zzz | 模板素材&#10;&#10;或者直接粘贴链接：&#10;https://pan.quark.cn/aaa&#10;https://www.alipan.com/bbb"></textarea>
-    </div>
-    <div class="form-group">
-      <label>联系邮箱（可选，用于审核通知）</label>
-      <input type="email" id="batchEmail" placeholder="your@email.com">
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-primary" id="batchBtn" onclick="submitBatch()">提交资源</button>
-      <button class="btn btn-ghost" onclick="clearBatch()">清空</button>
-    </div>
-    <div class="progress" id="progress">
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-text" id="progressText">准备中...</div>
-    </div>
-    <div class="result-box" id="resultBox"></div>
   </div>
 
-  <div class="tips">
-    <h3>提交须知</h3>
-    <ul>
-      <li>请确保资源链接有效且可公开访问</li>
-      <li>不接受违法违规、侵权盗版内容</li>
-      <li>审核通过后会在资源搜索中展示</li>
-      <li>每个链接24小时内不重复提交</li>
-      <li>如有疑问请联系 <a href="/contact.html" style="color:#2563eb">weiyingjun122@gmail.com</a></li>
-    </ul>
+  <!-- 已登录：显示提交表单 -->
+  <div id="submitSection" style="display:none">
+    <header>
+      <h1>提交资源</h1>
+      <p class="subtitle">批量提交你发现的优质资源链接，审核通过后展示给所有用户</p>
+    </header>
+
+    <div class="user-bar">
+      <div class="user-info">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <span class="user-name" id="userName">-</span>
+      </div>
+      <div class="user-links">
+        <a href="/search/profile/">个人中心</a>
+        <a href="javascript:doLogout()">退出</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>批量提交资源</h2>
+      <div class="batch-hint">
+        <strong>格式说明：</strong>每行一个资源，格式为 <code>资源名称 | 链接 | 类型</code><br>
+        类型可选：学习资料、工具软件、模板素材、其他（默认"其他"）<br>
+        也可直接粘贴链接，会自动识别
+      </div>
+      <div class="form-group">
+        <label>资源列表 *</label>
+        <textarea id="batchInput" placeholder="Python入门教程 | https://pan.quark.cn/xxx | 学习资料&#10;VSCode编辑器 | https://pan.quark.cn/yyy | 工具软件&#10;简历模板合集 | https://www.alipan.com/s/zzz | 模板素材&#10;&#10;或者直接粘贴链接：&#10;https://pan.quark.cn/aaa&#10;https://www.alipan.com/bbb"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="batchBtn" onclick="submitBatch()">提交资源</button>
+        <button class="btn btn-ghost" onclick="clearBatch()">清空</button>
+      </div>
+      <div class="progress" id="progress">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">准备中...</div>
+      </div>
+      <div class="result-box" id="resultBox"></div>
+    </div>
+
+    <div class="tips">
+      <h3>提交须知</h3>
+      <ul>
+        <li>请确保资源链接有效且可公开访问</li>
+        <li>不接受违法违规、侵权盗版内容</li>
+        <li>审核通过后会在资源搜索中展示</li>
+        <li>每个链接24小时内不重复提交</li>
+        <li>如有疑问请联系 <a href="/contact.html" style="color:#2563eb">weiyingjun122@gmail.com</a></li>
+      </ul>
+    </div>
   </div>
 </main>
 
@@ -133,12 +192,81 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 <div class="toast" id="toast"></div>
 
 <script>
+var TOKEN_KEY = 'user_auth_token';
+
 function toast(msg) {
   var el = document.getElementById('toast');
   el.textContent = msg;
   el.classList.add('show');
   clearTimeout(toast._t);
-  toast._t = setTimeout(function() { el.classList.remove('show'); }, 2000);
+  toast._t = setTimeout(function() { el.classList.remove('show'); }, 2500);
+}
+
+function switchAuth(mode) {
+  document.querySelectorAll('.auth-tab').forEach(function(t) { t.classList.remove('active'); });
+  if (mode === 'login') {
+    document.querySelector('.auth-tab:first-child').classList.add('active');
+    document.getElementById('loginForm').style.display = '';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('authTitle').textContent = '登录';
+  } else {
+    document.querySelector('.auth-tab:last-child').classList.add('active');
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = '';
+    document.getElementById('authTitle').textContent = '注册';
+  }
+  document.querySelectorAll('.error-msg').forEach(function(e) { e.style.display = 'none'; });
+}
+
+function showErr(id, msg) { var el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; }
+
+function doLogin() {
+  var login = document.getElementById('loginInput').value.trim();
+  var pwd = document.getElementById('loginPwd').value;
+  if (!login || !pwd) { showErr('loginError', '请填写所有字段'); return; }
+  fetch('/api/auth/login', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ login: login, password: pwd })
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (!d.success) { showErr('loginError', d.error); return; }
+    localStorage.setItem(TOKEN_KEY, d.token);
+    showSubmitForm(d.user);
+    toast('登录成功');
+  }).catch(function() { showErr('loginError', '网络错误'); });
+}
+
+function doRegister() {
+  var u = document.getElementById('regUsername').value.trim();
+  var e = document.getElementById('regEmail').value.trim();
+  var p = document.getElementById('regPwd').value;
+  var p2 = document.getElementById('regPwd2').value;
+  if (!u || !e || !p) { showErr('regError', '请填写必填项'); return; }
+  if (p !== p2) { showErr('regError', '两次密码不一致'); return; }
+  fetch('/api/auth/register', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: u, email: e, password: p })
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (!d.success) { showErr('regError', d.error); return; }
+    toast('注册成功，请登录');
+    switchAuth('login');
+    document.getElementById('loginInput').value = u;
+  }).catch(function() { showErr('regError', '网络错误'); });
+}
+
+function doLogout() {
+  localStorage.removeItem(TOKEN_KEY);
+  document.getElementById('submitSection').style.display = 'none';
+  document.getElementById('authSection').style.display = '';
+  toast('已退出');
+}
+
+function showSubmitForm(user) {
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('submitSection').style.display = '';
+  if (user) {
+    document.getElementById('userAvatar').textContent = (user.nickname || user.username || 'U').charAt(0).toUpperCase();
+    document.getElementById('userName').textContent = user.nickname || user.username;
+  }
 }
 
 function parseBatchInput(text) {
@@ -151,8 +279,7 @@ function parseBatchInput(text) {
     } else if (parts.length === 1) {
       var url = parts[0];
       if (url.match(/^https?:\/\//)) {
-        var titleFromUrl = url.replace(/^https?:\/\//, '').substring(0, 60);
-        items.push({ title: titleFromUrl, link: url, type: '其他' });
+        items.push({ title: url.replace(/^https?:\/\//, '').substring(0, 60), link: url, type: '其他' });
       }
     }
   });
@@ -162,10 +289,9 @@ function parseBatchInput(text) {
 async function submitBatch() {
   var text = document.getElementById('batchInput').value;
   var items = parseBatchInput(text);
-  var email = document.getElementById('batchEmail').value.trim();
-
   if (items.length === 0) { toast('请填写要提交的资源'); return; }
 
+  var token = localStorage.getItem(TOKEN_KEY);
   var btn = document.getElementById('batchBtn');
   var progress = document.getElementById('progress');
   var resultBox = document.getElementById('resultBox');
@@ -179,19 +305,16 @@ async function submitBatch() {
   try {
     var res = await fetch('/api/resources/submit-batch', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: items, email: email })
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ items: items })
     });
     var data = await res.json();
-
     document.getElementById('progressFill').style.width = '100%';
-
     if (data.success && data.results) {
       data.results.forEach(function(r) {
         var cls = r.success ? 'success' : 'error';
         var icon = r.success ? '✅' : '❌';
-        var msg = r.success ? '提交成功' : (r.error || '失败');
-        resultBox.innerHTML += '<div class="result-item ' + cls + '"><span class="result-icon">' + icon + '</span>' + escapeHtml(r.title) + ' - ' + escapeHtml(msg) + '</div>';
+        resultBox.innerHTML += '<div class="result-item ' + cls + '"><span class="result-icon">' + icon + '</span>' + esc(r.title) + ' - ' + esc(r.success ? '提交成功' : (r.error || '失败')) + '</div>';
       });
       document.getElementById('progressText').textContent = data.message || '完成';
       toast('提交完成：成功 ' + data.successCount + ' 个');
@@ -202,9 +325,8 @@ async function submitBatch() {
   } catch (e) {
     document.getElementById('progressFill').style.width = '0';
     document.getElementById('progressText').textContent = '网络错误';
-    toast('网络错误，请稍后重试');
+    toast('网络错误');
   }
-
   btn.disabled = false;
 }
 
@@ -215,10 +337,20 @@ function clearBatch() {
   document.getElementById('progress').classList.remove('show');
 }
 
-function escapeHtml(s) {
-  if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function esc(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function checkLogin() {
+  var token = localStorage.getItem(TOKEN_KEY);
+  if (!token) return;
+  fetch('/api/auth/profile', { headers: { 'Authorization': 'Bearer ' + token } })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.success && d.user) showSubmitForm(d.user);
+      else localStorage.removeItem(TOKEN_KEY);
+    }).catch(function() {});
 }
+
+checkLogin();
 </script>
 </body>
 </html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人中心 - 实用资源整理站</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#fafbfe 100%);min-height:100vh;color:#333}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);height:56px;display:flex;align-items:center;justify-content:center}
+.navbar-inner{width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.navbar-brand{font-size:16px;font-weight:bold;color:#1e90ff;text-decoration:none}
+.navbar-links{display:flex;gap:24px;position:absolute;left:50%;transform:translateX(-50%)}
+.navbar-links a{text-decoration:none;color:#333;font-size:15px;padding:6px 0;border-bottom:2px solid transparent;transition:all .2s}
+.navbar-links a:hover,.navbar-links a.active{color:#1e90ff;border-bottom-color:#1e90ff}
+body{padding-top:56px}
+.container{max-width:700px;margin:0 auto;padding:30px 16px 60px}
+
+.auth-box{background:#fff;border-radius:16px;padding:36px;max-width:420px;margin:40px auto;box-shadow:0 4px 20px rgba(0,0,0,0.06)}
+.auth-box h2{text-align:center;margin-bottom:24px;color:#1f2d3d;font-size:22px}
+.auth-tabs{display:flex;margin-bottom:24px;border-bottom:2px solid #e2e8f0}
+.auth-tab{flex:1;text-align:center;padding:12px;cursor:pointer;font-size:15px;color:#64748b;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-2px}
+.auth-tab.active{color:#2563eb;border-bottom-color:#2563eb;font-weight:600}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;color:#64748b;margin-bottom:6px;font-weight:500}
+.form-group input,.form-group textarea{width:100%;padding:12px 14px;font-size:15px;border:1.5px solid #e2e8f0;border-radius:10px;outline:none;transition:border-color .2s;background:#f8fafc}
+.form-group input:focus,.form-group textarea:focus{border-color:#2563eb;background:#fff}
+.form-group textarea{resize:vertical;min-height:80px}
+.btn-primary{width:100%;padding:13px;font-size:16px;border:none;border-radius:10px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,0.3)}
+.btn-primary:active{transform:translateY(0)}
+.btn-secondary{padding:10px 24px;border:1.5px solid #e2e8f0;border-radius:8px;background:#fff;color:#64748b;cursor:pointer;font-size:14px;transition:all .2s}
+.btn-secondary:hover{border-color:#2563eb;color:#2563eb}
+.error-msg{color:#ef4444;font-size:13px;margin-top:8px;display:none}
+.divider{text-align:center;color:#94a3b8;font-size:13px;margin:16px 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:#e2e8f0}
+.divider::before{left:0}.divider::after{right:0}
+
+.profile-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);margin-bottom:24px}
+.profile-header{background:linear-gradient(135deg,#2563eb,#7c3aed);padding:30px 24px;color:#fff;text-align:center}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 12px;border:3px solid rgba(255,255,255,0.3)}
+.profile-name{font-size:20px;font-weight:600;margin-bottom:4px}
+.profile-username{font-size:13px;opacity:0.8}
+.profile-stats{display:flex;gap:0;background:#fff;border-bottom:1px solid #f1f5f9}
+.stat-item{flex:1;text-align:center;padding:16px 8px}
+.stat-item:not(:last-child){border-right:1px solid #f1f5f9}
+.stat-num{font-size:22px;font-weight:700;color:#2563eb}
+.stat-label{font-size:12px;color:#94a3b8;margin-top:2px}
+
+.profile-body{padding:24px}
+.section-title{font-size:16px;font-weight:600;color:#1f2d3d;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #f1f5f9}
+.info-row{display:flex;padding:10px 0;border-bottom:1px solid #f8fafc}
+.info-row:last-child{border-bottom:none}
+.info-label{width:80px;font-size:13px;color:#94a3b8;flex-shrink:0}
+.info-value{font-size:14px;color:#1f2d3d;flex:1;word-break:break-all}
+.info-value a{color:#2563eb;text-decoration:none}
+
+.profile-tabs{display:flex;border-bottom:1px solid #e2e8f0;margin-bottom:16px}
+.profile-tab{padding:10px 20px;cursor:pointer;font-size:14px;color:#64748b;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.profile-tab.active{color:#2563eb;border-bottom-color:#2563eb;font-weight:600}
+
+.resource-item{padding:12px;border:1px solid #f1f5f9;border-radius:10px;margin-bottom:8px;transition:all .2s}
+.resource-item:hover{border-color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,0.08)}
+.resource-title{font-size:14px;color:#1f2d3d;font-weight:500;margin-bottom:4px}
+.resource-meta{font-size:12px;color:#94a3b8}
+.resource-link{font-size:12px;color:#2563eb;text-decoration:none;word-break:break-all;display:block;margin-top:4px}
+
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.status-pending{background:#f59e0b}
+.status-approved{background:#10b981}
+.status-rejected{background:#ef4444}
+
+.empty{text-align:center;padding:40px;color:#94a3b8}
+.loading{text-align:center;padding:30px;color:#94a3b8}
+
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;width:90%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.modal h3{margin-bottom:16px;color:#1f2d3d}
+.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="navbar-brand">实用资源整理站</a>
+    <div class="navbar-links">
+      <a href="/">首页</a>
+      <a href="/search/">资源搜索</a>
+      <a href="/search/submit/">提交资源</a>
+      <a href="/blog/">博客</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" id="authView">
+  <div class="auth-box">
+    <h2 id="authTitle">登录</h2>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuth('login')">登录</div>
+      <div class="auth-tab" onclick="switchAuth('register')">注册</div>
+    </div>
+    <div id="loginForm">
+      <div class="form-group">
+        <label>用户名 / 邮箱</label>
+        <input type="text" id="loginInput" placeholder="请输入用户名或邮箱">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="loginPwd" placeholder="请输入密码" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="error-msg" id="loginError"></div>
+      <button class="btn-primary" onclick="doLogin()">登录</button>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="form-group">
+        <label>用户名 *</label>
+        <input type="text" id="regUsername" placeholder="3-20位字母数字下划线">
+      </div>
+      <div class="form-group">
+        <label>邮箱 *</label>
+        <input type="email" id="regEmail" placeholder="用于登录和找回密码">
+      </div>
+      <div class="form-group">
+        <label>昵称</label>
+        <input type="text" id="regNickname" placeholder="显示名称（选填）">
+      </div>
+      <div class="form-group">
+        <label>密码 *</label>
+        <input type="password" id="regPwd" placeholder="至少6个字符">
+      </div>
+      <div class="form-group">
+        <label>确认密码 *</label>
+        <input type="password" id="regPwd2" placeholder="再次输入密码" onkeydown="if(event.key==='Enter')doRegister()">
+      </div>
+      <div class="error-msg" id="regError"></div>
+      <button class="btn-primary" onclick="doRegister()">注册</button>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="profileView" style="display:none">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="profile-avatar" id="avatarEl">U</div>
+      <div class="profile-name" id="nicknameEl">-</div>
+      <div class="profile-username" id="usernameEl">@-</div>
+    </div>
+    <div class="profile-stats">
+      <div class="stat-item"><div class="stat-num" id="statSubmitted">0</div><div class="stat-label">提交资源</div></div>
+      <div class="stat-item"><div class="stat-num" id="statApproved">0</div><div class="stat-label">已通过</div></div>
+      <div class="stat-item"><div class="stat-num" id="statPending">0</div><div class="stat-label">审核中</div></div>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <div class="profile-body">
+      <div class="profile-tabs">
+        <div class="profile-tab active" onclick="switchProfileTab('resources')">我的资源</div>
+        <div class="profile-tab" onclick="switchProfileTab('settings')">账户设置</div>
+      </div>
+      <div id="tabResources">
+        <div class="loading">加载中...</div>
+      </div>
+      <div id="tabSettings" style="display:none">
+        <div class="section-title">基本信息</div>
+        <div class="form-group">
+          <label>昵称</label>
+          <input type="text" id="editNickname" placeholder="你的昵称">
+        </div>
+        <div class="form-group">
+          <label>个人简介</label>
+          <textarea id="editBio" placeholder="介绍一下自己..."></textarea>
+        </div>
+        <button class="btn-primary" style="width:auto;padding:10px 30px" onclick="saveProfile()">保存</button>
+
+        <div class="section-title" style="margin-top:24px">修改密码</div>
+        <div class="form-group">
+          <label>原密码</label>
+          <input type="password" id="oldPwd" placeholder="输入当前密码">
+        </div>
+        <div class="form-group">
+          <label>新密码</label>
+          <input type="password" id="newPwd" placeholder="至少6个字符">
+        </div>
+        <button class="btn-primary" style="width:auto;padding:10px 30px" onclick="changePassword()">修改密码</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:16px">
+    <button class="btn-secondary" onclick="doLogout()">退出登录</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var TOKEN_KEY = 'user_auth_token';
+var currentUser = null;
+
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function() { el.classList.remove('show'); }, 2500);
+}
+
+function switchAuth(mode) {
+  document.querySelectorAll('.auth-tab').forEach(function(t) { t.classList.remove('active'); });
+  if (mode === 'login') {
+    document.querySelector('.auth-tab:first-child').classList.add('active');
+    document.getElementById('loginForm').style.display = '';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('authTitle').textContent = '登录';
+  } else {
+    document.querySelector('.auth-tab:last-child').classList.add('active');
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = '';
+    document.getElementById('authTitle').textContent = '注册';
+  }
+  hideErrors();
+}
+
+function hideErrors() {
+  document.querySelectorAll('.error-msg').forEach(function(e) { e.style.display = 'none'; });
+}
+
+function showError(id, msg) {
+  var el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function doLogin() {
+  var login = document.getElementById('loginInput').value.trim();
+  var password = document.getElementById('loginPwd').value;
+  if (!login || !password) { showError('loginError', '请填写所有字段'); return; }
+
+  fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ login: login, password: password })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.success) { showError('loginError', data.error); return; }
+    localStorage.setItem(TOKEN_KEY, data.token);
+    currentUser = data.user;
+    showProfile();
+    toast('登录成功');
+  }).catch(function() { showError('loginError', '网络错误'); });
+}
+
+function doRegister() {
+  var username = document.getElementById('regUsername').value.trim();
+  var email = document.getElementById('regEmail').value.trim();
+  var nickname = document.getElementById('regNickname').value.trim();
+  var pwd = document.getElementById('regPwd').value;
+  var pwd2 = document.getElementById('regPwd2').value;
+
+  if (!username || !email || !pwd) { showError('regError', '请填写必填项'); return; }
+  if (pwd !== pwd2) { showError('regError', '两次密码不一致'); return; }
+
+  fetch('/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: username, email: email, password: pwd, nickname: nickname })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.success) { showError('regError', data.error); return; }
+    toast('注册成功，请登录');
+    switchAuth('login');
+    document.getElementById('loginInput').value = username;
+  }).catch(function() { showError('regError', '网络错误'); });
+}
+
+function doLogout() {
+  localStorage.removeItem(TOKEN_KEY);
+  currentUser = null;
+  document.getElementById('profileView').style.display = 'none';
+  document.getElementById('authView').style.display = '';
+  toast('已退出');
+}
+
+function showProfile() {
+  document.getElementById('authView').style.display = 'none';
+  document.getElementById('profileView').style.display = '';
+  loadProfile();
+}
+
+function loadProfile() {
+  var token = localStorage.getItem(TOKEN_KEY);
+  if (!token) { showAuth(); return; }
+
+  fetch('/api/auth/profile', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.success) { showAuth(); return; }
+    currentUser = data.user;
+    var u = data.user;
+    var s = data.stats;
+
+    document.getElementById('avatarEl').textContent = (u.nickname || u.username || 'U').charAt(0).toUpperCase();
+    document.getElementById('nicknameEl').textContent = u.nickname || u.username;
+    document.getElementById('usernameEl').textContent = '@' + u.username;
+    document.getElementById('statSubmitted').textContent = s.submitted;
+    document.getElementById('statApproved').textContent = s.approved;
+    document.getElementById('statPending').textContent = s.pending;
+    document.getElementById('editNickname').value = u.nickname || '';
+    document.getElementById('editBio').value = u.bio || '';
+
+    loadMyResources();
+  }).catch(function() { showAuth(); });
+}
+
+function showAuth() {
+  document.getElementById('profileView').style.display = 'none';
+  document.getElementById('authView').style.display = '';
+}
+
+function switchProfileTab(tab) {
+  document.querySelectorAll('.profile-tab').forEach(function(t) { t.classList.remove('active'); });
+  if (tab === 'resources') {
+    document.querySelector('.profile-tab:first-child').classList.add('active');
+    document.getElementById('tabResources').style.display = '';
+    document.getElementById('tabSettings').style.display = 'none';
+  } else {
+    document.querySelector('.profile-tab:last-child').classList.add('active');
+    document.getElementById('tabResources').style.display = 'none';
+    document.getElementById('tabSettings').style.display = '';
+  }
+}
+
+function loadMyResources() {
+  var token = localStorage.getItem(TOKEN_KEY);
+  var el = document.getElementById('tabResources');
+  el.innerHTML = '<div class="loading">加载中...</div>';
+
+  fetch('/api/auth/profile/resources', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (!data.success || !data.results || data.results.length === 0) {
+      el.innerHTML = '<div class="empty">暂无提交记录<br><a href="/search/submit/" style="color:#2563eb">去提交资源</a></div>';
+      return;
+    }
+    el.innerHTML = data.results.map(function(item) {
+      var date = item.created_at ? item.created_at.substring(0, 10) : '';
+      return '<div class="resource-item">' +
+        '<div class="resource-title">' + esc(item.title) + '</div>' +
+        '<div class="resource-meta"><span class="status-dot status-' + item.status + '"></span>' + statusLabel(item.status) + ' · ' + (item.type || '') + ' · ' + date + '</div>' +
+        '<a class="resource-link" href="' + esc(item.link) + '" target="_blank">' + esc(item.link) + '</a>' +
+      '</div>';
+    }).join('');
+  }).catch(function() { el.innerHTML = '<div class="empty">加载失败</div>'; });
+}
+
+function saveProfile() {
+  var token = localStorage.getItem(TOKEN_KEY);
+  var nickname = document.getElementById('editNickname').value.trim();
+  var bio = document.getElementById('editBio').value.trim();
+
+  fetch('/api/auth/profile', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ nickname: nickname, bio: bio })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.success) { toast('保存成功'); loadProfile(); }
+    else { toast(data.error || '保存失败'); }
+  }).catch(function() { toast('网络错误'); });
+}
+
+function changePassword() {
+  var token = localStorage.getItem(TOKEN_KEY);
+  var oldPwd = document.getElementById('oldPwd').value;
+  var newPwd = document.getElementById('newPwd').value;
+
+  if (!oldPwd || !newPwd) { toast('请填写密码'); return; }
+  if (newPwd.length < 6) { toast('新密码至少6个字符'); return; }
+
+  fetch('/api/auth/profile', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ old_password: oldPwd, new_password: newPwd })
+  }).then(function(r) { return r.json(); }).then(function(data) {
+    if (data.success) { toast('密码已修改'); document.getElementById('oldPwd').value = ''; document.getElementById('newPwd').value = ''; }
+    else { toast(data.error || '修改失败'); }
+  }).catch(function() { toast('网络错误'); });
+}
+
+function statusLabel(s) { return { pending: '审核中', approved: '已通过', rejected: '已拒绝' }[s] || s; }
+function esc(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+if (localStorage.getItem(TOKEN_KEY)) {
+  showProfile();
+}
+</script>
+</body>
+</html>

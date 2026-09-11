@@ -20,8 +20,8 @@ export async function onRequestGet(context) {
 
   const url = new URL(request.url);
   const status = url.searchParams.get('status') || 'pending';
+  const limit = Math.min(parseInt(url.searchParams.get('limit') || '200'), 500);
   const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
-  const limit = 50;
   const offset = (page - 1) * limit;
 
   try {
