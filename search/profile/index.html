@@ -292,7 +292,7 @@ function loadProfile() {
       var u = d.user;
       var s = d.stats;
       document.getElementById('avatarEl').textContent = (u.nickname || u.username || 'U').charAt(0).toUpperCase();
-      document.getElementById('nicknameEl').innerHTML = esc(u.nickname || u.username);
+      document.getElementById('nicknameEl').innerHTML = esc(u.nickname || u.username) + '<span class="vip-badge" id="vipBadge" style="display:none">VIP</span>';
       document.getElementById('usernameEl').textContent = '@' + u.username;
       document.getElementById('statSubmitted').textContent = s.submitted;
       document.getElementById('statApproved').textContent = s.approved;
