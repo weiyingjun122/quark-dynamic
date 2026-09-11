@@ -99,7 +99,10 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
   </div>
 
   <div class="results" id="results">
-    <div class="loading">加载中...</div>
+    <div class="empty">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-text">输入关键词或选择分类查看资源</div>
+    </div>
   </div>
 
   <div class="about-box">
@@ -247,7 +250,9 @@ var quotes = [
 var today = new Date().getDate();
 document.getElementById('dailyQuote').textContent = quotes[today % quotes.length];
 
-doSearch(initQ || '');
+if (initQ || initType) {
+  doSearch(initQ || '');
+}
 </script>
 </body>
 </html>
