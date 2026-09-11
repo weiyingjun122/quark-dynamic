@@ -1,4 +1,4 @@
-const CACHE_NAME = 'search-v4';
+const CACHE_NAME = 'search-v5';
 const STATIC_ASSETS = [
   '/search/',
   '/search/manifest.json',
