@@ -2,12 +2,199 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0;url=/">
-<title>页面已迁移</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资源搜索 - 实用资源整理站</title>
+<meta name="description" content="实用资源整理站资源搜索引擎，搜索公开合法资源链接。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/search/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3ES%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="资源搜索 - 实用资源整理站">
+<meta property="og:description" content="资源搜索引擎，搜索合法公开资源链接。">
+<meta property="og:url" content="https://www.weiyingjun.top/search/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"实用资源整理站","url":"https://www.weiyingjun.top/","description":"免费在线工具与资源搜索","inLanguage":"zh-CN","potentialAction":{"@type":"SearchAction","target":"https://www.weiyingjun.top/search/?q={search_term_string}","query-input":"required name=search_term_string"}}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#fafbfe 100%);min-height:100vh;color:#333}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);height:56px;display:flex;align-items:center;justify-content:center}
+.navbar-inner{width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.navbar-brand{font-size:16px;font-weight:bold;color:#1e90ff;text-decoration:none}
+.navbar-links{display:flex;gap:24px;position:absolute;left:50%;transform:translateX(-50%)}
+.navbar-links a{text-decoration:none;color:#333;font-size:15px;padding:6px 0;border-bottom:2px solid transparent;transition:all 0.2s}
+.navbar-links a:hover,.navbar-links a.active{color:#1e90ff;border-bottom-color:#1e90ff}
+body{padding-top:56px}
+.container{max-width:600px;margin:0 auto;padding:40px 16px 60px}
+header{text-align:center;margin-bottom:30px}
+h1{font-size:28px;color:#1f2d3d;margin-bottom:10px}
+.subtitle{color:#64748b;font-size:15px}
+.search-box{display:flex;gap:0;margin-bottom:20px;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(31,45,61,0.1)}
+.search-box input{flex:1;padding:14px 18px;font-size:16px;border:none;outline:none}
+.search-box button{padding:14px 28px;font-size:16px;border:none;background:#2563eb;color:#fff;cursor:pointer;transition:background .2s;white-space:nowrap}
+.search-box button:hover{background:#1d4ed8}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.tab{padding:8px 18px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-size:14px;transition:all .2s}
+.tab:hover{border-color:#2563eb;color:#2563eb}
+.tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.results{margin-top:20px}
+.result-item{background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(31,45,61,0.06);display:flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer}
+.result-item:hover{box-shadow:0 4px 16px rgba(31,45,61,0.12);transform:translateY(-1px)}
+.result-info{flex:1;min-width:0}
+.result-title{font-size:15px;color:#1f2d3d;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.result-meta{font-size:12px;color:#94a3b8;margin-top:4px}
+.result-type{font-size:12px;color:#2563eb;background:#eff6ff;padding:4px 10px;border-radius:12px;white-space:nowrap}
+.empty{text-align:center;padding:60px 20px;color:#94a3b8}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-text{font-size:15px}
+.about-box{background:#f8fafc;border-radius:12px;padding:18px;margin-top:24px;font-size:13px;color:#64748b;line-height:1.8}
+.about-box h3{font-size:15px;color:#1f2d3d;margin-bottom:8px}
+.about-box a{color:#2563eb;text-decoration:none}
+.about-box a:hover{text-decoration:underline}
+.disclaimer{margin-top:20px;font-size:12px;color:#94a3b8;text-align:center;line-height:1.7}
+footer.site-footer{text-align:center;padding:26px 0 40px;font-size:13px;color:#94a3b8}
+footer.site-footer a{color:#2563eb;text-decoration:none}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+</style>
 </head>
 <body>
-<p>正在跳转到首页...</p>
-<script>window.location.href='/';</script>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/">首页</a>
+            <a href="/search/" class="active">资源搜索</a>
+            <a href="/search/submit.html">提交资源</a>
+            <a href="/blog/">博客</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+  <header>
+    <h1>资源搜索</h1>
+    <p class="subtitle">搜索公开合法资源链接</p>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="输入关键词搜索资源...">
+    <button id="searchBtn">搜索</button>
+  </div>
+
+  <div class="tabs" id="typeTabs">
+    <span class="tab active" data-type="全部" onclick="setType(this)">全部</span>
+    <span class="tab" data-type="学习资料" onclick="setType(this)">学习资料</span>
+    <span class="tab" data-type="工具软件" onclick="setType(this)">工具软件</span>
+    <span class="tab" data-type="模板素材" onclick="setType(this)">模板素材</span>
+    <span class="tab" data-type="其他" onclick="setType(this)">其他</span>
+  </div>
+
+  <div class="results" id="results">
+    <div class="empty">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-text">输入关键词，点击搜索按钮查找资源</div>
+    </div>
+  </div>
+
+  <div class="about-box">
+    <h3>关于资源搜索</h3>
+    <p>本站资源搜索功能旨在帮助用户发现公开合法的资源链接。所有资源由用户提交，经人工审核后展示。</p>
+    <p>想要分享资源？请访问 <a href="/search/submit.html">提交资源</a> 页面。本站不存储任何文件，仅提供链接索引服务。</p>
+    <p>如发现侵权内容，请通过 <a href="/dmca.html">DMCA投诉</a> 告知我们。</p>
+  </div>
+
+  <div class="disclaimer">
+    本站资源链接均由用户提交，仅供参考。请确保您有权使用相关资源。<br>
+    <a href="/terms.html" style="color:#94a3b8">用户协议</a> · <a href="/dmca.html" style="color:#94a3b8">侵权投诉</a> · <a href="/privacy.html" style="color:#94a3b8">隐私政策</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/">实用资源整理站</a> All Rights Reserved</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var currentType = '全部';
+
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function () { el.classList.remove('show'); }, 2000);
+}
+
+function setType(el) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  currentType = el.dataset.type;
+  var q = document.getElementById('searchInput').value.trim();
+  if (q) doSearch(q);
+}
+
+function doSearch(q) {
+  if (!q) return;
+  var resultsEl = document.getElementById('results');
+  resultsEl.innerHTML = '<div class="empty"><div class="empty-text">搜索中...</div></div>';
+
+  var url = '/api/resources/search?q=' + encodeURIComponent(q);
+  if (currentType && currentType !== '全部') url += '&type=' + encodeURIComponent(currentType);
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.success || !data.results || data.results.length === 0) {
+        resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">没有找到相关资源，试试其他关键词？</div></div>';
+        return;
+      }
+      var html = '';
+      data.results.forEach(function(item) {
+        var date = item.created_at ? item.created_at.substring(0, 10) : '';
+        html += '<div class="result-item" onclick="window.open(\'' + escapeHtml(item.link) + '\',\'_blank\')">';
+        html += '<div class="result-info">';
+        html += '<div class="result-title">' + escapeHtml(item.title) + '</div>';
+        html += '<div class="result-meta">' + escapeHtml(item.type || '') + (date ? ' · ' + date : '') + (item.view_count ? ' · ' + item.view_count + '次查看' : '') + '</div>';
+        html += '</div>';
+        html += '<span class="result-type">' + escapeHtml(item.type || '其他') + '</span>';
+        html += '</div>';
+      });
+      resultsEl.innerHTML = html;
+    })
+    .catch(function() {
+      resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">搜索出错，请稍后重试</div></div>';
+    });
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('searchBtn').addEventListener('click', function() {
+  var q = document.getElementById('searchInput').value.trim();
+  if (q) doSearch(q);
+});
+
+document.getElementById('searchInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    var q = this.value.trim();
+    if (q) doSearch(q);
+  }
+});
+
+var urlParams = new URLSearchParams(window.location.search);
+var initQ = urlParams.get('q');
+if (initQ) {
+  document.getElementById('searchInput').value = initQ;
+  doSearch(initQ);
+}
+</script>
 </body>
 </html>

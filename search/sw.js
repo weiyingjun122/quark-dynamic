@@ -1,7 +1,7 @@
-const CACHE_NAME = 'quark-v5';
+const CACHE_NAME = 'search-v1';
 const STATIC_ASSETS = [
-  '/quark/',
-  '/quark/manifest.json',
+  '/search/',
+  '/search/manifest.json',
   '/static/logo.png'
 ];
 
@@ -25,7 +25,7 @@ self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   
   // 这些资源永远不缓存，直接走网络
-  const noCachePaths = ['/api/', '/ads.txt', '/quark/sw.js'];
+  const noCachePaths = ['/api/', '/ads.txt', '/search/sw.js'];
   if (noCachePaths.some(p => url.pathname === p || url.pathname.startsWith(p))) {
     event.respondWith(fetch(event.request));
     return;

@@ -2,7 +2,7 @@
   "name": "资源搜索 - 实用资源整理站",
   "short_name": "资源搜索",
   "description": "搜索学习资料、模板、工具等资源，一键转存夸克网盘",
-  "start_url": "/quark/",
+  "start_url": "/search/",
   "display": "standalone",
   "background_color": "#f5f5f5",
   "theme_color": "#1e90ff",

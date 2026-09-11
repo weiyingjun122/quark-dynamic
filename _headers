@@ -9,8 +9,8 @@
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
   Pragma: no-cache
 
-/quark/manifest.json
+/search/manifest.json
   Cache-Control: public, max-age=86400
 
-/quark/sw.js
+/search/sw.js
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
