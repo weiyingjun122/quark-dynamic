@@ -1,7 +1,7 @@
 -- 在 Cloudflare D1 Console 中执行
 
 -- 1. users 表增加积分和 VIP 字段
-ALTER TABLE users ADD COLUMN points INTEGER DEFAULT 100;
+ALTER TABLE users ADD COLUMN points INTEGER DEFAULT 10;
 ALTER TABLE users ADD COLUMN vip_level INTEGER DEFAULT 0;
 ALTER TABLE users ADD COLUMN vip_expire_at TEXT DEFAULT '';
 ALTER TABLE users ADD COLUMN consecutive_days INTEGER DEFAULT 0;
