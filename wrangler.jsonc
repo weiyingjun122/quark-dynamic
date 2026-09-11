@@ -16,11 +16,6 @@
       "binding": "DB",
       "database_name": "pindou-cards",
       "database_id": "e949c1e1-3b30-4b43-ab1e-ad038e05be82"
-    },
-    {
-      "binding": "RESOURCES_DB",
-      "database_name": "resources-db",
-      "database_id": "43aa6408-d976-443f-9648-a86710f14ecd"
     }
   ]
 }

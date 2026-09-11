@@ -19,7 +19,6 @@ export async function onRequestGet(context) {
     let total = 0;
 
     if (q.trim()) {
-      // 搜索模式：关键词 + 类型筛选
       const searchTerm = `%${q.trim()}%`;
 
       if (type && type !== '全部') {
@@ -44,7 +43,6 @@ export async function onRequestGet(context) {
         results = await stmt.bind(searchTerm, searchTerm, limit, offset).all();
       }
     } else {
-      // 无搜索词：返回最新资源
       if (type && type !== '全部') {
         const countResult = await env.RESOURCES_DB.prepare(
           "SELECT COUNT(*) as total FROM resources WHERE status = 'approved' AND type = ?"
@@ -80,7 +78,6 @@ export async function onRequestGet(context) {
   }
 }
 
-// CORS
 export async function onRequestOptions() {
   return new Response(null, {
     headers: {

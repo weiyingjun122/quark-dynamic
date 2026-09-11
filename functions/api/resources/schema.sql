@@ -14,11 +14,7 @@ CREATE TABLE IF NOT EXISTS resources (
   updated_at TEXT DEFAULT (datetime('now'))
 );
 
--- 索引
 CREATE INDEX IF NOT EXISTS idx_resources_status ON resources(status);
 CREATE INDEX IF NOT EXISTS idx_resources_type ON resources(type);
 CREATE INDEX IF NOT EXISTS idx_resources_created_at ON resources(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_resources_view_count ON resources(view_count DESC);
-
--- 全文搜索索引（可选，提升搜索性能）
--- CREATE VIRTUAL TABLE IF NOT EXISTS resources_fts USING fts5(title, keywords, content=resources, content_rowid=id);

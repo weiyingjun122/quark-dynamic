@@ -1,9 +1,6 @@
 // functions/api/resources/admin.js
 // 管理员操作：审核/删除资源
-// POST /api/resources/admin - 操作资源
-// GET /api/resources/admin?status=pending - 获取待审核资源
 
-// 简单的 token 验证（生产环境请使用更强的认证方式）
 function checkAuth(request) {
   const authHeader = request.headers.get('Authorization');
   const adminToken = 'YOUR_ADMIN_SECRET_TOKEN'; // TODO: 修改为你自己的密钥
@@ -74,7 +71,6 @@ export async function onRequestPost(context) {
 
   try {
     if (action === 'update_status' && status) {
-      // 审核/拒绝
       if (!['approved', 'rejected', 'pending'].includes(status)) {
         return Response.json({ success: false, error: '无效的状态' });
       }

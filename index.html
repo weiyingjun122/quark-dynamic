@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-adsense-account" content="ca-pub-6726656035929687">
 <title>免费在线工具合集 - 违禁词检测、IP查询、二维码生成等33个工具 | 实用资源整理站</title>
 <meta name="description" content="提供33个免费在线工具：违禁词检测、IP归属地查询、身份证校验、Base64编解码、时间戳转换、简繁转换、二维码生成等，所有工具浏览器本地运行，不上传数据，隐私安全，无需注册。">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -22,6 +23,8 @@
 </script>
 <style>
 body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; display: flex; flex-direction: column; align-items: center; padding-top: 80px; margin:0; }
+
+/* 导航栏 */
 .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
 .navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
 .navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
@@ -29,27 +32,171 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
 .navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
 .navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
 @media (max-width: 600px) { .navbar-brand { font-size: 14px; } .navbar-links { gap: 16px; } .navbar-links a { font-size: 14px; } }
-.site-intro { width:100%;max-width:900px;margin:0 auto 20px;padding:16px 20px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);font-size:14px;color:#666;line-height:1.8; }
-.static-content-section { width:100%;max-width:900px;margin:0 auto 30px; }
-.card { background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:24px;margin-bottom:20px; }
-.card h2 { font-size:18px;color:#333;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1e90ff; }
-.card p { font-size:14px;color:#555;line-height:2;margin-bottom:16px; }
-.card h3 { font-size:15px;color:#1e90ff;margin-bottom:8px; }
-.card strong { color:#333; }
-.qa-card h2 { border-bottom-color: #f39c12; }
-.qa-item { margin-bottom:12px; }
-.qa-item h4 { font-size:14px;color:#333;margin-bottom:4px; }
-.qa-item p { font-size:13px;color:#666;line-height:1.8;margin-bottom:0; }
-.qa-item a { color:#1e90ff; }
-.tools-nav { width:100%;max-width:900px;margin:0 auto 10px;text-align:center;font-size:13px;color:#666;line-height:2.2; }
-.tools-nav b { color:#333; }
-.tools-nav a { color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap; }
-footer { text-align:center;padding:18px 0 40px;font-size:13px;color:#94a3b8; }
-footer a { color:#1e90ff;text-decoration:none; }
+
+/* logo */
+.logo { text-align: center; margin-bottom: 40px; flex-shrink: 0; }
+.logo img { max-width: 150px; height: auto; display: block; margin: 0 auto; }
+.logo h1 { margin-top: 10px; font-size: 28px; color: #333; }
+
+/* 搜索框 */
+.search-container { display: flex; justify-content: center; margin-bottom: 20px; flex-wrap: nowrap; width: 90%; max-width: 480px; }
+.search-container input[type="text"] { flex: 1; padding: 12px; font-size: 16px; border-radius: 5px 0 0 5px; border: 1px solid #ccc; outline: none; }
+.search-container button { padding: 12px 24px; font-size: 16px; border-radius: 0 5px 5px 0; border: none; background-color: #1e90ff; color: white; cursor: pointer; transition: background 0.3s; }
+.search-container button:hover { background-color: #0f78d1; }
+
+.highlight { color: #e74c3c; font-weight: bold; }
+
+/* 推荐区 */
+#recommend { width: 100%; max-width: 480px; margin-bottom: 20px; }
+.recommend-card { display: flex; flex-wrap: wrap; gap: 10px; background:#fff; padding:20px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+.recommend-card h3 { width:100%; margin-top:0; margin-bottom:15px; font-size: 16px; color: #666; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+.hot-keyword { padding: 6px 12px; background: #f0f6ff; border-radius: 20px; text-align: center; cursor: pointer; transition: all 0.2s; color: #1e90ff; font-size: 14px; }
+.hot-keyword:hover { background:#1e90ff; color: #fff; transform: translateY(-2px); }
+.hot-fire { color: #ff4500; background: #fff0f0; font-weight: bold; } /* 爆款样式 */
+
+/* 模态框 */
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+.modal-content { background-color: #fff; padding: 30px; border-radius: 12px; text-align: center; max-width: 90%; width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); position: relative; max-height: 80vh; overflow-y: auto; }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #999; }
+.modal-content img { margin-top: 15px; max-width: 100%; }
+.btn { display: inline-block; margin-top: 20px; padding: 12px 35px; font-size: 16px; background-color: #1e90ff; color: #fff; text-decoration: none; border-radius: 25px; cursor:pointer; font-weight: bold; }
+.btn:hover { background-color: #0f78d1; }
+
+/* 响应式 */
+@media (max-width: 480px){
+    .search-container { flex-wrap: wrap; }
+    .search-container input[type="text"] { flex: 1 1 100%; border-radius: 5px; margin-bottom: 8px; }
+    .search-container button { flex: 1 1 100%; border-radius: 5px; }
+}
+
+/* Tab切换 */
+.tabs { width: 100%; max-width: 480px; margin-bottom: 20px; }
+.tab-buttons { display: flex; gap: 10px; margin-bottom: 0; }
+.tab-btn { flex: 1; padding: 12px; background: #fff; border: none; border-radius: 12px 12px 0 0; cursor: pointer; font-size: 14px; color: #666; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.tab-btn.active { background: #1e90ff; color: #fff; font-weight: bold; }
+.tab-btn:hover:not(.active) { background: #f0f0f0; }
+.tab-content { display: none; background: #fff; padding: 20px; border-radius: 0 12px 12px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.tab-content.active { display: block; }
+
+/* 类型筛选 */
+.type-filter-btn { display: inline-block; padding: 4px 12px; margin-right: 8px; margin-bottom: 8px; background: #f0f0f0; border-radius: 15px; font-size: 12px; color: #666; cursor: pointer; transition: all 0.2s; }
+.type-filter-btn:hover { background: #e0e0e0; }
+.type-filter-btn.active { background: #1e90ff; color: #fff; }
+
+/* 分类热搜模块 */
+.section-title { display: flex; align-items: center; justify-content: space-between; margin: 15px 0 8px 0; }
+.section-title h2 { margin: 0; font-size: 15px; color: #333; font-weight: 600; }
+.section-title .more { font-size: 12px; color: #999; cursor: pointer; }
+
+.hot-row { display: flex; gap: 12px; width: 100%; max-width: 900px; margin-bottom: 10px; flex-wrap: wrap; }
+.hot-row .hot-section { flex: 1; min-width: 250px; }
+
+.hot-section .card { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.hot-section .item { display: flex; padding: 8px 0; border-bottom: 1px solid #f8f8f8; font-size: 15px; color: #333; cursor: pointer; }
+.hot-section .item:hover { color: #1e90ff; }
+.hot-section .item:last-child { border-bottom: none; }
+.hot-section .item .rank-num { color: #999; margin-right: 6px; min-width: 24px; }
+.hot-section .item .rank-num.top3 { color: #ff4d4f; font-weight: bold; }
+.hot-section .item .name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hot-section .tag { font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-left: 8px; }
+.hot-section .tag-new { background: #fff7e6; color: #fa8c16; }
+
+/* 今日更新样式 - 使用统一样式 */
+
+/* 免责声明 */
+.site-disclaimer {
+    margin: 30px auto;
+    padding: 20px;
+    max-width: 900px;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    line-height: 1.6;
+}
+.site-disclaimer h4 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 16px;
+}
+.site-disclaimer .sub-note {
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+}
+
+/* 用户登录/注册 + PPT助手 */
+.user-panel {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 10000;
+}
+.ppt-helper {
+    position: fixed;
+    top: 70px;
+    left: 400px;
+    z-index: 10000;
+    cursor: pointer;
+    text-align: center;
+}
+.ppt-helper img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+.ppt-helper div {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #1e90ff;
+    font-weight: bold;
+}
+.user-btn {
+    padding: 8px 16px;
+    background: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.user-btn:hover { background: #0f78d1; }
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.user-info .username { color: #333; font-size: 14px; }
+.user-info .logout-btn {
+    padding: 4px 10px;
+    background: #ff6b6b;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.transfer-count {
+    font-size: 12px;
+    color: #666;
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
 </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
 <body>
 
+<!-- 导航栏 -->
 <nav class="navbar">
     <div class="navbar-inner">
         <a href="/" class="navbar-brand">实用资源整理站</a>
@@ -62,108 +209,1191 @@ footer a { color:#1e90ff;text-decoration:none; }
     </div>
 </nav>
 
-<div class="site-intro">
+<!-- 站点介绍 -->
+<div style="width:100%;max-width:900px;margin:0 auto 20px;padding:16px 20px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);font-size:14px;color:#666;line-height:1.8;">
     <p><strong style="color:#333;">实用资源整理站</strong> 提供33个免费在线工具，涵盖文本处理、数据查询、图片编辑、二维码生成等多个场景。所有工具均在浏览器本地运行，不上传任何数据，关闭页面后数据自动清除，隐私安全有保障。</p>
 </div>
 
-<div class="static-content-section">
-
-    <div class="card">
-        <h2>免费在线工具合集</h2>
-        <p>本站提供33个完全免费的在线工具，覆盖文本处理、数据查询、图片编辑、二维码生成等多个场景。所有工具均采用纯前端技术实现，数据在浏览器本地完成处理，不会上传到任何服务器，关闭页面后数据自动清除，真正实现隐私安全。</p>
-        
-        <h3>📝 文本处理工具</h3>
-        <p>
-            <strong>违禁词检测</strong>：支持小红书、抖音、B站、公众号等10个平台的违禁词库，帮助内容创作者在发布前检查文案是否包含敏感词汇，避免限流或封号。<strong>文本批量替换</strong>：支持正则表达式的批量查找替换，一次性处理大量文本内容。<strong>简繁转换</strong>：基于2011年《通用规范汉字表》的简繁互转，适用于跨地区内容适配。<strong>Base64编解码</strong>：支持中英文混合内容的编解码，常用于前端开发和数据传输。<strong>文本提取</strong>：从大段文本中批量提取手机号、邮箱、链接、身份证号等关键信息。<strong>文本去重</strong>：快速删除重复行，保留唯一值。<strong>字符数统计</strong>：精确统计中英文字符、数字、标点的数量。
+<!-- 静态内容区：为搜索引擎爬虫提供可索引的文本内容 -->
+<div class="static-content-section" style="width:100%;max-width:900px;margin:0 auto 30px;">
+    
+    <!-- 工具分类介绍 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:24px;margin-bottom:20px;">
+        <h2 style="font-size:18px;color:#333;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #1e90ff;">免费在线工具合集</h2>
+        <p style="font-size:14px;color:#555;line-height:2;margin-bottom:16px;">
+            本站提供33个完全免费的在线工具，覆盖文本处理、数据查询、图片编辑、二维码生成等多个场景。所有工具均采用纯前端技术实现，数据在浏览器本地完成处理，不会上传到任何服务器，关闭页面后数据自动清除，真正实现隐私安全。
         </p>
         
-        <h3>🔍 数据查询工具</h3>
-        <p>
-            <strong>IP归属地查询</strong>：输入IP地址即可查看归属地、运营商信息。<strong>手机号归属地查询</strong>：支持批量查询手机号的归属省份和运营商。<strong>身份证查询校验</strong>：验证身份证号码格式是否正确，查看归属地信息。<strong>银行卡BIN查询</strong>：通过银行卡号前6位查询发卡行信息。<strong>短链接还原</strong>：将短链接还原为原始地址，识别跳转目标。
-        </p>
+        <!-- 文本工具 -->
+        <div style="margin-bottom:18px;">
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">📝 文本处理工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>违禁词检测</strong>：支持小红书、抖音、B站、公众号等10个平台的违禁词库，帮助内容创作者在发布前检查文案是否包含敏感词汇，避免限流或封号。<strong>文本批量替换</strong>：支持正则表达式的批量查找替换，一次性处理大量文本内容。<strong>简繁转换</strong>：基于2011年《通用规范汉字表》的简繁互转，适用于跨地区内容适配。<strong>Base64编解码</strong>：支持中英文混合内容的编解码，常用于前端开发和数据传输。<strong>文本提取</strong>：从大段文本中批量提取手机号、邮箱、链接、身份证号等关键信息。<strong>文本去重</strong>：快速删除重复行，保留唯一值。<strong>字符数统计</strong>：精确统计中英文字符、数字、标点的数量。
+            </p>
+        </div>
         
-        <h3>🛠️ 实用小工具</h3>
-        <p>
-            <strong>随机密码生成</strong>：按需生成指定长度和复杂度的密码。<strong>年龄计算器</strong>：根据出生日期精确计算年龄、星座、生肖。<strong>BMI计算器</strong>：输入身高体重快速计算身体质量指数。<strong>日期计算器</strong>：计算两个日期之间的天数差，或推算指定天数后的日期。<strong>数字转大写金额</strong>：将数字金额转换为中文大写，适用于财务票据。<strong>JSON格式化</strong>：一键美化或压缩JSON数据。<strong>MD5批量加密</strong>：批量计算文本的MD5哈希值。
-        </p>
+        <!-- 查询工具 -->
+        <div style="margin-bottom:18px;">
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">🔍 数据查询工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>IP归属地查询</strong>：输入IP地址即可查看归属地、运营商信息。<strong>手机号归属地查询</strong>：支持批量查询手机号的归属省份和运营商。<strong>身份证查询校验</strong>：验证身份证号码格式是否正确，查看归属地信息。<strong>银行卡BIN查询</strong>：通过银行卡号前6位查询发卡行信息。<strong>短链接还原</strong>：将短链接还原为原始地址，识别跳转目标。
+            </p>
+        </div>
         
-        <h3>📱 图片与二维码工具</h3>
-        <p>
-            <strong>图片压缩</strong>：在保持画质的前提下减小图片文件大小。<strong>图片转JPG</strong>：将PNG、WebP等格式转换为JPG。<strong>调整图片大小</strong>：按比例或指定尺寸缩放图片。<strong>二维码生成</strong>：将文本、链接生成二维码图片。<strong>WiFi二维码</strong>：生成包含WiFi密码的二维码，手机扫码即可连接。<strong>二维码解码</strong>：识别图片中的二维码内容。<strong>批量二维码</strong>：一次性生成多个二维码。<strong>条形码生成</strong>：生成商品条形码。<strong>批量条形码</strong>：批量生成条形码。
-        </p>
+        <!-- 实用工具 -->
+        <div style="margin-bottom:18px;">
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">🛠️ 实用小工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>随机密码生成</strong>：按需生成指定长度和复杂度的密码。<strong>年龄计算器</strong>：根据出生日期精确计算年龄、星座、生肖。<strong>BMI计算器</strong>：输入身高体重快速计算身体质量指数。<strong>日期计算器</strong>：计算两个日期之间的天数差，或推算指定天数后的日期。<strong>数字转大写金额</strong>：将数字金额转换为中文大写，适用于财务票据。<strong>JSON格式化</strong>：一键美化或压缩JSON数据。<strong>MD5批量加密</strong>：批量计算文本的MD5哈希值。
+            </p>
+        </div>
+        
+        <!-- 图片与二维码 -->
+        <div>
+            <h3 style="font-size:15px;color:#1e90ff;margin-bottom:8px;">📱 图片与二维码工具</h3>
+            <p style="font-size:13px;color:#666;line-height:1.9;">
+                <strong>图片压缩</strong>：在保持画质的前提下减小图片文件大小。<strong>图片转JPG</strong>：将PNG、WebP等格式转换为JPG。<strong>调整图片大小</strong>：按比例或指定尺寸缩放图片。<strong>二维码生成</strong>：将文本、链接生成二维码图片。<strong>WiFi二维码</strong>：生成包含WiFi密码的二维码，手机扫码即可连接。<strong>二维码解码</strong>：识别图片中的二维码内容。<strong>批量二维码</strong>：一次性生成多个二维码。<strong>条形码生成</strong>：生成商品条形码。<strong>批量条形码</strong>：批量生成条形码。
+            </p>
+        </div>
     </div>
     
-    <div class="card">
-        <h2>隐私与安全承诺</h2>
-        <p>
+    <!-- 隐私与安全 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:24px;margin-bottom:20px;">
+        <h2 style="font-size:18px;color:#333;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #27ae60;">隐私与安全承诺</h2>
+        <p style="font-size:14px;color:#555;line-height:2;">
             本站所有工具均采用<strong>纯前端技术</strong>实现，所有数据处理（包括文本分析、图片压缩、二维码生成等）均在您的浏览器本地完成。您的输入数据<strong>不会上传到任何服务器</strong>，关闭页面后所有临时数据自动清除。我们不收集、不存储、不传输任何用户输入的个人信息。这种设计从根本上保障了您的数据隐私安全，即使在公共电脑上使用也无需担心数据泄露。
         </p>
     </div>
     
-    <div class="card qa-card">
-        <h2>常见问题</h2>
-        <div class="qa-item">
-            <h4>Q：这些工具真的免费吗？</h4>
-            <p>A：是的，本站所有工具完全免费，无需注册登录，没有使用次数限制。</p>
+    <!-- 常见问题 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:24px;">
+        <h2 style="font-size:18px;color:#333;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #f39c12;">常见问题</h2>
+        <div style="margin-bottom:12px;">
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：这些工具真的免费吗？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：是的，本站所有工具完全免费，无需注册登录，没有使用次数限制。</p>
         </div>
-        <div class="qa-item">
-            <h4>Q：我的数据安全吗？</h4>
-            <p>A：非常安全。所有工具均在浏览器本地运行，数据不会上传到服务器。关闭页面后数据自动清除。</p>
+        <div style="margin-bottom:12px;">
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：我的数据安全吗？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：非常安全。所有工具均在浏览器本地运行，数据不会上传到服务器。关闭页面后数据自动清除。</p>
         </div>
-        <div class="qa-item">
-            <h4>Q：手机上可以使用吗？</h4>
-            <p>A：可以。本站所有工具均支持手机浏览器访问，采用响应式设计，适配各种屏幕尺寸。</p>
+        <div style="margin-bottom:12px;">
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：手机上可以使用吗？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：可以。本站所有工具均支持手机浏览器访问，采用响应式设计，适配各种屏幕尺寸。</p>
         </div>
-        <div class="qa-item">
-            <h4>Q：如何反馈问题或建议？</h4>
-            <p>A：请访问<a href="/contact.html">联系我们</a>页面，我们会尽快回复。</p>
+        <div>
+            <h4 style="font-size:14px;color:#333;margin-bottom:4px;">Q：如何反馈问题或建议？</h4>
+            <p style="font-size:13px;color:#666;line-height:1.8;">A：请访问<a href="/contact.html" style="color:#1e90ff;">联系我们</a>页面，我们会尽快回复。</p>
         </div>
     </div>
 </div>
 
-<div class="tools-nav">
-    <b>免费在线工具：</b>
-    <a href="/check-word/">违禁词检测</a>
-    <a href="/ip/">IP归属地查询</a>
-    <a href="/phone-batch/">手机号归属地查询</a>
-    <a href="/id-card/">身份证查询校验</a>
-    <a href="/random-group/">名单随机分组</a>
-    <a href="/random-pick/">随机点名</a>
-    <a href="/password/">随机密码生成</a>
-    <a href="/age/">年龄计算器</a>
-    <a href="/bmi/">BMI计算器</a>
-    <a href="/date-calc/">日期计算</a>
-    <a href="/money/">数字转大写金额</a>
-    <a href="/extract/">文本提取</a>
-    <a href="/text-unique/">文本去重</a>
-    <a href="/char-count/">字符统计</a>
-    <a href="/data-masking/">数据脱敏</a>
-    <a href="/json-format/">JSON格式化</a>
-    <a href="/md5-batch/">MD5批量加密</a>
-    <a href="/base64/">Base64编解码</a>
-    <a href="/timestamp/">时间戳转换</a>
-    <a href="/chinese-converter/">简繁转换</a>
-    <a href="/text-replace/">文本批量替换</a>
-    <a href="/short-link/">短链接还原</a>
-    <a href="/bank-card/">银行卡BIN查询</a>
-    <a href="/pindou/">拼豆图纸生成</a>
-    <a href="/compress-image/">图片压缩</a>
-    <a href="/convert-jpg/">图片转JPG</a>
-    <a href="/resize-image/">调整图片大小</a>
-    <a href="/qrcode/">二维码生成</a>
-    <a href="/wifi-qrcode/">WiFi二维码</a>
-    <a href="/qrcode-decode/">二维码解码</a>
-    <a href="/qrcode-batch/">批量二维码</a>
-    <a href="/barcode/">条形码生成</a>
-    <a href="/barcode-batch/">批量条形码</a>
+
+<!-- noscript: 为不支持JavaScript的搜索引擎爬虫提供静态内容 -->
+<noscript>
+<div style="width:100%;max-width:900px;margin:20px auto;padding:20px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+  <h2 style="font-size:18px;color:#333;margin-bottom:15px;">免费在线工具</h2>
+  <p style="font-size:14px;color:#666;line-height:2;margin-bottom:15px;">
+    实用资源整理站提供33种免费在线工具，所有工具均在浏览器本地运行，不上传任何数据，隐私安全有保障。
+  </p>
+  <p style="font-size:14px;"><a href="/tools/" style="color:#1e90ff;font-weight:bold;">👉 点击查看全部工具</a></p>
+  <p style="font-size:13px;color:#999;margin-top:15px;">请启用JavaScript以使用完整功能。</p>
+</div>
+</noscript>
+
+<!-- 弹窗 -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+        <div id="modalBody"></div>
+    </div>
 </div>
 
-<footer>
-    <p>Copyright © 2026 <a href="/">实用资源整理站</a> All Rights Reserved ·
-        <a href="/about.html">关于本站</a> ·
-        <a href="/privacy.html">隐私政策</a> ·
-        <a href="/contact.html">联系我们</a>
-    </p>
-</footer>
+<!-- 登录/注册弹窗 -->
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="document.getElementById('authModal').style.display='none'">&times;</span>
+        <div id="authModalBody"></div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// 🔄 修改为使用 Cloudflare Pages Functions API
+// 所有 API 调用现在都指向同一域名的 /api 路径
+// ============================================================
+
+// 用户认证状态
+let currentUser = null;
+const TOKEN_KEY = 'quark_user_token';
+const USER_KEY = 'quark_user_info';
+
+// DOM 元素 (延迟获取)
+let modal, modalBody, authModal, authModalBody, userPanel;
+
+// Tab切换函数
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`).classList.add('active');
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+}
+
+// 用户认证函数
+function getStoredAuth() {
+    const token = localStorage.getItem(TOKEN_KEY);
+    const user = localStorage.getItem(USER_KEY);
+    if (token && user) {
+        try {
+            return { token, user: JSON.parse(user) };
+        } catch {
+            return null;
+        }
+    }
+    return null;
+}
+
+function saveAuth(token, user) {
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+}
+
+function clearAuth() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    currentUser = null;
+}
+
+function updateUserPanel() {
+    const auth = getStoredAuth();
+    if (auth && auth.user) {
+        currentUser = auth.user;
+        const isVip = auth.user.isVip;
+        const vipTag = isVip ? '<span style="background:gold;color:#333;padding:2px 8px;border-radius:10px;font-size:12px;margin-left:5px;">VIP</span>' : '';
+        const transferInfo = isVip ? '<span class="transfer-count" style="background:gold;color:#333;">VIP无限次数</span>' : '<span class="transfer-count" id="transferCount">今日剩余: --</span>';
+        
+        userPanel.innerHTML = `
+            <div class="user-info">
+                <span class="username">${auth.user.username}</span>${vipTag}
+                ${transferInfo}
+                <button class="logout-btn" onclick="handleLogout()">登出</button>
+            </div>
+        `;
+        
+        if (!isVip) {
+            updateTransferStatus();
+        }
+    } else {
+        userPanel.innerHTML = `<button class="user-btn" id="userBtn" onclick="showAuthModal()">登录/注册</button>`;
+    }
+}
+
+async function updateTransferStatus() {
+    const auth = getStoredAuth();
+    if (!auth) return;
+    
+    try {
+        const res = await fetch('/api/auth/status', {
+            headers: { 'Authorization': `Bearer ${auth.token}` }
+        });
+        const data = await res.json();
+        if (data.success) {
+            const countEl = document.getElementById('transferCount');
+            if (countEl) {
+                const remaining = Math.max(0, data.remaining);
+                countEl.textContent = `今日剩余: ${remaining}次`;
+                if (remaining === 0) {
+                    countEl.style.background = '#ffe0e0';
+                    countEl.style.color = '#e74c3c';
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('获取转存状态失败（本地测试模式）:', e.message);
+    }
+}
+
+function showAuthModal() {
+    const auth = getStoredAuth();
+    if (auth && auth.user) {
+        updateUserPanel();
+        return;
+    }
+    
+    authModalBody.innerHTML = `
+        <h3 style="margin-top:0;color:#333;">用户登录</h3>
+        <div style="text-align:left;margin:20px 0;">
+            <label style="display:block;margin-bottom:5px;color:#666;">用户名</label>
+            <input type="text" id="loginUsername" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="请输入用户名">
+        </div>
+        <div style="text-align:left;margin:20px 0;">
+            <label style="display:block;margin-bottom:5px;color:#666;">密码</label>
+            <input type="password" id="loginPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="请输入密码">
+        </div>
+        <button onclick="handleLogin()" style="width:100%;padding:12px;background:#1e90ff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin-bottom:10px;">登录</button>
+        <p style="color:#666;font-size:14px;">还没有账号？<a href="javascript:void(0)" onclick="showRegister()" style="color:#1e90ff;">立即注册</a></p>
+    `;
+    authModal.style.display = 'flex';
+}
+
+function showRegister() {
+    authModalBody.innerHTML = `
+        <h3 style="margin-top:0;color:#333;">用户注册</h3>
+        <div style="text-align:left;margin:20px 0;">
+            <label style="display:block;margin-bottom:5px;color:#666;">用户名</label>
+            <input type="text" id="regUsername" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="3-20个字符">
+        </div>
+        <div style="text-align:left;margin:20px 0;">
+            <label style="display:block;margin-bottom:5px;color:#666;">密码</label>
+            <input type="password" id="regPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="至少6个字符">
+        </div>
+        <div style="text-align:left;margin:20px 0;">
+            <label style="display:block;margin-bottom:5px;color:#666;">确认密码</label>
+            <input type="password" id="regConfirmPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="再次输入密码">
+        </div>
+        <button onclick="handleRegister()" style="width:100%;padding:12px;background:#28a745;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin-bottom:10px;">注册</button>
+        <p style="color:#666;font-size:14px;">已有账号？<a href="javascript:void(0)" onclick="showAuthModal()" style="color:#1e90ff;">立即登录</a></p>
+    `;
+}
+
+async function handleRegister() {
+    const usernameEl = document.getElementById('regUsername');
+    const passwordEl = document.getElementById('regPassword');
+    const confirmEl = document.getElementById('regConfirmPassword');
+    
+    console.log('usernameEl:', usernameEl);
+    console.log('passwordEl:', passwordEl);
+    console.log('confirmEl:', confirmEl);
+    
+    if (!usernameEl || !passwordEl || !confirmEl) {
+        alert('注册表单未找到，请刷新页面');
+        return;
+    }
+    
+    const username = usernameEl.value.trim();
+    const password = passwordEl.value;
+    const confirmPassword = confirmEl.value;
+
+    if (!username || !password) {
+        alert('请填写完整信息');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert('两次密码输入不一致');
+        return;
+    }
+
+    // 获取或生成设备ID
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        deviceId = 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('device_id', deviceId);
+    }
+
+    try {
+        const res = await fetch('/api/auth/register?t=' + Date.now(), {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Device-ID': deviceId
+            },
+            body: JSON.stringify({ username, password })
+        });
+        const text = await res.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch(e) {
+            alert('服务器错误: ' + text.substring(0, 200));
+            console.error('Response:', text);
+            return;
+        }
+
+        if (data.success) {
+            alert('注册成功，请登录');
+            showAuthModal();
+            // 如果有关键词，保存下来等登录后重新执行
+            if (lastSearchKeyword) {
+                // 下次登录后会自动重新搜索
+            }
+        } else {
+            alert(data.error || '注册失败');
+        }
+    } catch (e) {
+        console.error('注册错误:', e);
+        alert('网络错误: ' + e.message + '\n类型: ' + e.name);
+    }
+}
+
+async function handleLogin() {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!username || !password) {
+        alert('请填写用户名和密码');
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            saveAuth(data.token, { userId: data.userId, username: data.username, isVip: data.isVip });
+            authModal.style.display = 'none';
+            updateUserPanel();
+            // 如果有关键词，重新执行搜索
+            if (lastSearchKeyword) {
+                performSearch(lastSearchKeyword);
+            }
+        } else {
+            alert(data.error || '登录失败');
+        }
+    } catch (e) {
+        console.error('登录错误:', e);
+        alert('网络错误（需部署到Cloudflare Pages）：' + e.message);
+    }
+}
+
+async function handleLogout() {
+    const auth = getStoredAuth();
+    if (auth) {
+        try {
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${auth.token}` }
+            });
+        } catch (e) {
+            console.error('登出请求失败:', e);
+        }
+    }
+    clearAuth();
+    updateUserPanel();
+}
+
+async function handleTransfer(keyword) {
+    const auth = getStoredAuth();
+    if (!auth) {
+        alert('请先登录后再转存');
+        showAuthModal();
+        return;
+    }
+
+    // 获取设备ID
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        deviceId = 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('device_id', deviceId);
+    }
+
+    const headers = { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${auth.token}`
+    };
+    if (deviceId) {
+        headers['X-Device-ID'] = deviceId;
+    }
+
+    try {
+        const res = await fetch('/api/auth/transfer', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({ keyword })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            alert(`转存成功！今日还剩 ${data.remaining} 次机会`);
+            updateTransferStatus();
+        } else {
+            alert(data.error || '转存失败');
+            if (data.remaining !== undefined && data.remaining === 0) {
+                updateTransferStatus();
+            }
+        }
+    } catch (e) {
+        console.error('转存错误:', e);
+        alert('网络错误（需部署到Cloudflare Pages）：' + e.message);
+    }
+}
+
+// 加载本地资源数据 (data.json 由 Python 脚本生成)
+let localData = [];
+async function loadData() {
+    try {
+        // Pages 环境直接使用相对路径
+        const res = await fetch(`data.json?t=${Date.now()}`);
+        localData = await res.json();
+    } catch {
+        console.error("本地数据加载失败");
+        localData = [];
+    }
+}
+
+// 高亮关键词
+function highlight(text, keyword) {
+    if(!keyword) return text;
+    const reg = new RegExp(`(${keyword})`,'gi');
+    return text.replace(reg,'<span class="highlight">$1</span>');
+}
+
+// 核心搜索功能
+// 保存最后一次搜索的 keyword，用于登录后重新显示
+let lastSearchKeyword = '';
+
+async function performSearch(keyword) {
+    // 保存最后一次搜索的 keyword
+    lastSearchKeyword = keyword;
+    
+    // === 严格的参数验证 ===
+    console.group('🔍 performSearch 参数验证');
+    console.log('原始参数:', keyword);
+    console.log('参数类型:', typeof keyword);
+
+    // 检查 undefined 和 null
+    if (keyword === undefined) {
+        console.error('❌ 错误：参数是 undefined');
+        console.trace('调用堆栈：');
+        console.groupEnd();
+        return;
+    }
+
+    if (keyword === null) {
+        console.error('❌ 错误：参数是 null');
+        console.groupEnd();
+        return;
+    }
+
+    // 转换为字符串并去除空格
+    keyword = String(keyword).trim();
+    console.log('转换后:', keyword);
+    console.log('长度:', keyword.length);
+
+    // 检查是否为空字符串
+    if (keyword.length === 0) {
+        console.error('❌ 错误：关键词为空字符串');
+        console.groupEnd();
+        alert('请输入搜索关键词');
+        return;
+    }
+
+    // 检查是否只是空格
+    if (!keyword.replace(/\s/g, '').length) {
+        console.error('❌ 错误：关键词只包含空格');
+        console.groupEnd();
+        alert('请输入有效的搜索关键词');
+        return;
+    }
+
+    console.log('✅ 参数验证通过');
+    console.groupEnd();
+
+    // 过滤主站域名
+    const BLOCK_DOMAINS = [
+        'weiyingjun.top',
+        'www.weiyingjun.top',
+        'https://www.weiyingjun.top',
+        'https://weiyingjun.top'
+    ];
+
+    const normalizedKeyword = keyword.toLowerCase().replace(/\s/g, '');
+    const isBlocked = BLOCK_DOMAINS.some(domain => 
+        normalizedKeyword.includes(domain.toLowerCase().replace(/\s/g, ''))
+    );
+
+    if (isBlocked) {
+        alert('暂不支持搜索主站域名');
+        return;
+    }
+
+    // === 继续执行正常逻辑 ===
+    // 1. 修改 URL
+    const newUrl = `?q=${encodeURIComponent(keyword)}`;
+    window.history.pushState({path:newUrl}, '', newUrl);
+    document.title = `${keyword} - 资源搜索`;
+
+    // 2. 上报统计到 Pages API
+    console.log('📊 发送统计请求...');
+    try {
+        const apiUrl = `/api/record?q=${encodeURIComponent(keyword)}`;
+        console.log('请求URL:', apiUrl);
+
+        const reportRes = await fetch(apiUrl);
+        console.log('响应状态:', reportRes.status);
+
+        if (reportRes.ok) {
+            const reportData = await reportRes.json();
+            console.log('统计成功:', reportData);
+
+            if (reportData.count >= 10) {
+                loadHotKeywords();
+            }
+        } else {
+            const errorText = await reportRes.text();
+            console.warn('统计失败:', reportRes.status, errorText);
+        }
+    } catch (e) {
+        console.warn('统计上报失败:', e);
+    }
+
+    // 3. 在本地数据中查找资源
+    if (localData.length === 0) await loadData();
+
+    // 匹配逻辑：先检查 search_aliases，再检查 title 和 keywords（返回所有匹配）
+    const matchedItems = localData.filter(d => {
+        if (d.search_aliases && d.search_aliases.length > 0) {
+            return d.search_aliases.some(alias => 
+                keyword.toLowerCase().includes(alias.toLowerCase()) ||
+                alias.toLowerCase().includes(keyword.toLowerCase())
+            );
+        }
+        return d.title.toLowerCase().includes(keyword.toLowerCase()) ||
+            (d.keywords && d.keywords.some(k => k.toLowerCase().includes(keyword.toLowerCase())));
+    });
+
+    const isLoggedIn = !!getStoredAuth();
+    let html = '';
+
+    if (matchedItems.length > 0) {
+        // 找到资源 - 展示标题列表
+        html = `<h3>✅ 找到 ${matchedItems.length} 个相关资源</h3>`;
+        html += `<p style="color:#999;font-size:13px;margin:10px 0;">点击标题查看资源</p>`;
+        html += '<div class="result-list" style="margin:15px 0;">';
+
+        matchedItems.forEach(item => {
+            html += `<div class="result-item" onclick="handleViewResource(this)" 
+                style="padding:12px 15px;margin:8px 0;border:1px solid #e0e0e0;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;"
+                data-id="${item.id}" data-title="${item.title}" data-link="${item.share_link}" data-qrcode="${item.qrcode || ''}">
+                <span style="flex:1;font-size:15px;color:#333;">${highlight(item.title, keyword)}</span>
+                <span style="color:#999;font-size:13px;margin-left:10px;">›</span>
+            </div>`;
+        });
+
+        html += '</div>';
+
+        html += `<button onclick="document.getElementById('modal').style.display='none'" style="margin-top:15px;padding:10px 30px;background:#f0f0f0;color:#333;border:none;border-radius:20px;cursor:pointer;font-size:14px;">关闭</button>`;
+
+        if (!isLoggedIn) {
+            html += `<p style="color:#ff6b35;margin:15px 0;">请先登录后点击资源查看详情</p>
+                     <button onclick="showAuthModal()" class="btn" style="background:#1e90ff;">🔐 登录/注册</button>`;
+        }
+    } else {
+        // 未找到资源
+        html = `<h3>⚠️ 暂未收录该资源</h3>
+                <p>关键词：<strong>${keyword}</strong></p>
+                <p>请尝试精简关键词，或扫码加入资源群求资源</p>
+                <button id="requestBtn" class="btn" style="background:#ff6b35;">📮 求资源</button>
+                <img src="/api/qr/wechat" style="width:350px;height:350px;">
+                <button onclick="document.getElementById('modal').style.display='none'" style="margin-top:15px;padding:10px 30px;background:#f0f0f0;color:#333;border:none;border-radius:20px;cursor:pointer;font-size:14px;">关闭</button>`;
+    }
+
+    modalBody.innerHTML = html;
+    modal.style.display = 'flex';
+
+    // 未找到资源时绑定求资源按钮事件
+    if (matchedItems.length === 0) {
+        document.getElementById('requestBtn').addEventListener('click', async function() {
+            const btn = this;
+            if (btn.disabled) return;
+            
+            btn.disabled = true;
+            btn.textContent = '提交中...';
+            
+            try {
+                const res = await fetch('/api/request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ keyword: keyword })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    modal.style.display = 'none';
+                } else {
+                    alert('❌ ' + (data.error || '提交失败'));
+                }
+            } catch (e) {
+                alert('❌ 网络错误：' + e.message);
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '📮 求资源';
+        });
+    }
+}
+
+// 点击资源标题时：检查次数 → 扣次 → 展示链接/二维码
+async function handleViewResource(el) {
+    const isLoggedIn = !!getStoredAuth();
+    if (!isLoggedIn) {
+        showAuthModal();
+        return;
+    }
+
+    const auth = getStoredAuth();
+    const resourceId = el.dataset.id;
+    const title = el.dataset.title;
+    const shareLink = el.dataset.link;
+    const qrCode = el.dataset.qrcode;
+
+    // 1. 先检查是否还能查看
+    try {
+        const checkRes = await fetch('/api/auth/check', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.token}`
+            }
+        });
+        const checkData = await checkRes.json();
+        
+        if (!checkData.allowed) {
+            alert(checkData.error || '今天已用过2次了，明天再来吧！');
+            updateTransferStatus();
+            return;
+        }
+    } catch (e) {
+        console.warn('检查查看次数失败:', e);
+    }
+
+    // /api/auth/check 已经扣次了，不需要额外请求
+
+    // 3. 更新剩余次数
+    updateTransferStatus();
+
+    // 4. 展示资源详情
+    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+    let detailHtml = '';
+
+    if (isMobile) {
+        detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
+            <p style="color:#666;margin:15px 0;">请点击下方按钮访问资源</p>
+            <a href="${shareLink}" target="_blank" class="btn">打开链接</a>`;
+    } else {
+        if (qrCode) {
+            detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
+                <p style="color:#666;">请使用微信或浏览器扫描下方二维码用手机访问资源</p>
+                <img src="${qrCode}" style="width:200px;height:200px;display:block;margin:10px auto;">`;
+        } else {
+            detailHtml = `<h3>${highlight(title, lastSearchKeyword)}</h3>
+                <p style="color:#666;margin:15px 0;">资源链接</p>
+                <a href="${shareLink}" target="_blank" class="btn" style="word-break:break-all;">${shareLink}</a>`;
+        }
+    }
+
+    // 在弹窗内展示详情
+    document.getElementById('modalBody').innerHTML = detailHtml;
+}
+
+// 诊断400错误的函数
+async function diagnose400Error(keyword, apiPath, response, data) {
+    console.log('=== 400错误诊断 ===');
+
+    // 测试1：直接访问完整URL
+    const fullUrl = window.location.origin + apiPath;
+    console.log('测试完整URL:', fullUrl);
+
+    try {
+        const directTest = await fetch(fullUrl);
+        const directText = await directTest.text();
+        console.log('直接访问结果-状态:', directTest.status);
+        console.log('直接访问结果-内容:', directText);
+    } catch (e) {
+        console.log('直接访问错误:', e.message);
+    }
+
+    // 测试2：测试不同域名
+    console.log('测试不同域名...');
+    const domains = [
+        window.location.origin,
+        'https://www.weiyingjun.top'
+    ];
+
+    for (const domain of domains) {
+        const testUrl = domain + '/api/record?q=' + encodeURIComponent(keyword);
+        console.log(`测试 ${domain}:`, testUrl);
+
+        try {
+            const testRes = await fetch(testUrl);
+            console.log(`  状态: ${testRes.status}`);
+        } catch (e) {
+            console.log(`  错误: ${e.message}`);
+        }
+    }
+}
+
+// 加载已更新资源
+let allUpdatedData = [];
+let currentTypeFilter = '全部';
+
+async function loadUpdatedResources() {
+    try {
+        const res = await fetch(`update.json?t=${Date.now()}`);
+        const data = await res.json();
+        
+        if (!data || data.length === 0) return;
+        
+        allUpdatedData = data;
+        
+        // 获取所有类型
+        const types = ['全部', ...new Set(data.map(item => item.type || '其他'))];
+        
+        // 渲染类型筛选
+        let filterHtml = '';
+        types.forEach(type => {
+            const active = type === '全部' ? 'active' : '';
+            filterHtml += `<span class="type-filter-btn ${active}" onclick="filterByType('${type}')">${type}</span>`;
+        });
+        document.getElementById('typeFilter').innerHTML = filterHtml;
+        
+        renderUpdatedList(data);
+    } catch (e) {
+        console.warn('已更新资源加载失败:', e);
+    }
+}
+
+function filterByType(type) {
+    currentTypeFilter = type;
+    
+    // 更新按钮状态
+    document.querySelectorAll('.type-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === type) btn.classList.add('active');
+    });
+    
+    // 筛选并渲染
+    const filtered = type === '全部' 
+        ? allUpdatedData 
+        : allUpdatedData.filter(item => (item.type || '其他') === type);
+    renderUpdatedList(filtered);
+}
+
+function renderUpdatedList(data) {
+    const sortedData = [...data].sort((a, b) => 
+        new Date(b.date) - new Date(a.date)
+    );
+    
+    const html = sortedData.map(item => {
+        const safeName = item.name.replace(/'/g, "\\'");
+        const typeTag = item.type ? `<span style="color:#e74c3c;font-size:12px;margin-left:5px;">[${item.type}]</span>` : '';
+        return `<div>• <a href="javascript:void(0)" onclick="document.getElementById('searchInput').value='${safeName}'; document.getElementById('searchBtn').click();" style="color:#007bff;text-decoration:none;">${item.name}</a>${typeTag} <span style="color:#999;font-size:12px;">(${item.date})</span></div>`;
+    }).join('');
+    
+    document.getElementById('updatedList').innerHTML = html;
+}
+
+// 热搜关键词过滤配置
+const FILTER_KEYWORDS = [
+    // 在这里添加需要过滤的关键词
+    // 例如：'敏感词', '广告', '不需要展示的关键词'
+    '剧本'
+];
+
+// 加载全网热搜榜 (从 Pages API 获取)
+async function loadHotKeywords(retryCount = 0) {
+    const container = document.querySelector('#tab-hot #recommend');
+    const maxRetries = 3;
+
+    try {
+        // 1️⃣ 等待 data.json 加载完成（最多 3 秒）
+        let retry = 0;
+        while (localData.length === 0 && retry < 30) {
+            await new Promise(r => setTimeout(r, 100));
+            retry++;
+        }
+
+        if (localData.length === 0) {
+            // data.json 加载失败，尝试重新加载
+            if (retryCount < maxRetries) {
+                await loadData();
+                return loadHotKeywords(retryCount + 1);
+            }
+            container.innerHTML = '';
+            return;
+        }
+
+        // 2️⃣ 获取热搜榜（带超时）
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        try {
+            const res = await fetch('/api/hot', { signal: controller.signal });
+            clearTimeout(timeoutId);
+            
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            
+            const hotList = await res.json();
+            
+            // 3️⃣ 过滤热搜：次数 + 能命中资源 + 过滤指定关键词
+            const validHotList = hotList.filter(item => {
+                if (item.count < 10) return false;
+
+                const word = String(item.word || '').trim();
+                if (!word) return false;
+
+                if (FILTER_KEYWORDS.includes(word)) return false;
+
+                return localData.some(res =>
+                    String(res.title || '').includes(word) ||
+                    Array.isArray(res.keywords) &&
+                    res.keywords.some(k => String(k).includes(word))
+                );
+            });
+
+            if (!validHotList.length) {
+                container.innerHTML = '';
+                return;
+            }
+
+            // 4️⃣ 渲染
+            let html = `<div class="recommend-card"><h3>🔥 全网实时热搜</h3>`;
+
+            validHotList.forEach(item => {
+                const isFire = item.count >= 10 ? 'hot-fire' : '';
+                const fireIcon = item.count >= 10 ? '🔥' : '';
+                const safeWord = item.word.replace(/'/g, "\\'");
+
+                html += `<span class="hot-keyword ${isFire}"
+                    onclick="document.getElementById('searchInput').value='${safeWord}';
+                             document.getElementById('searchBtn').click();">
+                    ${fireIcon}${item.word}
+                </span>`;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+
+        } catch (fetchError) {
+            clearTimeout(timeoutId);
+            console.warn('热搜请求失败:', fetchError);
+            
+            // 重试机制
+            if (retryCount < maxRetries) {
+                await new Promise(r => setTimeout(r, 1000));
+                return loadHotKeywords(retryCount + 1);
+            }
+            container.innerHTML = '';
+        }
+
+    } catch (err) {
+        console.error('热搜加载失败:', err);
+        container.innerHTML = '';
+    }
+}
+
+// 分类关键词配置
+const CATEGORY_KEYWORDS = {
+    juben: ['剧本杀', '剧本', '杀', '凶手', '推理', '硬核', '情感', '恐怖', '欢乐'],
+    juji: ['电视剧', '剧集', '综艺', '美剧', '韩剧', '日剧', '国产剧', 'TV'],
+    movie: ['电影', '影片', '蓝光', '4K', '高清'],
+    anime: ['动漫', '动画片', '卡通', '番剧', '日漫', '国漫'],
+    study: ['学习', '资料', '教程', '课程', '电子书', 'pdf', '文档', '课件', '教案']
+};
+
+// 获取今天日期（使用本地时间）
+function getTodayDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// 加载今日更新
+async function loadTodayUpdate() {
+    try {
+        const res = await fetch('update.json?t=' + Date.now());
+        const data = await res.json();
+        
+        const today = getTodayDate();
+        const todayData = data.filter(item => item.date === today);
+        
+        if (todayData.length === 0) {
+            // 如果今天没有，取最近3天的
+            const recentData = data.slice(0, 10);
+            renderTodayUpdate(recentData, true);
+        } else {
+            renderTodayUpdate(todayData.slice(0, 10), false);
+        }
+    } catch (e) {
+        console.error('加载今日更新失败:', e);
+        document.getElementById('todayUpdate').innerHTML = '加载失败';
+    }
+}
+
+function renderTodayUpdate(data, isRecent) {
+    const container = document.getElementById('todayUpdate');
+    if (data.length === 0) {
+        container.innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">暂无更新</div>';
+        return;
+    }
+    
+    const html = data.map((item, index) => {
+        const safeName = item.name.replace(/'/g, "\\'");
+        const rankClass = index < 3 ? 'top3' : '';
+        return `
+            <div class="item" onclick="doSearch('${safeName}')">
+                <span class="rank-num ${rankClass}">${index + 1}、</span>
+                <span class="name">${item.name}</span>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = html;
+}
+
+// 分类热搜映射
+const TYPE_MAPPING = {
+    jubenHot: '剧本杀',
+    jujiHot: '剧集',
+    movieHot: '电影',
+    animeHot: '动漫',
+    studyHot: '学习资料'
+};
+
+// 加载分类热搜
+async function loadCategoryHot(containerId, typeName) {
+    try {
+        const res = await fetch('/api/hot-by-type');
+        const data = await res.json();
+        
+        const list = data[typeName] || [];
+        renderHotList(containerId, list);
+    } catch (e) {
+        console.error('加载分类热搜失败:', e);
+        document.getElementById(containerId).innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">加载失败</div>';
+    }
+}
+
+// 页面初始化时调用
+function initCategoryHot() {
+    loadCategoryHot('jubenHot', '剧本杀');
+    loadCategoryHot('jujiHot', '剧集');
+    loadCategoryHot('movieHot', '电影');
+    loadCategoryHot('animeHot', '动漫');
+    loadCategoryHot('studyHot', '学习资料');
+    loadJubenCount(); // 加载剧本杀人数
+}
+
+// 加载剧本杀人数模块
+async function loadJubenCount() {
+    try {
+        const res = await fetch('data.json?t=' + Date.now());
+        const data = await res.json();
+        
+        // 筛选剧本杀类型并统计各人数
+        const jubenList = data.filter(item => item.type && item.type.includes('剧本杀'));
+        
+        const countStats = {};
+        for (let i = 1; i <= 10; i++) {
+            countStats[i] = jubenList.filter(item => item.count === i).length;
+        }
+        
+        const container = document.getElementById('jubenCount');
+        // 使用纵向排列
+        let html = '<div style="display:flex;flex-direction:column;gap:4px;padding:8px;">';
+        
+        // 按顺序显示1-10人本
+        for (let i = 1; i <= 10; i++) {
+            const count = countStats[i];
+            html += `<div class="hot-keyword" onclick="showJubenByCount(${i})" style="text-align:center;padding:6px 12px;">${i}人本</div>`;
+        }
+        
+        html += '</div>';
+        
+        if (countStats[1] === 0 && countStats[2] === 0 && countStats[3] === 0 && countStats[4] === 0 && countStats[5] === 0 && countStats[6] === 0 && countStats[7] === 0 && countStats[8] === 0 && countStats[9] === 0 && countStats[10] === 0) {
+            container.innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">暂无数据</div>';
+        } else {
+            container.innerHTML = html;
+        }
+    } catch (e) {
+        console.error('加载剧本杀人数失败:', e);
+        document.getElementById('jubenCount').innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">加载失败</div>';
+    }
+}
+
+// 显示指定人数的剧本杀
+async function showJubenByCount(count) {
+    try {
+        const res = await fetch('data.json?t=' + Date.now());
+        const data = await res.json();
+        
+        // 筛选剧本杀类型且人数等于count的资源
+        const jubenList = data.filter(item => 
+            item.type && item.type.includes('剧本杀') && Math.floor(item.count) === count
+        );
+        
+        if (jubenList.length === 0) {
+            alert('暂无' + count + '人本');
+            return;
+        }
+        
+        let modalHtml = `<h3 style="margin-bottom:15px;">${count}人本 (共${jubenList.length}个)</h3>`;
+        
+        // 显示全部资源列表，点击剧名触发搜索
+        modalHtml += '<div style="max-height:400px;overflow-y:auto;text-align:left;margin-bottom:15px;">';
+        
+        for (let i = 0; i < jubenList.length; i++) {
+            const item = jubenList[i];
+            const title = item.title || '未命名';
+            // 点击剧名触发搜索
+            modalHtml += `<div onclick="performSearch('${title.replace(/'/g, "\\'")}')" style="padding:10px 0;border-bottom:1px solid #eee;font-size:14px;cursor:pointer;color:#1e90ff;">${i+1}. ${title}</div>`;
+        }
+        
+        modalHtml += '</div>';
+        
+        // 关闭按钮
+        modalHtml += `<button class="btn" onclick="document.getElementById('modal').style.display='none'" style="display:block;width:100%;text-align:center;background:#666;">点击关闭窗口</button>`;
+        
+        // 显示弹窗
+        showModal(modalHtml);
+        
+    } catch (e) {
+        console.error('加载剧本杀列表失败:', e);
+        alert('加载失败，请重试');
+    }
+}
+
+// 显示弹窗的通用函数
+function showModal(content) {
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modalBody');
+    modalBody.innerHTML = content;
+    modal.style.display = 'flex';
+}
+
+function renderHotList(containerId, data) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    if (data.length === 0) {
+        container.innerHTML = '<div style="color:#999;font-size:13px;padding:10px;">暂无热搜</div>';
+        return;
+    }
+    
+    const html = data.map((item, index) => {
+        const rankClass = index < 3 ? 'top3' : '';
+        const safeWord = (item.word || '').replace(/'/g, "\\'");
+        return `
+            <div class="item" onclick="doSearch('${safeWord}')">
+                <span class="rank-num ${rankClass}">${index + 1}、</span>
+                <span class="name">${item.word}</span>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = html;
+}
+
+// 执行搜索的便捷函数
+function doSearch(keyword) {
+    document.getElementById('searchInput').value = keyword;
+    document.getElementById('searchBtn').click();
+}
+
+// 页面初始化
+window.addEventListener('DOMContentLoaded', () => {
+    // 获取DOM元素
+    modal = document.getElementById('modal');
+    modalBody = document.getElementById('modalBody');
+    authModal = document.getElementById('authModal');
+    authModalBody = document.getElementById('authModalBody');
+    userPanel = document.getElementById('userPanel');
+
+    // 绑定关闭弹窗事件
+    modal.addEventListener('click', e => { if(e.target === modal) modal.style.display='none' });
+    authModal.addEventListener('click', e => { if(e.target === authModal) authModal.style.display='none' });
+
+    updateUserPanel(); // 检查并更新用户登录状态
+    loadData();        // 1. 预加载资源数据
+    
+    // 加载各模块
+    loadTodayUpdate(); // 今日更新
+    initCategoryHot(); // 分类热搜
+
+    // 事件绑定
+    document.getElementById('searchBtn').addEventListener('click', () => performSearch(document.getElementById('searchInput').value.trim()));
+    document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') document.getElementById('searchBtn').click(); });
+
+    // 检查 URL 是否带参数 (例如 ?q=剧本杀)
+    const params = new URLSearchParams(location.search);
+    const q = params.get('q');
+    if(q){
+        // 带 ?q= 参数时，设置 noindex 防止搜索引擎收录参数页
+        const metaRobots = document.querySelector('meta[name="robots"]');
+        if(metaRobots) metaRobots.setAttribute('content', 'noindex, nofollow');
+        const canonicalLink = document.querySelector('link[rel="canonical"]');
+        if(canonicalLink) canonicalLink.setAttribute('href', location.href);
+        
+        document.getElementById('searchInput').value = q;
+        // 稍微延迟一下，确保数据加载完成
+        setTimeout(() => performSearch(q), 200);
+    }
+});
+
+
+
+</script>
+    <!--<div id="page-container" style="min-height: 50vh;">
+    </div>
+    <div class="site-disclaimer">
+    <h4>温馨提示</h4>
+    <p>您在此获取的资源源于网络分享，旨在方便学习交流。请尊重知识产权，合理使用，支持正版。请勿将资源用于商业或违规用途</p>
+    <p>感谢您的理解与配合！</p>
+    </div>-->
+
+    <!-- 站内工具导航 -->
+    <div style="width:100%;max-width:900px;margin:0 auto 10px;text-align:center;font-size:13px;color:#666;line-height:2.2;">
+      <b style="color:#333;">免费在线工具：</b>
+      <a href="/check-word/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">违禁词检测</a>
+      <a href="/ip/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">IP归属地查询</a>
+      <a href="/phone-batch/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">手机号归属地查询</a>
+      <a href="/id-card/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">身份证查询校验</a>
+      <a href="/random-group/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">名单随机分组</a>
+      <a href="/random-pick/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">随机点名</a>
+      <a href="/password/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">随机密码生成</a>
+      <a href="/age/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">年龄计算器</a>
+      <a href="/bmi/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">BMI计算器</a>
+      <a href="/date-calc/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">日期计算</a>
+      <a href="/money/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">数字转大写金额</a>
+      <a href="/extract/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">文本提取</a>
+      <a href="/text-unique/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">文本去重</a>
+      <a href="/char-count/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">字符统计</a>
+      <a href="/data-masking/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">数据脱敏</a>
+       <a href="/json-format/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">JSON格式化</a>
+       <a href="/md5-batch/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">MD5批量加密</a>
+       <a href="/base64/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">Base64编解码</a>
+       <a href="/timestamp/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">时间戳转换</a>
+       <a href="/chinese-converter/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">简繁转换</a>
+       <a href="/text-replace/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">文本批量替换</a>
+       <a href="/short-link/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">短链接还原</a>
+      <a href="/bank-card/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">银行卡BIN查询</a>
+      <a href="/pindou/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">拼豆图纸生成</a>
+      <a href="/compress-image/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">图片压缩</a>
+      <a href="/convert-jpg/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">图片转JPG</a>
+      <a href="/resize-image/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">调整图片大小</a>
+      <a href="/qrcode/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">二维码生成</a>
+      <a href="/wifi-qrcode/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">WiFi二维码</a>
+      <a href="/qrcode-decode/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">二维码解码</a>
+      <a href="/qrcode-batch/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">批量二维码</a>
+      <a href="/barcode/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">条形码生成</a>
+      <a href="/barcode-batch/" style="color:#1e90ff;margin:0 8px;text-decoration:none;white-space:nowrap;">批量条形码</a>
+    </div>
+
+    <footer style="text-align:center;padding:18px 0 40px;font-size:13px;color:#94a3b8;">
+      <p>Copyright © 2026 <a href="/" style="color:#1e90ff;text-decoration:none;">实用资源整理站</a> All Rights Reserved ·
+        <a href="/about.html" style="color:#1e90ff;text-decoration:none;">关于本站</a> ·
+        <a href="/privacy.html" style="color:#1e90ff;text-decoration:none;">隐私政策</a> ·
+        <a href="/contact.html" style="color:#1e90ff;text-decoration:none;">联系我们</a>
+      </p>
+    </footer>
 </body>
 </html>
