@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资源审核 - 管理后台</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5f5f5;min-height:100vh;color:#333}
+.header{background:#fff;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:sticky;top:0;z-index:100}
+.header-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:18px;color:#1f2d3d}
+.header .badge{background:#ef4444;color:#fff;font-size:12px;padding:2px 8px;border-radius:10px;margin-left:8px}
+.container{max-width:900px;margin:0 auto;padding:20px 16px}
+
+.login-box{background:#fff;border-radius:12px;padding:30px;max-width:400px;margin:60px auto;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.login-box h2{margin-bottom:20px;color:#1f2d3d}
+.login-box input{width:100%;padding:12px;font-size:15px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:12px;outline:none}
+.login-box input:focus{border-color:#2563eb}
+.login-box button{width:100%;padding:12px;font-size:15px;border:none;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer}
+.login-box button:hover{background:#1d4ed8}
+
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.tab{padding:8px 16px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;cursor:pointer;font-size:13px;color:#64748b;transition:all .2s}
+.tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.tab:hover:not(.active){background:#f8fafc}
+.tab .count{margin-left:4px;font-weight:600}
+
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:all .2s}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.card-title{font-size:15px;color:#1f2d3d;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-meta{font-size:12px;color:#94a3b8;margin-bottom:10px}
+.card-link{font-size:12px;color:#2563eb;word-break:break-all;display:block;margin-bottom:10px;text-decoration:none}
+.card-link:hover{text-decoration:underline}
+.card-actions{display:flex;gap:8px}
+.btn{padding:6px 14px;border-radius:6px;border:none;font-size:13px;cursor:pointer;transition:all .15s}
+.btn-approve{background:#10b981;color:#fff}
+.btn-approve:hover{background:#059669}
+.btn-reject{background:#f59e0b;color:#fff}
+.btn-reject:hover{background:#d97706}
+.btn-delete{background:#ef4444;color:#fff}
+.btn-delete:hover{background:#dc2626}
+.btn-restore{background:#6b7280;color:#fff}
+.btn-restore:hover{background:#4b5563}
+
+.status-badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.status-pending{background:#fef3c7;color:#92400e}
+.status-approved{background:#d1fae5;color:#065f46}
+.status-rejected{background:#fee2e2;color:#991b1b}
+
+.empty{text-align:center;padding:60px 20px;color:#94a3b8}
+.loading{text-align:center;padding:40px;color:#94a3b8}
+
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login-box">
+  <h2>管理员登录</h2>
+  <input type="password" id="tokenInput" placeholder="请输入管理密钥" onkeydown="if(event.key==='Enter')doLogin()">
+  <button onclick="doLogin()">登录</button>
+</div>
+
+<div id="mainView" style="display:none">
+  <div class="header">
+    <div class="header-inner">
+      <h1>资源审核 <span class="badge" id="pendingCount">0</span></h1>
+      <button class="btn btn-restore" onclick="doLogout()" style="font-size:12px">退出</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="toolbar">
+      <div class="tab active" data-status="pending" onclick="switchTab(this)">待审核 <span class="count" id="tabPending">0</span></div>
+      <div class="tab" data-status="approved" onclick="switchTab(this)">已通过 <span class="count" id="tabApproved">0</span></div>
+      <div class="tab" data-status="rejected" onclick="switchTab(this)">已拒绝 <span class="count" id="tabRejected">0</span></div>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var TOKEN_KEY = 'admin_resource_token';
+var adminToken = localStorage.getItem(TOKEN_KEY) || '';
+
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function() { el.classList.remove('show'); }, 2000);
+}
+
+function doLogin() {
+  var t = document.getElementById('tokenInput').value.trim();
+  if (!t) { toast('请输入密钥'); return; }
+  adminToken = t;
+  localStorage.setItem(TOKEN_KEY, t);
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('mainView').style.display = '';
+  loadList('pending');
+}
+
+function doLogout() {
+  adminToken = '';
+  localStorage.removeItem(TOKEN_KEY);
+  document.getElementById('loginView').style.display = '';
+  document.getElementById('mainView').style.display = 'none';
+}
+
+var currentStatus = 'pending';
+
+function switchTab(el) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  currentStatus = el.dataset.status;
+  loadList(currentStatus);
+}
+
+function api(method, body) {
+  var opts = {
+    method: method,
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  return fetch('/api/resources/admin', opts).then(function(r) { return r.json(); });
+}
+
+function loadList(status) {
+  var listEl = document.getElementById('list');
+  listEl.innerHTML = '<div class="loading">加载中...</div>';
+
+  api('GET', null).then(function(data) {
+    // admin GET 会返回当前 status 的数据，但我们传的是默认 status
+    // 需要带 query 参数
+    return fetch('/api/resources/admin?status=' + status, {
+      headers: { 'Authorization': 'Bearer ' + adminToken }
+    }).then(function(r) { return r.json(); });
+  }).then(function(data) {
+    if (!data.success) {
+      listEl.innerHTML = '<div class="empty">' + (data.error || '加载失败') + '</div>';
+      return;
+    }
+    var items = data.results || [];
+    document.getElementById('pendingCount').textContent = '';
+    document.getElementById('tab' + capitalize(status)).textContent = items.length;
+
+    // 加载所有状态的计数
+    ['pending', 'approved', 'rejected'].forEach(function(s) {
+      fetch('/api/resources/admin?status=' + s, {
+        headers: { 'Authorization': 'Bearer ' + adminToken }
+      }).then(function(r) { return r.json(); }).then(function(d) {
+        if (d.success) document.getElementById('tab' + capitalize(s)).textContent = (d.results || []).length;
+        if (s === 'pending') document.getElementById('pendingCount').textContent = (d.results || []).length;
+      }).catch(function(){});
+    });
+
+    if (items.length === 0) {
+      listEl.innerHTML = '<div class="empty">暂无' + statusLabel(status) + '的资源</div>';
+      return;
+    }
+
+    listEl.innerHTML = items.map(function(item) {
+      var date = item.created_at ? item.created_at.substring(0, 16).replace('T', ' ') : '';
+      return '<div class="card" id="card-' + item.id + '">' +
+        '<div class="card-header">' +
+          '<span class="card-title">' + esc(item.title) + '</span>' +
+          '<span class="status-badge status-' + item.status + '">' + statusLabel(item.status) + '</span>' +
+        '</div>' +
+        '<div class="card-meta">类型: ' + esc(item.type || '-') + ' · 提交者: ' + esc(item.submitted_by || '-') + ' · ' + date + '</div>' +
+        '<a class="card-link" href="' + esc(item.link) + '" target="_blank">' + esc(item.link) + '</a>' +
+        '<div class="card-actions">' +
+          (status !== 'approved' ? '<button class="btn btn-approve" onclick="updateStatus(' + item.id + ',\'approved\')">✓ 通过</button>' : '') +
+          (status !== 'rejected' ? '<button class="btn btn-reject" onclick="updateStatus(' + item.id + ',\'rejected\')">✗ 拒绝</button>' : '') +
+          '<button class="btn btn-delete" onclick="deleteItem(' + item.id + ')">删除</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }).catch(function(e) {
+    listEl.innerHTML = '<div class="empty">网络错误: ' + esc(e.message) + '</div>';
+  });
+}
+
+function updateStatus(id, status) {
+  api('POST', { action: 'update_status', id: id, status: status }).then(function(data) {
+    if (data.success) {
+      toast('操作成功');
+      var card = document.getElementById('card-' + id);
+      if (card) card.style.opacity = '0.4';
+      setTimeout(function() { loadList(currentStatus); }, 500);
+    } else {
+      toast(data.error || '操作失败');
+    }
+  }).catch(function() { toast('网络错误'); });
+}
+
+function deleteItem(id) {
+  if (!confirm('确定删除？')) return;
+  api('POST', { action: 'delete', id: id }).then(function(data) {
+    if (data.success) {
+      toast('已删除');
+      var card = document.getElementById('card-' + id);
+      if (card) card.remove();
+    } else {
+      toast(data.error || '删除失败');
+    }
+  }).catch(function() { toast('网络错误'); });
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function statusLabel(s) { return { pending: '待审核', approved: '已通过', rejected: '已拒绝' }[s] || s; }
+function esc(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+if (adminToken) {
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('mainView').style.display = '';
+  loadList('pending');
+}
+</script>
+</body>
+</html>
