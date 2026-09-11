@@ -30,7 +30,7 @@ body{padding-top:56px}
 .container{max-width:600px;margin:0 auto;padding:40px 16px 60px}
 header{text-align:center;margin-bottom:30px}
 h1{font-size:28px;color:#1f2d3d;margin-bottom:10px}
-.subtitle{color:#64748b;font-size:15px}
+.subtitle{color:#64748b;font-size:14px;line-height:1.6;min-height:20px;transition:opacity .3s}
 .search-box{display:flex;gap:0;margin-bottom:20px;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(31,45,61,0.1)}
 .search-box input{flex:1;padding:14px 18px;font-size:16px;border:none;outline:none}
 .search-box button{padding:14px 28px;font-size:16px;border:none;background:#2563eb;color:#fff;cursor:pointer;transition:background .2s;white-space:nowrap}
@@ -82,7 +82,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 <main class="container">
   <header>
     <h1>资源搜索</h1>
-    <p class="subtitle">搜索公开合法资源链接</p>
+    <p class="subtitle" id="dailyQuote">搜索公开合法资源链接</p>
   </header>
 
   <div class="search-box">
@@ -91,18 +91,15 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
   </div>
 
   <div class="tabs" id="typeTabs">
-    <span class="tab" data-type="学习资料" onclick="setType(this)">学习资料</span>
-    <span class="tab" data-type="工具软件" onclick="setType(this)">工具软件</span>
-    <span class="tab" data-type="模板素材" onclick="setType(this)">模板素材</span>
-    <span class="tab" data-type="剧本杀" onclick="setType(this)">剧本杀</span>
-    <span class="tab" data-type="其他" onclick="setType(this)">其他</span>
+    <span class="tab" data-type="学习资料" onclick="setType(this)">📚 学习资料</span>
+    <span class="tab" data-type="剧本杀" onclick="setType(this)">🎭 剧本杀</span>
+    <span class="tab" data-type="工具软件" onclick="setType(this)">🔧 工具软件</span>
+    <span class="tab" data-type="模板素材" onclick="setType(this)">🎨 模板素材</span>
+    <span class="tab" data-type="其他" onclick="setType(this)">📁 其他</span>
   </div>
 
   <div class="results" id="results">
-    <div class="empty">
-      <div class="empty-icon">🔍</div>
-      <div class="empty-text">输入关键词，点击搜索按钮查找资源</div>
-    </div>
+    <div class="loading">加载中...</div>
   </div>
 
   <div class="about-box">
@@ -232,6 +229,24 @@ if (initType) {
     }
   });
 }
+
+var quotes = [
+  '学而不思则罔，思而不学则殆 —— 孔子',
+  '知识就是力量 —— 培根',
+  '千里之行，始于足下 —— 老子',
+  '书山有路勤为径，学海无涯苦作舟 —— 韩愈',
+  '不积跬步，无以至千里 —— 荀子',
+  '温故而知新，可以为师矣 —— 孔子',
+  '三人行，必有我师焉 —— 孔子',
+  '业精于勤，荒于嬉 —— 韩愈',
+  '宝剑锋从磨砺出，梅花香自苦寒来',
+  '今天的努力，明天的收获',
+  '分享知识，收获更多',
+  '好的资源，让学习事半功倍'
+];
+var today = new Date().getDate();
+document.getElementById('dailyQuote').textContent = quotes[today % quotes.length];
+
 doSearch(initQ || '');
 </script>
 </body>
