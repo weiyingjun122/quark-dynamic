@@ -86,7 +86,10 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
       <div class="tab" data-status="rejected" onclick="switchTab(this)">已拒绝 <span class="count" id="tabRejected">0</span></div>
     </div>
     <div class="batch-bar" id="batchBar">
-      <span class="info">已选 <b id="selectedCount">0</b> 项</span>
+      <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;color:#64748b">
+        <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" style="width:16px;height:16px;accent-color:#2563eb"> 全选
+      </label>
+      <span class="info">已选 <b id="selectedCount">0</b> / <b id="totalCount">0</b> 项</span>
       <button class="btn btn-approve" onclick="batchApprove()">批量通过</button>
       <button class="btn btn-reject" onclick="batchReject()">批量拒绝</button>
       <button class="btn btn-delete" onclick="batchDelete()">批量删除</button>
@@ -171,7 +174,7 @@ function loadList(status) {
       var date = item.created_at ? item.created_at.substring(0, 16).replace('T', ' ') : '';
       var checked = selectedIds.has(item.id) ? 'checked' : '';
       return '<div class="card" id="card-' + item.id + '">' +
-        '<div class="card-check"><input type="checkbox" ' + checked + ' onchange="toggleSelect(' + item.id + ',this)"></div>' +
+        '<div class="card-check"><input type="checkbox" data-id="' + item.id + '" ' + checked + ' onchange="toggleSelect(' + item.id + ',this)"></div>' +
         '<div class="card-body">' +
           '<div class="card-header">' +
             '<span class="card-title">' + esc(item.title) + '</span>' +
@@ -197,14 +200,28 @@ function toggleSelect(id, cb) {
   updateBatchBar();
 }
 
+function toggleSelectAll(cb) {
+  var checkboxes = document.querySelectorAll('.card-check input');
+  checkboxes.forEach(function(c) {
+    c.checked = cb.checked;
+    var id = parseInt(c.dataset.id);
+    if (cb.checked) { selectedIds.add(id); } else { selectedIds.delete(id); }
+  });
+  updateBatchBar();
+}
+
 function updateBatchBar() {
   var bar = document.getElementById('batchBar');
+  var total = document.querySelectorAll('.card-check input').length;
+  document.getElementById('totalCount').textContent = total;
   if (selectedIds.size > 0) {
     bar.classList.add('show');
     document.getElementById('selectedCount').textContent = selectedIds.size;
   } else {
     bar.classList.remove('show');
   }
+  var selectAll = document.getElementById('selectAll');
+  if (selectAll) selectAll.checked = total > 0 && selectedIds.size === total;
 }
 
 function clearSelection() {
