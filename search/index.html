@@ -137,22 +137,23 @@ function setType(el) {
   el.classList.add('active');
   currentType = el.dataset.type;
   var q = document.getElementById('searchInput').value.trim();
-  if (q) doSearch(q);
+  doSearch(q);
 }
 
 function doSearch(q) {
-  if (!q) return;
   var resultsEl = document.getElementById('results');
-  resultsEl.innerHTML = '<div class="empty"><div class="empty-text">搜索中...</div></div>';
+  resultsEl.innerHTML = '<div class="empty"><div class="empty-text">加载中...</div></div>';
 
-  var url = '/api/resources/search?q=' + encodeURIComponent(q);
-  if (currentType && currentType !== '全部') url += '&type=' + encodeURIComponent(currentType);
+  var url = '/api/resources/search?';
+  if (q) url += 'q=' + encodeURIComponent(q) + '&';
+  if (currentType && currentType !== '全部') url += 'type=' + encodeURIComponent(currentType) + '&';
 
   fetch(url)
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (!data.success || !data.results || data.results.length === 0) {
-        resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">没有找到相关资源，试试其他关键词？</div></div>';
+        var msg = q ? '没有找到相关资源，试试其他关键词？' : '暂无该类型资源';
+        resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">' + msg + '</div></div>';
         return;
       }
       var html = '';
@@ -179,23 +180,29 @@ function escapeHtml(s) {
 }
 
 document.getElementById('searchBtn').addEventListener('click', function() {
-  var q = document.getElementById('searchInput').value.trim();
-  if (q) doSearch(q);
+  doSearch(document.getElementById('searchInput').value.trim());
 });
 
 document.getElementById('searchInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
-    var q = this.value.trim();
-    if (q) doSearch(q);
+    doSearch(this.value.trim());
   }
 });
 
 var urlParams = new URLSearchParams(window.location.search);
 var initQ = urlParams.get('q');
+var initType = urlParams.get('type');
 if (initQ) {
   document.getElementById('searchInput').value = initQ;
-  doSearch(initQ);
 }
+if (initType) {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.classList.remove('active');
+    if (t.dataset.type === initType) t.classList.add('active');
+  });
+  currentType = initType;
+}
+doSearch(initQ || '');
 </script>
 </body>
 </html>
