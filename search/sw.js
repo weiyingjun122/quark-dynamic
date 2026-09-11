@@ -1,4 +1,4 @@
-const CACHE_NAME = 'search-v8';
+const CACHE_NAME = 'search-' + new Date().toISOString().slice(0, 10);
 const STATIC_ASSETS = [
   '/search/',
   '/search/manifest.json',
