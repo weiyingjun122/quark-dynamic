@@ -136,8 +136,7 @@ def generate_seo_page(keyword, count, resources, used_slugs=None):
     <meta name="keywords" content="{keyword},资源下载,{keyword}下载,{keyword}资源">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{CONFIG['seo']['site_url']}/search/{safe_filename}">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
-
+    
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{ font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f8f9fa; line-height: 1.6; color: #333; }}
@@ -261,8 +260,7 @@ def generate_index_page(generated_pages):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>热门搜索关键词 - 实用资源整理站</title>
     <meta name="description" content="根据用户搜索热度自动生成的热门关键词资源页面。">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
-    <style>
+        <style>
         body {
             font-family: 'Microsoft YaHei', sans-serif;
             max-width: 1000px;
