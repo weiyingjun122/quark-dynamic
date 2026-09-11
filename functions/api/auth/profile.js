@@ -69,7 +69,6 @@ export async function onRequestGet(context) {
         pending: pendingCount?.total || 0,
         checkedInToday
       }
-      }
     });
   } catch (err) {
     return Response.json({ success: false, error: '获取失败' });
