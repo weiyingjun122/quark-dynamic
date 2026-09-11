@@ -85,11 +85,10 @@ export async function onRequestPost(context) {
 
       if (status === 'approved' && resource && resource.submitted_by && !resource.submitted_by.startsWith('ip:')) {
         const user = await env.RESOURCES_DB.prepare(
-          "SELECT id, points FROM users WHERE username = ?"
+          "SELECT id FROM users WHERE username = ?"
         ).bind(resource.submitted_by).first();
         if (user) {
-          const newPoints = (user.points || 0) + 1;
-          await env.RESOURCES_DB.prepare("UPDATE users SET points = ? WHERE id = ?").bind(newPoints, user.id).run();
+          await env.RESOURCES_DB.prepare("UPDATE users SET points = points + 1 WHERE id = ?").bind(user.id).run();
           await env.RESOURCES_DB.prepare(
             "INSERT INTO points_log (user_id, change_amount, change_type, description) VALUES (?, 1, 'approved', '资源审核通过 +1')"
           ).bind(user.id).run();
