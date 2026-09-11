@@ -3,154 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-adsense-account" content="ca-pub-6726656035929687">
 <title>资源搜索 - 实用资源整理站</title>
-<meta name="description" content="实用资源整理站资源搜索功能，搜索学习资料、模板、工具等资源。">
+<meta name="description" content="实用资源整理站资源搜索引擎，用户可搜索和提交合法资源链接。">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="baidu-site-verification" content="codeva-lM0uaxFMIG" />
 <link rel="canonical" href="https://www.weiyingjun.top/quark/">
-<link rel="manifest" href="/quark/manifest.json">
-<meta name="theme-color" content="#1e90ff">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="资源搜索">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3ES%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:title" content="资源搜索 - 实用资源整理站">
-<meta property="og:description" content="实用资源整理站资源搜索功能，搜索学习资料、模板、工具等资源。">
+<meta property="og:description" content="资源搜索引擎，搜索合法公开资源链接。">
 <meta property="og:url" content="https://www.weiyingjun.top/quark/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="实用资源整理站">
-<meta property="og:image" content="https://www.weiyingjun.top/static/logo.png">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="资源搜索 - 实用资源整理站">
-<meta name="twitter:description" content="实用资源整理站资源搜索功能，搜索学习资料、模板、工具等资源。">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[
-{"@type":"WebSite","name":"实用资源整理站","url":"https://www.weiyingjun.top/","description":"免费在线工具与资源搜索","inLanguage":"zh-CN","potentialAction":{"@type":"SearchAction","target":"https://www.weiyingjun.top/quark/?q={search_term_string}","query-input":"required name=search_term_string"}},
-{"@type":"WebPage","name":"资源搜索","url":"https://www.weiyingjun.top/quark/","isPartOf":{"@type":"WebSite","url":"https://www.weiyingjun.top/"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://www.weiyingjun.top/"},{"@type":"ListItem","position":2,"name":"资源搜索","item":"https://www.weiyingjun.top/quark/"}]}}
-]}
+{"@context":"https://schema.org","@type":"WebSite","name":"实用资源整理站","url":"https://www.weiyingjun.top/","description":"免费在线工具与资源搜索","inLanguage":"zh-CN","potentialAction":{"@type":"SearchAction","target":"https://www.weiyingjun.top/quark/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <style>
-body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; display: flex; flex-direction: column; align-items: center; padding-top: 80px; margin:0; }
-.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
-.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
-.navbar-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
-.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
-.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
-.logo { text-align: center; margin-bottom: 40px; flex-shrink: 0; }
-.logo img { max-width: 150px; height: auto; display: block; margin: 0 auto; }
-.logo h1 { margin-top: 10px; font-size: 28px; color: #333; }
-.search-container { display: flex; justify-content: center; margin-bottom: 20px; flex-wrap: nowrap; width: 90%; max-width: 480px; }
-.search-container input[type="text"] { flex: 1; padding: 12px; font-size: 16px; border-radius: 5px 0 0 5px; border: 1px solid #ccc; outline: none; }
-.search-container button { padding: 12px 24px; font-size: 16px; border-radius: 0 5px 5px 0; border: none; background-color: #1e90ff; color: white; cursor: pointer; transition: background 0.3s; }
-.search-container button:hover { background-color: #0f78d1; }
-.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
-.modal-content { background-color: #fff; padding: 30px; border-radius: 12px; text-align: center; max-width: 90%; width: 420px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); position: relative; max-height: 80vh; overflow-y: auto; }
-.close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #999; z-index: 10; }
-.user-panel { position: fixed; top: 15px; right: 15px; z-index: 10000; }
-.user-btn { padding: 8px 16px; background: #1e90ff; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 14px; }
-.user-btn:hover { background: #0f78d1; }
-.user-info { display: flex; align-items: center; gap: 10px; background: #fff; padding: 8px 15px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.user-info .username { color: #333; font-size: 14px; }
-.user-info .logout-btn { padding: 4px 10px; background: #ff6b6b; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-size: 12px; }
-.transfer-count { font-size: 12px; color: #666; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; }
-.hot-keyword { display: inline-block; padding: 6px 12px; margin: 4px; background: #f0f6ff; border-radius: 20px; cursor: pointer; color: #1e90ff; font-size: 14px; }
-.hot-keyword:hover { background: #1e90ff; color: #fff; }
-.title-list { text-align: left; max-height: 50vh; overflow-y: auto; }
-.title-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; }
-.title-item:last-child { border-bottom: none; }
-.title-item:hover { background: #f8f9fa; }
-.title-item .name { font-size: 15px; color: #e74c3c; font-weight: bold; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.title-item .type { font-size: 12px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; flex-shrink: 0; }
-.title-item .arrow { color: #ccc; margin-left: 8px; flex-shrink: 0; }
-.qr-modal-body { text-align: center; }
-.qr-modal-body img { max-width: 200px; border: 1px solid #eee; border-radius: 8px; margin: 10px 0; }
-.qr-modal-body .hint { font-size: 13px; color: #666; margin-top: 10px; }
-.request-modal-body { text-align: center; display: flex; flex-direction: column; align-items: center; }
-.request-modal-body img { max-width: 220px; border-radius: 8px; margin: 15px auto; display: block; }
-.request-btn { display: inline-block; padding: 12px 30px; background: #07c160; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; transition: background 0.3s; margin: 10px auto; }
-.request-btn:hover { background: #06ad56; }
-.update-hint { text-align: center; margin-bottom: 8px; width: 90%; max-width: 480px; }
-.update-hint-text { font-size: 13px; color: #1e90ff; cursor: pointer; display: inline-block; padding: 4px 12px; border-radius: 15px; background: #f0f6ff; transition: all 0.2s; }
-.update-hint-text:hover { background: #1e90ff; color: #fff; }
-.update-hint-text .arrow-icon { display: inline-block; transition: transform 0.2s; margin-left: 4px; }
-.update-hint-text.expanded .arrow-icon { transform: rotate(180deg); }
-.update-list { display: none; margin-top: 8px; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; width: 100%; }
-.update-list.show { display: block; }
-.update-item { padding: 10px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.2s; }
-.update-item:last-child { border-bottom: none; }
-.update-item:hover { background: #f8f9fa; }
-.update-item .name { font-size: 14px; color: #333; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.update-item .type { font-size: 11px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
-.category-nav { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; width: 90%; max-width: 480px; flex-wrap: wrap; }
-.category-tag { padding: 6px 14px; background: #f0f6ff; border-radius: 20px; cursor: pointer; color: #1e90ff; font-size: 13px; transition: all 0.2s; border: none; }
-.category-tag:hover { background: #1e90ff; color: #fff; }
-.category-tag.active { background: #1e90ff; color: #fff; }
-.count-nav { display: none; justify-content: center; gap: 6px; margin-bottom: 8px; width: 90%; max-width: 480px; flex-wrap: wrap; }
-.count-nav.show { display: flex; }
-.count-tag { padding: 5px 12px; background: #fff; border: 1px solid #ddd; border-radius: 15px; cursor: pointer; color: #666; font-size: 12px; transition: all 0.2s; }
-.count-tag:hover { border-color: #1e90ff; color: #1e90ff; }
-.count-tag.active { background: #1e90ff; border-color: #1e90ff; color: #fff; }
-.search-history { display: none; justify-content: center; gap: 6px; margin-bottom: 8px; width: 90%; max-width: 480px; flex-wrap: wrap; }
-.search-history.show { display: flex; }
-.search-history-label { font-size: 12px; color: #999; margin-right: 4px; }
-.history-tag { padding: 4px 10px; background: #fff; border: 1px solid #eee; border-radius: 12px; cursor: pointer; color: #666; font-size: 12px; transition: all 0.2s; }
-.history-tag:hover { border-color: #1e90ff; color: #1e90ff; }
-.history-clear { padding: 4px 10px; background: none; border: none; cursor: pointer; color: #999; font-size: 12px; }
-.history-clear:hover { color: #e74c3c; }
-.fav-btn { background: none; border: none; cursor: pointer; font-size: 18px; color: #ddd; transition: color 0.2s; padding: 0 4px; }
-.fav-btn:hover { color: #e74c3c; }
-.fav-btn.active { color: #e74c3c; }
-.fav-panel { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #fff; box-shadow: -2px 0 12px rgba(0,0,0,0.15); z-index: 10001; transition: right 0.3s; display: flex; flex-direction: column; }
-.fav-panel.show { right: 0; }
-.fav-panel-header { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
-.fav-panel-header h3 { margin: 0; font-size: 16px; color: #333; }
-.fav-panel-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #999; }
-.fav-panel-body { flex: 1; overflow-y: auto; padding: 10px; }
-.fav-item { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
-.fav-item:hover { background: #f8f9fa; }
-.fav-item .name { font-size: 14px; color: #333; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fav-item .type { font-size: 11px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
-.fav-item .fav-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; margin-left: 8px; }
-.fav-item .fav-remove:hover { color: #e74c3c; }
-.fav-empty { text-align: center; color: #999; padding: 40px 0; font-size: 14px; }
-.fav-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 10000; }
-.fav-overlay.show { display: block; }
-.user-panel .fav-link { cursor: pointer; color: #1e90ff; font-size: 12px; margin-left: 8px; }
-.user-panel .fav-link:hover { text-decoration: underline; }
-.random-btn { display: inline-block; padding: 6px 14px; background: #fff; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; color: #666; font-size: 13px; transition: all 0.2s; margin-bottom: 8px; }
-.random-btn:hover { border-color: #1e90ff; color: #1e90ff; }
-.guess-list { text-align: left; margin-top: 15px; }
-.guess-title { font-size: 13px; color: #999; margin-bottom: 8px; }
-.guess-item { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-size: 14px; color: #333; transition: background 0.2s; }
-.guess-item:hover { background: #f8f9fa; color: #1e90ff; }
-.view-count { font-size: 11px; color: #999; margin-top: 5px; }
-.hot-keywords { text-align: center; margin-bottom: 15px; width: 90%; max-width: 480px; display: none; }
-.breadcrumb { font-size: 12px; color: #999; margin-bottom: 10px; width: 90%; max-width: 480px; }
-.breadcrumb a { color: #1e90ff; text-decoration: none; }
-.breadcrumb a:hover { text-decoration: underline; }
-.share-btns { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
-.share-btn { padding: 6px 14px; border-radius: 15px; border: none; cursor: pointer; font-size: 12px; color: #fff; transition: opacity 0.2s; }
-.share-btn:hover { opacity: 0.85; }
-.share-btn.wechat { background: #07c160; }
-.share-btn.weibo { background: #e6162d; }
-.share-btn.copy-link { background: #1e90ff; }
-.batch-fav-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 12px 20px; box-shadow: 0 -2px 8px rgba(0,0,0,0.1); z-index: 9998; justify-content: center; align-items: center; gap: 15px; }
-.batch-fav-bar.show { display: flex; }
-.batch-fav-bar .batch-count { font-size: 14px; color: #333; }
-.batch-fav-bar button { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-size: 13px; }
-.batch-fav-bar .batch-fav-btn { background: #ff6b6b; color: #fff; }
-.batch-fav-bar .batch-cancel-btn { background: #f0f0f0; color: #666; }
-.batch-select-btn { background: none; border: 1px solid #ddd; border-radius: 15px; padding: 4px 10px; cursor: pointer; font-size: 12px; color: #666; transition: all 0.2s; }
-.batch-select-btn:hover { border-color: #1e90ff; color: #1e90ff; }
-.batch-select-btn.active { background: #1e90ff; color: #fff; border-color: #1e90ff; }
-.checkbox-item { width: 16px; height: 16px; margin-right: 6px; cursor: pointer; accent-color: #1e90ff; }
-.remind-btn { padding: 8px 20px; background: #ff9800; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; transition: background 0.2s; margin-top: 10px; }
-.remind-btn:hover { background: #e68900; }
-.remind-btn.subscribed { background: #ccc; cursor: default; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:linear-gradient(135deg,#eff6ff 0%,#fafbfe 100%);min-height:100vh;color:#333}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);height:56px;display:flex;align-items:center;justify-content:center}
+.navbar-inner{width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+.navbar-brand{font-size:16px;font-weight:bold;color:#1e90ff;text-decoration:none}
+.navbar-links{display:flex;gap:24px;position:absolute;left:50%;transform:translateX(-50%)}
+.navbar-links a{text-decoration:none;color:#333;font-size:15px;padding:6px 0;border-bottom:2px solid transparent;transition:all 0.2s}
+.navbar-links a:hover,.navbar-links a.active{color:#1e90ff;border-bottom-color:#1e90ff}
+body{padding-top:56px}
+.container{max-width:600px;margin:0 auto;padding:40px 16px 60px}
+header{text-align:center;margin-bottom:30px}
+h1{font-size:28px;color:#1f2d3d;margin-bottom:10px}
+.subtitle{color:#64748b;font-size:15px}
+.search-box{display:flex;gap:0;margin-bottom:20px;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(31,45,61,0.1)}
+.search-box input{flex:1;padding:14px 18px;font-size:16px;border:none;outline:none}
+.search-box button{padding:14px 28px;font-size:16px;border:none;background:#2563eb;color:#fff;cursor:pointer;transition:background .2s;white-space:nowrap}
+.search-box button:hover{background:#1d4ed8}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.tab{padding:8px 18px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-size:14px;transition:all .2s}
+.tab:hover{border-color:#2563eb;color:#2563eb}
+.tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.results{margin-top:20px}
+.result-item{background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(31,45,61,0.06);display:flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer}
+.result-item:hover{box-shadow:0 4px 16px rgba(31,45,61,0.12);transform:translateY(-1px)}
+.result-info{flex:1;min-width:0}
+.result-title{font-size:15px;color:#1f2d3d;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.result-meta{font-size:12px;color:#94a3b8;margin-top:4px}
+.result-type{font-size:12px;color:#2563eb;background:#eff6ff;padding:4px 10px;border-radius:12px;white-space:nowrap}
+.empty{text-align:center;padding:60px 20px;color:#94a3b8}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-text{font-size:15px}
+.submit-section{background:#fff;border-radius:16px;padding:24px;margin-top:30px;box-shadow:0 4px 16px rgba(31,45,61,0.08)}
+.submit-section h2{font-size:18px;color:#1f2d3d;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.submit-section h2::before{content:"";display:inline-block;width:4px;height:18px;background:linear-gradient(180deg,#2563eb,#60a5fa);border-radius:2px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:13px;color:#64748b;margin-bottom:6px}
+.form-group input,.form-group select{width:100%;padding:10px 14px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus{border-color:#2563eb}
+.submit-btn{width:100%;padding:12px;font-size:15px;border:none;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;transition:background .2s}
+.submit-btn:hover{background:#1d4ed8}
+.submit-btn:disabled{background:#94a3b8;cursor:not-allowed}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+.about-box{background:#f8fafc;border-radius:12px;padding:18px;margin-top:24px;font-size:13px;color:#64748b;line-height:1.8}
+.about-box h3{font-size:15px;color:#1f2d3d;margin-bottom:8px}
+.disclaimer{margin-top:20px;font-size:12px;color:#94a3b8;text-align:center;line-height:1.7}
+footer.site-footer{text-align:center;padding:26px 0 40px;font-size:13px;color:#94a3b8}
+footer.site-footer a{color:#2563eb;text-decoration:none}
 </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726656035929687" crossorigin="anonymous"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -164,816 +80,201 @@ body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f5f5f5; d
         </div>
     </div>
 </nav>
-<div class="user-panel" id="userPanel">
-    <button class="user-btn" id="userBtn" onclick="showAuthModal()">登录/注册</button>
-</div>
-<div class="logo">
-    <img src="/static/logo.png" alt="资源搜索" onerror="this.style.display='none'">
+
+<main class="container">
+  <header>
     <h1>资源搜索</h1>
-</div>
-<div class="search-container">
-    <input type="text" id="searchInput" placeholder="请输入关键词搜索资源...">
+    <p class="subtitle">搜索公开合法资源链接，或提交你的资源分享给大家</p>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="输入关键词搜索资源...">
     <button id="searchBtn">搜索</button>
-</div>
-<div style="text-align:center;margin-bottom:8px;">
-    <button class="random-btn" onclick="randomRecommend()">🎲 随机推荐</button>
-</div>
-<div class="category-nav" id="categoryNav">
-    <span class="category-tag active" data-category="all" onclick="filterByCategory('all', this)">全部</span>
-    <span class="category-tag" data-category="剧本杀" onclick="filterByCategory('剧本杀', this)">剧本杀</span>
-    <span class="category-tag" data-category="剧集" onclick="filterByCategory('剧集', this)">剧集</span>
-    <span class="category-tag" data-category="动漫" onclick="filterByCategory('动漫', this)">动漫</span>
-    <span class="category-tag" data-category="电影" onclick="filterByCategory('电影', this)">电影</span>
-    <span class="category-tag" data-category="短剧" onclick="filterByCategory('短剧', this)">短剧</span>
-    <span class="category-tag" data-category="学习资料" onclick="filterByCategory('学习资料', this)">学习资料</span>
-</div>
-<div class="count-nav" id="countNav">
-    <span class="count-tag active" data-count="all" onclick="filterByCount('all', this)">全部</span>
-    <span class="count-tag" data-count="1" onclick="filterByCount(1, this)">1人</span>
-    <span class="count-tag" data-count="2" onclick="filterByCount(2, this)">2人</span>
-    <span class="count-tag" data-count="3" onclick="filterByCount(3, this)">3人</span>
-    <span class="count-tag" data-count="4" onclick="filterByCount(4, this)">4人</span>
-    <span class="count-tag" data-count="5" onclick="filterByCount(5, this)">5人</span>
-    <span class="count-tag" data-count="6" onclick="filterByCount(6, this)">6人</span>
-    <span class="count-tag" data-count="7" onclick="filterByCount(7, this)">7人</span>
-    <span class="count-tag" data-count="8" onclick="filterByCount(8, this)">8人</span>
-    <span class="count-tag" data-count="10" onclick="filterByCount(10, this)">10人</span>
-</div>
-<div class="search-history" id="searchHistory">
-    <span class="search-history-label">搜索历史：</span>
-</div>
-<div class="update-hint" id="updateHint" style="display:none;">
-    <span class="update-hint-text" id="updateHintText" onclick="toggleUpdateList()">
-        <span id="updateCountText"></span>
-        <span class="arrow-icon">▼</span>
-    </span>
-    <div class="update-list" id="updateList"></div>
-</div>
-<div id="resultModal" class="modal">
-    <div class="modal-content" style="width:480px;border:2px solid #1e90ff;">
-        <span class="close-btn" onclick="closeModal('resultModal')">&times;</span>
-        <div id="resultModalBody"></div>
+  </div>
+
+  <div class="tabs" id="typeTabs">
+    <span class="tab active" data-type="全部" onclick="setType(this)">全部</span>
+    <span class="tab" data-type="学习资料" onclick="setType(this)">学习资料</span>
+    <span class="tab" data-type="工具软件" onclick="setType(this)">工具软件</span>
+    <span class="tab" data-type="模板素材" onclick="setType(this)">模板素材</span>
+    <span class="tab" data-type="其他" onclick="setType(this)">其他</span>
+  </div>
+
+  <div class="results" id="results">
+    <div class="empty">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-text">输入关键词开始搜索，或提交你的资源</div>
     </div>
-</div>
-<div id="qrModal" class="modal">
-    <div class="modal-content" style="width:320px;">
-        <span class="close-btn" onclick="closeModal('qrModal')">&times;</span>
-        <div id="qrModalBody"></div>
+  </div>
+
+  <div class="submit-section">
+    <h2>提交资源</h2>
+    <p style="font-size:13px;color:#94a3b8;margin-bottom:14px">分享你发现的优质资源链接，审核通过后会展示给所有用户</p>
+    <div class="form-group">
+      <label>资源名称 *</label>
+      <input type="text" id="resTitle" placeholder="例如：Python编程入门教程">
     </div>
-</div>
-<div id="requestModal" class="modal">
-    <div class="modal-content" style="width:400px;">
-        <span class="close-btn" onclick="closeModal('requestModal')">&times;</span>
-        <div id="requestModalBody"></div>
+    <div class="form-group">
+      <label>资源链接 *</label>
+      <input type="url" id="resLink" placeholder="https://pan.quark.cn/...">
     </div>
-</div>
-<div id="shareModal" class="modal">
-    <div class="modal-content" style="width:360px;">
-        <span class="close-btn" onclick="closeModal('shareModal')">&times;</span>
-        <div id="shareModalBody"></div>
+    <div class="form-group">
+      <label>资源类型</label>
+      <select id="resType">
+        <option value="学习资料">学习资料</option>
+        <option value="工具软件">工具软件</option>
+        <option value="模板素材">模板素材</option>
+        <option value="其他">其他</option>
+      </select>
     </div>
-</div>
-<div class="batch-fav-bar" id="batchFavBar">
-    <span class="batch-count">已选 <span id="batchCountNum">0</span> 项</span>
-    <button class="batch-fav-btn" onclick="batchAddFavorite()">收藏选中</button>
-    <button class="batch-cancel-btn" onclick="toggleBatchMode()">取消</button>
-</div>
-<div id="authModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
-        <div id="authModalBody"></div>
+    <div class="form-group">
+      <label>联系邮箱（可选，用于审核通知）</label>
+      <input type="email" id="resEmail" placeholder="your@email.com">
     </div>
-</div>
-<div class="fav-overlay" id="favOverlay" onclick="closeFavPanel()"></div>
-<div class="fav-panel" id="favPanel">
-    <div class="fav-panel-header">
-        <h3>我的收藏</h3>
-        <button class="fav-panel-close" onclick="closeFavPanel()">&times;</button>
-    </div>
-    <div class="fav-panel-body" id="favPanelBody"></div>
-</div>
+    <button class="submit-btn" id="submitBtn" onclick="submitResource()">提交资源</button>
+  </div>
+
+  <div class="about-box">
+    <h3>关于资源搜索</h3>
+    <p>本站资源搜索功能旨在帮助用户发现和分享公开合法的资源链接。所有资源由用户提交，经过人工审核后展示。</p>
+    <p>本站不存储、不托管任何文件，仅提供资源链接的索引服务。如发现侵权内容，请通过 <a href="/dmca.html" style="color:#2563eb">DMCA投诉</a> 告知我们。</p>
+  </div>
+
+  <div class="disclaimer">
+    本站提供的所有资源链接均由用户提交，仅供参考。请确保您有权使用相关资源。<br>
+    <a href="/terms.html" style="color:#94a3b8">用户协议</a> · <a href="/dmca.html" style="color:#94a3b8">侵权投诉</a> · <a href="/privacy.html" style="color:#94a3b8">隐私政策</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/">实用资源整理站</a> All Rights Reserved</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
 <script>
-let currentUser = null;
-const TOKEN_KEY = 'quark_user_token';
-const USER_KEY = 'quark_user_info';
-let resultModal, resultModalBody, qrModal, qrModalBody, requestModal, requestModalBody, authModal, authModalBody, userPanel;
-let allResources = [];
-let todayUpdates = [];
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window && navigator.maxTouchPoints > 0) || (window.innerWidth <= 768);
-
-async function loadTodayUpdates() {
-    try {
-        const res = await fetch('/update.json?v=' + Date.now());
-        const updates = await res.json();
-        todayUpdates = updates.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-        if (todayUpdates.length > 0) {
-            const hint = document.getElementById('updateHint');
-            const countText = document.getElementById('updateCountText');
-            const list = document.getElementById('updateList');
-            countText.textContent = `最近更新 ${todayUpdates.length} 个资源`;
-            list.innerHTML = todayUpdates.map((item, i) => `
-                <div class="update-item" onclick="searchKeyword('${(item.name || '').replace(/'/g, "\\'")}')">
-                    <span class="name">${item.name || '未知资源'}</span>
-                    ${item.type ? '<span class="type">' + item.type + '</span>' : ''}
-                </div>
-            `).join('');
-            hint.style.display = 'block';
-        }
-    } catch (e) {
-        console.warn('加载最近更新失败:', e.message);
-    }
-}
-
-function toggleUpdateList() {
-    const list = document.getElementById('updateList');
-    const text = document.getElementById('updateHintText');
-    const isShow = list.classList.contains('show');
-    if (isShow) {
-        list.classList.remove('show');
-        text.classList.remove('expanded');
-    } else {
-        list.classList.add('show');
-        text.classList.add('expanded');
-    }
-}
-
-const HISTORY_KEY = 'quark_search_history';
-const MAX_HISTORY = 10;
-
-function getSearchHistory() {
-    try {
-        return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-    } catch {
-        return [];
-    }
-}
-
-function saveSearchHistory(keyword) {
-    if (!keyword) return;
-    let history = getSearchHistory();
-    history = history.filter(item => item !== keyword);
-    history.unshift(keyword);
-    if (history.length > MAX_HISTORY) history = history.slice(0, MAX_HISTORY);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-    renderSearchHistory();
-}
-
-function clearSearchHistory() {
-    localStorage.removeItem(HISTORY_KEY);
-    renderSearchHistory();
-}
-
-function renderSearchHistory() {
-    const history = getSearchHistory();
-    const container = document.getElementById('searchHistory');
-    if (history.length === 0) {
-        container.classList.remove('show');
-        return;
-    }
-    container.innerHTML = `<span class="search-history-label">搜索历史：</span>` +
-        history.map(kw => `<span class="history-tag" onclick="searchKeyword('${kw.replace(/'/g, "\\'")}')">${kw}</span>`).join('') +
-        `<button class="history-clear" onclick="clearSearchHistory()">清除</button>`;
-    container.classList.add('show');
-}
-
-const FAV_KEY = 'quark_favorites';
-
-function getFavorites() {
-    try {
-        return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
-    } catch {
-        return [];
-    }
-}
-
-function isFavorite(id) {
-    return getFavorites().some(item => item.id === id);
-}
-
-function toggleFavorite(id, title, type, el) {
-    let favs = getFavorites();
-    const index = favs.findIndex(item => item.id === id);
-    if (index >= 0) {
-        favs.splice(index, 1);
-        if (el) el.classList.remove('active');
-    } else {
-        favs.push({ id, title, type });
-        if (el) el.classList.add('active');
-    }
-    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-}
-
-function openFavPanel() {
-    const favs = getFavorites();
-    const body = document.getElementById('favPanelBody');
-    if (favs.length === 0) {
-        body.innerHTML = `<div class="fav-empty">暂无收藏资源</div>`;
-    } else {
-        body.innerHTML = favs.map(item => `
-            <div class="fav-item">
-                <span class="name" onclick="searchKeyword('${(item.title || '').replace(/'/g, "\\'")}')">${item.title || '未知资源'}</span>
-                ${item.type ? '<span class="type">' + item.type + '</span>' : ''}
-                <button class="fav-remove" onclick="removeFavorite('${item.id}', this)" title="取消收藏">&times;</button>
-            </div>
-        `).join('');
-    }
-    document.getElementById('favPanel').classList.add('show');
-    document.getElementById('favOverlay').classList.add('show');
-}
-
-function closeFavPanel() {
-    document.getElementById('favPanel').classList.remove('show');
-    document.getElementById('favOverlay').classList.remove('show');
-}
-
-function removeFavorite(id, el) {
-    let favs = getFavorites();
-    favs = favs.filter(item => item.id !== id);
-    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-    const item = el.closest('.fav-item');
-    if (item) item.remove();
-    if (favs.length === 0) {
-        document.getElementById('favPanelBody').innerHTML = `<div class="fav-empty">暂无收藏资源</div>`;
-    }
-}
-
-function randomRecommend() {
-    if (!resourcesLoaded || allResources.length === 0) {
-        alert('资源加载中，请稍后再试');
-        return;
-    }
-    const randomIndex = Math.floor(Math.random() * allResources.length);
-    const item = allResources[randomIndex];
-    const auth = getStoredAuth();
-    if (!auth) {
-        showAuthModal();
-        return;
-    }
-    checkAndViewResource(item);
-}
-
-const VIEW_KEY = 'quark_view_counts';
-
-function getViewCounts() {
-    try {
-        return JSON.parse(localStorage.getItem(VIEW_KEY) || '{}');
-    } catch {
-        return {};
-    }
-}
-
-function getViewCount(id) {
-    const counts = getViewCounts();
-    const base = Math.floor(Math.random() * 50) + 10;
-    return (counts[id] || 0) + base;
-}
-
-function recordView(id) {
-    const counts = getViewCounts();
-    counts[id] = (counts[id] || 0) + 1;
-    localStorage.setItem(VIEW_KEY, JSON.stringify(counts));
-}
-
-function getGuessList(keyword) {
-    if (!resourcesLoaded || allResources.length === 0) return [];
-    const lowerKeyword = (keyword || '').toLowerCase();
-    let pool = allResources;
-    if (lowerKeyword) {
-        pool = allResources.filter(item => {
-            const title = (item.title || '').toLowerCase();
-            const keywords = (item.keywords || []).join(' ').toLowerCase();
-            return title.includes(lowerKeyword) || keywords.includes(lowerKeyword);
-        });
-    }
-    if (pool.length === 0) pool = allResources;
-    const shuffled = pool.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 5);
-}
-
-let batchMode = false;
-let selectedItems = new Set();
-function toggleBatchMode() {
-    batchMode = !batchMode;
-    selectedItems.clear();
-    document.getElementById('batchFavBar').classList.toggle('show', batchMode);
-    document.getElementById('batchCountNum').textContent = '0';
-    document.querySelectorAll('.checkbox-item').forEach(cb => { cb.checked = false; });
-}
-
-function toggleSelectItem(id, checkbox) {
-    if (checkbox.checked) { selectedItems.add(id); } else { selectedItems.delete(id); }
-    document.getElementById('batchCountNum').textContent = selectedItems.size;
-}
-
-function batchAddFavorite() {
-    if (selectedItems.size === 0) { alert('请先选择要收藏的资源'); return; }
-    let favs = getFavorites();
-    let added = 0;
-    selectedItems.forEach(id => {
-        const item = allResources.find(r => r.id === id);
-        if (item && !favs.some(f => f.id === id)) {
-            favs.push({ id: item.id, title: item.title, type: item.type });
-            added++;
-        }
-    });
-    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-    alert(`已收藏 ${added} 个资源`);
-    toggleBatchMode();
-    document.querySelectorAll('.fav-btn').forEach(btn => {
-        const id = btn.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
-        if (id && isFavorite(id)) btn.classList.add('active');
-    });
-}
-
-function shareResource(title, shareLink) {
-    const shareModal = document.getElementById('shareModal');
-    const body = document.getElementById('shareModalBody');
-    const shareUrl = shareLink || window.location.href;
-    const shareText = `推荐一个好用的资源：${title}`;
-    let html = `<h3 style="margin-top:0;color:#333;">分享资源</h3>`;
-    html += `<p style="color:#666;font-size:14px;margin-bottom:15px;">${title}</p>`;
-    html += `<div class="share-btns">`;
-    html += `<button class="share-btn wechat" onclick="shareToWechat('${title.replace(/'/g, "\\'")}','${shareUrl.replace(/'/g, "\\'")}')">微信</button>`;
-    html += `<button class="share-btn weibo" onclick="shareToWeibo('${title.replace(/'/g, "\\'")}','${shareUrl.replace(/'/g, "\\'")}')">微博</button>`;
-    html += `<button class="share-btn copy-link" onclick="copyShareLink('${shareUrl.replace(/'/g, "\\'")}')">复制链接</button>`;
-    html += `</div>`;
-    body.innerHTML = html;
-    shareModal.style.display = 'flex';
-}
-
-function shareToWechat(title, url) {
-    let html = `<h3 style="margin-top:0;color:#333;">分享到微信</h3>`;
-    html += `<p style="color:#666;font-size:13px;margin-bottom:10px;">截图分享给好友或扫码</p>`;
-    html += `<div style="background:#f8f8f8;padding:15px;border-radius:8px;margin:10px 0;font-size:13px;color:#333;text-align:left;">${title}<br><span style="color:#1e90ff;font-size:12px;">${url}</span></div>`;
-    html += `<button onclick="closeModal('shareModal')" style="padding:8px 20px;background:#f0f0f0;border:none;border-radius:15px;cursor:pointer;font-size:13px;">关闭</button>`;
-    document.getElementById('shareModalBody').innerHTML = html;
-}
-
-function shareToWeibo(title, url) {
-    const weiboUrl = `https://service.weibo.com/share/share.php?title=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
-    window.open(weiboUrl, '_blank', 'width=600,height=400');
-    closeModal('shareModal');
-}
-
-function copyShareLink(url) {
-    navigator.clipboard.writeText(url).then(() => {
-        alert('链接已复制到剪贴板');
-        closeModal('shareModal');
-    }).catch(() => {
-        const input = document.createElement('input');
-        input.value = url;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        alert('链接已复制到剪贴板');
-        closeModal('shareModal');
-    });
-}
-
-const REMIND_KEY = 'quark_remind_categories';
-function getRemindedCategories() {
-    try { return JSON.parse(localStorage.getItem(REMIND_KEY) || '[]'); } catch { return []; }
-}
-function toggleRemind(category) {
-    let reminded = getRemindedCategories();
-    const idx = reminded.indexOf(category);
-    if (idx >= 0) { reminded.splice(idx, 1); } else { reminded.push(category); }
-    localStorage.setItem(REMIND_KEY, JSON.stringify(reminded));
-    updateRemindButtons();
-}
-function updateRemindButtons() {
-    const reminded = getRemindedCategories();
-    document.querySelectorAll('.remind-btn').forEach(btn => {
-        const cat = btn.dataset.category;
-        if (reminded.includes(cat)) { btn.classList.add('subscribed'); btn.textContent = '已订阅'; }
-        else { btn.classList.remove('subscribed'); btn.textContent = '订阅更新'; }
-    });
-}
-
-function updateSeoTitle(title) {
-    if (title) {
-        document.title = `${title} - 资源搜索 | 实用资源整理站`;
-        const ogTitle = document.querySelector('meta[property="og:title"]');
-        const ogDesc = document.querySelector('meta[property="og:description"]');
-        if (ogTitle) ogTitle.setAttribute('content', `${title} - 资源搜索`);
-        if (ogDesc) ogDesc.setAttribute('content', `搜索${title}相关资源，获取夸克网盘链接，一键转存。`);
-    } else {
-        document.title = '资源搜索 - 实用资源整理站';
-    }
-}
-
-let currentCategory = 'all';
-let currentCount = 'all';
-let resourcesLoaded = false;
-
-function filterByCategory(category, el) {
-    currentCategory = category;
-    document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    
-    const countNav = document.getElementById('countNav');
-    if (category === '剧本杀') {
-        countNav.classList.add('show');
-    } else {
-        countNav.classList.remove('show');
-        currentCount = 'all';
-        document.querySelectorAll('.count-tag').forEach(t => t.classList.remove('active'));
-        document.querySelector('.count-tag[data-count="all"]').classList.add('active');
-    }
-    
-    browseByFilter();
-}
-
-function filterByCount(count, el) {
-    currentCount = count;
-    document.querySelectorAll('.count-tag').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    
-    browseByFilter();
-}
-
-function browseByFilter() {
-    const keyword = document.getElementById('searchInput').value.trim();
-    if (keyword) {
-        performSearch();
-        return;
-    }
-    
-    if (!resourcesLoaded) {
-        alert('资源加载中，请稍后再试');
-        return;
-    }
-    
-    let results = allResources;
-    if (currentCategory !== 'all') {
-        results = results.filter(item => item.type === currentCategory);
-    }
-    if (currentCategory === '剧本杀' && currentCount !== 'all') {
-        results = results.filter(item => item.count === currentCount);
-    }
-    
-    if (results.length > 0) {
-        showResultModal(results, currentCategory === 'all' ? '全部资源' : currentCategory);
-    } else {
-        showRequestModal(currentCategory === 'all' ? '' : currentCategory);
-    }
-}
-
-function getStoredAuth() {
-    const token = localStorage.getItem(TOKEN_KEY);
-    const user = localStorage.getItem(USER_KEY);
-    if (token && user) {
-        try { return { token, user: JSON.parse(user) }; } catch { return null; }
-    }
-    return null;
-}
-
-function saveAuth(token, user) {
-    localStorage.setItem(TOKEN_KEY, token);
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
-}
-
-function clearAuth() {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
-    currentUser = null;
-}
-
-function updateUserPanel() {
-    const auth = getStoredAuth();
-    if (auth && auth.user) {
-        currentUser = auth.user;
-        const isVip = auth.user.isVip;
-        const vipTag = isVip ? '<span style="background:gold;color:#333;padding:2px 8px;border-radius:10px;font-size:12px;margin-left:5px;">VIP</span>' : '';
-        const transferInfo = isVip ? '<span class="transfer-count" style="background:gold;color:#333;">VIP无限次数</span>' : '<span class="transfer-count" id="transferCount">今日剩余: --</span>';
-        userPanel.innerHTML = `<div class="user-info"><span class="username">${auth.user.username}</span>${vipTag}${transferInfo}<span class="fav-link" onclick="openFavPanel()">我的收藏</span><button class="logout-btn" onclick="handleLogout()">登出</button></div>`;
-        if (!isVip) updateTransferStatus();
-    } else {
-        userPanel.innerHTML = `<button class="user-btn" id="userBtn" onclick="showAuthModal()">登录/注册</button>`;
-    }
-}
-
-async function updateTransferStatus() {
-    const auth = getStoredAuth();
-    if (!auth) return;
-    try {
-        const res = await fetch('/api/auth/status', { headers: { 'Authorization': `Bearer ${auth.token}` } });
-        const data = await res.json();
-        if (data.success) {
-            const countEl = document.getElementById('transferCount');
-            if (countEl) {
-                const remaining = Math.max(0, data.remaining);
-                countEl.textContent = `今日剩余: ${remaining}次`;
-                if (remaining === 0) { countEl.style.background = '#ffe0e0'; countEl.style.color = '#e74c3c'; }
-            }
-        }
-    } catch (e) { console.warn('获取转存状态失败:', e.message); }
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = 'none';
-}
-
-function showAuthModal() {
-    const auth = getStoredAuth();
-    if (auth && auth.user) { updateUserPanel(); return; }
-    authModalBody.innerHTML = `<h3 style="margin-top:0;color:#333;">用户登录</h3><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">用户名</label><input type="text" id="loginUsername" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="请输入用户名"></div><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">密码</label><input type="password" id="loginPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="请输入密码"></div><button onclick="handleLogin()" style="width:100%;padding:12px;background:#1e90ff;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin-bottom:10px;">登录</button><p style="color:#666;font-size:14px;">还没有账号？<a href="javascript:void(0)" onclick="showRegister()" style="color:#1e90ff;">立即注册</a></p>`;
-    authModal.style.display = 'flex';
-}
-
-function showRegister() {
-    authModalBody.innerHTML = `<h3 style="margin-top:0;color:#333;">用户注册</h3><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">用户名</label><input type="text" id="regUsername" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="3-20个字符"></div><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">密码</label><input type="password" id="regPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="至少6个字符"></div><div style="text-align:left;margin:20px 0;"><label style="display:block;margin-bottom:5px;color:#666;">确认密码</label><input type="password" id="regConfirmPassword" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;" placeholder="再次输入密码"></div><button onclick="handleRegister()" style="width:100%;padding:12px;background:#28a745;color:#fff;border:none;border-radius:5px;cursor:pointer;font-size:16px;margin-bottom:10px;">注册</button><p style="color:#666;font-size:14px;">已有账号？<a href="javascript:void(0)" onclick="showAuthModal()" style="color:#1e90ff;">立即登录</a></p>`;
-}
-
-async function handleRegister() {
-    const username = document.getElementById('regUsername').value.trim();
-    const password = document.getElementById('regPassword').value;
-    const confirmPassword = document.getElementById('regConfirmPassword').value;
-    if (!username || !password) { alert('请填写完整信息'); return; }
-    if (password !== confirmPassword) { alert('两次密码输入不一致'); return; }
-    let deviceId = localStorage.getItem('device_id');
-    if (!deviceId) { deviceId = 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('device_id', deviceId); }
-    try {
-        const res = await fetch('/api/auth/register?t=' + Date.now(), { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-Device-ID': deviceId }, body: JSON.stringify({ username, password }) });
-        const data = await res.json();
-        if (data.success) { alert('注册成功，请登录'); showAuthModal(); } else { alert(data.error || '注册失败'); }
-    } catch (e) { alert('网络错误: ' + e.message); }
-}
-
-async function handleLogin() {
-    const username = document.getElementById('loginUsername').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    if (!username || !password) { alert('请填写用户名和密码'); return; }
-    try {
-        const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
-        const data = await res.json();
-        if (data.success) { saveAuth(data.token, { userId: data.userId, username: data.username, isVip: data.isVip }); authModal.style.display = 'none'; updateUserPanel(); } else { alert(data.error || '登录失败'); }
-    } catch (e) { alert('网络错误: ' + e.message); }
-}
-
-async function handleLogout() {
-    const auth = getStoredAuth();
-    if (auth) { try { await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': `Bearer ${auth.token}` } }); } catch (e) {} }
-    clearAuth(); updateUserPanel();
-}
-
-async function loadResources() {
-    try {
-        const res = await fetch('/data.json?v=' + Date.now());
-        allResources = await res.json();
-        resourcesLoaded = true;
-    } catch (e) {
-        allResources = [];
-        resourcesLoaded = true;
-    }
-}
-
-function searchKeyword(keyword) {
-    clearTimeout(searchTimer);
-    document.getElementById('searchInput').value = keyword;
-    performSearch();
-}
-
-function performSearch() {
-    const keyword = document.getElementById('searchInput').value.trim();
-    if (!keyword) { updateSeoTitle(null); return; }
-    
-    if (!resourcesLoaded) {
-        alert('资源加载中，请稍后再试');
-        return;
-    }
-    
-    saveSearchHistory(keyword);
-    
-    const lowerKeyword = keyword.toLowerCase();
-    let results = allResources.filter(item => {
-        const title = (item.title || '').toLowerCase();
-        const keywords = (item.keywords || []).join(' ').toLowerCase();
-        const aliases = (item.search_aliases || []).join(' ').toLowerCase();
-        return title.includes(lowerKeyword) || keywords.includes(lowerKeyword) || aliases.includes(lowerKeyword);
-    });
-    
-    if (currentCategory !== 'all') {
-        results = results.filter(item => item.type === currentCategory);
-    }
-    
-    if (currentCategory === '剧本杀' && currentCount !== 'all') {
-        results = results.filter(item => item.count === currentCount);
-    }
-    
-    if (results.length > 0) {
-        showResultModal(results, keyword);
-    } else if (isManualSearch) {
-        showRequestModal(keyword);
-    }
-    
-    fetch('/api/record', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ keyword: keyword }) }).catch(() => {});
-}
-
+let currentType = '全部';
 let searchTimer = null;
-let isManualSearch = false;
-function debounceSearch() {
-    clearTimeout(searchTimer);
-    isManualSearch = false;
-    searchTimer = setTimeout(() => {
-        const keyword = document.getElementById('searchInput').value.trim();
-        if (keyword && keyword.length >= 2) {
-            performSearch();
-        }
-    }, 300);
+
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function () { el.classList.remove('show'); }, 2000);
 }
 
-function showResultModal(results, keyword) {
-    let html = `<h3 style="margin-top:0;color:#333;">找到 ${results.length} 个相关资源</h3>`;
-    html += `<p style="color:#666;font-size:13px;margin-bottom:10px;">关键词：${keyword}</p>`;
-    html += `<div style="margin-bottom:10px;text-align:right;"><button class="batch-select-btn" onclick="toggleBatchMode()">批量收藏</button></div>`;
-    html += `<div class="title-list" id="resultList">`;
-    
-    results.forEach((item, index) => {
-        const title = item.title || '未知资源';
-        const type = item.type || '';
-        const count = item.count;
-        const jubenType = item.juben_type || '';
-        const keywords = (item.keywords || []).slice(0, 3).join(' · ');
-        const isFav = isFavorite(item.id);
-        let desc = '';
-        if (type === '剧本杀') {
-            const parts = [];
-            if (count) parts.push(`${count}人本`);
-            if (jubenType) parts.push(jubenType);
-            if (parts.length > 0) {
-                desc = `<span style="font-size:11px;color:#e74c3c;margin-left:6px;flex-shrink:0;">${parts.join(' · ')}</span>`;
-            }
-        } else if (keywords) {
-            desc = `<span style="font-size:11px;color:#999;margin-left:6px;flex-shrink:0;">${keywords}</span>`;
-        }
-        html += `<div class="title-item">
-            <span class="name" onclick="handleTitleClick(${index})">${title}</span>
-            ${type ? '<span class="type">' + type + '</span>' : ''}
-            ${desc}
-            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${item.id}','${(title).replace(/'/g, "\\'")}','${type}',this)" title="收藏">♥</button>
-            <button style="background:none;border:none;cursor:pointer;font-size:12px;color:#1e90ff;padding:0 4px;flex-shrink:0;" onclick="event.stopPropagation();shareResource('${(title).replace(/'/g, "\\'")}','${(item.share_link || '').replace(/'/g, "\\'")}')" title="分享">↗</button>
-            <span class="arrow" onclick="handleTitleClick(${index})">›</span>
-        </div>`;
-    });
-    
-    html += `</div>`;
-    
-    const auth = getStoredAuth();
-    if (!auth) {
-        html += `<p style="color:#999;font-size:12px;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0;">登录后即可免费查看资源（每日2次）<a href="javascript:void(0)" onclick="closeModal('resultModal');showAuthModal();" style="color:#1e90ff;margin-left:5px;">立即登录</a></p>`;
-    }
-    
-    resultModalBody.innerHTML = html;
-    resultModal.dataset.results = JSON.stringify(results);
-    resultModal.style.display = 'flex';
-    updateSeoTitle(keyword);
+function setType(el) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  currentType = el.dataset.type;
+  var q = document.getElementById('searchInput').value.trim();
+  if (q) doSearch(q);
 }
 
-function handleTitleClick(index) {
-    const results = JSON.parse(resultModal.dataset.results || '[]');
-    const item = results[index];
-    if (!item) return;
-    
-    const auth = getStoredAuth();
-    if (!auth) {
-        closeModal('resultModal');
-        showAuthModal();
+function doSearch(q) {
+  if (!q) return;
+  var resultsEl = document.getElementById('results');
+  resultsEl.innerHTML = '<div class="empty"><div class="empty-text">搜索中...</div></div>';
+
+  var url = '/api/resources/search?q=' + encodeURIComponent(q);
+  if (currentType && currentType !== '全部') url += '&type=' + encodeURIComponent(currentType);
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.success || !data.results || data.results.length === 0) {
+        resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">没有找到相关资源，试试其他关键词？</div></div>';
         return;
-    }
-    
-    checkAndViewResource(item);
-}
-
-async function checkAndViewResource(item) {
-    const auth = getStoredAuth();
-    if (!auth) return;
-    
-    try {
-        const res = await fetch('/api/auth/check', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + auth.token
-            }
-        });
-        const data = await res.json();
-        
-        if (data.success && data.allowed) {
-            showQrModal(item);
-            updateTransferStatus();
-        } else {
-            alert(data.error || '今天查看次数已用完，明天再来吧！');
-        }
-    } catch (e) {
-        alert('网络错误，请稍后重试');
-    }
-}
-
-function showQrModal(item) {
-    const title = item.title || '未知资源';
-    const qrcode = item.qrcode || '';
-    const shareLink = item.share_link || '#';
-    const viewCount = getViewCount(item.id);
-    
-    let html = `<div class="qr-modal-body">`;
-    html += `<h3 style="margin-top:0;color:#333;font-size:16px;">${title}</h3>`;
-    html += `<div class="view-count">已有 ${viewCount} 人查看</div>`;
-    
-    if (isMobile) {
-        html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:15px;padding:14px 28px;background:#1e90ff;color:#fff;border-radius:25px;text-decoration:none;font-size:15px;">打开夸克网盘链接</a>`;
-        html += `<div class="hint" style="margin-top:10px;">点击链接直接转存资源</div>`;
-    } else {
-        if (qrcode) {
-            html += `<img src="/${qrcode}" alt="扫码获取">`;
-            html += `<div class="hint">打开手机夸克 → 扫一扫 → 保存资源</div>`;
-        } else {
-            html += `<a href="${shareLink}" target="_blank" style="display:inline-block;margin-top:15px;padding:14px 28px;background:#1e90ff;color:#fff;border-radius:25px;text-decoration:none;font-size:15px;">打开夸克网盘链接</a>`;
-        }
-    }
-    
-    html += `<div style="margin-top:15px;"><button onclick="closeModal('qrModal')" style="padding:8px 20px;background:#f0f0f0;color:#666;border:none;border-radius:20px;cursor:pointer;font-size:13px;">返回继续搜索</button></div>`;
-    
-    html += `</div>`;
-    qrModalBody.innerHTML = html;
-    qrModal.style.display = 'flex';
-    recordView(item.id);
-}
-
-function showRequestModal(keyword) {
-    const guessList = getGuessList(keyword);
-    let html = `<div class="request-modal-body">`;
-    html += `<h3 style="margin-top:0;color:#333;">未找到相关资源</h3>`;
-    html += `<p style="color:#666;font-size:14px;margin-bottom:15px;">抱歉，没有找到"${keyword}"相关资源</p>`;
-    html += `<button class="request-btn" onclick="sendToWechat('${keyword.replace(/'/g, "\\'")}')">求资源</button>`;
-    html += `<img src="/static/wechat_qrcode.png?t=${Date.now()}" alt="微信群二维码" onerror="this.style.display='none'">`;
-    html += `<p style="color:#999;font-size:12px;margin-top:10px;">扫码加入微信群获取资源</p>`;
-    
-    if (guessList.length > 0) {
-        html += `<div class="guess-list">`;
-        html += `<div class="guess-title">猜你想搜：</div>`;
-        guessList.forEach(item => {
-            html += `<div class="guess-item" onclick="closeModal('requestModal');searchKeyword('${(item.title || '').replace(/'/g, "\\'")}')">${item.title || '未知资源'}</div>`;
-        });
-        html += `</div>`;
-    }
-    
-    html += `</div>`;
-    
-    requestModalBody.innerHTML = html;
-    requestModal.style.display = 'flex';
-}
-
-function sendToWechat(keyword) {
-    fetch('/api/request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ keyword: keyword })
-    }).then(res => {
-        console.log('Response status:', res.status);
-        return res.json();
-    }).then(data => {
-        console.log('Response data:', data);
-        if (data.success) {
-            alert('已发送需求，我们会尽快处理！');
-            closeModal('requestModal');
-        } else {
-            alert('发送失败：' + (data.error || '请稍后重试'));
-        }
-    }).catch(err => {
-        console.error('Fetch error:', err);
-        alert('网络错误：' + err.message);
+      }
+      var html = '';
+      data.results.forEach(function(item) {
+        var date = item.created_at ? item.created_at.substring(0, 10) : '';
+        html += '<div class="result-item" onclick="window.open(\'' + escapeHtml(item.link) + '\',\'_blank\')">';
+        html += '<div class="result-info">';
+        html += '<div class="result-title">' + escapeHtml(item.title) + '</div>';
+        html += '<div class="result-meta">' + escapeHtml(item.type || '') + (date ? ' · ' + date : '') + (item.view_count ? ' · ' + item.view_count + '次查看' : '') + '</div>';
+        html += '</div>';
+        html += '<span class="result-type">' + escapeHtml(item.type || '其他') + '</span>';
+        html += '</div>';
+      });
+      resultsEl.innerHTML = html;
+    })
+    .catch(function() {
+      resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">搜索出错，请稍后重试</div></div>';
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    resultModal = document.getElementById('resultModal');
-    resultModalBody = document.getElementById('resultModalBody');
-    qrModal = document.getElementById('qrModal');
-    qrModalBody = document.getElementById('qrModalBody');
-    requestModal = document.getElementById('requestModal');
-    requestModalBody = document.getElementById('requestModalBody');
-    authModal = document.getElementById('authModal');
-    authModalBody = document.getElementById('authModalBody');
-    userPanel = document.getElementById('userPanel');
-    updateUserPanel();
-    loadResources();
-    loadTodayUpdates();
-    renderSearchHistory();
-    
-    document.getElementById('searchBtn').addEventListener('click', () => { isManualSearch = true; clearTimeout(searchTimer); performSearch(); });
-    document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') { isManualSearch = true; clearTimeout(searchTimer); performSearch(); } });
-    document.getElementById('searchInput').addEventListener('input', debounceSearch);
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const q = urlParams.get('q');
-    if (q) { document.getElementById('searchInput').value = q; setTimeout(performSearch, 500); }
-    
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/quark/sw.js?v=' + Date.now()).catch(() => {});
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function submitResource() {
+  var title = document.getElementById('resTitle').value.trim();
+  var link = document.getElementById('resLink').value.trim();
+  var type = document.getElementById('resType').value;
+  var email = document.getElementById('resEmail').value.trim();
+
+  if (!title || !link) { toast('请填写资源名称和链接'); return; }
+
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '提交中...';
+
+  fetch('/api/resources/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: title, link: link, type: type, email: email })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    btn.disabled = false;
+    btn.textContent = '提交资源';
+    if (data.success) {
+      toast(data.message || '提交成功！');
+      document.getElementById('resTitle').value = '';
+      document.getElementById('resLink').value = '';
+      document.getElementById('resEmail').value = '';
+    } else {
+      toast(data.error || '提交失败');
     }
+  })
+  .catch(function() {
+    btn.disabled = false;
+    btn.textContent = '提交资源';
+    toast('网络错误，请稍后重试');
+  });
+}
+
+document.getElementById('searchBtn').addEventListener('click', function() {
+  var q = document.getElementById('searchInput').value.trim();
+  if (q) doSearch(q);
 });
+
+document.getElementById('searchInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    var q = this.value.trim();
+    if (q) doSearch(q);
+  }
+});
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  clearTimeout(searchTimer);
+  var q = this.value.trim();
+  if (q.length >= 2) {
+    searchTimer = setTimeout(function() { doSearch(q); }, 400);
+  }
+});
+
+var urlParams = new URLSearchParams(window.location.search);
+var initQ = urlParams.get('q');
+if (initQ) {
+  document.getElementById('searchInput').value = initQ;
+  doSearch(initQ);
+}
 </script>
 </body>
 </html>
