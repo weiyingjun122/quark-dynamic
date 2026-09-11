@@ -20,14 +20,7 @@ export async function onRequest(context) {
         return Response.redirect(url.toString(), 301);
     }
 
-    // 3. /search/xxx 重定向到 /search/xxx.html（避免重复收录）
-    const pathMatch = url.pathname.match(/^\/search\/([^/]+)$/);
-    if (pathMatch && !url.pathname.endsWith('.html')) {
-        url.pathname = url.pathname + '.html';
-        return Response.redirect(url.toString(), 301);
-    }
-
-    // 4. 搜索查询页添加 noindex
+    // 3. 搜索查询页添加 noindex
     if (url.searchParams.has('q')) {
         const response = await context.next();
         const newResponse = new Response(response.body, response);
