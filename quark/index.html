@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>资源搜索 - 实用资源整理站</title>
-<meta name="description" content="实用资源整理站资源搜索引擎，用户可搜索和提交合法资源链接。">
+<meta name="description" content="实用资源整理站资源搜索引擎，搜索公开合法资源链接。">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://www.weiyingjun.top/quark/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3ES%3C/text%3E%3C/svg%3E">
@@ -49,23 +49,15 @@ h1{font-size:28px;color:#1f2d3d;margin-bottom:10px}
 .empty{text-align:center;padding:60px 20px;color:#94a3b8}
 .empty-icon{font-size:48px;margin-bottom:12px}
 .empty-text{font-size:15px}
-.submit-section{background:#fff;border-radius:16px;padding:24px;margin-top:30px;box-shadow:0 4px 16px rgba(31,45,61,0.08)}
-.submit-section h2{font-size:18px;color:#1f2d3d;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.submit-section h2::before{content:"";display:inline-block;width:4px;height:18px;background:linear-gradient(180deg,#2563eb,#60a5fa);border-radius:2px}
-.form-group{margin-bottom:14px}
-.form-group label{display:block;font-size:13px;color:#64748b;margin-bottom:6px}
-.form-group input,.form-group select{width:100%;padding:10px 14px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;outline:none;transition:border-color .2s}
-.form-group input:focus,.form-group select:focus{border-color:#2563eb}
-.submit-btn{width:100%;padding:12px;font-size:15px;border:none;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;transition:background .2s}
-.submit-btn:hover{background:#1d4ed8}
-.submit-btn:disabled{background:#94a3b8;cursor:not-allowed}
-.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
-.toast.show{opacity:1}
 .about-box{background:#f8fafc;border-radius:12px;padding:18px;margin-top:24px;font-size:13px;color:#64748b;line-height:1.8}
 .about-box h3{font-size:15px;color:#1f2d3d;margin-bottom:8px}
+.about-box a{color:#2563eb;text-decoration:none}
+.about-box a:hover{text-decoration:underline}
 .disclaimer{margin-top:20px;font-size:12px;color:#94a3b8;text-align:center;line-height:1.7}
 footer.site-footer{text-align:center;padding:26px 0 40px;font-size:13px;color:#94a3b8}
 footer.site-footer a{color:#2563eb;text-decoration:none}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -74,7 +66,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
         <a href="/" class="navbar-brand">实用资源整理站</a>
         <div class="navbar-links">
             <a href="/">首页</a>
-            <a href="/quark/">资源搜索</a>
+            <a href="/quark/" class="active">资源搜索</a>
             <a href="/quark/submit.html">提交资源</a>
             <a href="/blog/">博客</a>
         </div>
@@ -84,7 +76,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 <main class="container">
   <header>
     <h1>资源搜索</h1>
-    <p class="subtitle">搜索公开合法资源链接，或提交你的资源分享给大家</p>
+    <p class="subtitle">搜索公开合法资源链接</p>
   </header>
 
   <div class="search-box">
@@ -103,45 +95,19 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
   <div class="results" id="results">
     <div class="empty">
       <div class="empty-icon">🔍</div>
-      <div class="empty-text">输入关键词开始搜索，或提交你的资源</div>
+      <div class="empty-text">输入关键词，点击搜索按钮查找资源</div>
     </div>
-  </div>
-
-  <div class="submit-section">
-    <h2>提交资源</h2>
-    <p style="font-size:13px;color:#94a3b8;margin-bottom:14px">分享你发现的优质资源链接，审核通过后会展示给所有用户</p>
-    <div class="form-group">
-      <label>资源名称 *</label>
-      <input type="text" id="resTitle" placeholder="例如：Python编程入门教程">
-    </div>
-    <div class="form-group">
-      <label>资源链接 *</label>
-      <input type="url" id="resLink" placeholder="https://pan.quark.cn/...">
-    </div>
-    <div class="form-group">
-      <label>资源类型</label>
-      <select id="resType">
-        <option value="学习资料">学习资料</option>
-        <option value="工具软件">工具软件</option>
-        <option value="模板素材">模板素材</option>
-        <option value="其他">其他</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>联系邮箱（可选，用于审核通知）</label>
-      <input type="email" id="resEmail" placeholder="your@email.com">
-    </div>
-    <button class="submit-btn" id="submitBtn" onclick="submitResource()">提交资源</button>
   </div>
 
   <div class="about-box">
     <h3>关于资源搜索</h3>
-    <p>本站资源搜索功能旨在帮助用户发现和分享公开合法的资源链接。所有资源由用户提交，经过人工审核后展示。</p>
-    <p>本站不存储、不托管任何文件，仅提供资源链接的索引服务。如发现侵权内容，请通过 <a href="/dmca.html" style="color:#2563eb">DMCA投诉</a> 告知我们。</p>
+    <p>本站资源搜索功能旨在帮助用户发现公开合法的资源链接。所有资源由用户提交，经人工审核后展示。</p>
+    <p>想要分享资源？请访问 <a href="/quark/submit.html">提交资源</a> 页面。本站不存储任何文件，仅提供链接索引服务。</p>
+    <p>如发现侵权内容，请通过 <a href="/dmca.html">DMCA投诉</a> 告知我们。</p>
   </div>
 
   <div class="disclaimer">
-    本站提供的所有资源链接均由用户提交，仅供参考。请确保您有权使用相关资源。<br>
+    本站资源链接均由用户提交，仅供参考。请确保您有权使用相关资源。<br>
     <a href="/terms.html" style="color:#94a3b8">用户协议</a> · <a href="/dmca.html" style="color:#94a3b8">侵权投诉</a> · <a href="/privacy.html" style="color:#94a3b8">隐私政策</a>
   </div>
 </main>
@@ -155,8 +121,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 <div class="toast" id="toast"></div>
 
 <script>
-let currentType = '全部';
-let searchTimer = null;
+var currentType = '全部';
 
 function toast(msg) {
   var el = document.getElementById('toast');
@@ -212,43 +177,6 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function submitResource() {
-  var title = document.getElementById('resTitle').value.trim();
-  var link = document.getElementById('resLink').value.trim();
-  var type = document.getElementById('resType').value;
-  var email = document.getElementById('resEmail').value.trim();
-
-  if (!title || !link) { toast('请填写资源名称和链接'); return; }
-
-  var btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = '提交中...';
-
-  fetch('/api/resources/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: title, link: link, type: type, email: email })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    btn.disabled = false;
-    btn.textContent = '提交资源';
-    if (data.success) {
-      toast(data.message || '提交成功！');
-      document.getElementById('resTitle').value = '';
-      document.getElementById('resLink').value = '';
-      document.getElementById('resEmail').value = '';
-    } else {
-      toast(data.error || '提交失败');
-    }
-  })
-  .catch(function() {
-    btn.disabled = false;
-    btn.textContent = '提交资源';
-    toast('网络错误，请稍后重试');
-  });
-}
-
 document.getElementById('searchBtn').addEventListener('click', function() {
   var q = document.getElementById('searchInput').value.trim();
   if (q) doSearch(q);
@@ -258,14 +186,6 @@ document.getElementById('searchInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
     var q = this.value.trim();
     if (q) doSearch(q);
-  }
-});
-
-document.getElementById('searchInput').addEventListener('input', function() {
-  clearTimeout(searchTimer);
-  var q = this.value.trim();
-  if (q.length >= 2) {
-    searchTimer = setTimeout(function() { doSearch(q); }, 400);
   }
 });
 

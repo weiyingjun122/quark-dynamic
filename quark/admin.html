@@ -27,23 +27,30 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
 .tab:hover:not(.active){background:#f8fafc}
 .tab .count{margin-left:4px;font-weight:600}
 
-.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:all .2s}
+.batch-bar{background:#fff;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:none;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.batch-bar.show{display:flex}
+.batch-bar .info{font-size:13px;color:#64748b;flex:1}
+.batch-bar .info b{color:#1f2d3d}
+.batch-bar button{padding:6px 14px;border-radius:6px;border:none;font-size:13px;cursor:pointer}
+
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:all .2s;display:flex;gap:12px;align-items:flex-start}
 .card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08)}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.card-check{flex-shrink:0;margin-top:3px}
+.card-check input{width:18px;height:18px;cursor:pointer;accent-color:#2563eb}
+.card-body{flex:1;min-width:0}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .card-title{font-size:15px;color:#1f2d3d;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.card-meta{font-size:12px;color:#94a3b8;margin-bottom:10px}
-.card-link{font-size:12px;color:#2563eb;word-break:break-all;display:block;margin-bottom:10px;text-decoration:none}
+.card-meta{font-size:12px;color:#94a3b8;margin-bottom:6px}
+.card-link{font-size:12px;color:#2563eb;word-break:break-all;display:block;text-decoration:none}
 .card-link:hover{text-decoration:underline}
-.card-actions{display:flex;gap:8px}
-.btn{padding:6px 14px;border-radius:6px;border:none;font-size:13px;cursor:pointer;transition:all .15s}
+.card-actions{display:flex;gap:6px;margin-top:8px}
+.btn{padding:5px 12px;border-radius:6px;border:none;font-size:12px;cursor:pointer;transition:all .15s}
 .btn-approve{background:#10b981;color:#fff}
 .btn-approve:hover{background:#059669}
 .btn-reject{background:#f59e0b;color:#fff}
 .btn-reject:hover{background:#d97706}
 .btn-delete{background:#ef4444;color:#fff}
 .btn-delete:hover{background:#dc2626}
-.btn-restore{background:#6b7280;color:#fff}
-.btn-restore:hover{background:#4b5563}
 
 .status-badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
 .status-pending{background:#fef3c7;color:#92400e}
@@ -69,7 +76,7 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
   <div class="header">
     <div class="header-inner">
       <h1>资源审核 <span class="badge" id="pendingCount">0</span></h1>
-      <button class="btn btn-restore" onclick="doLogout()" style="font-size:12px">退出</button>
+      <button class="btn" onclick="doLogout()" style="font-size:12px;background:#f1f5f9;color:#64748b">退出</button>
     </div>
   </div>
   <div class="container">
@@ -77,6 +84,13 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
       <div class="tab active" data-status="pending" onclick="switchTab(this)">待审核 <span class="count" id="tabPending">0</span></div>
       <div class="tab" data-status="approved" onclick="switchTab(this)">已通过 <span class="count" id="tabApproved">0</span></div>
       <div class="tab" data-status="rejected" onclick="switchTab(this)">已拒绝 <span class="count" id="tabRejected">0</span></div>
+    </div>
+    <div class="batch-bar" id="batchBar">
+      <span class="info">已选 <b id="selectedCount">0</b> 项</span>
+      <button class="btn btn-approve" onclick="batchApprove()">批量通过</button>
+      <button class="btn btn-reject" onclick="batchReject()">批量拒绝</button>
+      <button class="btn btn-delete" onclick="batchDelete()">批量删除</button>
+      <button style="background:#f1f5f9;color:#64748b" onclick="clearSelection()">取消</button>
     </div>
     <div id="list"></div>
   </div>
@@ -87,6 +101,7 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
 <script>
 var TOKEN_KEY = 'admin_resource_token';
 var adminToken = localStorage.getItem(TOKEN_KEY) || '';
+var selectedIds = new Set();
 
 function toast(msg) {
   var el = document.getElementById('toast');
@@ -119,43 +134,30 @@ function switchTab(el) {
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
   el.classList.add('active');
   currentStatus = el.dataset.status;
+  selectedIds.clear();
+  updateBatchBar();
   loadList(currentStatus);
-}
-
-function api(method, body) {
-  var opts = {
-    method: method,
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken }
-  };
-  if (body) opts.body = JSON.stringify(body);
-  return fetch('/api/resources/admin', opts).then(function(r) { return r.json(); });
 }
 
 function loadList(status) {
   var listEl = document.getElementById('list');
   listEl.innerHTML = '<div class="loading">加载中...</div>';
 
-  api('GET', null).then(function(data) {
-    // admin GET 会返回当前 status 的数据，但我们传的是默认 status
-    // 需要带 query 参数
-    return fetch('/api/resources/admin?status=' + status, {
-      headers: { 'Authorization': 'Bearer ' + adminToken }
-    }).then(function(r) { return r.json(); });
-  }).then(function(data) {
+  fetch('/api/resources/admin?status=' + status, {
+    headers: { 'Authorization': 'Bearer ' + adminToken }
+  }).then(function(r) { return r.json(); }).then(function(data) {
     if (!data.success) {
       listEl.innerHTML = '<div class="empty">' + (data.error || '加载失败') + '</div>';
       return;
     }
     var items = data.results || [];
-    document.getElementById('pendingCount').textContent = '';
-    document.getElementById('tab' + capitalize(status)).textContent = items.length;
 
-    // 加载所有状态的计数
+    // 加载所有状态计数
     ['pending', 'approved', 'rejected'].forEach(function(s) {
       fetch('/api/resources/admin?status=' + s, {
         headers: { 'Authorization': 'Bearer ' + adminToken }
       }).then(function(r) { return r.json(); }).then(function(d) {
-        if (d.success) document.getElementById('tab' + capitalize(s)).textContent = (d.results || []).length;
+        if (d.success) document.getElementById('tab' + cap(s)).textContent = (d.results || []).length;
         if (s === 'pending') document.getElementById('pendingCount').textContent = (d.results || []).length;
       }).catch(function(){});
     });
@@ -167,17 +169,21 @@ function loadList(status) {
 
     listEl.innerHTML = items.map(function(item) {
       var date = item.created_at ? item.created_at.substring(0, 16).replace('T', ' ') : '';
+      var checked = selectedIds.has(item.id) ? 'checked' : '';
       return '<div class="card" id="card-' + item.id + '">' +
-        '<div class="card-header">' +
-          '<span class="card-title">' + esc(item.title) + '</span>' +
-          '<span class="status-badge status-' + item.status + '">' + statusLabel(item.status) + '</span>' +
-        '</div>' +
-        '<div class="card-meta">类型: ' + esc(item.type || '-') + ' · 提交者: ' + esc(item.submitted_by || '-') + ' · ' + date + '</div>' +
-        '<a class="card-link" href="' + esc(item.link) + '" target="_blank">' + esc(item.link) + '</a>' +
-        '<div class="card-actions">' +
-          (status !== 'approved' ? '<button class="btn btn-approve" onclick="updateStatus(' + item.id + ',\'approved\')">✓ 通过</button>' : '') +
-          (status !== 'rejected' ? '<button class="btn btn-reject" onclick="updateStatus(' + item.id + ',\'rejected\')">✗ 拒绝</button>' : '') +
-          '<button class="btn btn-delete" onclick="deleteItem(' + item.id + ')">删除</button>' +
+        '<div class="card-check"><input type="checkbox" ' + checked + ' onchange="toggleSelect(' + item.id + ',this)"></div>' +
+        '<div class="card-body">' +
+          '<div class="card-header">' +
+            '<span class="card-title">' + esc(item.title) + '</span>' +
+            '<span class="status-badge status-' + item.status + '">' + statusLabel(item.status) + '</span>' +
+          '</div>' +
+          '<div class="card-meta">类型: ' + esc(item.type || '-') + ' · 提交者: ' + esc(item.submitted_by || '-') + ' · ' + date + '</div>' +
+          '<a class="card-link" href="' + esc(item.link) + '" target="_blank">' + esc(item.link) + '</a>' +
+          '<div class="card-actions">' +
+            (status !== 'approved' ? '<button class="btn btn-approve" onclick="updateStatus(' + item.id + ',\'approved\')">✓ 通过</button>' : '') +
+            (status !== 'rejected' ? '<button class="btn btn-reject" onclick="updateStatus(' + item.id + ',\'rejected\')">✗ 拒绝</button>' : '') +
+            '<button class="btn btn-delete" onclick="deleteItem(' + item.id + ')">删除</button>' +
+          '</div>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -186,13 +192,88 @@ function loadList(status) {
   });
 }
 
+function toggleSelect(id, cb) {
+  if (cb.checked) { selectedIds.add(id); } else { selectedIds.delete(id); }
+  updateBatchBar();
+}
+
+function updateBatchBar() {
+  var bar = document.getElementById('batchBar');
+  if (selectedIds.size > 0) {
+    bar.classList.add('show');
+    document.getElementById('selectedCount').textContent = selectedIds.size;
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+function clearSelection() {
+  selectedIds.clear();
+  document.querySelectorAll('.card-check input').forEach(function(cb) { cb.checked = false; });
+  updateBatchBar();
+}
+
+function batchApprove() {
+  if (selectedIds.size === 0) return;
+  if (!confirm('确定通过选中的 ' + selectedIds.size + ' 条资源？')) return;
+  batchAction('approved');
+}
+
+function batchReject() {
+  if (selectedIds.size === 0) return;
+  if (!confirm('确定拒绝选中的 ' + selectedIds.size + ' 条资源？')) return;
+  batchAction('rejected');
+}
+
+function batchDelete() {
+  if (selectedIds.size === 0) return;
+  if (!confirm('确定删除选中的 ' + selectedIds.size + ' 条资源？此操作不可恢复！')) return;
+  var ids = Array.from(selectedIds);
+  var done = 0;
+  ids.forEach(function(id) {
+    fetch('/api/resources/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
+      body: JSON.stringify({ action: 'delete', id: id })
+    }).then(function() {
+      done++;
+      if (done === ids.length) {
+        toast('已删除 ' + done + ' 条');
+        selectedIds.clear();
+        loadList(currentStatus);
+      }
+    });
+  });
+}
+
+function batchAction(status) {
+  var ids = Array.from(selectedIds);
+  var done = 0;
+  ids.forEach(function(id) {
+    fetch('/api/resources/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
+      body: JSON.stringify({ action: 'update_status', id: id, status: status })
+    }).then(function() {
+      done++;
+      if (done === ids.length) {
+        toast('已' + statusLabel(status) + ' ' + done + ' 条');
+        selectedIds.clear();
+        loadList(currentStatus);
+      }
+    });
+  });
+}
+
 function updateStatus(id, status) {
-  api('POST', { action: 'update_status', id: id, status: status }).then(function(data) {
+  fetch('/api/resources/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
+    body: JSON.stringify({ action: 'update_status', id: id, status: status })
+  }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.success) {
       toast('操作成功');
-      var card = document.getElementById('card-' + id);
-      if (card) card.style.opacity = '0.4';
-      setTimeout(function() { loadList(currentStatus); }, 500);
+      loadList(currentStatus);
     } else {
       toast(data.error || '操作失败');
     }
@@ -201,18 +282,21 @@ function updateStatus(id, status) {
 
 function deleteItem(id) {
   if (!confirm('确定删除？')) return;
-  api('POST', { action: 'delete', id: id }).then(function(data) {
+  fetch('/api/resources/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
+    body: JSON.stringify({ action: 'delete', id: id })
+  }).then(function(r) { return r.json(); }).then(function(data) {
     if (data.success) {
       toast('已删除');
-      var card = document.getElementById('card-' + id);
-      if (card) card.remove();
+      loadList(currentStatus);
     } else {
       toast(data.error || '删除失败');
     }
   }).catch(function() { toast('网络错误'); });
 }
 
-function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 function statusLabel(s) { return { pending: '待审核', approved: '已通过', rejected: '已拒绝' }[s] || s; }
 function esc(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
