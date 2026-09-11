@@ -61,7 +61,7 @@ export async function onRequestPost(context) {
   const isVip = (userInfo?.vip_level || 0) > 0;
   const costPerItem = 2;
   const dailyLimit = isVip ? 999 : 5;
-  const batchLimit = isVip ? 100 : 10;
+  const batchLimit = isVip ? 100 : 5;
 
   const todayLog = await env.RESOURCES_DB.prepare(
     "SELECT COUNT(*) as cnt FROM points_log WHERE user_id = ? AND change_type = 'submit' AND created_at > datetime('now', '-1 day')"
