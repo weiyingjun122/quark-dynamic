@@ -3,7 +3,7 @@
 
 function checkAuth(request) {
   const authHeader = request.headers.get('Authorization');
-  const adminToken = 'YOUR_ADMIN_SECRET_TOKEN'; // TODO: 修改为你自己的密钥
+  const adminToken = 'wyj122731';
   return authHeader === `Bearer ${adminToken}`;
 }
 
