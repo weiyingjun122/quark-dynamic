@@ -66,7 +66,18 @@ export async function onRequestPost(context) {
     }
   }
 
-  const blockedWords = ['赌博', '色情', '暴力', '枪支', '毒品', '诈骗', '洗钱'];
+  const blockedWords = [
+    '色情', '成人', 'AV', 'av', '黄片', '黄色', 'Porn', 'porn', 'sex', 'Sex',
+    '裸聊', '约炮', '一夜情', '卖淫', '嫖娼', '性爱', '做爱', '淫秽', '淫荡',
+    '赌博', '赌球', '赌马', '赌场', '博彩', '网赌',
+    '毒品', '冰毒', '大麻', '海洛因', '摇头丸', 'K粉',
+    '枪支', '枪械', '弹药', '炸药', '管制刀具', '违禁品', '暴力',
+    '诈骗', '洗钱', '传销', '非法集资', '高利贷', '裸贷', '套现',
+    '代孕', '买卖人体器官', '贩卖人口',
+    '翻墙', 'VPN', 'vpn', '科学上网',
+    '私服', '外挂', '作弊',
+    '盗版', '破解版', '注册机', 'KeyGen', 'keygen'
+  ];
   const lowerTitle = title.toLowerCase();
   if (blockedWords.some(w => lowerTitle.includes(w))) {
     return Response.json({ success: false, error: '提交的内容包含违规信息' }, { status: 400 });
