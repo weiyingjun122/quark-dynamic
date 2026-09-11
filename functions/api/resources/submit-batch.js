@@ -54,6 +54,19 @@ export async function onRequestPost(context) {
     return Response.json({ success: false, error: '请先登录' }, { status: 401 });
   }
 
+  const userInfo = await env.RESOURCES_DB.prepare(
+    "SELECT points, vip_level FROM users WHERE id = ?"
+  ).bind(user.id).first();
+  const userPoints = userInfo?.points || 0;
+  const isVip = (userInfo?.vip_level || 0) > 0;
+  const costPerItem = 2;
+  const dailyLimit = isVip ? 999 : 5;
+
+  const todayLog = await env.RESOURCES_DB.prepare(
+    "SELECT COUNT(*) as cnt FROM points_log WHERE user_id = ? AND change_type = 'submit' AND created_at > datetime('now', '-1 day')"
+  ).bind(user.id).first();
+  const todaySubmitCount = todayLog?.cnt || 0;
+
   let body;
   try { body = await request.json(); } catch {
     return Response.json({ success: false, error: '请求格式错误' }, { status: 400 });
@@ -63,6 +76,14 @@ export async function onRequestPost(context) {
 
   if (!items || !Array.isArray(items) || items.length === 0) {
     return Response.json({ success: false, error: '请提供要提交的资源列表' }, { status: 400 });
+  }
+
+  if (todaySubmitCount + items.length > dailyLimit) {
+    return Response.json({ success: false, error: `今日提交已达上限（${dailyLimit}条），剩余${Math.max(0, dailyLimit - todaySubmitCount)}条` });
+  }
+
+  if (!isVip && userPoints < items.length * costPerItem) {
+    return Response.json({ success: false, error: `积分不足，需要${items.length * costPerItem}积分，当前${userPoints}积分。每日签到可获取积分。` });
   }
 
   if (items.length > 50) {
@@ -124,12 +145,26 @@ export async function onRequestPost(context) {
   const successCount = results.filter(r => r.success).length;
   const failCount = results.filter(r => !r.success).length;
 
+  let remainingPoints = userPoints;
+  if (successCount > 0 && !isVip) {
+    const totalCost = successCount * costPerItem;
+    remainingPoints = userPoints - totalCost;
+    await env.RESOURCES_DB.prepare(
+      "UPDATE users SET points = ? WHERE id = ?"
+    ).bind(remainingPoints, user.id).run();
+    await env.RESOURCES_DB.prepare(
+      "INSERT INTO points_log (user_id, change_amount, change_type, description) VALUES (?, ?, 'submit', ?)"
+    ).bind(user.id, -totalCost, `提交${successCount}条资源 -${totalCost}积分`).run();
+  }
+
   return Response.json({
     success: true,
     message: `提交完成：成功 ${successCount} 个，失败 ${failCount} 个`,
     results,
     successCount,
-    failCount
+    failCount,
+    pointsUsed: isVip ? 0 : successCount * costPerItem,
+    remainingPoints
   });
 }
 

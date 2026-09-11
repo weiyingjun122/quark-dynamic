@@ -40,7 +40,7 @@ export async function onRequestGet(context) {
 
   try {
     const profile = await env.RESOURCES_DB.prepare(
-      "SELECT id, username, email, nickname, avatar, bio, created_at, last_login FROM users WHERE id = ?"
+      "SELECT id, username, email, nickname, avatar, bio, points, vip_level, consecutive_days, last_checkin, created_at, last_login FROM users WHERE id = ?"
     ).bind(user.id).first();
 
     if (!profile) return Response.json({ success: false, error: '用户不存在' }, { status: 404 });
@@ -57,13 +57,18 @@ export async function onRequestGet(context) {
       "SELECT COUNT(*) as total FROM resources WHERE submitted_by = ? AND status = 'pending'"
     ).bind(user.username).first();
 
+    const today = new Date(Date.now() + 8 * 3600 * 1000).toISOString().slice(0, 10);
+    const checkedInToday = profile.last_checkin === today;
+
     return Response.json({
       success: true,
       user: profile,
       stats: {
         submitted: submitCount?.total || 0,
         approved: approvedCount?.total || 0,
-        pending: pendingCount?.total || 0
+        pending: pendingCount?.total || 0,
+        checkedInToday
+      }
       }
     });
   } catch (err) {
