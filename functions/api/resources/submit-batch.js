@@ -1,5 +1,29 @@
 // functions/api/resources/submit-batch.js
 // POST /api/resources/submit-batch - 批量提交资源
+
+async function checkLink(url) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(url, {
+      method: 'HEAD',
+      redirect: 'follow',
+      signal: controller.signal,
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; LinkChecker/1.0)' }
+    });
+    clearTimeout(timeout);
+    if (res.status >= 400) {
+      return { ok: false, reason: `HTTP ${res.status}` };
+    }
+    return { ok: true, status: res.status };
+  } catch (e) {
+    if (e.name === 'AbortError') {
+      return { ok: false, reason: '响应超时' };
+    }
+    return { ok: false, reason: '无法访问' };
+  }
+}
+
 export async function onRequestPost(context) {
   const { env, request } = context;
 
@@ -14,7 +38,7 @@ export async function onRequestPost(context) {
     return Response.json({ success: false, error: '请求格式错误' }, { status: 400 });
   }
 
-  const { items, email } = body;
+  const { items, email, skipCheck } = body;
 
   if (!items || !Array.isArray(items) || items.length === 0) {
     return Response.json({ success: false, error: '请提供要提交的资源列表' }, { status: 400 });
@@ -48,6 +72,15 @@ export async function onRequestPost(context) {
     } catch {
       results.push({ title, success: false, error: '链接格式不正确' });
       continue;
+    }
+
+    // 检查链接有效性
+    if (!skipCheck) {
+      const linkCheck = await checkLink(link);
+      if (!linkCheck.ok) {
+        results.push({ title, success: false, error: `链接无效: ${linkCheck.reason}` });
+        continue;
+      }
     }
 
     const lowerTitle = title.toLowerCase();
