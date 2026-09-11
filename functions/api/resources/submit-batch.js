@@ -61,6 +61,7 @@ export async function onRequestPost(context) {
   const isVip = (userInfo?.vip_level || 0) > 0;
   const costPerItem = 2;
   const dailyLimit = isVip ? 999 : 5;
+  const batchLimit = isVip ? 100 : 10;
 
   const todayLog = await env.RESOURCES_DB.prepare(
     "SELECT COUNT(*) as cnt FROM points_log WHERE user_id = ? AND change_type = 'submit' AND created_at > datetime('now', '-1 day')"
@@ -86,8 +87,8 @@ export async function onRequestPost(context) {
     return Response.json({ success: false, error: `积分不足，需要${items.length * costPerItem}积分，当前${userPoints}积分。每日签到可获取积分。` });
   }
 
-  if (items.length > 50) {
-    return Response.json({ success: false, error: '单次最多提交50条' }, { status: 400 });
+  if (items.length > batchLimit) {
+    return Response.json({ success: false, error: `单次最多提交${batchLimit}条` });
   }
 
   const blockedWords = ['赌博', '色情', '暴力', '枪支', '毒品', '诈骗', '洗钱'];
