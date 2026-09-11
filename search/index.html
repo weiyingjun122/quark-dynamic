@@ -91,7 +91,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
   </div>
 
   <div class="tabs" id="typeTabs">
-    <span class="tab active" data-type="学习资料" onclick="setType(this)">学习资料</span>
+    <span class="tab" data-type="学习资料" onclick="setType(this)">学习资料</span>
     <span class="tab" data-type="工具软件" onclick="setType(this)">工具软件</span>
     <span class="tab" data-type="模板素材" onclick="setType(this)">模板素材</span>
     <span class="tab" data-type="剧本杀" onclick="setType(this)">剧本杀</span>
@@ -127,7 +127,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 <div class="toast" id="toast"></div>
 
 <script>
-var currentType = '学习资料';
+var currentType = '';
 
 function toast(msg) {
   var el = document.getElementById('toast');
@@ -138,9 +138,14 @@ function toast(msg) {
 }
 
 function setType(el) {
+  var wasActive = el.classList.contains('active');
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-  el.classList.add('active');
-  currentType = el.dataset.type;
+  if (wasActive) {
+    currentType = '';
+  } else {
+    el.classList.add('active');
+    currentType = el.dataset.type;
+  }
   currentPage = 1;
   doSearch(document.getElementById('searchInput').value.trim());
 }
@@ -221,10 +226,11 @@ if (initQ) {
 }
 if (initType) {
   document.querySelectorAll('.tab').forEach(function(t) {
-    t.classList.remove('active');
-    if (t.dataset.type === initType) t.classList.add('active');
+    if (t.dataset.type === initType) {
+      t.classList.add('active');
+      currentType = initType;
+    }
   });
-  currentType = initType;
 }
 doSearch(initQ || '');
 </script>
