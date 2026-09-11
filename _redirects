@@ -1,4 +1,2 @@
 /quark/ /search/ 301
 /quark/:splat /search/:splat 301
-/search/submit.html /search/submit 301
-/search/admin.html /search/admin 301
