@@ -64,7 +64,7 @@ export async function onRequestPost(context) {
     const finalHash = salt + ':' + passwordHash;
 
     await env.RESOURCES_DB.prepare(
-      "INSERT INTO users (username, email, password_hash, nickname) VALUES (?, ?, ?, ?)"
+      "INSERT INTO users (username, email, password_hash, nickname, points) VALUES (?, ?, ?, ?, 10)"
     ).bind(username, email, finalHash, nickname || username).run();
 
     return Response.json({ success: true, message: '注册成功' });
