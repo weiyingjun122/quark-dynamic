@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>提交资源 - 实用资源整理站</title>
-<meta name="description" content="提交你发现的优质资源链接，分享给更多人。支持批量提交。">
+<meta name="description" content="批量提交你发现的优质资源链接，分享给更多人。">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%2B%3C/text%3E%3C/svg%3E">
 <style>
@@ -22,21 +22,15 @@ header{text-align:center;margin-bottom:24px}
 h1{font-size:26px;color:#1f2d3d;margin-bottom:8px}
 .subtitle{color:#64748b;font-size:14px;line-height:1.6}
 
-.mode-tabs{display:flex;gap:0;margin-bottom:20px;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;background:#fff}
-.mode-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-size:14px;color:#64748b;transition:all .2s;border:none;background:#fff}
-.mode-tab:first-child{border-right:1px solid #e2e8f0}
-.mode-tab.active{background:#2563eb;color:#fff}
-.mode-tab:hover:not(.active){background:#f8fafc}
-
 .card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 16px rgba(31,45,61,0.08);margin-bottom:20px}
 .card h2{font-size:17px;color:#1f2d3d;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .card h2::before{content:"";display:inline-block;width:4px;height:16px;background:linear-gradient(180deg,#2563eb,#60a5fa);border-radius:2px}
 
 .form-group{margin-bottom:14px}
 .form-group label{display:block;font-size:13px;color:#64748b;margin-bottom:6px;font-weight:500}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;outline:none;transition:border-color .2s;font-family:inherit}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#2563eb}
-.form-group textarea{min-height:200px;resize:vertical;font-family:Consolas,Menlo,monospace;font-size:13px;line-height:1.7}
+.form-group input,.form-group textarea{width:100%;padding:10px 14px;font-size:14px;border:1px solid #e2e8f0;border-radius:8px;outline:none;transition:border-color .2s;font-family:inherit}
+.form-group input:focus,.form-group textarea:focus{border-color:#2563eb}
+.form-group textarea{min-height:280px;resize:vertical;font-family:Consolas,Menlo,monospace;font-size:13px;line-height:1.7}
 
 .batch-hint{background:#f0f6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#1e40af;line-height:1.7}
 .batch-hint code{background:#dbeafe;padding:1px 5px;border-radius:4px;font-size:12px}
@@ -54,7 +48,6 @@ h1{font-size:26px;color:#1f2d3d;margin-bottom:8px}
 .result-item{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:13px;display:flex;align-items:center;gap:8px}
 .result-item.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
 .result-item.error{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
-.result-item.pending{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
 .result-icon{flex-shrink:0;font-size:16px}
 
 .progress{margin-top:12px;display:none}
@@ -90,72 +83,33 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 <main class="container">
   <header>
     <h1>提交资源</h1>
-    <p class="subtitle">分享你发现的优质资源，审核通过后会展示给所有用户</p>
+    <p class="subtitle">批量提交你发现的优质资源链接，审核通过后会展示给所有用户</p>
   </header>
 
-  <div class="mode-tabs">
-    <div class="mode-tab active" onclick="switchMode('single')">单个提交</div>
-    <div class="mode-tab" onclick="switchMode('batch')">批量提交</div>
-  </div>
-
-  <!-- 单个提交 -->
-  <div id="singleMode">
-    <div class="card">
-      <h2>填写资源信息</h2>
-      <div class="form-group">
-        <label>资源名称 *</label>
-        <input type="text" id="sTitle" placeholder="例如：Python编程入门教程">
-      </div>
-      <div class="form-group">
-        <label>资源链接 *</label>
-        <input type="url" id="sLink" placeholder="https://pan.quark.cn/... 或 https://www.alipan.com/s/...">
-      </div>
-      <div class="form-group">
-        <label>资源类型</label>
-        <select id="sType">
-          <option value="学习资料">学习资料</option>
-          <option value="工具软件">工具软件</option>
-          <option value="模板素材">模板素材</option>
-          <option value="影视资源">影视资源</option>
-          <option value="其他">其他</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>联系邮箱（可选，用于审核通知）</label>
-        <input type="email" id="sEmail" placeholder="your@email.com">
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="submitSingle()">提交资源</button>
-      </div>
+  <div class="card">
+    <h2>批量提交资源</h2>
+    <div class="batch-hint">
+      <strong>格式说明：</strong>每行一个资源，格式为 <code>资源名称 | 链接 | 类型</code><br>
+      类型可选：学习资料、工具软件、模板素材、影视资源、其他（默认"其他"）<br>
+      也可直接粘贴链接，会自动识别
     </div>
-  </div>
-
-  <!-- 批量提交 -->
-  <div id="batchMode" style="display:none">
-    <div class="card">
-      <h2>批量提交资源</h2>
-      <div class="batch-hint">
-        <strong>格式说明：</strong>每行一个资源，格式为 <code>资源名称 | 链接 | 类型</code><br>
-        类型可选：学习资料、工具软件、模板素材、影视资源、其他（默认"其他"）
-      </div>
-      <div class="form-group">
-        <label>资源列表 *</label>
-        <textarea id="batchInput" placeholder="Python入门教程 | https://pan.quark.cn/xxx | 学习资料&#10;VSCode编辑器 | https://pan.quark.cn/yyy | 工具软件&#10;简历模板合集 | https://www.alipan.com/s/zzz | 模板素材&#10;&#10;也可以只写名称和链接（用换行分隔）：&#10;https://pan.quark.cn/aaa&#10;https://www.alipan.com/bbb"></textarea>
-      </div>
-      <div class="form-group">
-        <label>联系邮箱（可选）</label>
-        <input type="email" id="batchEmail" placeholder="your@email.com">
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="batchBtn" onclick="submitBatch()">批量提交</button>
-        <button class="btn btn-ghost" onclick="clearBatch()">清空</button>
-      </div>
-      <div class="progress" id="progress">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-text" id="progressText">准备中...</div>
-      </div>
-      <div class="result-box" id="resultBox"></div>
+    <div class="form-group">
+      <label>资源列表 *</label>
+      <textarea id="batchInput" placeholder="Python入门教程 | https://pan.quark.cn/xxx | 学习资料&#10;VSCode编辑器 | https://pan.quark.cn/yyy | 工具软件&#10;简历模板合集 | https://www.alipan.com/s/zzz | 模板素材&#10;&#10;或者直接粘贴链接：&#10;https://pan.quark.cn/aaa&#10;https://www.alipan.com/bbb"></textarea>
     </div>
+    <div class="form-group">
+      <label>联系邮箱（可选，用于审核通知）</label>
+      <input type="email" id="batchEmail" placeholder="your@email.com">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="batchBtn" onclick="submitBatch()">提交资源</button>
+      <button class="btn btn-ghost" onclick="clearBatch()">清空</button>
+    </div>
+    <div class="progress" id="progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">准备中...</div>
+    </div>
+    <div class="result-box" id="resultBox"></div>
   </div>
 
   <div class="tips">
@@ -185,42 +139,6 @@ function toast(msg) {
   el.classList.add('show');
   clearTimeout(toast._t);
   toast._t = setTimeout(function() { el.classList.remove('show'); }, 2000);
-}
-
-function switchMode(mode) {
-  document.querySelectorAll('.mode-tab').forEach(function(t, i) {
-    t.classList.toggle('active', (mode === 'single' && i === 0) || (mode === 'batch' && i === 1));
-  });
-  document.getElementById('singleMode').style.display = mode === 'single' ? '' : 'none';
-  document.getElementById('batchMode').style.display = mode === 'batch' ? '' : 'none';
-}
-
-function submitSingle() {
-  var title = document.getElementById('sTitle').value.trim();
-  var link = document.getElementById('sLink').value.trim();
-  var type = document.getElementById('sType').value;
-  var email = document.getElementById('sEmail').value.trim();
-
-  if (!title) { toast('请填写资源名称'); return; }
-  if (!link) { toast('请填写资源链接'); return; }
-
-  fetch('/api/resources/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: title, link: link, type: type, email: email })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (data.success) {
-      toast(data.message || '提交成功！');
-      document.getElementById('sTitle').value = '';
-      document.getElementById('sLink').value = '';
-      document.getElementById('sEmail').value = '';
-    } else {
-      toast(data.error || '提交失败');
-    }
-  })
-  .catch(function() { toast('网络错误，请稍后重试'); });
 }
 
 function parseBatchInput(text) {
