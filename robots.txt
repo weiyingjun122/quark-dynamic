@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
 
-# 接口不收录：改用 X-Robots-Tag: noindex 响应头（functions/api/_middleware.js）
 # 禁止参数搜索页，防重复收录
 Disallow: /*?q=
 
@@ -12,7 +11,8 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-# 正确的 Sitemap 地址（重要）
+User-agent: Baiduspider
+Allow: /
+
+# Sitemap
 Sitemap: https://www.weiyingjun.top/sitemap.xml
-Sitemap: https://www.weiyingjun.top/search-sitemap.xml
-# deploy 2026-08-31 19:40:24
