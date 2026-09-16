@@ -186,6 +186,26 @@ body{padding-top:56px!important}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"简体和繁体有什么区别？","acceptedAnswer":{"@type":"Answer","text":"简体中文是中国大陆推行的简化汉字，繁体中文是港澳台地区使用的传统汉字。两者在字形上有所不同，但含义相同。"}},{"@type":"Question","name":"转换准确率如何？","acceptedAnswer":{"@type":"Answer","text":"本工具内置3000+常用单字及词语映射表，覆盖绝大多数日常场景。"}},{"@type":"Question","name":"支持繁简混合文本转换吗？","acceptedAnswer":{"@type":"Answer","text":"支持。如果输入文本中同时包含简体和繁体字，工具会按照当前选择的转换方向分别处理每个字符。"}},{"@type":"Question","name":"转换的数据会被上传吗？","acceptedAnswer":{"@type":"Answer","text":"不会。所有转换均在浏览器本地完成，数据不经过任何服务器。"}},{"@type":"Question","name":"为什么有些字没有转换？","acceptedAnswer":{"@type":"Answer","text":"部分汉字在简繁体中写法相同，这些字不需要转换，因此保持原样。"}}]}
 </script>
+
+<style>
+.related-tools{margin:40px 0 0;padding:24px;background:#f8fafc;border-radius:12px}
+.related-tools h3{font-size:16px;color:#1f2d3d;margin-bottom:14px;font-weight:600}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.related-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border-radius:8px;text-decoration:none;color:#333;font-size:13px;border:1px solid #e2e8f0;transition:all .2s}
+.related-item:hover{border-color:#2563eb;color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,.1)}
+.related-icon{font-size:18px;flex-shrink:0}
+</style>
+
+<div class="related-tools">
+  <h3>相关工具推荐</h3>
+  <div class="related-grid">
+        <a href="/text-replace/" class="related-item"><span class="related-icon">🔄</span>批量替换</a>
+    <a href="/char-count/" class="related-item"><span class="related-icon">🔢</span>字符统计</a>
+    <a href="/extract/" class="related-item"><span class="related-icon">📝</span>文本提取</a>
+
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="container">
     <p>Copyright &copy; 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>

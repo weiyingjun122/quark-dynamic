@@ -313,6 +313,26 @@ body { padding-top: 56px !important; }
 }
 </script>
 
+
+<style>
+.related-tools{margin:40px 0 0;padding:24px;background:#f8fafc;border-radius:12px}
+.related-tools h3{font-size:16px;color:#1f2d3d;margin-bottom:14px;font-weight:600}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.related-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border-radius:8px;text-decoration:none;color:#333;font-size:13px;border:1px solid #e2e8f0;transition:all .2s}
+.related-item:hover{border-color:#2563eb;color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,.1)}
+.related-icon{font-size:18px;flex-shrink:0}
+</style>
+
+<div class="related-tools">
+  <h3>相关工具推荐</h3>
+  <div class="related-grid">
+        <a href="/random-group/" class="related-item"><span class="related-icon">👥</span>随机分组</a>
+    <a href="/password/" class="related-item"><span class="related-icon">🔑</span>密码生成</a>
+    <a href="/date-calc/" class="related-item"><span class="related-icon">📅</span>日期计算</a>
+
+  </div>
+</div>
+
 <footer class="site-footer">
   <div class="container">
     <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>

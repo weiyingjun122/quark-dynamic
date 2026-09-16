@@ -10,3 +10,7 @@ __pycache__/
 
 # WPS/Excel 临时锁文件
 ~$*
+
+node_modules
+package-lock.json
+package.json
