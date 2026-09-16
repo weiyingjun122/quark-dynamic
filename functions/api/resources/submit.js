@@ -38,7 +38,7 @@ export async function onRequestPost(context) {
     return Response.json({ success: false, error: '请求格式错误' }, { status: 400 });
   }
 
-  const { title, link, type, email, skipCheck } = body;
+  const { title, link, type, email, skipCheck, player_count, genre } = body;
 
   if (!title || !link) {
     return Response.json({ success: false, error: '请填写资源名称和链接' }, { status: 400 });
@@ -52,6 +52,13 @@ export async function onRequestPost(context) {
     new URL(link);
   } catch {
     return Response.json({ success: false, error: '链接格式不正确' }, { status: 400 });
+  }
+
+  // 验证player_count
+  const validPlayerCounts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const parsedPlayerCount = player_count ? parseInt(player_count) : null;
+  if (parsedPlayerCount && !validPlayerCounts.includes(parsedPlayerCount)) {
+    return Response.json({ success: false, error: '人数必须是1-10之间的整数' }, { status: 400 });
   }
 
   // 检查链接有效性
@@ -96,8 +103,8 @@ export async function onRequestPost(context) {
     }
 
     const result = await env.RESOURCES_DB.prepare(
-      "INSERT INTO resources (title, link, type, source, status, submitted_by, email) VALUES (?, ?, ?, 'user', 'pending', ?, ?)"
-    ).bind(title, link, type || '其他', submittedBy, email || '').run();
+      "INSERT INTO resources (title, link, type, source, status, submitted_by, email, player_count, genre) VALUES (?, ?, ?, 'user', 'pending', ?, ?, ?, ?)"
+    ).bind(title, link, type || '其他', submittedBy, email || '', parsedPlayerCount || null, genre || null).run();
 
     return Response.json({
       success: true,

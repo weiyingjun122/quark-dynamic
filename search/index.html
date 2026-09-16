@@ -65,6 +65,15 @@ footer.site-footer{text-align:center;padding:26px 0 40px;font-size:13px;color:#9
 footer.site-footer a{color:#2563eb;text-decoration:none}
 .toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
 .toast.show{opacity:1}
+.sub-tabs{display:none;gap:6px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+.sub-tabs.show{display:flex}
+.sub-tab-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.sub-tab-label{font-size:12px;color:#94a3b8;padding:6px 0;min-width:40px;text-align:right}
+.sub-tab{padding:5px 14px;border-radius:16px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-size:13px;transition:all .2s}
+.sub-tab:hover{border-color:#2563eb;color:#2563eb}
+.sub-tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.result-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.result-tag{font-size:11px;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:8px}
 </style>
 </head>
 <body>
@@ -104,6 +113,36 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     <span class="tab" data-type="影视" onclick="setType(this)">影视</span>
   </div>
 
+  <div class="sub-tabs" id="subTabs">
+    <div class="sub-tab-row">
+      <span class="sub-tab-label">人数</span>
+      <span class="sub-tab active" data-player="全部" onclick="setPlayer(this)">全部</span>
+      <span class="sub-tab" data-player="1" onclick="setPlayer(this)">1人本</span>
+      <span class="sub-tab" data-player="2" onclick="setPlayer(this)">2人本</span>
+      <span class="sub-tab" data-player="3" onclick="setPlayer(this)">3人本</span>
+      <span class="sub-tab" data-player="4" onclick="setPlayer(this)">4人本</span>
+      <span class="sub-tab" data-player="5" onclick="setPlayer(this)">5人本</span>
+      <span class="sub-tab" data-player="6" onclick="setPlayer(this)">6人本</span>
+      <span class="sub-tab" data-player="7" onclick="setPlayer(this)">7人本</span>
+      <span class="sub-tab" data-player="8" onclick="setPlayer(this)">8人本</span>
+      <span class="sub-tab" data-player="10" onclick="setPlayer(this)">10人本</span>
+    </div>
+    <div class="sub-tab-row">
+      <span class="sub-tab-label">类型</span>
+      <span class="sub-tab active" data-genre="全部" onclick="setGenre(this)">全部</span>
+      <span class="sub-tab" data-genre="恐怖" onclick="setGenre(this)">恐怖</span>
+      <span class="sub-tab" data-genre="推理" onclick="setGenre(this)">推理</span>
+      <span class="sub-tab" data-genre="情感" onclick="setGenre(this)">情感</span>
+      <span class="sub-tab" data-genre="欢乐" onclick="setGenre(this)">欢乐</span>
+      <span class="sub-tab" data-genre="机制" onclick="setGenre(this)">机制</span>
+      <span class="sub-tab" data-genre="惊悚" onclick="setGenre(this)">惊悚</span>
+      <span class="sub-tab" data-genre="古风" onclick="setGenre(this)">古风</span>
+      <span class="sub-tab" data-genre="仙侠" onclick="setGenre(this)">仙侠</span>
+      <span class="sub-tab" data-genre="悬疑" onclick="setGenre(this)">悬疑</span>
+      <span class="sub-tab" data-genre="还原" onclick="setGenre(this)">还原</span>
+    </div>
+  </div>
+
   <div class="results" id="results">
     <div class="empty">
       <div class="empty-icon">🔍</div>
@@ -134,6 +173,8 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 
 <script>
 var currentType = '';
+var currentPlayer = '全部';
+var currentGenre = '全部';
 
 function toast(msg) {
   var el = document.getElementById('toast');
@@ -152,8 +193,41 @@ function setType(el) {
     el.classList.add('active');
     currentType = el.dataset.type;
   }
+  // 显示/隐藏子标签
+  var subTabs = document.getElementById('subTabs');
+  if (currentType === '剧本杀') {
+    subTabs.classList.add('show');
+  } else {
+    subTabs.classList.remove('show');
+    currentPlayer = '全部';
+    currentGenre = '全部';
+    resetSubTabs();
+  }
   currentPage = 1;
   doSearch(document.getElementById('searchInput').value.trim());
+}
+
+function setPlayer(el) {
+  document.querySelectorAll('[data-player]').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  currentPlayer = el.dataset.player;
+  currentPage = 1;
+  doSearch(document.getElementById('searchInput').value.trim());
+}
+
+function setGenre(el) {
+  document.querySelectorAll('[data-genre]').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  currentGenre = el.dataset.genre;
+  currentPage = 1;
+  doSearch(document.getElementById('searchInput').value.trim());
+}
+
+function resetSubTabs() {
+  document.querySelectorAll('[data-player]').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelector('[data-player="全部"]').classList.add('active');
+  document.querySelectorAll('[data-genre]').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelector('[data-genre="全部"]').classList.add('active');
 }
 
 var currentPage = 1;
@@ -165,6 +239,10 @@ function doSearch(q) {
   var url = '/api/resources/search?';
   if (q) url += 'q=' + encodeURIComponent(q) + '&';
   if (currentType) url += 'type=' + encodeURIComponent(currentType) + '&';
+  if (currentType === '剧本杀') {
+    if (currentPlayer && currentPlayer !== '全部') url += 'player_count=' + encodeURIComponent(currentPlayer) + '&';
+    if (currentGenre && currentGenre !== '全部') url += 'genre=' + encodeURIComponent(currentGenre) + '&';
+  }
   url += 'page=' + currentPage + '&limit=20';
 
   fetch(url)
@@ -182,6 +260,13 @@ function doSearch(q) {
         html += '<div class="result-info">';
         html += '<div class="result-title">' + escapeHtml(item.title) + '</div>';
         html += '<div class="result-meta">' + escapeHtml(item.type || '') + (date ? ' · ' + date : '') + (item.view_count ? ' · ' + item.view_count + '次查看' : '') + '</div>';
+        // 剧本杀显示人数和类型标签
+        if (item.type === '剧本杀') {
+          html += '<div class="result-tags">';
+          if (item.player_count) html += '<span class="result-tag">' + item.player_count + '人本</span>';
+          if (item.genre) html += '<span class="result-tag">' + escapeHtml(item.genre) + '</span>';
+          html += '</div>';
+        }
         html += '</div>';
         html += '<span class="result-type">' + escapeHtml(item.type || '其他') + '</span>';
         html += '</div>';
@@ -227,6 +312,8 @@ document.getElementById('searchInput').addEventListener('keydown', function(e) {
 var urlParams = new URLSearchParams(window.location.search);
 var initQ = urlParams.get('q');
 var initType = urlParams.get('type');
+var initPlayer = urlParams.get('player_count');
+var initGenre = urlParams.get('genre');
 if (initQ) {
   document.getElementById('searchInput').value = initQ;
 }
@@ -237,6 +324,29 @@ if (initType) {
       currentType = initType;
     }
   });
+  if (initType === '剧本杀') {
+    document.getElementById('subTabs').classList.add('show');
+    if (initPlayer) {
+      currentPlayer = initPlayer;
+      document.querySelectorAll('[data-player]').forEach(function(t) {
+        if (t.dataset.player === initPlayer) {
+          t.classList.add('active');
+        } else {
+          t.classList.remove('active');
+        }
+      });
+    }
+    if (initGenre) {
+      currentGenre = initGenre;
+      document.querySelectorAll('[data-genre]').forEach(function(t) {
+        if (t.dataset.genre === initGenre) {
+          t.classList.add('active');
+        } else {
+          t.classList.remove('active');
+        }
+      });
+    }
+  }
 }
 
 var quotes = [
