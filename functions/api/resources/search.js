@@ -25,8 +25,19 @@ export async function onRequestGet(context) {
     let params = [];
 
     if (type && type !== '全部') {
-      conditions.push("type = ?");
-      params.push(type);
+      if (type === '兴趣技能') {
+        const hobby = url.searchParams.get('keywords') || '';
+        if (hobby && hobby !== '全部') {
+          conditions.push("type = ?");
+          params.push(hobby);
+        } else {
+          conditions.push("type IN (?, ?, ?, ?, ?)");
+          params.push('摄影剪辑', '付费课程', '编程开发', '媒体运营', '学习攻略');
+        }
+      } else {
+        conditions.push("type = ?");
+        params.push(type);
+      }
     }
 
     if (playerCount && playerCount !== '全部') {
