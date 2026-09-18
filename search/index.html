@@ -109,6 +109,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     <span class="tab" data-type="四六级" onclick="setType(this)">四六级</span>
     <span class="tab" data-type="考研" onclick="setType(this)">考研</span>
     <span class="tab" data-type="剧本杀" onclick="setType(this)">剧本杀</span>
+    <span class="tab" data-type="兴趣技能" onclick="setType(this)">兴趣技能</span>
     <span class="tab" data-type="动漫" onclick="setType(this)">动漫</span>
     <span class="tab" data-type="影视" onclick="setType(this)">影视</span>
   </div>
@@ -147,6 +148,18 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     </div>
   </div>
 
+  <div class="sub-tabs" id="hobbySubTabs">
+    <div class="sub-tab-row">
+      <span class="sub-tab-label">兴趣技能</span>
+      <span class="sub-tab active" data-hobby="全部" onclick="setHobby(this)">全部</span>
+      <span class="sub-tab" data-hobby="摄影剪辑" onclick="setHobby(this)">摄影剪辑</span>
+      <span class="sub-tab" data-hobby="付费课程" onclick="setHobby(this)">付费课程</span>
+      <span class="sub-tab" data-hobby="编程开发" onclick="setHobby(this)">编程开发</span>
+      <span class="sub-tab" data-hobby="媒体运营" onclick="setHobby(this)">媒体运营</span>
+      <span class="sub-tab" data-hobby="学习攻略" onclick="setHobby(this)">学习攻略</span>
+    </div>
+  </div>
+
   <div class="results" id="results">
     <div class="empty">
       <div class="empty-icon">🔍</div>
@@ -179,6 +192,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 var currentType = '';
 var currentPlayer = '全部';
 var currentGenre = '全部';
+var currentHobby = '全部';
 
 function toast(msg) {
   var el = document.getElementById('toast');
@@ -199,12 +213,24 @@ function setType(el) {
   }
   // 显示/隐藏子标签
   var subTabs = document.getElementById('subTabs');
+  var hobbySubTabs = document.getElementById('hobbySubTabs');
   if (currentType === '剧本杀') {
     subTabs.classList.add('show');
-  } else {
-    subTabs.classList.remove('show');
+    hobbySubTabs.classList.remove('show');
     currentPlayer = '全部';
     currentGenre = '全部';
+    resetSubTabs();
+  } else if (currentType === '兴趣技能') {
+    hobbySubTabs.classList.add('show');
+    subTabs.classList.remove('show');
+    currentHobby = '全部';
+    resetHobbySubTabs();
+  } else {
+    subTabs.classList.remove('show');
+    hobbySubTabs.classList.remove('show');
+    currentPlayer = '全部';
+    currentGenre = '全部';
+    currentHobby = '全部';
     resetSubTabs();
   }
   currentPage = 1;
@@ -234,6 +260,19 @@ function resetSubTabs() {
   document.querySelector('[data-genre="全部"]').classList.add('active');
 }
 
+function setHobby(el) {
+  document.querySelectorAll('[data-hobby]').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  currentHobby = el.dataset.hobby;
+  currentPage = 1;
+  doSearch(document.getElementById('searchInput').value.trim());
+}
+
+function resetHobbySubTabs() {
+  document.querySelectorAll('[data-hobby]').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelector('[data-hobby="全部"]').classList.add('active');
+}
+
 var currentPage = 1;
 
 function doSearch(q) {
@@ -246,6 +285,9 @@ function doSearch(q) {
   if (currentType === '剧本杀') {
     if (currentPlayer && currentPlayer !== '全部') url += 'player_count=' + encodeURIComponent(currentPlayer) + '&';
     if (currentGenre && currentGenre !== '全部') url += 'genre=' + encodeURIComponent(currentGenre) + '&';
+  }
+  if (currentType === '兴趣技能') {
+    if (currentHobby && currentHobby !== '全部') url += 'keywords=' + encodeURIComponent(currentHobby) + '&';
   }
   url += 'page=' + currentPage + '&limit=20';
 
@@ -318,6 +360,7 @@ var initQ = urlParams.get('q');
 var initType = urlParams.get('type');
 var initPlayer = urlParams.get('player_count');
 var initGenre = urlParams.get('genre');
+var initHobby = urlParams.get('keywords');
 if (initQ) {
   document.getElementById('searchInput').value = initQ;
 }
@@ -344,6 +387,19 @@ if (initType) {
       currentGenre = initGenre;
       document.querySelectorAll('[data-genre]').forEach(function(t) {
         if (t.dataset.genre === initGenre) {
+          t.classList.add('active');
+        } else {
+          t.classList.remove('active');
+        }
+      });
+    }
+  }
+  if (initType === '兴趣技能') {
+    document.getElementById('hobbySubTabs').classList.add('show');
+    if (initHobby) {
+      currentHobby = initHobby;
+      document.querySelectorAll('[data-hobby]').forEach(function(t) {
+        if (t.dataset.hobby === initHobby) {
           t.classList.add('active');
         } else {
           t.classList.remove('active');
