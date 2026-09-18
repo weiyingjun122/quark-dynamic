@@ -36,7 +36,8 @@ h1{font-size:28px;color:#1f2d3d;margin-bottom:10px}
 .search-box input{flex:1;padding:14px 18px;font-size:16px;border:none;outline:none}
 .search-box button{padding:14px 28px;font-size:16px;border:none;background:#2563eb;color:#fff;cursor:pointer;transition:background .2s;white-space:nowrap}
 .search-box button:hover{background:#1d4ed8}
-.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;justify-content:center;align-items:center}
+.tab-divider{width:1px;height:20px;background:#e2e8f0;margin:0 4px}
 .tab{padding:8px 18px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-size:14px;transition:all .2s}
 .tab:hover{border-color:#2563eb;color:#2563eb}
 .tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
@@ -108,11 +109,13 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     <span class="tab" data-type="高中" onclick="setType(this)">高中</span>
     <span class="tab" data-type="四六级" onclick="setType(this)">四六级</span>
     <span class="tab" data-type="考研" onclick="setType(this)">考研</span>
+    <span class="tab-divider"></span>
     <span class="tab" data-type="剧本杀" onclick="setType(this)">剧本杀</span>
-    <span class="tab" data-type="兴趣技能" onclick="setType(this)">兴趣技能</span>
     <span class="tab" data-type="动漫" onclick="setType(this)">动漫</span>
     <span class="tab" data-type="电影" onclick="setType(this)">电影</span>
     <span class="tab" data-type="剧集" onclick="setType(this)">剧集</span>
+    <span class="tab-divider"></span>
+    <span class="tab" data-type="兴趣技能" onclick="setType(this)">兴趣技能</span>
   </div>
 
   <div class="sub-tabs" id="subTabs">
