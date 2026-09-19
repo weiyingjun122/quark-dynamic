@@ -164,9 +164,8 @@ jobs:
 
       # 8️⃣ 部署到 Cloudflare Pages (quark-dynamic)
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          projectName: 'quark-dynamic'
-          directory: '.'
+          command: pages deploy . --project-name=quark-dynamic
