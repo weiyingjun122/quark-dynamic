@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown转Word工具 - 免费在线MD转DOCX转换器</title>
+<meta name="description" content="免费在线Markdown转Word工具，支持MD文件实时预览并导出为DOCX格式。完整支持标题、列表、表格、代码块、加粗斜体等Markdown语法，本地处理不上传服务器，安全可靠。">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.weiyingjun.top/md-to-word/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Markdown转Word工具 - 免费在线MD转DOCX转换器">
+<meta property="og:description" content="免费在线Markdown转Word工具，支持MD文件实时预览并导出为DOCX格式，完整支持Markdown语法，本地处理不上传服务器。">
+<meta property="og:url" content="https://www.weiyingjun.top/md-to-word/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="实用资源整理站">
+<meta property="og:image" content="https://www.weiyingjun.top/static/logo.svg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='68' font-size='48' text-anchor='middle' fill='white' font-family='Microsoft YaHei,Arial'%3EM%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Markdown转Word工具","url":"https://www.weiyingjun.top/md-to-word/","description":"免费在线Markdown转Word工具，支持MD文件实时预览并导出为DOCX格式，完整支持Markdown语法","applicationCategory":"UtilityApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"},"browserRequirements":"Requires a modern web browser with JavaScript support"}
+</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei", -apple-system, Arial, sans-serif;
+  background: linear-gradient(135deg, #eff6ff 0%, #fafbfe 100%);
+  min-height: 100vh;
+  color: #333;
+}
+.container { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+header.site-header { text-align: center; padding: 40px 16px 10px; }
+header h1 { font-size: 30px; font-weight: 700; color: #1f2d3d; }
+header .subtitle { margin-top: 10px; color: #64748b; font-size: 15px; }
+
+.header-tags { margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.header-tags .htag { font-size: 12px; color: #2563eb; background: #dbeafe; padding: 4px 12px; border-radius: 999px; }
+
+.tool-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 26px;
+  box-shadow: 0 6px 24px rgba(31,45,61,0.08);
+}
+
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.toolbar .actions { display: flex; gap: 8px; }
+.action-btn {
+  border: 1px solid #dfe3ee;
+  background: #fff;
+  color: #475569;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.action-btn:hover { border-color: #2563eb; color: #2563eb; }
+
+.split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 768px) { .split-layout { grid-template-columns: 1fr; } }
+
+.panel { display: flex; flex-direction: column; gap: 6px; }
+.panel-label { font-size: 13px; color: #475569; font-weight: 500; }
+.panel-label-row { display: flex; align-items: center; justify-content: space-between; }
+
+#markdownInput {
+  width: 100%; min-height: 340px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
+  font-family: Consolas, Menlo, monospace; resize: vertical; line-height: 1.6;
+  background: #fafbff;
+}
+#markdownInput:focus { border-color: #2563eb; background: #fff; }
+
+#previewArea {
+  width: 100%; min-height: 340px; padding: 12px 14px; font-size: 14px;
+  border: 1px solid #e2e8f0; border-radius: 10px; outline: none; color: #1f2d3d;
+  line-height: 1.7; background: #f8fafc; overflow-y: auto;
+}
+#previewArea h1, #previewArea h2, #previewArea h3, #previewArea h4, #previewArea h5, #previewArea h6 { color: #1f2d3d; margin: 14px 0 8px; }
+#previewArea h1 { font-size: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+#previewArea h2 { font-size: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+#previewArea h3 { font-size: 17px; }
+#previewArea h4 { font-size: 15px; }
+#previewArea p { margin: 8px 0; }
+#previewArea ul, #previewArea ol { margin: 8px 0 8px 22px; }
+#previewArea li { margin: 3px 0; }
+#previewArea code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: Consolas, Menlo, monospace; color: #e11d48; }
+#previewArea pre { background: #1e293b; color: #e2e8f0; padding: 14px 16px; border-radius: 8px; overflow-x: auto; margin: 10px 0; }
+#previewArea pre code { background: transparent; color: inherit; padding: 0; font-size: 13px; }
+#previewArea blockquote { border-left: 4px solid #2563eb; margin: 10px 0; padding: 8px 16px; background: #eff6ff; color: #475569; border-radius: 0 8px 8px 0; }
+#previewArea table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+#previewArea th, #previewArea td { border: 1px solid #e2e8f0; padding: 8px 12px; text-align: left; font-size: 13px; }
+#previewArea th { background: #f1f5f9; font-weight: 600; }
+#previewArea hr { border: none; border-top: 2px solid #e2e8f0; margin: 16px 0; }
+#previewArea a { color: #2563eb; text-decoration: none; }
+#previewArea a:hover { text-decoration: underline; }
+#previewArea img { max-width: 100%; border-radius: 8px; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
+.btn {
+  padding: 12px 26px; font-size: 15px; border: none; border-radius: 10px;
+  background: #2563eb; color: #fff; cursor: pointer; transition: background .2s;
+  white-space: nowrap;
+}
+.btn:hover { background: #1d4ed8; }
+.btn.ghost { background: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
+.btn.ghost:hover { background: #e2e8f0; }
+
+.small-btn {
+  padding: 4px 10px; font-size: 12px; border: 1px solid #dfe3ee; border-radius: 6px;
+  background: #fff; color: #475569; cursor: pointer; transition: all .15s;
+}
+.small-btn:hover { border-color: #2563eb; color: #2563eb; }
+
+.drop-zone {
+  border: 2px dashed #cbd5e1; border-radius: 10px; padding: 20px; text-align: center;
+  color: #94a3b8; font-size: 13px; margin-top: 10px; transition: all .2s; cursor: pointer;
+}
+.drop-zone.drag-over { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+
+.disclaimer { margin-top: 22px; font-size: 13px; color: #94a3b8; text-align: center; line-height: 1.7; }
+
+.tool-desc { margin-top: 40px; }
+.tool-desc h2 { font-size: 22px; color: #1f2d3d; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.tool-desc h2::before { content: ""; display: inline-block; width: 5px; height: 22px; background: linear-gradient(180deg, #2563eb, #60a5fa); border-radius: 3px; }
+.tool-desc h3 { font-size: 17px; color: #1f2d3d; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
+.tool-desc h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #bfdbfe, transparent); }
+.tool-desc > p { color: #64748b; font-size: 14px; line-height: 1.9; margin-bottom: 10px; }
+.td-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+@media (max-width: 560px){ .td-grid { grid-template-columns: 1fr; } }
+.td-card {
+  background: linear-gradient(180deg, #ffffff, #f0f6ff);
+  border: 1px solid #e0eaff; border-radius: 14px; padding: 18px;
+  display: flex; gap: 14px; transition: all .25s;
+}
+.td-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(37,99,235,.10); border-color: #bfdbfe; }
+.td-ico { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: linear-gradient(135deg, #eff6ff, #dbeafe); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.td-card b { display: block; color: #1f2d3d; margin-bottom: 6px; font-size: 15px; }
+.td-card p { font-size: 13px; color: #64748b; line-height: 1.7; margin: 0; }
+.td-steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; list-style: none; margin: 18px 0 0; padding: 0; }
+@media (max-width: 620px){ .td-steps { grid-template-columns: 1fr; } }
+.td-step { background: #fff; border: 1px solid #eef2f7; border-radius: 14px; padding: 16px 18px; position: relative; }
+.td-step .step-num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.td-step .step-txt { font-size: 13px; color: #475569; line-height: 1.7; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item { border: 1px solid #e8ebf0; border-radius: 12px; padding: 14px 16px; background: #fff; }
+.faq-item b { display: block; font-size: 14px; color: #1f2d3d; margin-bottom: 6px; }
+.faq-item p { font-size: 13px; color: #64748b; line-height: 1.8; margin: 0; }
+
+footer.site-footer { text-align: center; padding: 26px 0 40px; font-size: 13px; color: #94a3b8; }
+footer.site-footer a { color: #2563eb; text-decoration: none; }
+
+#toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); background: rgba(0,0,0,.8); color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toast.show { opacity: 1; }
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); height: 56px; display: flex; align-items: center; justify-content: center; }
+.navbar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.navbar-brand { font-size: 16px; font-weight: bold; color: #1e90ff; text-decoration: none; }
+.navbar-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+.navbar-links a { text-decoration: none; color: #333; font-size: 15px; padding: 6px 0; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.navbar-links a:hover, .navbar-links a.active { color: #1e90ff; border-bottom-color: #1e90ff; }
+body { padding-top: 56px !important; }
+.related-tools{margin:40px 0 0;padding:24px;background:#f8fafc;border-radius:12px}
+.related-tools h3{font-size:16px;color:#1f2d3d;margin-bottom:14px;font-weight:600}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.related-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border-radius:8px;text-decoration:none;color:#333;font-size:13px;border:1px solid #e2e8f0;transition:all .2s}
+.related-item:hover{border-color:#2563eb;color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,.1)}
+.related-icon{font-size:18px;flex-shrink:0}
+</style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">实用资源整理站</a>
+        <div class="navbar-links">
+            <a href="/">首页</a>
+            <a href="/tools/" class="active">工具</a>
+            <a href="/search/">资源搜索</a>
+            <a href="/blog/">博客</a>
+        </div>
+    </div>
+</nav>
+
+<header class="site-header">
+  <h1>Markdown转Word工具</h1>
+  <p class="subtitle">免费在线Markdown转Word转换器，实时预览并导出DOCX文档，完整支持Markdown语法</p>
+  <div class="header-tags">
+    <span class="htag">Markdown</span>
+    <span class="htag">Word</span>
+    <span class="htag">DOCX</span>
+    <span class="htag">文档转换</span>
+  </div>
+</header>
+
+<main class="container">
+  <div class="tool-card">
+    <div class="split-layout">
+      <div class="panel">
+        <div class="panel-label-row">
+          <span class="panel-label">Markdown 编辑器</span>
+          <div style="display:flex;gap:6px;">
+            <button class="small-btn" onclick="loadSample()">示例</button>
+            <button class="small-btn" onclick="clearEditor()">清空</button>
+            <button class="small-btn" onclick="pasteFromClipboard()">粘贴</button>
+            <button class="small-btn" onclick="openFile()">打开文件</button>
+          </div>
+        </div>
+        <textarea id="markdownInput" placeholder="在此输入Markdown内容...&#10;&#10;支持标题、列表、表格、代码块、加粗、斜体等语法&#10;右侧实时预览效果&#10;支持拖拽.md文件到此处"></textarea>
+        <div class="drop-zone" id="dropZone">
+          拖拽 .md 文件到此处，或 <span style="color:#2563eb;text-decoration:underline;cursor:pointer;">点击选择文件</span>
+        </div>
+        <input type="file" id="fileInput" accept=".md,.markdown,.txt,.text" style="display:none;">
+      </div>
+      <div class="panel">
+        <div class="panel-label-row">
+          <span class="panel-label">实时预览</span>
+          <div style="display:flex;gap:6px;">
+            <button class="small-btn" onclick="copyRichText()">复制富文本</button>
+            <button class="small-btn" onclick="downloadDocx()">下载 .docx</button>
+          </div>
+        </div>
+        <div id="previewArea"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">所有转换均在您的浏览器本地完成，不上传任何数据，请放心使用。</div>
+
+  <div class="tool-desc">
+    <h2>Markdown转Word工具介绍</h2>
+    <p>本工具是一款免费在线的Markdown转Word转换器，可以将Markdown格式的文本内容实时转换为Word（DOCX）文档。支持完整的Markdown语法，包括标题、段落、列表、表格、代码块、引用、链接、图片等常用元素，帮助您快速将Markdown文档转换为标准的Word格式。</p>
+    <p>适用于文档撰写、论文整理、技术文档导出、会议纪要、笔记整理等场景。所有处理均在浏览器本地完成，数据不经过任何服务器，隐私安全有保障。</p>
+
+    <h3>工具特点</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📝</span><div><b>实时预览</b><p>左侧输入Markdown，右侧实时渲染预览效果，所见即所得。</p></div></div>
+      <div class="td-card"><span class="td-ico">📄</span><div><b>导出DOCX</b><p>一键将Markdown内容导出为标准Word文档，可直接用Office打开编辑。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>复制富文本</b><p>支持复制格式化的富文本内容，直接粘贴到Word或其他编辑器中。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
+      <div class="td-card"><span class="td-ico">📂</span><div><b>文件拖拽</b><p>支持拖拽.md文件直接加载，无需手动复制粘贴内容。</p></div></div>
+      <div class="td-card"><span class="td-ico">📱</span><div><b>响应式设计</b><p>完美适配桌面和移动端，在任何设备上都能流畅使用。</p></div></div>
+    </div>
+
+    <h3>使用步骤</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt">在左侧编辑器中输入或粘贴Markdown内容，或拖拽.md文件加载。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt">右侧实时预览转换效果，确认内容无误。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「下载 .docx」导出Word文档，或「复制富文本」粘贴到编辑器中。</div></li>
+    </ol>
+
+    <h3>常见问题</h3>
+    <div class="faq-list">
+      <div class="faq-item"><b>支持哪些Markdown语法？</b><p>支持标题（H1-H6）、段落、加粗、斜体、行内代码、代码块、有序列表、无序列表、引用、表格、链接、图片、水平线等常用Markdown语法。</p></div>
+      <div class="faq-item"><b>导出的DOCX文件可以用Word打开吗？</b><p>可以。导出的DOCX是标准的Office Open XML格式，兼容Microsoft Word、WPS、Google Docs等主流办公软件。</p></div>
+      <div class="faq-item"><b>数据会被上传到服务器吗？</b><p>不会。所有转换操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
+      <div class="faq-item"><b>支持中文内容吗？</b><p>完全支持。工具采用UTF-8编码处理中文、日文、韩文、Emoji等多字节字符，导出后不会出现乱码或丢失字符的问题。</p></div>
+      <div class="faq-item"><b>表格能正确导出吗？</b><p>可以。Markdown表格会被转换为Word原生表格，保留表头和对齐方式，在Word中可直接编辑。</p></div>
+    </div>
+  </div>
+</main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "支持哪些Markdown语法？", "acceptedAnswer": { "@type": "Answer", "text": "支持标题（H1-H6）、段落、加粗、斜体、行内代码、代码块、有序列表、无序列表、引用、表格、链接、图片、水平线等常用Markdown语法。" } },
+    { "@type": "Question", "name": "导出的DOCX文件可以用Word打开吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。导出的DOCX是标准的Office Open XML格式，兼容Microsoft Word、WPS、Google Docs等主流办公软件。" } },
+    { "@type": "Question", "name": "数据会被上传到服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有转换操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "支持中文内容吗？", "acceptedAnswer": { "@type": "Answer", "text": "完全支持。工具采用UTF-8编码处理中文、日文、韩文、Emoji等多字节字符，导出后不会出现乱码或丢失字符的问题。" } },
+    { "@type": "Question", "name": "表格能正确导出吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。Markdown表格会被转换为Word原生表格，保留表头和对齐方式，在Word中可直接编辑。" } }
+  ]
+}
+</script>
+
+<div class="related-tools">
+  <h3>相关工具推荐</h3>
+  <div class="related-grid">
+    <a href="/json-format/" class="related-item"><span class="related-icon">📦</span>JSON格式化</a>
+    <a href="/extract/" class="related-item"><span class="related-icon">🔍</span>文本提取</a>
+    <a href="/text-unique/" class="related-item"><span class="related-icon">📝</span>文本去重</a>
+    <a href="/char-count/" class="related-item"><span class="related-icon">🔢</span>字符统计</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Copyright © 2026 <a href="/" id="footerLink" rel="noopener noreferrer">实用资源整理站</a> All Rights Reserved</p>
+    <p style="margin-top:10px;line-height:2;"><a href="/check-word/" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">违禁词检测</a><a href="/ip/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">IP查询</a><a href="/password/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机密码</a><a href="/age/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">年龄计算</a><a href="/bmi/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">BMI计算器</a><a href="/money/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">金额大写</a><a href="/extract/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本提取</a><a href="/date-calc/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">日期计算</a><a href="/text-unique/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">文本去重</a><a href="/char-count/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">字符统计</a><a href="/data-masking/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">数据脱敏</a><a href="/json-format/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">JSON格式化</a><a href="/md5-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">MD5批量加密</a><a href="/short-link/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">短链接还原</a><a href="/phone-batch/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">手机号查询</a><a href="/id-card/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">身份证查询</a><a href="/random-group/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机分组</a><a href="/random-pick/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">随机点名</a><a href="/base64/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">Base64编解码</a><a href="/barcode/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">条形码生成</a><a href="/qrcode/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">二维码生成</a><a href="/chinese-converter/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">繁简转换</a><a href="/md-to-word/" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">Markdown转Word</a></p>
+    <p style="margin-top:8px;"><a href="/about.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">关于本站</a><a href="/privacy.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">隐私政策</a><a href="/contact.html" style="color:#94a3b8;text-decoration:none;margin:0 8px;white-space:nowrap;">联系我们</a></p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var input = document.getElementById("markdownInput");
+  var preview = document.getElementById("previewArea");
+  var dropZone = document.getElementById("dropZone");
+  var fileInput = document.getElementById("fileInput");
+
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+
+  function updatePreview() {
+    var md = input.value || "";
+    if (typeof marked !== "undefined" && marked.parse) {
+      preview.innerHTML = marked.parse(md);
+    } else if (typeof marked !== "undefined" && typeof marked === "function") {
+      preview.innerHTML = marked(md);
+    } else {
+      preview.innerHTML = "<p style='color:#94a3b8;'>Markdown库加载中，请稍候...</p>";
+    }
+  }
+
+  input.addEventListener("input", updatePreview);
+
+  window.loadSample = function () {
+    input.value = "# Markdown转Word工具使用指南\n\n## 一、功能介绍\n\n本工具可以将 **Markdown** 格式的内容转换为 *Word* 文档（DOCX格式），支持实时预览，方便快捷。\n\n## 二、支持的语法\n\n### 2.1 文本格式\n\n这是普通段落文本。支持**加粗文本**、*斜体文本*、`行内代码`，以及~~删除线~~。\n\n### 2.2 列表\n\n无序列表：\n\n- 第一项\n- 第二项\n  - 子项目 A\n  - 子项目 B\n- 第三项\n\n有序列表：\n\n1. 准备Markdown内容\n2. 点击预览确认效果\n3. 导出为Word文档\n\n### 2.3 引用\n\n> 这是一段引用文本。\n> 支持多行引用内容。\n> —— 引用出处\n\n### 2.4 代码块\n\n```javascript\nfunction hello() {\n  console.log(\"Hello, World!\");\n  return 42;\n}\n\nhello();\n```\n\n### 2.5 表格\n\n| 功能 | 说明 | 支持情况 |\n| --- | --- | --- |\n| 标题 | H1到H6 | ✅ 支持 |\n| 列表 | 有序和无序 | ✅ 支持 |\n| 表格 | Markdown表格 | ✅ 支持 |\n| 代码块 | 语法高亮 | ✅ 支持 |\n| 链接 | 超链接 | ✅ 支持 |\n| 图片 | 图片引用 | ✅ 支持 |\n\n### 2.6 链接与图片\n\n访问 [实用资源整理站](https://www.weiyingjun.top) 获取更多工具。\n\n![示例图片](https://via.placeholder.com/300x150?text=Markdown+Image)\n\n### 2.7 水平线\n\n---\n\n## 三、使用建议\n\n1. **先预览后导出**：编辑内容后查看右侧预览，确认效果满意后再导出。\n2. **表格对齐**：在Markdown中使用 `:` 设置表格列的对齐方式。\n3. **代码块**：使用三个反引号包裹代码内容，可指定语言。\n\n## 四、注意事项\n\n- 所有转换均在浏览器本地完成，**不会上传任何数据**\n- 导出的DOCX文件兼容 Microsoft Word、WPS、Google Docs 等软件\n- 支持中文、日文、韩文等多语言内容\n\n> 💡 **小提示**：点击「示例」按钮可以加载完整示例内容，帮助您快速了解工具功能。\n";
+    updatePreview();
+    toast("已加载示例内容");
+  };
+
+  window.clearEditor = function () {
+    input.value = "";
+    preview.innerHTML = "";
+    input.focus();
+    toast("已清空编辑器");
+  };
+
+  window.pasteFromClipboard = function () {
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      navigator.clipboard.readText().then(function (text) {
+        input.value = text;
+        updatePreview();
+        toast("已粘贴内容");
+      }).catch(function () {
+        toast("无法读取剪贴板");
+      });
+    } else {
+      toast("浏览器不支持读取剪贴板");
+    }
+  };
+
+  window.openFile = function () {
+    fileInput.click();
+  };
+
+  fileInput.addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (file) handleFile(file);
+    fileInput.value = "";
+  });
+
+  function handleFile(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      input.value = e.target.result;
+      updatePreview();
+      toast("已加载文件：" + file.name);
+    };
+    reader.onerror = function () {
+      toast("文件读取失败");
+    };
+    reader.readAsText(file, "UTF-8");
+  }
+
+  window.handleFile = handleFile;
+
+  dropZone.addEventListener("click", function () {
+    fileInput.click();
+  });
+
+  dropZone.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.add("drag-over");
+  });
+
+  dropZone.addEventListener("dragleave", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.remove("drag-over");
+  });
+
+  dropZone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.remove("drag-over");
+    var files = e.dataTransfer && e.dataTransfer.files;
+    if (files && files.length > 0) {
+      handleFile(files[0]);
+    }
+  });
+
+  window.copyRichText = function () {
+    if (!preview.innerHTML) {
+      toast("暂无内容可复制");
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.write) {
+      var blob = new Blob([preview.innerHTML], { type: "text/html" });
+      var item = new ClipboardItem({ "text/html": blob });
+      navigator.clipboard.write([item]).then(function () {
+        toast("已复制富文本");
+      }).catch(function () {
+        copyPlainText();
+      });
+    } else {
+      copyPlainText();
+    }
+  };
+
+  function copyPlainText() {
+    var text = input.value || "";
+    if (!text.trim()) {
+      toast("暂无内容可复制");
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        toast("已复制文本");
+      }).catch(function () {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); toast("已复制"); } catch (e) { toast("复制失败"); }
+    document.body.removeChild(ta);
+  }
+
+  window.downloadDocx = function () {
+    var md = input.value || "";
+    if (!md.trim()) {
+      toast("请先输入Markdown内容");
+      return;
+    }
+    try {
+      if (typeof marked === "undefined") {
+        toast("Markdown库未加载，请刷新页面重试");
+        return;
+      }
+      if (typeof docx === "undefined" && typeof window.docx === "undefined") {
+        toast("DOCX库未加载，请刷新页面重试");
+        return;
+      }
+
+      var docxLib = window.docx || docx;
+      var Document = docxLib.Document;
+      var Packer = docxLib.Packer;
+      var Paragraph = docxLib.Paragraph;
+      var TextRun = docxLib.TextRun;
+      var HeadingLevel = docxLib.HeadingLevel;
+      var AlignmentType = docxLib.AlignmentType;
+      var Table = docxLib.Table;
+      var TableRow = docxLib.TableRow;
+      var TableCell = docxLib.TableCell;
+      var WidthType = docxLib.WidthType;
+      var BorderStyle = docxLib.BorderStyle;
+      var TabStopType = docxLib.TabStopType;
+      var ExternalHyperlink = docxLib.ExternalHyperlink;
+      var NumberFormat = docxLib.NumberFormat;
+      var convertInchesToTwip = docxLib.convertInchesToTwip;
+      var LevelFormat = docxLib.LevelFormat;
+      var ImageRun = docxLib.ImageRun;
+
+      var tokens = marked.lexer(md);
+
+      var numbering = {
+        config: [
+          {
+            reference: "bullet-list",
+            levels: [
+              { level: 0, format: LevelFormat.BULLET, text: "\u2022", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) } } } },
+              { level: 1, format: LevelFormat.BULLET, text: "\u25E6", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: convertInchesToTwip(1), hanging: convertInchesToTwip(0.25) } } } }
+            ]
+          },
+          {
+            reference: "ordered-list",
+            levels: [
+              { level: 0, format: LevelFormat.DECIMAL, text: "%1.", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: convertInchesToTwip(0.5), hanging: convertInchesToTwip(0.25) } } } },
+              { level: 1, format: LevelFormat.LOWER_LETTER, text: "%2)", alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: convertInchesToTwip(1), hanging: convertInchesToTwip(0.25) } } } }
+            ]
+          }
+        ]
+      };
+
+      function processInlineTokens(tokens, parentOpts) {
+        var runs = [];
+        if (!tokens) return runs;
+        for (var i = 0; i < tokens.length; i++) {
+          var t = tokens[i];
+          if (t.type === "text") {
+            var parts = t.text.split("\n");
+            for (var p = 0; p < parts.length; p++) {
+              if (p > 0) runs.push(new TextRun({ break: 1 }));
+              if (parts[p]) {
+                runs.push(new TextRun({ text: parts[p], font: "Microsoft YaHei" }));
+              }
+            }
+          } else if (t.type === "strong") {
+            var strongTexts = processInlineTokens(t.tokens, parentOpts);
+            for (var s = 0; s < strongTexts.length; s++) {
+              runs.push(new TextRun({ ...strongTexts[s].options, bold: true }));
+            }
+          } else if (t.type === "em") {
+            var emTexts = processInlineTokens(t.tokens, parentOpts);
+            for (var e = 0; e < emTexts.length; e++) {
+              runs.push(new TextRun({ ...emTexts[e].options, italics: true }));
+            }
+          } else if (t.type === "codespan") {
+            runs.push(new TextRun({ text: t.text, font: "Consolas", shading: { fill: "f1f5f9" } }));
+          } else if (t.type === "link") {
+            runs.push(new ExternalHyperlink({ children: [new TextRun({ text: t.text, style: "Hyperlink", font: "Microsoft YaHei" })], link: t.href }));
+          } else if (t.type === "text") {
+            runs.push(new TextRun({ text: t.text || "", font: "Microsoft YaHei" }));
+          } else if (t.type === "br") {
+            runs.push(new TextRun({ break: 1 }));
+          } else {
+            if (t.text) {
+              runs.push(new TextRun({ text: t.text, font: "Microsoft YaHei" }));
+            }
+          }
+        }
+        return runs;
+      }
+
+      function buildParagraph(text, opts) {
+        var runs = [];
+        if (typeof text === "string") {
+          runs.push(new TextRun({ text: text, font: "Microsoft YaHei", ...opts }));
+        } else if (Array.isArray(text)) {
+          runs = text;
+        }
+        return new Paragraph({ children: runs });
+      }
+
+      var children = [];
+      var listCounters = { bullet: 0, ordered: 0 };
+
+      function processTokens(tokenList, listDepth) {
+        if (!tokenList) return;
+        for (var i = 0; i < tokenList.length; i++) {
+          var token = tokenList[i];
+
+          if (token.type === "heading") {
+            var level = token.depth;
+            var headingMap = {
+              1: HeadingLevel.HEADING_1,
+              2: HeadingLevel.HEADING_2,
+              3: HeadingLevel.HEADING_3,
+              4: HeadingLevel.HEADING_4,
+              5: HeadingLevel.HEADING_5,
+              6: HeadingLevel.HEADING_6
+            };
+            var runs = processInlineTokens(token.tokens);
+            children.push(new Paragraph({ children: runs, heading: headingMap[level] || HeadingLevel.HEADING_1 }));
+          } else if (token.type === "paragraph") {
+            var runs = processInlineTokens(token.tokens);
+            children.push(new Paragraph({ children: runs, spacing: { after: 200 } }));
+          } else if (token.type === "list") {
+            var isOrdered = token.ordered;
+            var ref = isOrdered ? "ordered-list" : "bullet-list";
+            var listItems = token.items || [];
+            for (var li = 0; li < listItems.length; li++) {
+              var item = listItems[li];
+              var itemRuns = [];
+              if (item.tokens) {
+                for (var ti = 0; ti < item.tokens.length; ti++) {
+                  var subToken = item.tokens[ti];
+                  if (subToken.type === "text") {
+                    var parts = subToken.text.split("\n");
+                    for (var pp = 0; pp < parts.length; pp++) {
+                      if (pp > 0) itemRuns.push(new TextRun({ break: 1 }));
+                      if (parts[pp]) itemRuns.push(new TextRun({ text: parts[pp], font: "Microsoft YaHei" }));
+                    }
+                  } else if (subToken.type === "paragraph") {
+                    var innerRuns = processInlineTokens(subToken.tokens);
+                    itemRuns = itemRuns.concat(innerRuns);
+                  } else if (subToken.type === "list") {
+                    processTokens([subToken], listDepth + 1);
+                  } else {
+                    var innerRuns = processInlineTokens(subToken.tokens || [subToken]);
+                    itemRuns = itemRuns.concat(innerRuns);
+                  }
+                }
+              }
+              if (itemRuns.length === 0) {
+                itemRuns.push(new TextRun({ text: item.text || "", font: "Microsoft YaHei" }));
+              }
+              children.push(new Paragraph({
+                children: itemRuns,
+                numbering: { reference: ref, level: Math.min(listDepth, 1) },
+                spacing: { after: 100 }
+              }));
+              if (item.tokens) {
+                for (var si = 0; si < item.tokens.length; si++) {
+                  if (item.tokens[si].type === "list") {
+                    processTokens([item.tokens[si]], listDepth + 1);
+                  }
+                }
+              }
+            }
+          } else if (token.type === "blockquote") {
+            var bqTokens = token.tokens || [];
+            for (var bi = 0; bi < bqTokens.length; bi++) {
+              var bqToken = bqTokens[bi];
+              if (bqToken.type === "paragraph") {
+                var runs = processInlineTokens(bqToken.tokens);
+                children.push(new Paragraph({
+                  children: runs,
+                  border: { left: { style: BorderStyle.SINGLE, size: 6, color: "2563eb", space: 10 } },
+                  indent: { left: convertInchesToTwip(0.3) },
+                  spacing: { after: 200 }
+                }));
+              } else if (bqToken.type === "text") {
+                children.push(new Paragraph({
+                  children: [new TextRun({ text: bqToken.text || "", font: "Microsoft YaHei" })],
+                  border: { left: { style: BorderStyle.SINGLE, size: 6, color: "2563eb", space: 10 } },
+                  indent: { left: convertInchesToTwip(0.3) },
+                  spacing: { after: 200 }
+                }));
+              }
+            }
+          } else if (token.type === "code") {
+            var codeLines = (token.text || "").split("\n");
+            for (var cl = 0; cl < codeLines.length; cl++) {
+              children.push(new Paragraph({
+                children: [new TextRun({ text: codeLines[cl] || " ", font: "Consolas", size: 20 })],
+                shading: { fill: "f1f5f9" },
+                spacing: { after: 0 }
+              }));
+            }
+            children.push(new Paragraph({ children: [], spacing: { after: 200 } }));
+          } else if (token.type === "table") {
+            var header = token.header || [];
+            var aligns = token.align || [];
+            var rows = token.rows || [];
+
+            function makeRow(cells, isHeader) {
+              var tableCells = [];
+              for (var ci = 0; ci < cells.length; ci++) {
+                var cellTokens = cells[ci];
+                var cellRuns = [];
+                if (Array.isArray(cellTokens)) {
+                  cellRuns = processInlineTokens(cellTokens);
+                } else if (typeof cellTokens === "string") {
+                  cellRuns = [new TextRun({ text: cellTokens, font: "Microsoft YaHei", bold: isHeader })];
+                }
+                if (cellRuns.length === 0) {
+                  cellRuns = [new TextRun({ text: " ", font: "Microsoft YaHei" })];
+                }
+                var align = aligns[ci];
+                var alignment = undefined;
+                if (align === "center") alignment = AlignmentType.CENTER;
+                else if (align === "right") alignment = AlignmentType.RIGHT;
+
+                tableCells.push(new TableCell({
+                  children: [new Paragraph({ children: cellRuns, alignment: alignment })],
+                  shading: isHeader ? { fill: "f1f5f9" } : undefined
+                }));
+              }
+              return new TableRow({ children: tableCells, tableHeader: isHeader });
+            }
+
+            var tableRows = [];
+            tableRows.push(makeRow(header, true));
+            for (var ri = 0; ri < rows.length; ri++) {
+              tableRows.push(makeRow(rows[ri], false));
+            }
+
+            children.push(new Table({
+              rows: tableRows,
+              width: { size: 100, type: WidthType.PERCENTAGE }
+            }));
+            children.push(new Paragraph({ children: [], spacing: { after: 200 } }));
+          } else if (token.type === "hr") {
+            children.push(new Paragraph({
+              children: [],
+              border: { bottom: { style: BorderStyle.SINGLE, size: 3, color: "e2e8f0", space: 1 } },
+              spacing: { after: 300 }
+            }));
+          } else if (token.type === "space") {
+            // skip
+          } else if (token.type === "escape") {
+            if (token.text) {
+              children.push(new Paragraph({
+                children: [new TextRun({ text: token.text, font: "Microsoft YaHei" })],
+                spacing: { after: 200 }
+              }));
+            }
+          } else if (token.tokens) {
+            processTokens(token.tokens, listDepth);
+          }
+        }
+      }
+
+      processTokens(tokens, 0);
+
+      if (children.length === 0) {
+        children.push(new Paragraph({ children: [new TextRun({ text: "（空文档）", font: "Microsoft YaHei" })] }));
+      }
+
+      var doc = new Document({
+        numbering: numbering,
+        sections: [{
+          properties: {
+            page: {
+              margin: {
+                top: convertInchesToTwip(1),
+                bottom: convertInchesToTwip(1),
+                left: convertInchesToTwip(1.25),
+                right: convertInchesToTwip(1.25)
+              }
+            }
+          },
+          children: children
+        }]
+      });
+
+      Packer.toBlob(doc).then(function (blob) {
+        if (typeof saveAs !== "undefined") {
+          saveAs(blob, "document.docx");
+          toast("DOCX文件已下载");
+        } else {
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = "document.docx";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          toast("DOCX文件已下载");
+        }
+      }).catch(function (err) {
+        toast("导出失败：" + err.message);
+      });
+    } catch (err) {
+      toast("导出失败：" + err.message);
+    }
+  };
+
+  (function () {
+    var link = document.getElementById("footerLink");
+    if (!link) return;
+    var fallback = link.getAttribute("href");
+    fetch("https://weiyingjun.top/link_config.json", { cache: "no-store" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) { if (data && data.link_url) { link.href = data.link_url; link.target = "_blank"; } })
+      .catch(function () { link.href = fallback; });
+  })();
+})();
+</script>
+</body>
+</html>
