@@ -34,6 +34,15 @@ export async function onRequestGet(context) {
           conditions.push("type IN (?, ?, ?, ?, ?)");
           params.push('摄影剪辑', '付费课程', '编程开发', '媒体运营', '学习攻略');
         }
+      } else if (type === '语文阅读') {
+        const reading = url.searchParams.get('keywords') || '';
+        if (reading && reading !== '全部') {
+          conditions.push("type = ?");
+          params.push(reading);
+        } else {
+          conditions.push("type IN (?, ?, ?, ?, ?, ?, ?, ?)");
+          params.push('语文阅读一区', '语文阅读二区', '英汉双语阅读', '半小时漫画', '知乎盐选', '四大名著', '豆瓣畅销书', '百科全书');
+        }
       } else {
         conditions.push("type = ?");
         params.push(type);
