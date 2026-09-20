@@ -599,6 +599,11 @@ body { padding-top: 56px !important; }
         if (!tokens) return runs;
         for (var i = 0; i < tokens.length; i++) {
           var t = tokens[i];
+          var opts = { font: "Microsoft YaHei" };
+          if (parentOpts) {
+            if (parentOpts.bold) opts.bold = true;
+            if (parentOpts.italics) opts.italics = true;
+          }
           if (t.type === "text") {
             var parts = t.text.split("\n");
             for (var p = 0; p < parts.length; p++) {
@@ -608,15 +613,11 @@ body { padding-top: 56px !important; }
               }
             }
           } else if (t.type === "strong") {
-            var strongTexts = processInlineTokens(t.tokens, parentOpts);
-            for (var s = 0; s < strongTexts.length; s++) {
-              runs.push(new TextRun({ ...strongTexts[s].options, bold: true }));
-            }
+            var inner = processInlineTokens(t.tokens, { bold: true });
+            runs = runs.concat(inner);
           } else if (t.type === "em") {
-            var emTexts = processInlineTokens(t.tokens, parentOpts);
-            for (var e = 0; e < emTexts.length; e++) {
-              runs.push(new TextRun({ ...emTexts[e].options, italics: true }));
-            }
+            var inner = processInlineTokens(t.tokens, { italics: true });
+            runs = runs.concat(inner);
           } else if (t.type === "codespan") {
             runs.push(new TextRun({ text: t.text, font: "Consolas", shading: { fill: "f1f5f9" } }));
           } else if (t.type === "link") {
@@ -753,9 +754,21 @@ body { padding-top: 56px !important; }
                   cellRuns = processInlineTokens(cellTokens);
                 } else if (typeof cellTokens === "string") {
                   cellRuns = [new TextRun({ text: cellTokens, font: "Microsoft YaHei", bold: isHeader })];
+                } else if (cellTokens && cellTokens.text) {
+                  cellRuns = [new TextRun({ text: cellTokens.text, font: "Microsoft YaHei", bold: isHeader })];
+                } else if (cellTokens && cellTokens.tokens) {
+                  cellRuns = processInlineTokens(cellTokens.tokens);
                 }
                 if (cellRuns.length === 0) {
                   cellRuns = [new TextRun({ text: " ", font: "Microsoft YaHei" })];
+                }
+                if (isHeader) {
+                  cellRuns = cellRuns.map(function(r) {
+                    if (r && r.options) {
+                      return new TextRun({ text: r.options.text || " ", font: "Microsoft YaHei", bold: true });
+                    }
+                    return r;
+                  });
                 }
                 var align = aligns[ci];
                 var alignment = undefined;
