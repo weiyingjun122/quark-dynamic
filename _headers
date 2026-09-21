@@ -12,3 +12,6 @@
 
 /search/sw.js
   Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+
+/ads.txt
+  Cache-Control: no-cache, must-revalidate
