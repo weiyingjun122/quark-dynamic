@@ -283,6 +283,21 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">4</span><div class="step-txt">点击「复制结果」或「下载 .json」保存到项目中。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🔌</span><div><b>API 接口调试</b><p>前后端联调时，接口返回的 JSON 往往是压缩的单行格式，肉眼难以阅读。使用本工具一键美化，可快速查看嵌套字段、数组结构与数据类型，帮助开发者迅速定位字段缺失、类型不匹配或多余逗号等常见问题，大幅缩短联调时间。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚙️</span><div><b>配置文件阅读与修改</b><p>许多项目配置文件（如 package.json、tsconfig.json、.eslintrc 等）为了节省存储空间采用压缩格式保存。通过格式化工具将压缩内容展开后，开发者可以清晰地查看各配置项及其层级关系，方便在不打开 IDE 的情况下快速查阅或修改配置。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔍</span><div><b>错误日志与数据排查</b><p>线上服务产生的错误日志或监控数据中经常包含大段 JSON 格式的信息。将其粘贴到工具中格式化后，可以逐层展开查看详细的错误堆栈、请求参数和返回值，帮助开发和运维人员快速定位问题根因，提高故障排查效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">📦</span><div><b>数据传输与存储优化</b><p>在系统间传输 JSON 数据时，压缩为单行可显著减小体积，节省网络带宽和存储空间。而接收端使用本工具格式化后，又能恢复为可读格式进行人工校验，确保数据在传输过程中结构完整、内容无误。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt"><b>善用「仅校验」快速体检：</b>在粘贴大段 JSON 后，先点击「仅校验」确认语法无误，再进行格式化或压缩操作，避免因语法错误反复尝试。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt"><b>批量处理工作流：</b>先格式化查看完整结构并核对字段，确认无误后切换为压缩模式生成紧凑版本，再复制或下载用于生产环境部署，兼顾可读性与传输效率。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt"><b>统一团队缩进规范：</b>格式化前根据项目代码风格选择缩进数（前端常用 2 空格，后端常用 4 空格），导出后直接粘贴到代码中即可保持风格一致，无需二次调整。</div></li>
+    </ol>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>JSON 格式化与校验的原理是什么？</b><p>工具使用标准的 JSON.parse 进行语法解析，解析成功后再通过 JSON.stringify 重新输出美化或压缩结果，保证结果一定是合法 JSON。</p></div>
@@ -290,6 +305,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>遇到语法错误怎么办？</b><p>工具会提示具体错误位置与原因（如缺少逗号、引号未闭合等），请根据提示检查对应位置。</p></div>
       <div class="faq-item"><b>数据会被上传吗？</b><p>不会。所有处理均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>如何把结果保存到文件？</b><p>点击「下载 .json」即可将格式化后的 JSON 保存为 .json 文件，也可复制结果粘贴到项目代码中。</p></div>
+      <div class="faq-item"><b>格式化后的 JSON 与原始 JSON 数据有区别吗？</b><p>格式化仅改变排版（缩进、换行），不会修改任何键名、值或数据类型。格式化前后的数据在逻辑上完全等价。如果原始 JSON 中存在重复的键，JSON.parse 会保留最后一个，这是 JSON 规范本身的限制。</p></div>
+      <div class="faq-item"><b>能处理 JSON 数组吗？</b><p>可以。本工具支持 JSON 对象和 JSON 数组两种顶级结构。例如直接粘贴 [{"id":1},{"id":2}] 这样的数组格式，同样可以正常格式化、压缩和校验。</p></div>
+      <div class="faq-item"><b>浏览器兼容性如何？</b><p>本工具基于原生 JavaScript 开发，支持 Chrome、Firefox、Edge、Safari 等主流现代浏览器的最新两个大版本。不推荐使用 IE 浏览器访问。</p></div>
     </div>
   </div>
 
@@ -303,7 +321,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "支持超大 JSON 吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。基于原生 JavaScript 的高效解析，超大 JSON 也能瞬间完成美化。" } },
     { "@type": "Question", "name": "遇到语法错误怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "工具会提示具体错误位置与原因，请根据提示检查对应位置。" } },
     { "@type": "Question", "name": "数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有处理均在浏览器本地完成，数据不经过任何服务器。" } },
-    { "@type": "Question", "name": "如何把结果保存到文件？", "acceptedAnswer": { "@type": "Answer", "text": "点击「下载 .json」即可将结果保存为 .json 文件，也可复制结果粘贴到项目代码中。" } }
+    { "@type": "Question", "name": "如何把结果保存到文件？", "acceptedAnswer": { "@type": "Answer", "text": "点击「下载 .json」即可将结果保存为 .json 文件，也可复制结果粘贴到项目代码中。" } },
+    { "@type": "Question", "name": "格式化后的 JSON 与原始 JSON 数据有区别吗？", "acceptedAnswer": { "@type": "Answer", "text": "格式化仅改变排版（缩进、换行），不会修改任何键名、值或数据类型。格式化前后的数据在逻辑上完全等价。" } },
+    { "@type": "Question", "name": "能处理 JSON 数组吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。本工具支持 JSON 对象和 JSON 数组两种顶级结构，同样可以正常格式化、压缩和校验。" } },
+    { "@type": "Question", "name": "浏览器兼容性如何？", "acceptedAnswer": { "@type": "Answer", "text": "本工具基于原生 JavaScript 开发，支持 Chrome、Firefox、Edge、Safari 等主流现代浏览器的最新两个大版本。" } }
   ]
 }
 </script>

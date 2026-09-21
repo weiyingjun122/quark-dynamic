@@ -250,6 +250,21 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">查看结果区域的转换结果，点击「复制」即可复制到剪贴板使用。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📧</span><div><b>邮件附件与MIME编码</b><p>发送邮件附件时，邮件系统使用Base64将二进制文件（如图片、PDF）编码为文本，确保在纯文本邮件协议中安全传输，避免数据损坏或截断。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔑</span><div><b>API认证Token传输</b><p>HTTP Basic认证中，用户名和密码组合后经过Base64编码放入请求头Authorization字段，许多RESTful API和OAuth流程也依赖Base64编码Token进行身份验证。</p></div></div>
+      <div class="td-card"><span class="td-ico">🖼️</span><div><b>网页内嵌Data URI</b><p>将小型图片、图标直接编码为Base64字符串嵌入HTML或CSS中，减少HTTP请求次数，提升页面加载速度，常用于Logo、分割线等小型资源。</p></div></div>
+      <div class="td-card"><span class="td-ico">📦</span><div><b>数据序列化与配置传递</b><p>在JSON、XML或URL参数中传输二进制数据时，Base64可以将不可见字符转换为可打印字符，避免转义问题，常用于JWT令牌、SVG图像嵌入等场景。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>批量处理长文本</b><p>对于大段文本，建议先分段编码再拼接结果，避免浏览器因内存占用过高而卡顿。本工具支持较长文本输入，但超过数万字符时分段处理更加稳定高效。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔍</span><div><b>快速判断编码方向</b><p>如果输入内容仅包含A-Z、a-z、0-9、+、/和=字符且长度为4的倍数，大概率是Base64编码字符串，可直接尝试解码；否则应选择编码方向。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>结合开发者工具调试</b><p>在浏览器控制台中可通过<code style="background:#e2e8f0;padding:2px 6px;border-radius:4px;font-size:12px;">btoa()</code>和<code style="background:#e2e8f0;padding:2px 6px;border-radius:4px;font-size:12px;">atob()</code>函数快速验证编解码结果，方便开发者在调试接口时核对数据一致性。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>Base64编码是什么？</b><p>Base64是一种基于64个可打印字符来表示二进制数据的编码方式，常用于在HTTP协议、邮件系统等纯文本环境中安全传输二进制数据。编码后的字符串仅包含A-Z、a-z、0-9、+、/和=符号。</p></div>
@@ -257,6 +272,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>编码后的字符串末尾的等号是什么？</b><p>等号（=）是Base64的填充字符，用于确保编码后的字符串长度是4的倍数。这是Base64标准规范的一部分，不影响编解码功能。</p></div>
       <div class="faq-item"><b>编解码的数据会被上传吗？</b><p>不会。所有编解码操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>Base64是加密算法吗？</b><p>不是。Base64是编码方式而非加密算法，任何人都可以轻松解码Base64字符串。如需真正的数据加密，请使用AES、RSA等加密算法。</p></div>
+      <div class="faq-item"><b>编码后字符串长度变长了怎么办？</b><p>Base64编码会使数据体积增大约33%，这是编码方式本身的特性。对于需要节省存储或传输空间的场景，可以考虑先用gzip压缩再进行Base64编码，或直接传输原始二进制数据。</p></div>
+      <div class="faq-item"><b>不同编程语言的Base64实现是否兼容？</b><p>是的。Base64是国际标准编码（RFC 4648），各编程语言的实现结果完全一致。本工具编码的字符串可直接用于Python、Java、Go、JavaScript等任何语言的解码函数，反之亦然。</p></div>
+      <div class="faq-item"><b>为什么解码后出现乱码？</b><p>最常见的原因是原始文本编码与解码时使用的字符集不匹配。如果编码前的文本使用UTF-8，解码时也必须按UTF-8还原。此外，输入的Base64字符串中如果包含空格或换行符，也会导致解码失败，请确保输入的是纯净的Base64字符。</p></div>
     </div>
   </div>
 
@@ -270,7 +288,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "工具支持中文字符吗？", "acceptedAnswer": { "@type": "Answer", "text": "完全支持。本工具采用UTF-8编码处理中文、日文、韩文、Emoji等多字节字符，编码后可完整还原，不会出现乱码或丢失字符的问题。" } },
     { "@type": "Question", "name": "编码后的字符串末尾的等号是什么？", "acceptedAnswer": { "@type": "Answer", "text": "等号（=）是Base64的填充字符，用于确保编码后的字符串长度是4的倍数。这是Base64标准规范的一部分，不影响编解码功能。" } },
     { "@type": "Question", "name": "编解码的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有编解码操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器。" } },
-    { "@type": "Question", "name": "Base64是加密算法吗？", "acceptedAnswer": { "@type": "Answer", "text": "不是。Base64是编码方式而非加密算法，任何人都可以轻松解码Base64字符串。如需真正的数据加密，请使用AES、RSA等加密算法。" } }
+    { "@type": "Question", "name": "Base64是加密算法吗？", "acceptedAnswer": { "@type": "Answer", "text": "不是。Base64是编码方式而非加密算法，任何人都可以轻松解码Base64字符串。如需真正的数据加密，请使用AES、RSA等加密算法。" } },
+    { "@type": "Question", "name": "编码后字符串长度变长了怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "Base64编码会使数据体积增大约33%，这是编码方式本身的特性。对于需要节省存储或传输空间的场景，可以考虑先用gzip压缩再进行Base64编码，或直接传输原始二进制数据。" } },
+    { "@type": "Question", "name": "不同编程语言的Base64实现是否兼容？", "acceptedAnswer": { "@type": "Answer", "text": "是的。Base64是国际标准编码（RFC 4648），各编程语言的实现结果完全一致。本工具编码的字符串可直接用于Python、Java、Go、JavaScript等任何语言的解码函数，反之亦然。" } },
+    { "@type": "Question", "name": "为什么解码后出现乱码？", "acceptedAnswer": { "@type": "Answer", "text": "最常见的原因是原始文本编码与解码时使用的字符集不匹配。如果编码前的文本使用UTF-8，解码时也必须按UTF-8还原。此外，输入的Base64字符串中如果包含空格或换行符，也会导致解码失败，请确保输入的是纯净的Base64字符。" } }
   ]
 }
 </script>

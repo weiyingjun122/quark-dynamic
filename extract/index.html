@@ -297,6 +297,21 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始提取」，查看结果并可一键复制、导出。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💼</span><div><b>销售团队批量整理客户信息</b><p>销售同事从 CRM 导出或聊天记录中提取所有客户手机号，用于批量发送短信通知或导入通讯录，省去逐条复制的繁琐操作。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>HR 筛选简历中的联系方式</b><p>人力资源部门收到大量简历文档，快速提取候选人的手机号和邮箱，统一整理成联系清单，方便后续安排面试和发送 Offer。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔍</span><div><b>运维排查日志中的链接</b><p>技术人员从服务器日志或监控报告中批量提取 URL 链接，快速定位异常请求地址或资源路径，提高故障排查效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🛡️</span><div><b>合规审查提取身份证号</b><p>法务或合规人员从合同、申报材料中提取身份证号码，进行信息校验与去重，确保数据完整性和一致性，降低合规风险。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>善用去重功能</b><p>处理包含重复数据的文本时，务必勾选「结果去重」选项，可大幅减少冗余结果，让导出的数据更加干净整洁。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>先选类型再粘贴</b><p>在粘贴文本前，先点击上方 Tab 切换到目标提取类型，这样工具会在粘贴后立即自动提取，节省一步点击操作。</p></div></div>
+      <div class="td-card"><span class="td-ico">📁</span><div><b>直接拖入文件更高效</b><p>对于大型文本文件，可以直接从文件管理器拖拽到文本框中，工具会自动读取并提取内容，比手动复制粘贴更快捷。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>支持哪些文件格式上传？</b><p>支持 txt、csv、html、htm、log、markdown 等纯文本格式，以及 xlsx / xls 电子表格；也可直接复制粘贴或从本地文件管理器拖拽文本。</p></div>
@@ -304,6 +319,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>手机号提取会误提取其他数字吗？</b><p>不会。工具仅匹配符合 11 位手机号特征的号码段（以 13X-19X 开头），不会将普通数字、座机号等误判为手机号。</p></div>
       <div class="faq-item"><b>身份证号提取支持哪些格式？</b><p>支持 18 位新号码与 15 位旧号码，按号码位数匹配提取，末位 X 不区分大小写并统一输出为大写。</p></div>
       <div class="faq-item"><b>提取结果如何导出？</b><p>结果区域提供「复制全部」「导出 TXT」「导出 Excel（CSV 格式）」按钮，一次性保存所有提取结果。</p></div>
+      <div class="faq-item"><b>一次最多能处理多大的文本？</b><p>工具完全在浏览器中运行，处理能力取决于您的设备性能。一般来说，几万到十几万字的文本都能流畅处理。如果遇到超大文件，建议分段粘贴后多次提取。</p></div>
+      <div class="faq-item"><b>提取的邮箱格式有限制吗？</b><p>工具支持绝大多数常见邮箱格式，包括 QQ 邮箱、163 邮箱、Gmail、Outlook 等主流服务商。只要符合「用户名@域名.后缀」的标准格式，均可准确识别。</p></div>
+      <div class="faq-item"><b>可以同时提取多种类型的信息吗？</b><p>当前版本一次只能提取一种类型。如需同时提取手机号和邮箱，可先提取一种并导出，再切换 Tab 提取另一种。后续我们会考虑增加批量多类型提取功能。</p></div>
     </div>
   </div>
 
@@ -316,7 +334,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "支持哪些文件格式上传？", "acceptedAnswer": { "@type": "Answer", "text": "支持 txt、csv、html、xml、log、md 等纯文本格式，以及 xlsx/xls 电子表格，也可直接粘贴文本。" } },
     { "@type": "Question", "name": "提取的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有提取均在浏览器本地完成，不经过任何服务器。" } },
     { "@type": "Question", "name": "提取结果如何导出？", "acceptedAnswer": { "@type": "Answer", "text": "支持复制全部、导出 TXT 与导出 Excel（CSV 格式）。" } },
-    { "@type": "Question", "name": "身份证号提取支持哪些格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持 18 位新号码与 15 位旧号码，按位数匹配提取，末位 X 不区分大小写并统一输出为大写。" } }
+    { "@type": "Question", "name": "身份证号提取支持哪些格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持 18 位新号码与 15 位旧号码，按位数匹配提取，末位 X 不区分大小写并统一输出为大写。" } },
+    { "@type": "Question", "name": "一次最多能处理多大的文本？", "acceptedAnswer": { "@type": "Answer", "text": "工具完全在浏览器中运行，处理能力取决于设备性能。一般来说几万到十几万字的文本都能流畅处理，超大文件建议分段提取。" } },
+    { "@type": "Question", "name": "提取的邮箱格式有限制吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持绝大多数常见邮箱格式，包括 QQ、163、Gmail、Outlook 等，只要符合用户名@域名.后缀的标准格式均可识别。" } },
+    { "@type": "Question", "name": "可以同时提取多种类型的信息吗？", "acceptedAnswer": { "@type": "Answer", "text": "当前版本一次只能提取一种类型，可先提取一种导出后再切换提取另一种，后续会考虑增加批量多类型提取功能。" } }
   ]
 }
 </script>
