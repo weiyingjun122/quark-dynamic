@@ -271,6 +271,21 @@ body { padding-top: 56px !important; }
       <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📝</span><div><b>学生写作与论文</b><p>快速检查作文、论文、报告的字数是否符合要求，避免超字数或不达标，支持中英文混合文本的精确统计。</p></div></div>
+      <div class="td-card"><span class="td-ico">📱</span><div><b>社交媒体发布</b><p>微博、知乎、小红书等平台都有字数限制，用本工具可以提前确认文案长度，避免发布时被截断。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔍</span><div><b>SEO文案优化</b><p>搜索引擎对内容长度有偏好，通过统计字数可以确保文章在800-2000字的最佳区间，提升排名效果。</p></div></div>
+      <div class="td-card"><span class="td-ico">💻</span><div><b>开发与数据库调试</b><p>通过占位长度统计，可以校验文本是否超出数据库字段限制、API接口参数长度限制，提前发现潜在问题。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🖱️</span><div><b>拖拽上传文件</b><p>直接将本地 txt、csv、md 等文本文件拖入文本框，即可自动读取内容并统计，比点击上传更快捷。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>关注占位长度</b><p>如果目标场景是数据库存储或接口传输，重点关注「占位长度」指标，它反映了实际编码后的字节数。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔄</span><div><b>对比多版本文案</b><p>分别粘贴不同版本的文案到统计工具，对比字数差异，选择最合适的版本进行发布或提交。</p></div></div>
+    </div>
+
     <h3>使用步骤</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">粘贴需要统计的文本，或点击「上传文件」选择本地文档。</div></li>
@@ -285,6 +300,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>中文和符号会重复计算吗？</b><p>不会。每个字符会根据其 Unicode 范围准确归类，只属于其中一种类型，不会重复计数。</p></div>
       <div class="faq-item"><b>统计的数据会被上传吗？</b><p>不会。所有统计均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>统计结果如何保存？</b><p>当前支持直接查看，如需保存可手动复制统计结果或对页面截图保存。</p></div>
+      <div class="faq-item"><b>支持哪些文件格式？</b><p>支持 txt、csv、html、htm、md、log、json、js、css 等常见文本文件格式。上传后会自动读取文件内容并进行统计，无需手动复制。</p></div>
+      <div class="faq-item"><b>如何快速对比两段文本的字数差异？</b><p>先复制第一段文本粘贴并记录统计结果，然后清空后粘贴第二段文本，即可对比各项数据的差异。也可以同时打开两个浏览器标签页分别统计。</p></div>
+      <div class="faq-item"><b>为什么「不计空格字数」和「总字符数」差很多？</b><p>「总字符数」包含所有字符（含空格和换行符），而「不计空格字数」只统计非空白字符。如果文本中空格较多（如代码缩进、分段空行），两者差距会比较明显。</p></div>
     </div>
   </div>
 
@@ -297,7 +315,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "字符统计中的“占位长度”是什么意思？", "acceptedAnswer": { "@type": "Answer", "text": "占位长度按编码长度计算：中文按 2 字节、英文数字符号按 1 字节统计，适用于数据库字段长度计算、接口字段校验等场景。" } },
     { "@type": "Question", "name": "工具可以统计多少字？", "acceptedAnswer": { "@type": "Answer", "text": "支持大段文本，理论可统计上万字，页面不卡顿即可正常使用。" } },
     { "@type": "Question", "name": "中文和符号会重复计算吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。每个字符会根据 Unicode 范围准确归类，只属于其中一种类型，不会重复计数。" } },
-    { "@type": "Question", "name": "统计的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有统计均在浏览器本地完成，数据不经过任何服务器。" } }
+    { "@type": "Question", "name": "统计的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有统计均在浏览器本地完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "支持哪些文件格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持 txt、csv、html、htm、md、log、json、js、css 等常见文本文件格式。上传后会自动读取文件内容并进行统计。" } },
+    { "@type": "Question", "name": "如何快速对比两段文本的字数差异？", "acceptedAnswer": { "@type": "Answer", "text": "先复制第一段文本粘贴并记录统计结果，然后清空后粘贴第二段文本，即可对比各项数据的差异。" } },
+    { "@type": "Question", "name": "为什么「不计空格字数」和「总字符数」差很多？", "acceptedAnswer": { "@type": "Answer", "text": "「总字符数」包含所有字符（含空格和换行符），而「不计空格字数」只统计非空白字符。如果文本中空格较多，两者差距会比较明显。" } }
   ]
 }
 </script>

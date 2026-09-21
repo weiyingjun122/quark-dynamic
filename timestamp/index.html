@@ -333,6 +333,21 @@ body { padding-top: 56px !important; }
       <div class="td-card"><span class="td-ico">🔒</span><div><b>本地安全</b><p>全部在浏览器本地处理，数据不上传服务器，隐私零风险。</p></div></div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💻</span><div><b>后端日志排查</b><p>后端日志中常见 Unix 时间戳记录错误发生时间，使用本工具可快速将时间戳转换为可读的日期时间格式，精准定位问题发生时刻。</p></div></div>
+      <div class="td-card"><span class="td-ico">📱</span><div><b>移动端开发调试</b><p>iOS 和 Android API 接口返回的时间字段多为毫秒级时间戳，开发时用本工具验证时间值是否正确，提高调试效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🗄️</span><div><b>数据库数据查询</b><p>MySQL、PostgreSQL 等数据库中的 created_at、updated_at 字段存储为时间戳，转换后可快速确认记录的真实创建时间。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔧</span><div><b>定时任务与运维</b><p>配置 cron 定时任务或排查服务器定时任务触发时间时，需要将执行日志中的时间戳转换为本地时间进行核对。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>批量快速转换</b><p>输入时间戳后按回车键即可快速转换，无需点击按钮，批量查看多个时间戳时效率更高。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎯</span><div><b>手动指定精度</b><p>当自动识别结果不符合预期时，可在下拉菜单中手动选择「秒」或「毫秒」，避免因时间戳位数相同导致的误判。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>对比 UTC 时间</b><p>跨时区协作时，同时查看本地时间和 UTC 时间，方便与海外团队沟通时使用统一的时间标准。</p></div></div>
+    </div>
+
     <h3>使用步骤</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">在时间戳输入框中输入 Unix 时间戳，或在日期选择器中选择目标日期时间。</div></li>
@@ -347,6 +362,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>时间戳 0 对应什么时间？</b><p>Unix 时间戳 0 对应 1970-01-01 08:00:00（北京时间，UTC+8），也称为 Unix 纪元起点。</p></div>
       <div class="faq-item"><b>转换的数据会被上传吗？</b><p>不会。所有转换均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>支持的最大时间戳范围是多少？</b><p>JavaScript 的 Date 对象支持的时间范围约为 273,790 年（从 1970 年前后推算），足以覆盖绝大多数实际使用场景。</p></div>
+      <div class="faq-item"><b>为什么不同语言生成的时间戳位数不一样？</b><p>不同编程语言和框架默认的时间戳精度不同：Python 的 time.time() 返回秒级，JavaScript 的 Date.now() 返回毫秒级。使用本工具时可通过手动选择单位来适配。</p></div>
+      <div class="faq-item"><b>如何将当前时间快速转换为时间戳？</b><p>无需手动输入，页面顶部已实时显示当前的秒级和毫秒级时间戳，每秒自动刷新，可直接复制使用。</p></div>
+      <div class="faq-item"><b>时间戳转换结果的时区是固定的吗？</b><p>本地时间会根据您设备的系统时区自动调整，UTC 时间则始终为全球统一标准。如需其他时区的时间，可根据 UTC 时间进行偏移换算。</p></div>
     </div>
   </div>
 
@@ -360,7 +378,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "工具如何自动识别秒级还是毫秒级？", "acceptedAnswer": { "@type": "Answer", "text": "当输入的时间戳大于 1e12（即 1000000000000）时，工具自动判定为毫秒级；小于等于该值时判定为秒级。也可以在下拉菜单中手动指定。" } },
     { "@type": "Question", "name": "时间戳 0 对应什么时间？", "acceptedAnswer": { "@type": "Answer", "text": "Unix 时间戳 0 对应 1970-01-01 08:00:00（北京时间，UTC+8），也称为 Unix 纪元起点。" } },
     { "@type": "Question", "name": "转换的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有转换均在浏览器本地完成，数据不经过任何服务器。" } },
-    { "@type": "Question", "name": "支持的最大时间戳范围是多少？", "acceptedAnswer": { "@type": "Answer", "text": "JavaScript 的 Date 对象支持的时间范围约为 273,790 年（从 1970 年前后推算），足以覆盖绝大多数实际使用场景。" } }
+    { "@type": "Question", "name": "支持的最大时间戳范围是多少？", "acceptedAnswer": { "@type": "Answer", "text": "JavaScript 的 Date 对象支持的时间范围约为 273,790 年（从 1970 年前后推算），足以覆盖绝大多数实际使用场景。" } },
+    { "@type": "Question", "name": "为什么不同语言生成的时间戳位数不一样？", "acceptedAnswer": { "@type": "Answer", "text": "不同编程语言和框架默认的时间戳精度不同：Python 的 time.time() 返回秒级，JavaScript 的 Date.now() 返回毫秒级。使用本工具时可通过手动选择单位来适配。" } },
+    { "@type": "Question", "name": "如何将当前时间快速转换为时间戳？", "acceptedAnswer": { "@type": "Answer", "text": "无需手动输入，页面顶部已实时显示当前的秒级和毫秒级时间戳，每秒自动刷新，可直接复制使用。" } },
+    { "@type": "Question", "name": "时间戳转换结果的时区是固定的吗？", "acceptedAnswer": { "@type": "Answer", "text": "本地时间会根据您设备的系统时区自动调整，UTC 时间则始终为全球统一标准。如需其他时区的时间，可根据 UTC 时间进行偏移换算。" } }
   ]
 }
 </script>

@@ -296,12 +296,32 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始去重」，查看去重结果并一键复制、导出。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <p>文本去重在日常工作和数据处理中应用广泛，以下是四个典型场景：</p>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📱</span><div><b>营销推广名单清洗</b><p>群发短信或邮件前，需要对客户名单去重，避免同一客户收到多条重复信息，既浪费成本又影响用户体验。粘贴名单一键去重，快速获得干净的发送列表。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>Excel 数据整理</b><p>从多个系统导出的表格数据合并后常有重复行，尤其是身份证号、手机号等字段。上传 CSV 文件即可批量去重，省去手动逐行查找的繁琐。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏷️</span><div><b>关键词与标签去重</b><p>整理 SEO 关键词库、商品标签或分类列表时，不同来源的关键词难免重复。勾选「忽略大小写」后去重，英文关键词如 Apple、apple、APPLE 只保留一条，结果更精炼。</p></div></div>
+      <div class="td-card"><span class="td-ico">🖥️</span><div><b>日志与代码行清理</b><p>服务器日志或代码提交记录中会出现大量重复行，影响分析效率。粘贴日志内容去重后，能快速定位关键信息，提升排查问题的速度。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <p>掌握以下几个小技巧，可以让去重过程更高效：</p>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>先勾选「忽略空行」</b><p>从多个来源粘贴数据时，行间经常混有空行。勾选此选项后工具会自动跳过空行，避免空行干扰去重结果，也不需要手动删除空行。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>用「保留最后出现」获取最新版</b><p>如果同一行内容在不同时间被修改过，选择「保留最后出现」可以确保去重后保留的是最新版本的数据，适合处理版本迭代的列表。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>结合「忽略大小写」与排序</b><p>处理英文混合数据时，同时开启「忽略大小写」和「去重后排序」，结果会更干净整齐，方便后续复制到文档或表格中使用。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>去重的数据会被上传吗？</b><p>不会。所有去重处理均在您的浏览器本地完成，不经过任何服务器，可放心处理名单、手机号等敏感信息。</p></div>
       <div class="faq-item"><b>保留首次出现和保留最后出现有什么区别？</b><p>「保留首次」去重后保留第一次出现的行；「保留最后」去重后保留最后一次出现的行。两者都能去除重复，区别在于保留哪一版内容。</p></div>
       <div class="faq-item"><b>空行和大小写会被处理吗？</b><p>默认忽略空行；「忽略大小写」开启后，Abc、ABC、abc 将被视为同一项，对中文内容无影响。</p></div>
       <div class="faq-item"><b>支持批量处理和导出吗？</b><p>支持。可直接粘贴多行数据或上传 txt、csv 文件，结果支持复制全部、导出 TXT 或 Excel（CSV 格式）。</p></div>
+      <div class="faq-item"><b>去重后的结果能否撤销？</b><p>工具不提供撤销功能，但可以随时重新粘贴原始内容再次去重。建议在去重前保留好原始数据，或者在清空前手动复制一份备份。</p></div>
+      <div class="faq-item"><b>上传的文件有大小限制吗？</b><p>工具对文件大小没有硬性限制，但由于所有处理都在浏览器中完成，过大的文件（如超过 10MB）可能导致页面响应变慢。建议分批处理超大文件以保证流畅体验。</p></div>
+      <div class="faq-item"><b>中文按拼音排序准确吗？</b><p>排序功能基于中文拼音升序排列，对大多数场景足够准确。如果需要按笔画或其他规则排序，建议导出后在 Excel 中进一步调整。</p></div>
     </div>
   </div>
 
@@ -314,7 +334,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "去重的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有去重处理均在浏览器本地完成，数据不经过任何服务器。" } },
     { "@type": "Question", "name": "保留首次出现和保留最后出现有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "「保留首次」保留第一次出现的行，「保留最后」保留最后一次出现的行，两者均能去除重复。" } },
     { "@type": "Question", "name": "空行和大小写会被处理吗？", "acceptedAnswer": { "@type": "Answer", "text": "默认忽略空行；开启「忽略大小写」后英文视为同一项，对中文无影响。" } },
-    { "@type": "Question", "name": "支持批量处理和导出吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持粘贴多行或上传 txt、csv 文件，结果可复制全部、导出 TXT 或 Excel。" } }
+    { "@type": "Question", "name": "支持批量处理和导出吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持粘贴多行或上传 txt、csv 文件，结果可复制全部、导出 TXT 或 Excel。" } },
+    { "@type": "Question", "name": "去重后的结果能否撤销？", "acceptedAnswer": { "@type": "Answer", "text": "工具不提供撤销功能，但可以随时重新粘贴原始内容再次去重。建议去重前保留好原始数据。" } },
+    { "@type": "Question", "name": "上传的文件有大小限制吗？", "acceptedAnswer": { "@type": "Answer", "text": "工具对文件大小没有硬性限制，但过大的文件可能导致页面响应变慢，建议分批处理超大文件。" } },
+    { "@type": "Question", "name": "中文按拼音排序准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "排序基于中文拼音升序排列，对大多数场景足够准确。如需其他排序方式，建议导出后在 Excel 中调整。" } }
   ]
 }
 </script>
