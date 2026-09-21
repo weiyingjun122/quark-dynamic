@@ -216,12 +216,30 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「生成二维码」，即可在线预览并下载 PNG 或 SVG 格式。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>办公分享</b><p>将会议链接、项目文档地址生成二维码，贴在会议室白板或打印到资料上，同事扫码即可快速打开，省去手动输入链接的麻烦。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏪</span><div><b>店铺引流</b><p>实体店铺可将优惠券、会员注册链接或公众号二维码打印在收银台、海报上，顾客扫码即可领取优惠，有效提升转化率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎓</span><div><b>教学演示</b><p>老师将课件下载链接、作业提交地址生成二维码展示在课堂上，学生扫码即可获取资料，让课堂互动更高效便捷。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎉</span><div><b>活动签到</b><p>线下活动可将签到页面链接生成二维码张贴在入口处，参与者扫码签到，既快速又环保，减少纸质签到表的使用。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt"><b>内容尽量简短</b>：二维码内容越短，生成的图案越简单，扫描识别速度也越快。链接建议使用短链接服务。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt"><b>前景色用深色</b>：前景色建议使用黑色或深色系，背景色使用白色或浅色，以保证足够的对比度，提高扫码成功率。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt"><b>预留白边</b>：打印或嵌入图片时，二维码四周至少留出 4 模块宽度的白边（静区），避免其他图案干扰扫描。</div></li>
+    </ol>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>生成的二维码会被上传吗？</b><p>不会。所有二维码生成均在浏览器本地完成，数据不经过任何服务器，可放心使用。</p></div>
       <div class="faq-item"><b>支持哪些内容格式？</b><p>支持纯文字、网址链接、WiFi连接信息、电子邮件地址、电话号码等多种格式，也可以生成包含特殊字符的内容。</p></div>
       <div class="faq-item"><b>生成的二维码有有效期吗？</b><p>二维码本身没有有效期，但链接类二维码的有效性取决于链接本身是否有效。文字类二维码永久有效。</p></div>
       <div class="faq-item"><b>PNG和SVG有什么区别？</b><p>PNG适合日常使用，文件较小；SVG是矢量格式，放大不失真，适合印刷或需要高质量输出的场景。</p></div>
+      <div class="faq-item"><b>二维码最多能存储多少内容？</b><p>二维码最大可存储约 4296 个数字或 2953 个字母数字混合字符。内容越多，二维码越复杂，建议控制在合理范围内以保证扫描效果。</p></div>
+      <div class="faq-item"><b>手机扫不出来怎么办？</b><p>请检查：1）前景色与背景色对比度是否足够；2）二维码尺寸是否过小（建议不小于 2cm×2cm）；3）图片是否被拉伸变形。可尝试调整颜色或增大尺寸后重新生成。</p></div>
+      <div class="faq-item"><b>可以给二维码中间加Logo吗？</b><p>当前版本暂不支持在二维码中间嵌入Logo。如需添加品牌Logo，建议生成后使用图片编辑工具在二维码中心叠加一个小尺寸的Logo图片。</p></div>
     </div>
   </div>
 </main>
@@ -234,7 +252,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     { "@type": "Question", "name": "生成的二维码会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有二维码生成均在浏览器本地完成，数据不经过任何服务器。" } },
     { "@type": "Question", "name": "支持哪些内容格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持纯文字、网址链接、WiFi连接信息、电子邮件地址、电话号码等多种格式。" } },
     { "@type": "Question", "name": "生成的二维码有有效期吗？", "acceptedAnswer": { "@type": "Answer", "text": "二维码本身没有有效期，但链接类二维码的有效性取决于链接本身是否有效。" } },
-    { "@type": "Question", "name": "PNG和SVG有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "PNG适合日常使用，文件较小；SVG是矢量格式，放大不失真，适合印刷或高质量输出。" } }
+    { "@type": "Question", "name": "PNG和SVG有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "PNG适合日常使用，文件较小；SVG是矢量格式，放大不失真，适合印刷或高质量输出。" } },
+    { "@type": "Question", "name": "二维码最多能存储多少内容？", "acceptedAnswer": { "@type": "Answer", "text": "二维码最大可存储约4296个数字或2953个字母数字混合字符。内容越多二维码越复杂，建议控制在合理范围内。" } },
+    { "@type": "Question", "name": "手机扫不出来怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "请检查前景色与背景色对比度是否足够、尺寸是否过小、图片是否变形，可调整后重新生成。" } },
+    { "@type": "Question", "name": "可以给二维码中间加Logo吗？", "acceptedAnswer": { "@type": "Answer", "text": "当前版本暂不支持嵌入Logo，建议生成后使用图片编辑工具在中心叠加Logo。" } }
   ]
 }
 </script>

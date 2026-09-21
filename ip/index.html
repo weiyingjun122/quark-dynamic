@@ -344,6 +344,42 @@ body { padding-top: 56px !important; }
       </div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card">
+        <span class="td-ico">🛡️</span>
+        <div><b>网络安全排查</b><p>当收到异常登录提醒或可疑访问时，通过查询 IP 归属地可以快速判断攻击来源，辅助判断是否为境外攻击或代理访问，及时采取安全措施。</p></div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">📊</span>
+        <div><b>网站流量分析</b><p>站长和运营人员可以批量查询访客 IP，了解用户来自哪些国家和地区，为内容本地化、广告投放和业务拓展提供数据支撑。</p></div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">⚙️</span>
+        <div><b>服务器运维调试</b><p>在配置服务器防火墙、CDN 加速、负载均衡等服务时，需要确认服务器出口 IP 及归属地是否正确，确保服务按预期区域提供访问。</p></div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">🔍</span>
+        <div><b>网络故障诊断</b><p>当网络连接出现异常时，通过查询链路中各节点的 IP 归属地，可以定位问题发生在哪个环节，帮助快速排除故障。</p></div>
+      </div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card">
+        <span class="td-ico">💡</span>
+        <div><b>善用快速测试标签</b><p>输入框下方提供了一键测试标签，点击即可快速查询常用 IP 地址。你也可以在页面下方的快速标签区域自定义添加常用 IP，方便反复测试。</p></div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">📋</span>
+        <div><b>结合复制链接分享</b><p>查询到结果后，点击右上角「复制链接」可将当前工具页面分享给同事或朋友，对方打开后可直接使用查询功能，无需重新搜索。</p></div>
+      </div>
+      <div class="td-card">
+        <span class="td-ico">🔄</span>
+        <div><b>注意 IPv6 识别</b><p>输入框会自动识别 IPv4 和 IPv6 格式。IPv6 地址包含冒号，页面右上角会显示「IPv6」标识；纯数字点分格式则显示「IPv4」，方便确认输入是否正确。</p></div>
+      </div>
+    </div>
+
     <h3>使用步骤</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">打开页面，顶部卡片自动显示当前 IP 及归属地。</div></li>
@@ -357,6 +393,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>支持 IPv6 查询吗？</b><p>支持。工具同时支持 IPv4 与 IPv6 公网地址，在输入框中直接输入即可查询。</p></div>
       <div class="faq-item"><b>我的 IP 会被保存吗？</b><p>不会。查询结果仅用于本次展示，本站不存储您的 IP 地址与查询历史，可放心使用。</p></div>
       <div class="faq-item"><b>为什么查询显示的位置和我不一致？</b><p>当使用代理、VPN 或 CDN 时，查询到的是其出口 IP 的归属地，与本地实际物理位置不同，属于正常现象。</p></div>
+      <div class="faq-item"><b>查询结果中的 ASN 是什么？</b><p>ASN（自治系统编号）是互联网中用于标识一个自治系统（如大型运营商或云服务商）的唯一编号。通过 ASN 可以了解到该 IP 所属的网络组织，常用于网络溯源和 BGP 路由分析。</p></div>
+      <div class="faq-item"><b>能否批量查询多个 IP 的归属地？</b><p>当前版本暂不支持批量查询，每次只能输入一个 IP 地址。如需批量处理，可以多次输入查询，或通过右上角「二维码」功能分享工具页面，让团队成员自行查询。</p></div>
+      <div class="faq-item"><b>工具的数据来源是什么？</b><p>本站通过后端代理调用多个公共 IP 地理数据库，自动选择可用数据源并降级兜底。数据源会定期更新，但 IP 归属信息本身可能存在延迟，结果仅供参考。</p></div>
     </div>
   </div>
 </main>
@@ -369,7 +408,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "IP 归属地查询准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "本站通过后端多数据源代理查询并自动降级，返回国家、省份、城市、运营商等信息，结果仅供参考。" } },
     { "@type": "Question", "name": "支持 IPv6 查询吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。同时支持 IPv4 与 IPv6 公网地址查询。" } },
     { "@type": "Question", "name": "查询的 IP 会被保存吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。查询结果仅用于本次展示，本站不存储 IP 与查询历史。" } },
-    { "@type": "Question", "name": "为什么显示的位置和我实际不符？", "acceptedAnswer": { "@type": "Answer", "text": "使用代理、VPN或CDN时，查询到的是出口IP所在的归属地，并非本机物理位置。" } }
+    { "@type": "Question", "name": "为什么显示的位置和我实际不符？", "acceptedAnswer": { "@type": "Answer", "text": "使用代理、VPN或CDN时，查询到的是出口IP所在的归属地，并非本机物理位置。" } },
+    { "@type": "Question", "name": "查询结果中的 ASN 是什么？", "acceptedAnswer": { "@type": "Answer", "text": "ASN（自治系统编号）是用于标识互联网中自治系统的唯一编号，可了解IP所属网络组织，常用于网络溯源和BGP路由分析。" } },
+    { "@type": "Question", "name": "能否批量查询多个IP的归属地？", "acceptedAnswer": { "@type": "Answer", "text": "当前版本每次只能查询一个IP地址，暂不支持批量查询功能。" } },
+    { "@type": "Question", "name": "工具的数据来源是什么？", "acceptedAnswer": { "@type": "Answer", "text": "本站通过后端代理调用多个公共IP地理数据库，自动选择可用数据源并降级兜底，数据会定期更新，结果仅供参考。" } }
   ]
 }
 </script>

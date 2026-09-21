@@ -282,12 +282,30 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">即可查看周岁、虚岁、生肖、星座、农历等信息。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📋</span><div><b>法定年龄确认</b><p>公务员报考、兵役登记、选举投票、退休办理等均涉及法定年龄门槛，使用本工具可快速核实是否满足年龄要求，避免因虚岁与周岁混淆而错过报名。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎓</span><div><b>考试与入学资格核对</b><p>高考、考研、公务员考试等报名均对考生年龄有明确限制。提前用本工具计算截止报名日的周岁，确保符合报考条件，省去手动计算的繁琐。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏥</span><div><b>健康与保险年龄测算</b><p>商业保险保费与投保年龄直接挂钩，健康体检项目也会因年龄不同而调整。通过本工具可精确到天计算当前年龄，帮助选择合适的保险产品和体检套餐。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎂</span><div><b>生日倒计时与礼物准备</b><p>想知道距离下一个生日还有多少天？选择「算到指定日期」并设置今年的生日日期，即可查看距今天数，提前规划惊喜派对和礼物准备。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🏷️</span><div><b>善用快速示例标签</b><p>页面提供多个快速示例标签（如"生于 1990-01-01"），点击即可一键填入日期并计算。适合快速体验或对比不同出生年份的年龄差异。</p></div></div>
+      <div class="td-card"><span class="td-ico">📆</span><div><b>灵活切换截止日期</b><p>选择「算到指定日期」模式，可自由设定计算截止日。例如输入孩子入学当年的9月1日，即可判断届时的周岁是否满足入学年龄要求。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔗</span><div><b>复制链接方便分享</b><p>点击右上角「复制链接」按钮，可一键复制当前页面地址。方便将工具推荐给家人朋友，或在社交平台分享实用工具。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>周岁和虚岁有什么区别？</b><p>周岁按照公历每满一周年加 1 岁，客观记录实际度过的时间；虚岁是我国传统算法，出生即算 1 岁、每逢春节（农历新年）加 1 岁，因此虚岁通常比周岁大 1-2 岁。</p></div>
       <div class="faq-item"><b>农历生日和公历生日是什么关系？</b><p>公历（阳历）是世界通用的历法；农历（阴历）是我国传统历法，二十四节气与春节等节日均以农历计算。同一公历日期对应的农历日期每年略有不同，本工具会为您自动换算。</p></div>
       <div class="faq-item"><b>年龄会自动更新吗？</b><p>会。选择「距今到今天」模式时，工具按您打开页面的当前日期实时计算；选择「算到指定日期」则按您填写的日期计算，适用性更强。</p></div>
       <div class="faq-item"><b>支持多早或多晚的出生日期？</b><p>建议输入 1900-2100 之间的日期。更早或更晚的日期仍会给出历法计算结果，但农历数据可能存在误差。</p></div>
+      <div class="faq-item"><b>为什么周岁和虚岁有时差 1 岁，有时差 2 岁？</b><p>这取决于当前日期与春节的时间关系。若已过当年春节，则虚岁 = 周岁 + 2；若尚未过春节，则虚岁 = 周岁 + 1。这是因为虚岁在出生时计为 1 岁，之后每过一个农历新年（春节）增加 1 岁。</p></div>
+      <div class="faq-item"><b>工具支持哪些设备和浏览器？</b><p>本工具基于纯前端 JavaScript 实现，无需安装任何插件，支持所有现代浏览器（Chrome、Firefox、Safari、Edge 等），兼容手机、平板、电脑等各类设备，只要有浏览器即可使用。</p></div>
+      <div class="faq-item"><b>如何计算两个人的年龄差？</b><p>分别输入两人的出生日期进行计算，查看各自的周岁后做差即可。也可利用「算到指定日期」功能，将截止日期设为其中一人的生日，再对比另一人的出生日期得出精确的年龄差距。</p></div>
     </div>
   </div>
 
@@ -300,7 +318,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "周岁和虚岁有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "周岁按公历每满一周年加一岁；虚岁是我国传统算法，出生即算 1 岁、每逢春节加 1 岁，通常比周岁大 1-2 岁。" } },
     { "@type": "Question", "name": "年龄会自动更新吗？", "acceptedAnswer": { "@type": "Answer", "text": "会。选择距今模式按当前日期实时计算；选择指定日期则按所填日期计算。" } },
     { "@type": "Question", "name": "工具支持农历生日换算吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。输入公历日期后会同步展示农历日期、天干地支纪年与生肖属相。" } },
-    { "@type": "Question", "name": "出生日期会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有计算都在浏览器本地完成，个人信息不传输到任何服务器。" } }
+    { "@type": "Question", "name": "出生日期会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有计算都在浏览器本地完成，个人信息不传输到任何服务器。" } },
+    { "@type": "Question", "name": "为什么周岁和虚岁有时差1岁有时差2岁？", "acceptedAnswer": { "@type": "Answer", "text": "这取决于当前日期与春节的时间关系。若已过当年春节，则虚岁等于周岁加2；若尚未过春节，则虚岁等于周岁加1。" } },
+    { "@type": "Question", "name": "工具支持哪些设备和浏览器？", "acceptedAnswer": { "@type": "Answer", "text": "本工具基于纯前端实现，支持所有现代浏览器，兼容手机、平板、电脑等各类设备。" } },
+    { "@type": "Question", "name": "如何计算两个人的年龄差？", "acceptedAnswer": { "@type": "Answer", "text": "分别输入两人的出生日期进行计算，查看各自的周岁后做差即可。" } }
   ]
 }
 </script>

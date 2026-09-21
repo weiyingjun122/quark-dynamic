@@ -274,6 +274,21 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「随机生成密码」，即可复制使用。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🌐</span><div><b>注册网站账号</b><p>注册邮箱、社交平台、论坛等各类网站时，使用本工具生成高强度密码，避免多个平台使用相同密码导致"撞库"风险，有效保护个人隐私与账户安全。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>企业账号批量初始化</b><p>IT 管理员为新入职员工批量创建邮箱、OA 系统、VPN 等账号时，可一次生成数百条不同密码并导出 Excel，大幅提高初始化效率，同时确保每个账号密码各不相同。</p></div></div>
+      <div class="td-card"><span class="td-ico">🗄️</span><div><b>数据库与服务器密码</b><p>为 MySQL、Redis、云服务器等设置登录密码时，生成 16 位以上包含大小写、数字和特殊符号的随机密码，可有效抵御暴力破解和字典攻击。</p></div></div>
+      <div class="td-card"><span class="td-ico">💳</span><div><b>WiFi 密码与共享场景</b><p>为家庭或办公 WiFi 设置高强度密码，或在临时聚会、会议中生成访客密码，既方便分享又便于定期更换，提升网络安全防护水平。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📏</span><div><b>密码长度优先</b><p>密码每增加一位，暴力破解难度呈指数级增长。建议日常账号使用 12-16 位，金融、服务器等重要系统使用 20 位以上，长度是安全的第一保障。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔢</span><div><b>开启排除易混淆字符</b><p>默认排除 0/O、1/l/| 等易混淆字符，可有效避免手动输入密码时因辨认不清导致的登录失败。如需更高安全性，可取消排除以扩大字符集。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔐</span><div><b>配合密码管理器使用</b><p>生成密码后建议立即复制到密码管理器（如 Bitwarden、1Password）中保存，避免遗忘。切勿将密码明文记录在便签、记事本等不安全的地方。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>生成的密码安全吗？</b><p>安全。工具调用浏览器内置的 Web Crypto 加密随机数生成器，与普通 Math.random 不同，生成结果不可预测、无规律，配合足够长度与字符组合，安全性非常高。</p></div>
@@ -281,6 +296,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>密码长度设置多少合适？</b><p>一般建议至少 12 位；重要账户建议 16-20 位，并同时包含大小写字母、数字与特殊符号。</p></div>
       <div class="faq-item"><b>「排除字符」和「特殊符号字符」能自定义吗？</b><p>可以。「排除字符」输入框中可自由输入想剔除的字符（勾选「启用排除」生效，默认排除 0、O、1、l、| 等易混淆字符）；「特殊符号字符」输入框可自定义生成时使用的符号集合（默认 !@#$%^&*_-）。</p></div>
       <div class="faq-item"><b>支持批量生成吗？</b><p>支持。可在「生成数量」中输入 1-500 条，一次生成多条不同密码，还可一键导出 TXT 或 Excel（CSV）文件，适合批量初始化工号、应用账号。</p></div>
+      <div class="faq-item"><b>手机上可以使用吗？</b><p>可以。本工具完全响应式设计，手机、平板、电脑均可直接打开使用，无需安装任何应用。建议将页面添加到手机主屏幕，方便随时生成密码。</p></div>
+      <div class="faq-item"><b>导出的文件安全吗？</b><p>导出的 TXT 或 CSV 文件保存在您的本地设备中，不会上传到任何服务器。建议导出后尽快将密码导入密码管理器，并删除明文文件，以确保密码安全。</p></div>
+      <div class="faq-item"><b>同一个密码可以重复生成吗？</b><p>理论上概率极低。由于使用加密级随机源，每次生成的密码几乎不可能与之前的相同。如需确保唯一性，可批量生成后去重，或适当增加密码长度和字符种类。</p></div>
     </div>
   </div>
 
@@ -293,7 +311,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "随机密码生成器生成的密码安全吗？", "acceptedAnswer": { "@type": "Answer", "text": "安全。工具基于浏览器内置的 Web Crypto 加密随机源生成，密码不可预测、无规律，长度足够并配合多类字符组合时安全性非常高。" } },
     { "@type": "Question", "name": "生成的密码会被上传到服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有密码均在浏览器本地生成，不经过任何服务器，刷新或关闭页面即全部清除。" } },
     { "@type": "Question", "name": "密码长度设置多少比较合适？", "acceptedAnswer": { "@type": "Answer", "text": "一般建议至少 12 位；重要账户建议 16-20 位并同时包含大小写字母、数字和特殊符号。" } },
-    { "@type": "Question", "name": "支持批量生成多个密码吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。勾选批量生成后可一次生成多条不同密码，适合批量初始化工号或应用账号。" } }
+    { "@type": "Question", "name": "支持批量生成多个密码吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。勾选批量生成后可一次生成多条不同密码，适合批量初始化工号或应用账号。" } },
+    { "@type": "Question", "name": "手机上可以使用随机密码生成器吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。本工具完全响应式设计，手机、平板、电脑均可直接打开使用，无需安装任何应用。" } },
+    { "@type": "Question", "name": "导出的密码文件安全吗？", "acceptedAnswer": { "@type": "Answer", "text": "导出的 TXT 或 CSV 文件保存在您的本地设备中，不会上传到任何服务器。建议导出后尽快将密码导入密码管理器，并删除明文文件。" } },
+    { "@type": "Question", "name": "同一个密码会重复生成吗？", "acceptedAnswer": { "@type": "Answer", "text": "理论上概率极低。由于使用加密级随机源，每次生成的密码几乎不可能与之前的相同。" } }
   ]
 }
 </script>
