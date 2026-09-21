@@ -1105,9 +1105,6 @@ async function loadHotKeywords(retryCount = 0) {
 // 分类关键词配置
 const CATEGORY_KEYWORDS = {
     juben: ['剧本杀', '剧本', '杀', '凶手', '推理', '硬核', '情感', '恐怖', '欢乐'],
-    juji: ['电视剧', '剧集', '综艺', '美剧', '韩剧', '日剧', '国产剧', 'TV'],
-    movie: ['电影', '影片', '蓝光', '4K', '高清'],
-    anime: ['动漫', '动画片', '卡通', '番剧', '日漫', '国漫'],
     study: ['学习', '资料', '教程', '课程', '电子书', 'pdf', '文档', '课件', '教案']
 };
 
@@ -1166,9 +1163,6 @@ function renderTodayUpdate(data, isRecent) {
 // 分类热搜映射
 const TYPE_MAPPING = {
     jubenHot: '剧本杀',
-    jujiHot: '剧集',
-    movieHot: '电影',
-    animeHot: '动漫',
     studyHot: '学习资料'
 };
 
@@ -1189,9 +1183,6 @@ async function loadCategoryHot(containerId, typeName) {
 // 页面初始化时调用
 function initCategoryHot() {
     loadCategoryHot('jubenHot', '剧本杀');
-    loadCategoryHot('jujiHot', '剧集');
-    loadCategoryHot('movieHot', '电影');
-    loadCategoryHot('animeHot', '动漫');
     loadCategoryHot('studyHot', '学习资料');
     loadJubenCount(); // 加载剧本杀人数
 }
