@@ -254,6 +254,21 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「复制结果」，粘贴到目标文档即可。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📄</span><div><b>发票填写</b><p>开具增值税发票时，金额栏需填写人民币大写。本工具可快速将数字转为标准大写，避免手写出错导致发票作废。</p></div></div>
+      <div class="td-card"><span class="td-ico">📝</span><div><b>借条与合同</b><p>签订借款协议或买卖合同时，金额大小写须一致且规范。使用本工具一键生成大写金额，确保法律文书严谨无误。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>报销单据</b><p>企业报销流程中，报销单金额栏常要求大写。财务人员或普通员工均可借助本工具快速完成填写，提升报销效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏦</span><div><b>银行票据</b><p>填写支票、汇票、本票等银行票据时，大写金额是必填项且格式要求严格。本工具确保每个字符符合银行规范。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>善用快速示例</b><p>工具下方提供常用金额快捷标签，点击即可一键填入并转换，省去手动输入的麻烦，适合快速测试与演示。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>复制后检查尾字</b><p>整数金额会自动添加「整」字，带小数则以「角分」结尾。复制前请核对结果尾部是否符合您所需的具体格式要求。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>支持回车快捷转换</b><p>输入金额后直接按键盘回车键即可触发转换，无需移动鼠标点击按钮，连续处理多笔金额时效率更高。</p></div></div>
+    </div>
+
     <h3>金额大写对照表</h3>
     <div class="reference-table">
       <table>
@@ -270,6 +285,8 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>金额没有小数时为什么会出现「整」？</b><p>按财务规范，整数金额在元位后应加「整」字以防止涂改，例如 100 转换为「壹佰元整」。工具会自动添加。</p></div>
       <div class="faq-item"><b>输入了非数字字符怎么办？</b><p>工具会提示「请输入正确的数字金额」，请仅输入数字与小数点，并确保不超过两位小数。</p></div>
       <div class="faq-item"><b>金额会被上传到服务器吗？</b><p>不会。转换全程在您的浏览器本地完成，金额不经过任何服务器，可放心使用。</p></div>
+      <div class="faq-item"><b>支持负数金额吗？</b><p>支持。输入以减号「-」开头的负数金额，工具会输出「负」前缀的大写结果，例如「-500」转换为「负伍佰元整」，适用于退货冲红等财务场景。</p></div>
+      <div class="faq-item"><b>最大支持多大的金额？</b><p>工具支持到兆级（万亿级）金额的正确转换，日常财务票据、合同涉及的金额范围均可覆盖，无需担心溢出或格式错误。</p></div>
     </div>
   </div>
 
@@ -282,7 +299,9 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "数字大写金额转换符合财务规范吗？", "acceptedAnswer": { "@type": "Answer", "text": "符合。工具按照人民币大写通用规范输出，采用壹贰叁肆伍陆柒捌玖标准字符与元、角、分结构。" } },
     { "@type": "Question", "name": "支持小数金额转换吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。带小数的金额会自动转换为元、角、分结构处理。" } },
     { "@type": "Question", "name": "输入非数字字符会怎样？", "acceptedAnswer": { "@type": "Answer", "text": "工具会提示请输入正确的数字金额格式，建议仅输入数字和小数点。" } },
-    { "@type": "Question", "name": "金额会被上传到服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。金额转换在浏览器本地完成，不经过任何服务器。" } }
+    { "@type": "Question", "name": "金额会被上传到服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。金额转换在浏览器本地完成，不经过任何服务器。" } },
+    { "@type": "Question", "name": "支持负数金额转换吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。以减号开头的负数金额会输出负前缀的大写结果，适用于退货冲红等场景。" } },
+    { "@type": "Question", "name": "最大支持多大的金额？", "acceptedAnswer": { "@type": "Answer", "text": "支持兆级（万亿级）金额的正确转换，日常财务票据和合同涉及的金额范围均可覆盖。" } }
   ]
 }
 </script>

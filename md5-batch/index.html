@@ -275,6 +275,21 @@ body { padding-top: 56px !important; }
       <div class="td-card"><span class="td-ico">📐</span><div><b>16/32位可选</b><p>16 位即取 32 位 MD5 中间 16 个字符，常用场景一键可得。</p></div></div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">👤</span><div><b>用户密码批量初始化</b><p>系统上线或迁移时，需要将大量用户明文密码转换为 MD5 存入数据库。本工具支持一次粘贴数百行密码，批量生成后直接导入，极大提升初始化效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔍</span><div><b>数据完整性校验</b><p>文件传输或下载后，通过对比 MD5 值验证数据是否被篡改或损坏。批量校验时可将多个文件的哈希值一次性粘贴比对，快速定位异常数据。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>去重与比对分析</b><p>在数据清洗、日志分析或爬虫去重场景中，将大量文本转为 MD5 后进行集合运算，比直接比较原文更快更省资源，尤其适合海量数据的快速去重。</p></div></div>
+      <div class="td-card"><span class="td-ico">🛡️</span><div><b>安全审计与渗透测试</b><p>安全人员在审计系统时，需要批量生成密码哈希与泄露库进行比对，或为渗透测试准备字典的哈希版本。本工具的本地运算特性确保敏感数据不会外泄。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>善用文件导入处理海量数据</b><p>当明文超过上千行时，建议先整理为 .txt 文件（每行一条），通过上传按钮或直接拖入文本框加载，避免手动粘贴导致的格式混乱或浏览器卡顿。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>灵活切换输出格式适配系统</b><p>不同业务系统对 MD5 格式要求不同：32 位小写适用于大多数 Web 应用，16 位大写常见于某些数据库字段。加密前先确认目标系统的格式规范，避免返工。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>利用导出功能留存记录</b><p>批量加密完成后，建议导出 TXT 或 Excel 文件备份。尤其是密码初始化等关键操作，留存哈希对照表便于后续审计追踪，同时注意妥善保管导出文件。</p></div></div>
+    </div>
+
     <h3>使用步骤</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">将需要加密的明文（每行一条）粘贴到左侧输入框。</div></li>
@@ -290,6 +305,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>MD5 加密后的数据还能解密还原吗？</b><p>不能。MD5 是单向不可逆的哈希算法，无法从密文反推明文。部分常见明文可通过「彩虹表」机制猜测，故密码场景建议加盐并选用更强的算法。</p></div>
       <div class="faq-item"><b>明文数据会被上传吗？</b><p>不会。所有哈希计算均在浏览器本地完成，明文数据不经过任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>如何把结果保存成文件？</b><p>点击「导出 TXT」可保存为 .txt 文件；点击「导出 Excel」可生成为 Excel 可打开的 .csv 文件，方便直接导入数据库或报表工具。</p></div>
+      <div class="faq-item"><b>MD5 和 SHA-256 有什么区别？该用哪个？</b><p>MD5 生成 128 位哈希，速度较快但已不推荐用于高安全场景；SHA-256 生成 256 位哈希，抗碰撞性更强。如果是密码存储或数字签名等安全敏感场景，建议优先使用 SHA-256 或 bcrypt；若仅用于数据校验、去重等非安全用途，MD5 仍然高效实用。</p></div>
+      <div class="faq-item"><b>为什么同样的明文每次加密结果都一样？</b><p>这是哈希算法的确定性特性——相同的输入经过相同的算法必然产生相同的输出。这正是 MD5 适合用于数据校验和签名验证的原因：任何微小的改动都会导致哈希值完全不同。</p></div>
+      <div class="faq-item"><b>支持对中文内容进行 MD5 加密吗？</b><p>完全支持。本工具采用 UTF-8 编码处理中文、日文、韩文等多语言文本，无论输入何种字符都能正确计算 MD5 哈希值。粘贴中文内容后直接点击加密即可。</p></div>
     </div>
   </div>
 
@@ -303,7 +321,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "32 位和 16 位有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "MD5 标准结果为 32 位；16 位是取 32 位结果中间 16 个字符，是部分老系统的简化表示。" } },
     { "@type": "Question", "name": "MD5 加密后的数据还能解密还原吗？", "acceptedAnswer": { "@type": "Answer", "text": "不能。MD5 是单向不可逆的哈希算法，无法从密文反推明文，密码场景建议加盐并选用更强算法。" } },
     { "@type": "Question", "name": "明文数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有哈希计算均在浏览器本地完成，明文不经过任何服务器。" } },
-    { "@type": "Question", "name": "如何把结果保存成文件？", "acceptedAnswer": { "@type": "Answer", "text": "可导出 TXT 文件，或导出为 Excel 可打开的 CSV 文件，方便导入数据库。" } }
+    { "@type": "Question", "name": "如何把结果保存成文件？", "acceptedAnswer": { "@type": "Answer", "text": "可导出 TXT 文件，或导出为 Excel 可打开的 CSV 文件，方便导入数据库。" } },
+    { "@type": "Question", "name": "MD5 和 SHA-256 有什么区别？该用哪个？", "acceptedAnswer": { "@type": "Answer", "text": "MD5 生成 128 位哈希，速度快但抗碰撞性较弱；SHA-256 生成 256 位哈希，安全性更高。安全敏感场景建议用 SHA-256 或 bcrypt，非安全用途 MD5 仍然实用。" } },
+    { "@type": "Question", "name": "为什么同样的明文每次加密结果都一样？", "acceptedAnswer": { "@type": "Answer", "text": "这是哈希算法的确定性特性，相同输入经过相同算法必然产生相同输出，适合数据校验和签名验证。" } },
+    { "@type": "Question", "name": "支持对中文内容进行 MD5 加密吗？", "acceptedAnswer": { "@type": "Answer", "text": "完全支持。本工具采用 UTF-8 编码处理中文等多语言文本，可正确计算 MD5 哈希值。" } }
   ]
 }
 </script>

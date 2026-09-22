@@ -278,6 +278,21 @@ body { padding-top: 56px !important; }
       <div class="td-card"><span class="td-ico">🚀</span><div><b>服务端解析</b><p>由云端函数完成跟链，避开浏览器跨域限制，解析更准确。</p></div></div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🔍</span><div><b>链接安全检查</b><p>收到不明短链接时，先还原查看真实目标地址，确认域名是否可信再决定是否访问，有效防范钓鱼网站与恶意跳转。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>运营投放复盘</b><p>在广告投放或社交媒体推广中，通过还原短链接核验落地页是否正确配置，对比不同渠道的跳转链路差异，优化投放策略。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧪</span><div><b>开发调试测试</b><p>前端与后端开发人员在联调短链服务时，可快速查看重定向链与状态码，排查跳转异常、定位中间环节问题。</p></div></div>
+      <div class="td-card"><span class="td-ico">📚</span><div><b>内容归档整理</b><p>整理笔记或资料库时，将收藏夹中的短链接还原为原始网址并保存，避免因短链服务下线导致链接失效。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>善用复制功能</b><p>还原完成后点击「复制最终地址」直接获取真实网址；若需留存完整重定向记录，使用「复制完整链路」便于后续分析或存档。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚠️</span><div><b>注意域名安全</b><p>查看跳转链时重点关注最终目标域名，若发现跳转至陌生或可疑域名，建议不要直接访问，先通过搜索引擎核实该站点的真实性。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔗</span><div><b>结合示例快速上手</b><p>首次使用可点击输入框下方的示例短链，一键体验还原流程，熟悉工具的展示方式后再处理自己的链接。</p></div></div>
+    </div>
+
     <h3>如何使用短链接还原工具</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">将短网址粘贴到上方输入框中。</div></li>
@@ -291,6 +306,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>可以批量还原短链接吗？</b><p>当前版本为单条还原模式，适合快速核验单个短网址；如需批量核验可使用站内「文本提取工具」先提取出链接清单。</p></div>
       <div class="faq-item"><b>还原结果安全吗？</b><p>本工具仅用于展示跳转目标地址，不会自动打开目标站点或执行任何跳转。建议先核对最终域名与协议，确认安全后再访问。</p></div>
       <div class="faq-item"><b>支持哪些短链平台？</b><p>凡是使用 HTTP 301/302 跳转的短链均可还原，例如常见短链服务生成的链接；若目标页面使用框架页或 JS 跳转则无法显示最终地址。</p></div>
+      <div class="faq-item"><b>还原需要多长时间？</b><p>通常 1-3 秒即可完成，具体取决于目标服务器的响应速度。如果短链涉及多次跳转，解析时间可能略长，请耐心等待加载动画结束。</p></div>
+      <div class="faq-item"><b>是否支持国际短链服务？</b><p>支持。只要是基于 HTTP 301/302/307/308 标准重定向的短链服务均可还原，不限地域。例如 Bitly、TinyURL、t.cn、dwz.cn 等主流平台的短链接均可使用本工具解析。</p></div>
+      <div class="faq-item"><b>还原结果中的状态码含义是什么？</b><p>状态码 301 表示永久重定向，302 表示临时重定向，200 表示最终请求成功到达目标页面。若状态码显示为"失败"，说明该跳转节点未能正常响应，可能是网络问题或目标服务器异常。</p></div>
     </div>
   </div>
 
@@ -303,7 +321,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "为什么有些短链接还原失败？", "acceptedAnswer": { "@type": "Answer", "text": "常见原因是该短链未使用 301/302 服务端跳转，而是通过 JS 脚本或前端逻辑在浏览器内跳转，此类短链无法被解析。部分平台也会对无特定 Referer/User-Agent 的请求返回拦截页。" } },
     { "@type": "Question", "name": "可以批量还原短链接吗？", "acceptedAnswer": { "@type": "Answer", "text": "当前版本为单条还原模式，适合快速核验单个短网址。" } },
     { "@type": "Question", "name": "还原结果安全吗？", "acceptedAnswer": { "@type": "Answer", "text": "本工具仅用于展示跳转目标地址，不会自动打开目标站点或执行任何跳转，建议先核对最终域名再访问。" } },
-    { "@type": "Question", "name": "支持哪些短链平台？", "acceptedAnswer": { "@type": "Answer", "text": "凡是使用 HTTP 301/302 跳转的短链均可还原；若目标页面使用框架页或 JS 跳转则无法显示最终地址。" } }
+    { "@type": "Question", "name": "支持哪些短链平台？", "acceptedAnswer": { "@type": "Answer", "text": "凡是使用 HTTP 301/302 跳转的短链均可还原；若目标页面使用框架页或 JS 跳转则无法显示最终地址。" } },
+    { "@type": "Question", "name": "还原需要多长时间？", "acceptedAnswer": { "@type": "Answer", "text": "通常 1-3 秒即可完成，具体取决于目标服务器的响应速度。如果短链涉及多次跳转，解析时间可能略长。" } },
+    { "@type": "Question", "name": "是否支持国际短链服务？", "acceptedAnswer": { "@type": "Answer", "text": "支持。只要是基于 HTTP 301/302/307/308 标准重定向的短链服务均可还原，不限地域，例如 Bitly、TinyURL、t.cn、dwz.cn 等。" } },
+    { "@type": "Question", "name": "还原结果中的状态码含义是什么？", "acceptedAnswer": { "@type": "Answer", "text": "状态码 301 表示永久重定向，302 表示临时重定向，200 表示最终请求成功到达目标页面。" } }
   ]
 }
 </script>
