@@ -274,6 +274,21 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「替换全部」，在结果区查看并复制替换后的文本。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">📝</span><div><b>文档纠错批改</b><p>批量修正文档中的错别字、重复标点、多余空格等常见问题，快速统一全文格式，节省逐段校对的时间。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>品牌名称统一</b><p>公司更名或产品线调整时，可一键将所有文档、代码、配置中的旧名称批量替换为新名称，确保一致性。</p></div></div>
+      <div class="td-card"><span class="td-ico">💻</span><div><b>代码批量重构</b><p>变量重命名、API 地址迁移、废弃函数替换等场景下，借助正则模式可以精准匹配并批量修改代码片段。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔒</span><div><b>数据脱敏处理</b><p>将文本中的手机号、邮箱、身份证号等敏感信息批量替换为星号或占位符，满足数据脱敏和隐私保护需求。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>善用大小写敏感</b><p>默认不区分大小写，开启后可精确匹配大小写差异。例如仅替换小写"hello"而不影响首字母大写的"Hello"。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>正则表达式入门</b><p>用 <code>\d</code> 匹配数字、<code>\s</code> 匹配空白字符、<code>.</code> 匹配任意字符。组合使用可实现强大的模式匹配。</p></div></div>
+      <div class="td-card"><span class="td-ico">💡</span><div><b>留空即删除</b><p>替换为输入框留空，可快速删除所有匹配内容。适用于批量清除多余字符、空行、特定标记等场景。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>替换结果可以撤销吗？</b><p>当前不支持撤销操作，建议替换前先备份原文本。可在替换前复制源文本到其他地方保存。</p></div>
@@ -281,6 +296,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>支持替换为空（删除匹配内容）吗？</b><p>支持。替换为输入框留空即可，点击替换后所有匹配内容将被删除。</p></div>
       <div class="faq-item"><b>替换的数据会被上传吗？</b><p>不会。所有替换均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>可以处理多大的文本？</b><p>支持较大文本的替换操作，理论可处理数万字，页面不卡顿即可正常使用。</p></div>
+      <div class="faq-item"><b>可以同时替换多个不同的内容吗？</b><p>当前每次只能执行一组查找替换。如需批量替换多个不同内容，可依次进行多轮操作，将每轮结果作为下一轮的输入。</p></div>
+      <div class="faq-item"><b>替换后如何恢复原文？</b><p>工具不支持撤销操作，建议在执行替换前将原文本备份到其他地方，如记事本或文档编辑器中保存一份。</p></div>
+      <div class="faq-item"><b>为什么替换后多了换行或空格？</b><p>替换内容中直接输入回车或空格即可保留。例如替换为内容中输入换行符，即可在匹配处插入空行。</p></div>
     </div>
   </div>
 
@@ -293,7 +311,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "替换结果可以撤销吗？", "acceptedAnswer": { "@type": "Answer", "text": "当前不支持撤销操作，建议替换前先备份原文本。可在替换前复制源文本到其他地方保存。" } },
     { "@type": "Question", "name": "正则表达式模式如何使用？", "acceptedAnswer": { "@type": "Answer", "text": "勾选「正则表达式模式」后，查找内容将作为正则表达式匹配。例如输入 \\d+ 可匹配所有连续数字。" } },
     { "@type": "Question", "name": "支持替换为空（删除匹配内容）吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。替换为输入框留空即可，点击替换后所有匹配内容将被删除。" } },
-    { "@type": "Question", "name": "替换的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有替换均在浏览器本地完成，数据不经过任何服务器。" } }
+    { "@type": "Question", "name": "替换的数据会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有替换均在浏览器本地完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "可以处理多大的文本？", "acceptedAnswer": { "@type": "Answer", "text": "支持较大文本的替换操作，理论可处理数万字，页面不卡顿即可正常使用。" } },
+    { "@type": "Question", "name": "可以同时替换多个不同的内容吗？", "acceptedAnswer": { "@type": "Answer", "text": "当前每次只能执行一组查找替换，可依次进行多轮操作。" } },
+    { "@type": "Question", "name": "替换后如何恢复原文？", "acceptedAnswer": { "@type": "Answer", "text": "工具不支持撤销操作，建议在替换前将原文本备份到其他地方保存。" } }
   ]
 }
 </script>
