@@ -9,7 +9,8 @@ export async function onRequestGet(context) {
 
   const DAILY_LIMIT_UNLOGGED = 3;
   const DAILY_LIMIT_LOGGED = 5;
-  const today = new Date().toISOString().split('T')[0];
+  const now = new Date(Date.now() + 8 * 3600 * 1000);
+  const today = now.toISOString().split('T')[0];
 
   let identifier = '';
   let isLogged = false;

@@ -19,10 +19,11 @@ export async function onRequestPost(context) {
     return Response.json({ success: false, error: '缺少资源ID' });
   }
 
-  // 次数限制：未登录3次/天，登录5次/天
+  // 次数限制：未登录3次/天，登录5次/天（北京时间UTC+8）
   const DAILY_LIMIT_UNLOGGED = 3;
   const DAILY_LIMIT_LOGGED = 5;
-  const today = new Date().toISOString().split('T')[0];
+  const now = new Date(Date.now() + 8 * 3600 * 1000);
+  const today = now.toISOString().split('T')[0];
 
   // 获取用户标识
   let identifier = '';
