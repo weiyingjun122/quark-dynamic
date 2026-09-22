@@ -24,6 +24,7 @@
     }
   ],
   "vars": {
-    "JWT_SECRET": "wyj-resource-site-secret-2026"
+    "JWT_SECRET": "wyj-resource-site-secret-2026",
+    "TURNSTILE_SECRET": "0x4AAAAAAE_i8PRIXAdj4Ei5EInM5HFoZIY"
   }
 }

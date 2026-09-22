@@ -14,6 +14,21 @@ function generateSalt() {
   return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// 验证 Turnstile
+async function verifyTurnstile(token, secret, ip) {
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret, response: token, remoteip: ip })
+    });
+    const data = await res.json();
+    return data.success === true;
+  } catch {
+    return false;
+  }
+}
+
 export async function onRequestPost(context) {
   const { env, request } = context;
 
@@ -28,7 +43,29 @@ export async function onRequestPost(context) {
     return Response.json({ success: false, error: '请求格式错误' });
   }
 
-  const { username, email, password, nickname } = body;
+  const { username, email, password, nickname, turnstileToken } = body;
+  const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown';
+
+  // Turnstile 验证
+  if (env.TURNSTILE_SECRET) {
+    if (!turnstileToken) {
+      return Response.json({ success: false, error: '请完成人机验证' });
+    }
+    const turnstileValid = await verifyTurnstile(turnstileToken, env.TURNSTILE_SECRET, ip);
+    if (!turnstileValid) {
+      return Response.json({ success: false, error: '人机验证失败，请重试' });
+    }
+  }
+
+  // IP 注册限制：每天最多2个
+  const today = new Date().toISOString().split('T')[0];
+  const ipLimit = await env.RESOURCES_DB.prepare(
+    'SELECT count FROM register_limits WHERE ip = ? AND date = ?'
+  ).bind(ip, today).first();
+
+  if (ipLimit && ipLimit.count >= 2) {
+    return Response.json({ success: false, error: '该IP今日注册次数已达上限，请明天再试' });
+  }
 
   if (!username || !email || !password) {
     return Response.json({ success: false, error: '请填写所有必填项' });
@@ -66,6 +103,17 @@ export async function onRequestPost(context) {
     await env.RESOURCES_DB.prepare(
       "INSERT INTO users (username, email, password_hash, nickname, points) VALUES (?, ?, ?, ?, 10)"
     ).bind(username, email, finalHash, nickname || username).run();
+
+    // 更新IP注册次数
+    if (ipLimit) {
+      await env.RESOURCES_DB.prepare(
+        'UPDATE register_limits SET count = count + 1 WHERE ip = ? AND date = ?'
+      ).bind(ip, today).run();
+    } else {
+      await env.RESOURCES_DB.prepare(
+        'INSERT INTO register_limits (ip, date, count) VALUES (?, ?, 1)'
+      ).bind(ip, today).run();
+    }
 
     return Response.json({ success: true, message: '注册成功' });
 

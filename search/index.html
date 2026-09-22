@@ -193,6 +193,8 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     </div>
   </div>
 
+  <div id="rateLimitInfo" style="text-align:center;font-size:12px;color:#94a3b8;margin-bottom:12px;display:none;"></div>
+
   <div class="results" id="results">
     <div class="empty">
       <div class="empty-icon">🔍</div>
@@ -332,6 +334,7 @@ function resetReadingSubTabs() {
 }
 
 var currentPage = 1;
+var TOKEN_KEY = 'user_auth_token';
 
 function doSearch(q) {
   var resultsEl = document.getElementById('results');
@@ -352,9 +355,31 @@ function doSearch(q) {
   }
   url += 'page=' + currentPage + '&limit=20';
 
-  fetch(url)
-    .then(function(r) { return r.json(); })
+  var headers = {};
+  var token = localStorage.getItem(TOKEN_KEY);
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+
+  fetch(url, { headers: headers })
+    .then(function(r) {
+      if (r.status === 429) {
+        return r.json().then(function(data) {
+          throw { rateLimited: true, data: data };
+        });
+      }
+      return r.json();
+    })
     .then(function(data) {
+      // 显示剩余次数
+      var infoEl = document.getElementById('rateLimitInfo');
+      if (data.remaining !== undefined && data.limit) {
+        infoEl.style.display = 'block';
+        if (data.remaining <= 2) {
+          infoEl.innerHTML = '今日剩余搜索次数：<b style="color:#f59e0b;">' + data.remaining + '</b> 次（共' + data.limit + '次）';
+        } else {
+          infoEl.innerHTML = '今日剩余搜索次数：' + data.remaining + ' / ' + data.limit;
+        }
+      }
+
       if (!data.success || !data.results || data.results.length === 0) {
         var msg = q ? '没有找到相关资源，试试其他关键词？' : '暂无该类型资源';
         resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">' + msg + '</div></div>';
@@ -390,7 +415,15 @@ function doSearch(q) {
       html += '<div class="result-count">共 ' + data.total + ' 条资源</div>';
       resultsEl.innerHTML = html;
     })
-    .catch(function() {
+    .catch(function(err) {
+      if (err && err.rateLimited) {
+        var infoEl = document.getElementById('rateLimitInfo');
+        infoEl.style.display = 'block';
+        infoEl.innerHTML = '<span style="color:#ef4444;">' + (err.data.message || '今日搜索次数已用完') + '</span>';
+        var loginLink = token ? '' : ' <a href="/search/profile/" style="color:#2563eb;">去登录</a>';
+        resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">🚫</div><div class="empty-text">' + (err.data.message || '今日搜索次数已用完') + loginLink + '</div></div>';
+        return;
+      }
       resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">搜索出错，请稍后重试</div></div>';
     });
 }
