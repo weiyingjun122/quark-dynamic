@@ -268,6 +268,21 @@ body { padding-top: 56px !important; }
       <div class="td-card"><span class="td-ico">&#x1F4F1;</span><div><b>响应式设计</b><p>完美适配桌面和移动端，在任何设备上都能流畅使用。</p></div></div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">&#x1F4E3;</span><div><b>技术文档撰写</b><p>程序员和技术写作者经常使用Markdown编写API文档、技术博客、README文件等。通过本工具可以快速将Markdown源码转换为正式的Word文档，方便提交给团队审阅或归档。</p></div></div>
+      <div class="td-card"><span class="td-ico">&#x1F3AF;</span><div><b>论文与报告整理</b><p>学术论文、项目报告的初稿常用Markdown撰写，排版简洁高效。转换为Word格式后，可方便地添加页眉页脚、目录、页码等格式，满足正式提交要求。</p></div></div>
+      <div class="td-card"><span class="td-ico">&#x1F4C5;</span><div><b>会议纪要导出</b><p>在项目协作中，会议纪要常用Markdown记录要点。使用本工具可以将Markdown格式的会议纪要转换为Word文档，便于发送邮件通知或打印存档。</p></div></div>
+      <div class="td-card"><span class="td-ico">&#x1F4F1;</span><div><b>笔记与知识管理</b><p>Obsidian、Typora等Markdown笔记工具中的内容，可以通过本工具导出为Word文档，方便分享给不熟悉Markdown的同事，或打印成纸质资料。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">&#x26A1;</span><div><b>善用预览校对</b><p>编辑时随时查看右侧实时预览，确保标题层级、列表缩进、表格对齐等格式符合预期。预览效果与最终导出的Word文档基本一致，建议养成"边写边看"的习惯。</p></div></div>
+      <div class="td-card"><span class="td-ico">&#x1F3A8;</span><div><b>巧用示例模板</b><p>点击编辑器上方的「示例」按钮加载完整示例内容，快速了解所有支持的Markdown语法。将示例内容作为模板，根据实际需求修改，能大幅提高文档编写效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">&#x1F4E4;</span><div><b>灵活导出方式</b><p>如只需部分格式内容，可使用「复制富文本」功能，将预览区内容直接粘贴到Word或邮件中。如需完整文档，点击「下载 .docx」导出标准Word文件，满足不同使用需求。</p></div></div>
+    </div>
+
     <h3>使用步骤</h3>
     <ol class="td-steps">
       <li class="td-step"><span class="step-num">1</span><div class="step-txt">在左侧编辑器中输入或粘贴Markdown内容，或拖拽.md文件加载。</div></li>
@@ -282,6 +297,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>数据会被上传到服务器吗？</b><p>不会。所有转换操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>支持中文内容吗？</b><p>完全支持。工具采用UTF-8编码处理中文、日文、韩文、Emoji等多字节字符，导出后不会出现乱码或丢失字符的问题。</p></div>
       <div class="faq-item"><b>表格能正确导出吗？</b><p>可以。Markdown表格会被转换为Word原生表格，保留表头和对齐方式，在Word中可直接编辑。</p></div>
+      <div class="faq-item"><b>图片链接能正常显示吗？</b><p>Markdown中的图片链接会被嵌入到导出的Word文档中，保持可点击访问的状态。但请注意，导出后图片仍然以链接形式存在，离线环境下可能无法显示。建议在有网络的环境下打开导出的文档。</p></div>
+      <div class="faq-item"><b>导出的Word文件排版不理想怎么办？</b><p>导出后可在Word中进一步调整格式。建议在Word中使用「样式」功能统一修改标题、正文、列表等元素的字体和间距。如对排版要求较高，可先在Markdown中使用规范的语法结构，导出效果会更好。</p></div>
+      <div class="faq-item"><b>支持批量转换多个文件吗？</b><p>目前支持单次转换一个文件。如需批量处理多个Markdown文件，可逐个打开并导出。建议将多个文件合并为一个较长的Markdown文档后一次性转换，提高工作效率。</p></div>
     </div>
   </div>
 </main>
@@ -295,7 +313,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "导出的DOCX文件可以用Word打开吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。导出的DOCX是标准的Office Open XML格式，兼容Microsoft Word、WPS、Google Docs等主流办公软件。" } },
     { "@type": "Question", "name": "数据会被上传到服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有转换操作均在浏览器本地通过JavaScript完成，数据不经过任何服务器。" } },
     { "@type": "Question", "name": "支持中文内容吗？", "acceptedAnswer": { "@type": "Answer", "text": "完全支持。工具采用UTF-8编码处理中文、日文、韩文、Emoji等多字节字符，导出后不会出现乱码或丢失字符的问题。" } },
-    { "@type": "Question", "name": "表格能正确导出吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。Markdown表格会被转换为Word原生表格，保留表头和对齐方式，在Word中可直接编辑。" } }
+    { "@type": "Question", "name": "表格能正确导出吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。Markdown表格会被转换为Word原生表格，保留表头和对齐方式，在Word中可直接编辑。" } },
+    { "@type": "Question", "name": "图片链接能正常显示吗？", "acceptedAnswer": { "@type": "Answer", "text": "Markdown中的图片链接会被嵌入到导出的Word文档中，保持可点击访问的状态。但请注意，导出后图片仍然以链接形式存在，离线环境下可能无法显示。" } },
+    { "@type": "Question", "name": "导出的Word文件排版不理想怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "导出后可在Word中进一步调整格式。建议在Word中使用样式功能统一修改标题、正文、列表等元素的字体和间距。" } },
+    { "@type": "Question", "name": "支持批量转换多个文件吗？", "acceptedAnswer": { "@type": "Answer", "text": "目前支持单次转换一个文件。如需批量处理多个Markdown文件，可逐个打开并导出，或将多个文件合并为一个文档后一次性转换。" } }
   ]
 }
 </script>
