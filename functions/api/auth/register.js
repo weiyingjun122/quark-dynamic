@@ -57,14 +57,13 @@ export async function onRequestPost(context) {
     }
   }
 
-  // IP 注册限制：每天最多2个
-  const today = new Date().toISOString().split('T')[0];
+  // IP 注册限制：每个IP永久最多2个账号
   const ipLimit = await env.RESOURCES_DB.prepare(
-    'SELECT count FROM register_limits WHERE ip = ? AND date = ?'
-  ).bind(ip, today).first();
+    'SELECT count FROM register_limits WHERE ip = ?'
+  ).bind(ip).first();
 
   if (ipLimit && ipLimit.count >= 2) {
-    return Response.json({ success: false, error: '该IP今日注册次数已达上限，请明天再试' });
+    return Response.json({ success: false, error: '该IP注册次数已达上限' });
   }
 
   if (!username || !email || !password) {
@@ -104,15 +103,15 @@ export async function onRequestPost(context) {
       "INSERT INTO users (username, email, password_hash, nickname, points) VALUES (?, ?, ?, ?, 10)"
     ).bind(username, email, finalHash, nickname || username).run();
 
-    // 更新IP注册次数
+    // 更新IP注册次数（永久累计）
     if (ipLimit) {
       await env.RESOURCES_DB.prepare(
-        'UPDATE register_limits SET count = count + 1 WHERE ip = ? AND date = ?'
-      ).bind(ip, today).run();
+        'UPDATE register_limits SET count = count + 1 WHERE ip = ?'
+      ).bind(ip).run();
     } else {
       await env.RESOURCES_DB.prepare(
-        'INSERT INTO register_limits (ip, date, count) VALUES (?, ?, 1)'
-      ).bind(ip, today).run();
+        'INSERT INTO register_limits (ip, count) VALUES (?, 1)'
+      ).bind(ip).run();
     }
 
     return Response.json({ success: true, message: '注册成功' });
