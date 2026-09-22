@@ -388,7 +388,9 @@ function doSearch(q) {
       var html = '';
       data.results.forEach(function(item) {
         var date = item.created_at ? item.created_at.substring(0, 10) : '';
-        html += '<div class="result-item" onclick="window.open(\'' + escapeHtml(item.link) + '\',\'_blank\')">';
+        var link = escapeHtml(item.link);
+        var id = item.id;
+        html += '<div class="result-item" onclick="clickResource(' + id + ',\'' + link + '\')">';
         html += '<div class="result-info">';
         html += '<div class="result-title">' + escapeHtml(item.title) + '</div>';
         html += '<div class="result-meta">' + escapeHtml(item.type || '') + (date ? ' · ' + date : '') + (item.view_count ? ' · ' + item.view_count + '次查看' : '') + '</div>';
@@ -437,6 +439,46 @@ function goPage(p) {
 function escapeHtml(s) {
   if (!s) return '';
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function clickResource(id, link) {
+  var headers = {};
+  var token = localStorage.getItem(TOKEN_KEY);
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  headers['Content-Type'] = 'application/json';
+
+  fetch('/api/resources/view', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ id: id })
+  })
+  .then(function(r) {
+    if (r.status === 429) {
+      return r.json().then(function(data) {
+        var infoEl = document.getElementById('rateLimitInfo');
+        infoEl.style.display = 'block';
+        infoEl.innerHTML = '<span style="color:#ef4444;">' + (data.message || '今日使用次数已用完') + '</span>';
+        return null;
+      });
+    }
+    return r.json();
+  })
+  .then(function(data) {
+    if (data && data.remaining !== undefined) {
+      var infoEl = document.getElementById('rateLimitInfo');
+      if (data.remaining <= 2) {
+        infoEl.innerHTML = '今日剩余次数：<b style="color:#f59e0b;">' + data.remaining + '</b> 次（共' + data.limit + '次）';
+      } else {
+        infoEl.innerHTML = '今日剩余次数：' + data.remaining + ' / ' + data.limit;
+      }
+    }
+    if (data && data.success !== false) {
+      window.open(link, '_blank');
+    }
+  })
+  .catch(function() {
+    window.open(link, '_blank');
+  });
 }
 
 document.getElementById('searchBtn').addEventListener('click', function() {
