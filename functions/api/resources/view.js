@@ -29,12 +29,17 @@ export async function onRequestPost(context) {
   let isLogged = false;
   const authHeader = request.headers.get('Authorization');
   if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.slice(7);
-    const payload = await verifyToken(token, env.JWT_SECRET || 'wyj-resource-site-secret-2026');
-    if (payload && payload.id) {
-      identifier = 'user:' + payload.id;
-      isLogged = true;
-    }
+    try {
+      const token = authHeader.slice(7);
+      const parts = token.split('.');
+      if (parts.length === 3) {
+        const payload = JSON.parse(atob(parts[1]));
+        if (payload.id) {
+          identifier = 'user:' + payload.id;
+          isLogged = true;
+        }
+      }
+    } catch (e) {}
   }
   if (!identifier) {
     identifier = 'ip:' + (request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown');
@@ -81,26 +86,5 @@ export async function onRequestPost(context) {
 
   } catch (err) {
     return Response.json({ success: false, error: '记录失败' });
-  }
-}
-
-// JWT验证函数
-async function verifyToken(token, secret) {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const payload = JSON.parse(atob(parts[1]));
-    if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return null;
-    const encoder = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      'raw', encoder.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']
-    );
-    const valid = await crypto.subtle.verify(
-      'HMAC', key, Uint8Array.from(atob(parts[2]), c => c.charCodeAt(0)),
-      encoder.encode(parts[0] + '.' + parts[1])
-    );
-    return valid ? payload : null;
-  } catch (e) {
-    return null;
   }
 }
