@@ -193,7 +193,10 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     </div>
   </div>
 
-  <div id="rateLimitInfo" style="text-align:center;font-size:12px;color:#94a3b8;margin-bottom:12px;display:none;"></div>
+  <div id="rateLimitInfo" class="rate-limit-bar" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#64748b;">
+    <span id="limitIcon">📊</span>
+    <span id="limitText">正在获取次数信息...</span>
+  </div>
 
   <div class="results" id="results">
     <div class="empty">
@@ -411,6 +414,57 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
+function updateLimitBar(remaining, limit) {
+  var icon = document.getElementById('limitIcon');
+  var text = document.getElementById('limitText');
+  var bar = document.getElementById('rateLimitInfo');
+  bar.style.display = 'flex';
+  if (remaining <= 0) {
+    icon.textContent = '🚫';
+    text.innerHTML = '今日可用次数已用完';
+    bar.style.background = '#fef2f2';
+    bar.style.borderColor = '#fecaca';
+    bar.style.color = '#dc2626';
+  } else if (remaining <= 1) {
+    icon.textContent = '⚠️';
+    text.innerHTML = '今日剩余 <b style="color:#dc2626;">' + remaining + '</b> 次（共' + limit + '次）';
+    bar.style.background = '#fef2f2';
+    bar.style.borderColor = '#fecaca';
+    bar.style.color = '#dc2626';
+  } else if (remaining <= 2) {
+    icon.textContent = '⚡';
+    text.innerHTML = '今日剩余 <b style="color:#d97706;">' + remaining + '</b> 次（共' + limit + '次）';
+    bar.style.background = '#fffbeb';
+    bar.style.borderColor = '#fde68a';
+    bar.style.color = '#92400e';
+  } else {
+    icon.textContent = '✅';
+    text.innerHTML = '今日剩余 ' + remaining + ' / ' + limit + ' 次';
+    bar.style.background = '#f0fdf4';
+    bar.style.borderColor = '#bbf7d0';
+    bar.style.color = '#166534';
+  }
+}
+
+function loadLimitInfo() {
+  var headers = {};
+  var token = localStorage.getItem(TOKEN_KEY);
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  fetch('/api/resources/limit', { headers: headers })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.remaining !== undefined) {
+        updateLimitBar(data.remaining, data.limit);
+      }
+    })
+    .catch(function() {
+      document.getElementById('limitText').textContent = '点击资源消耗次数（未登录3次/登录5次）';
+      document.getElementById('limitIcon').textContent = '📊';
+    });
+}
+
+loadLimitInfo();
+
 function clickResource(id, link) {
   var headers = {};
   var token = localStorage.getItem(TOKEN_KEY);
@@ -425,11 +479,12 @@ function clickResource(id, link) {
   .then(function(r) {
     if (r.status === 429) {
       return r.json().then(function(data) {
-        var infoEl = document.getElementById('rateLimitInfo');
-        infoEl.style.display = 'block';
+        updateLimitBar(0, data.limit || 3);
         var hasToken = localStorage.getItem(TOKEN_KEY);
-        var loginLink = hasToken ? '' : ' <a href="/search/profile/" style="color:#2563eb;text-decoration:underline;">去登录</a>';
-        infoEl.innerHTML = '<span style="color:#ef4444;">' + (data.message || '今日使用次数已用完') + loginLink + '</span>';
+        if (!hasToken) {
+          var text = document.getElementById('limitText');
+          text.innerHTML += ' <a href="/search/profile/" style="color:#2563eb;text-decoration:underline;font-weight:600;">去登录</a>';
+        }
         return null;
       });
     }
@@ -437,12 +492,7 @@ function clickResource(id, link) {
   })
   .then(function(data) {
     if (data && data.remaining !== undefined) {
-      var infoEl = document.getElementById('rateLimitInfo');
-      if (data.remaining <= 2) {
-        infoEl.innerHTML = '今日剩余次数：<b style="color:#f59e0b;">' + data.remaining + '</b> 次（共' + data.limit + '次）';
-      } else {
-        infoEl.innerHTML = '今日剩余次数：' + data.remaining + ' / ' + data.limit;
-      }
+      updateLimitBar(data.remaining, data.limit);
     }
     if (data && data.success !== false) {
       window.open(link, '_blank');
