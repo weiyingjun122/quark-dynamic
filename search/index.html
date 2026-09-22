@@ -14,7 +14,8 @@
 <meta property="og:url" content="https://www.weiyingjun.top/search/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="实用资源整理站">
-    <meta property="og:image" content="https://www.weiyingjun.top/static/logo.svg">
+    <meta property="og:image" content="https://www.weiyingjun.top/static/logo.png">
+<link rel="manifest" href="/search/manifest.json">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"实用资源整理站","url":"https://www.weiyingjun.top/","description":"免费在线工具与资源搜索","inLanguage":"zh-CN","potentialAction":{"@type":"SearchAction","target":"https://www.weiyingjun.top/search/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
@@ -75,6 +76,18 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 .sub-tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
 .result-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
 .result-tag{font-size:11px;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:8px}
+
+/* 响应式样式 */
+@media (max-width: 600px) {
+  .navbar-links{gap:14px;font-size:13px}
+  .navbar-inner{padding:0 12px}
+  .tabs{gap:6px}
+  .tab{padding:8px 14px;font-size:13px}
+  .sub-tab{padding:6px 12px;font-size:12px}
+  h1{font-size:24px}
+  .search-box input{padding:12px 14px;font-size:15px}
+  .search-box button{padding:12px 20px;font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -192,6 +205,14 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     <p>本站是一个开放的资源索引平台，<b>不产生、不存储、不分发任何资源内容</b>。所有链接均由用户自愿提交，经人工审核后展示。</p>
     <p>本站仅提供链接聚合与搜索服务，所有资源版权归原作者或权利人所有。如您发现侵权内容，请通过 <a href="/dmca.html">DMCA投诉</a> 通知我们，我们将在 24 小时内处理。</p>
     <p>欢迎提交优质资源：<a href="/search/submit/">提交资源</a></p>
+  </div>
+
+  <div class="about-box" style="margin-top:16px;">
+    <h3>资源分类说明</h3>
+    <p><b>教育学习</b>：涵盖少儿、小学、初中、高中、专升本、大学、四六级、考研、教资等各阶段学习资料。</p>
+    <p><b>剧本杀</b>：提供各类剧本杀资源，支持按人数和类型筛选，包括硬核推理、情感、恐怖、欢乐等类型。</p>
+    <p><b>语文阅读</b>：包含语文阅读一区、二区、英汉双语阅读、半小时漫画、知乎盐选、四大名著、豆瓣畅销书、百科全书等阅读资源。</p>
+    <p><b>兴趣技能</b>：包括摄影剪辑、付费课程、编程开发、媒体运营、学习攻略等实用技能资料。</p>
   </div>
 
   <div class="disclaimer">
@@ -390,7 +411,7 @@ function goPage(p) {
 
 function escapeHtml(s) {
   if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
 document.getElementById('searchBtn').addEventListener('click', function() {
@@ -408,8 +429,8 @@ var initQ = urlParams.get('q');
 var initType = urlParams.get('type');
 var initPlayer = urlParams.get('player_count');
 var initGenre = urlParams.get('genre');
-var initHobby = urlParams.get('keywords');
-var initReading = urlParams.get('keywords');
+var initHobby = urlParams.get('hobby');
+var initReading = urlParams.get('reading');
 if (initQ) {
   document.getElementById('searchInput').value = initQ;
 }
@@ -490,6 +511,11 @@ document.getElementById('dailyQuote').textContent = quotes[today % quotes.length
 
 if (initQ || initType) {
   doSearch(initQ || '');
+}
+
+// 注册 Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/search/sw.js').catch(function() {});
 }
 </script>
 </body>
