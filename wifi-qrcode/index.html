@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WiFi二维码生成器 - 扫码连WiFi</title>
-<meta name="description" content="免费在线WiFi二维码生成器，输入WiFi名称和密码即可生成二维码，手机扫一扫即可连接WiFi，适合餐厅、酒店、办公场所使用。">
+<meta name="description" content="免费在线WiFi二维码生成器，输入WiFi名称和密码即可生成二维码，手机扫一扫即可连接WiFi。支持WPA/WPA2/WPA3/WEP加密，本地安全生成，适合餐厅、酒店、办公场所、家庭聚会使用。">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://www.weiyingjun.top/wifi-qrcode/">
 <meta property="og:type" content="website">
@@ -229,12 +229,30 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">预览二维码，可下载PNG或SVG格式，打印张贴供客人扫码连接。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🍽️</span><div><b>餐饮门店</b><p>餐厅、咖啡厅、奶茶店等场所可以将WiFi二维码打印出来放在桌面或收银台，顾客扫码即可连接，避免反复询问密码的尴尬，提升顾客体验。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏨</span><div><b>酒店民宿</b><p>酒店前台或房间内放置WiFi二维码，住客无需记忆复杂密码，扫码即连。特别适合接待外国旅客，消除语言障碍，提高入住满意度。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>办公场所</b><p>公司会议室、接待区放置WiFi二维码，访客来访时快速连接网络，无需IT人员逐一告知密码，提升商务接待效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏠</span><div><b>家庭聚会</b><p>朋友来家里做客时，生成一个WiFi二维码发给他们，比口述一长串密码方便得多。二维码还可以打印贴在冰箱上，方便家人随时连接。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🎨</span><div><b>美化二维码</b><p>下载SVG格式后，可以用设计软件添加品牌Logo、店铺名称或装饰边框，让二维码与整体装修风格更加协调美观。</p></div></div>
+      <div class="td-card"><span class="td-ico">📐</span><div><b>选择合适尺寸</b><p>用于桌面立牌建议选择300×300，用于大幅海报或展架建议选择400×400，确保手机能轻松识别。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔄</span><div><b>定期更换密码</b><p>建议每隔一段时间更换WiFi密码并重新生成二维码，既能保障网络安全，又能避免非授权人员长期使用你的WiFi。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>WiFi密码会上传服务器吗？</b><p>不会。所有生成过程均在浏览器本地完成，WiFi密码不经过任何服务器，可放心使用。</p></div>
       <div class="faq-item"><b>哪些手机支持扫描WiFi二维码？</b><p>大多数安卓手机和iPhone（iOS 11及以上）的相机或扫码工具都支持自动识别WiFi二维码并连接。</p></div>
       <div class="faq-item"><b>WPA和WEP有什么区别？</b><p>WPA是目前最常用的WiFi加密方式，安全性较高；WEP是较旧的加密方式，安全性较低。建议选择WPA。</p></div>
       <div class="faq-item"><b>可以修改已生成的WiFi信息吗？</b><p>二维码生成后无法修改，如需更改WiFi信息，需要重新生成新的二维码。</p></div>
+      <div class="faq-item"><b>WiFi名称包含中文或特殊字符怎么办？</b><p>本工具已对特殊字符进行自动转义处理，您可以正常输入中文WiFi名称或包含分号、引号等特殊字符的名称，生成的二维码均可正常扫码连接。</p></div>
+      <div class="faq-item"><b>扫码后提示无法连接怎么办？</b><p>请先确认WiFi名称和密码是否正确，特别注意大小写和空格。另外请确保您扫描时处于WiFi信号覆盖范围内，部分手机需要在WiFi设置页面手动点击连接。</p></div>
+      <div class="faq-item"><b>能否生成不显示密码的二维码？</b><p>WiFi二维码的标准格式会将密码编码在二维码中，这是扫码连接的必要信息。但您可以通过添加装饰遮挡部分区域（需保留关键扫描区域）来增加视觉隐私。也可以选择「无密码（开放）」模式生成不带密码的二维码。</p></div>
     </div>
   </div>
 </main>
@@ -247,7 +265,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     { "@type": "Question", "name": "WiFi密码会上传服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有生成过程均在浏览器本地完成，WiFi密码不经过任何服务器。" } },
     { "@type": "Question", "name": "哪些手机支持扫描WiFi二维码？", "acceptedAnswer": { "@type": "Answer", "text": "大多数安卓手机和iPhone（iOS 11及以上）的相机或扫码工具都支持自动识别WiFi二维码并连接。" } },
     { "@type": "Question", "name": "WPA和WEP有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "WPA是目前最常用的WiFi加密方式，安全性较高；WEP是较旧的加密方式，安全性较低。" } },
-    { "@type": "Question", "name": "可以修改已生成的WiFi信息吗？", "acceptedAnswer": { "@type": "Answer", "text": "二维码生成后无法修改，如需更改WiFi信息，需要重新生成新的二维码。" } }
+    { "@type": "Question", "name": "可以修改已生成的WiFi信息吗？", "acceptedAnswer": { "@type": "Answer", "text": "二维码生成后无法修改，如需更改WiFi信息，需要重新生成新的二维码。" } },
+    { "@type": "Question", "name": "WiFi名称包含中文或特殊字符怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "本工具已对特殊字符进行自动转义处理，您可以正常输入中文WiFi名称或包含分号、引号等特殊字符的名称，生成的二维码均可正常扫码连接。" } },
+    { "@type": "Question", "name": "扫码后提示无法连接怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "请先确认WiFi名称和密码是否正确，特别注意大小写和空格。另外请确保您扫描时处于WiFi信号覆盖范围内。" } },
+    { "@type": "Question", "name": "能否生成不显示密码的二维码？", "acceptedAnswer": { "@type": "Answer", "text": "WiFi二维码的标准格式会将密码编码在二维码中，这是扫码连接的必要信息。也可以选择无密码（开放）模式生成不带密码的二维码。" } }
   ]
 }
 </script>
