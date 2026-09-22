@@ -303,6 +303,19 @@ body { padding-top: 56px !important; }
       <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只留在浏览器中，关闭页面即清除，不上传服务器。</p></div></div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>企业入职核验</b><p>HR 在办理员工入职手续时，可通过本工具批量校验身份证号码的真伪与有效性，快速筛选出异常号码，降低用工风险，提升背调效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🛒</span><div><b>电商实名审核</b><p>电商平台或在线服务在进行实名认证时，可利用本工具验证用户提交的身份证号格式是否合法，归属地信息是否匹配，辅助判断是否存在伪造身份的风险。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>活动报名登记</b><p>线下会议、培训、比赛等需要实名报名的场景中，组织方可用本工具批量核对报名者身份证信息的完整性与合法性，确保参与者身份真实可靠。</p></div></div>
+      <div class="td-card"><span class="td-ico">📚</span><div><b>数据清洗与治理</b><p>在数据仓库建设或数据迁移过程中，身份证字段常存在脏数据。利用本工具可批量识别无效号码、重复记录及格式错误，为数据治理提供基础支撑。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <p><b>1. 善用批量校验功能。</b>如果你有大量身份证号码需要校验，建议直接使用批量校验区域。将号码粘贴到文本框中，每行一个，也可以用空格、逗号或分号分隔。勾选「号码去重」可自动过滤重复项，勾选「仅显示合法号码」可隐藏不合规记录，大幅提升处理效率。</p>
+    <p><b>2. 校验结果可一键导出。</b>批量校验完成后，点击「导出 TXT」或「导出 CSV」按钮即可将结果保存为本地文件。CSV 文件可直接用 Excel 或 WPS 打开，方便后续整理、归档或与其他系统进行数据对接。</p>
+    <p><b>3. 注意区分 15 位与 18 位身份证。</b>本工具同时支持 15 位旧版身份证和 18 位新版身份证。15 位身份证号出生于 2000 年之前，校验时工具会自动进行升位处理。如果你的号码来自不同年代的记录，无需手动转换，工具会智能识别并正确校验。</p>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>校验结果可信吗？</b><p>工具严格依据国家标准 GB 11643-1999 的校验码算法，同时校验格式、出生日期合理性、地址码有效性与校验码一致性，能精确识别号码是否合法。</p></div>
@@ -310,6 +323,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>身份证号会上传服务器吗？</b><p>不会。所有校验与分析都在浏览器本地完成，号码不上传任何服务器，关闭页面即清除。</p></div>
       <div class="faq-item"><b>可以批量校验吗？</b><p>可以。支持一次粘贴多个号码批量校验，自动去重、过滤无效，并支持导出 TXT / CSV。</p></div>
       <div class="faq-item"><b>归属地数据准确吗？</b><p>归属地依据国家行政区划代码解析省份/城市/区县，代码库会随官方行政区划调整定期维护更新。</p></div>
+      <div class="faq-item"><b>校验码显示"X"是什么意思？</b><p>身份证最后一位是校验码，取值范围为0-9和X。当校验码计算结果为10时，用大写字母X表示。这是国家标准的合法设计，X不是错误标记。</p></div>
+      <div class="faq-item"><b>为什么有些号码显示"校验码错误"？</b><p>出现此情况通常是因为身份证号被手动修改过某一位，或录入时出现了笔误。校验码与前17位数字严格绑定，任何一位的变化都会导致校验码不匹配。</p></div>
+      <div class="faq-item"><b>导出的文件打开有乱码怎么办？</b><p>导出的TXT和CSV文件采用UTF-8编码。如果用记事本打开出现乱码，请尝试用Excel或WPS打开CSV文件，打开时选择UTF-8编码即可正常显示。</p></div>
     </div>
   </div>
 </main>
@@ -323,7 +339,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "支持 15 位身份证吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持。可自动识别 15 位与 18 位号码，并对 15 位做升位与一致性校验。" } },
     { "@type": "Question", "name": "身份证号会上传服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。校验全程在浏览器本地完成，号码不上传服务器，隐私安全。" } },
     { "@type": "Question", "name": "可以批量校验吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。支持批量粘贴校验，自动去重过滤无效，并可导出 TXT/CSV。" } },
-    { "@type": "Question", "name": "身份证归属地数据准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "归属地依据身份证前6位行政区域码解析，代码随官方调整更新。" } }
+    { "@type": "Question", "name": "身份证归属地数据准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "归属地依据身份证前6位行政区域码解析，代码随官方调整更新。" } },
+    { "@type": "Question", "name": "校验码显示X是什么意思？", "acceptedAnswer": { "@type": "Answer", "text": "身份证最后一位是校验码，取值0-9和X。计算结果为10时用X表示，这是国家标准的合法设计。" } },
+    { "@type": "Question", "name": "为什么有些号码显示校验码错误？", "acceptedAnswer": { "@type": "Answer", "text": "通常因身份证号被修改过某一位或录入笔误导致，校验码与前17位严格绑定，任何变化都会导致不匹配。" } },
+    { "@type": "Question", "name": "导出的文件打开有乱码怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "导出文件采用UTF-8编码，用Excel或WPS打开CSV文件时选择UTF-8编码即可正常显示。" } }
   ]
 }
 </script>

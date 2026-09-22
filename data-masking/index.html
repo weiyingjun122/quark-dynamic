@@ -292,6 +292,14 @@ body { padding-top: 56px !important; }
     <p>本工具是一款免费在线的隐私数据保护工具，支持对手机号码、电子邮箱、身份证号、真实姓名、银行卡号等敏感信息进行批量脱敏（打码）处理。无论是测试数据、演示文档、日志文件还是待共享的数据表格，粘贴进来即可一键将隐私部分替换为星号，既保留数据格式与识别信息，又有效防止隐私泄露。</p>
     <p>脱敏规则遵循「最小必要」原则：仅保留业务判断所需的少量前缀与后缀，其余部分统一隐藏。所有计算均在浏览器本地完成，数据不经过任何服务器，关闭页面即全部清除，安全隐私零顾虑。</p>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>企业数据共享</b><p>跨部门共享客户名单、员工花名册时，批量脱敏手机号与身份证号，既满足业务需要又符合数据安全规范，避免因信息泄露带来的法律风险。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧪</span><div><b>测试数据准备</b><p>开发和测试环境中需要大量模拟数据时，可将生产数据脱敏后使用，保留数据格式与统计分布特征，同时确保真实用户信息不被暴露。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>文档与报告发布</b><p>撰写内部报告、案例分析或公开发表文章时，对涉及的姓名、邮箱、银行卡号等信息脱敏处理，保护当事人隐私合规发布内容。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>系统日志排查</b><p>排查线上问题时需要共享日志文件，日志中往往包含用户手机号、身份证等信息，脱敏后可安全地将日志交给多人协作排查。</p></div></div>
+    </div>
+
     <h3>工具特点</h3>
     <div class="td-grid">
       <div class="td-card"><span class="td-ico">📱</span><div><b>手机号脱敏</b><p>保留前 3 位和后 4 位，中间 4 位打码，如 138****5678。</p></div></div>
@@ -309,6 +317,13 @@ body { padding-top: 56px !important; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「开始脱敏」，查看结果并可一键复制、导出。</div></li>
     </ol>
 
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🔀</span><div><b>混合文本一次处理</b><p>如果输入文本中同时包含手机号和身份证号等不同类型信息，可分别选择对应类型多次处理。系统会精准匹配目标格式，不会误伤无关内容。</p></div></div>
+      <div class="td-card"><span class="td-ico">📎</span><div><b>拖拽文件快捷导入</b><p>直接将 txt 或 csv 文件拖入文本框即可自动读取内容并执行脱敏，无需额外点击上传按钮，大幅提升批量处理效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">⚡</span><div><b>选择合适掩码符号</b><p>如需在文档中保持视觉统一，可切换为井号 # 或圆点 • 掩码，使其与现有格式风格一致，方便后续引用与排版。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>脱敏的数据会被上传吗？</b><p>不会。手机号、身份证、邮箱等所有数据均在您的浏览器本地完成处理，不经过任何服务器，可放心处理敏感信息。</p></div>
@@ -316,6 +331,9 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>手机号脱敏后保留哪些部分？</b><p>默认保留前 3 位和后 4 位，中间 4 位打码（如 138****5678），既能识别运营商归属，又保护了完整号码。</p></div>
       <div class="faq-item"><b>身份证 15 位旧号码能处理吗？</b><p>可以。15 位号码同样保留前 6 位地区码和后 4 位，中间出生日期部分打码；18 位号码末位 X 不区分大小写。</p></div>
       <div class="faq-item"><b>掩码符号可以自定义吗？</b><p>可以。支持星号 *、井号 #、圆点 • 三种掩码符号，结果支持复制全部、导出 TXT 或 Excel（CSV 格式）。</p></div>
+      <div class="faq-item"><b>导出的 Excel 文件如何打开？</b><p>点击「导出 Excel」后下载的是 CSV 格式文件，可直接用 Excel、WPS 等办公软件打开。文件已加入 BOM 头，中文不会乱码。</p></div>
+      <div class="faq-item"><b>数据量很大时会影响性能吗？</b><p>一般几万条数据可在秒级内完成处理。如遇到超大规模数据（十万条以上），建议分批粘贴处理，避免浏览器因内存占用过高而变慢。</p></div>
+      <div class="faq-item"><b>可以同时对多种类型批量脱敏吗？</b><p>目前每次只能选择一种类型进行脱敏。如果数据中包含多种敏感信息，建议先处理一种类型，复制结果后再粘贴回来处理下一种类型。</p></div>
     </div>
   </div>
 
@@ -329,7 +347,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "支持批量处理吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持直接粘贴多行数据，或上传 txt、csv、html、log 文件批量脱敏。" } },
     { "@type": "Question", "name": "手机号脱敏后保留哪些部分？", "acceptedAnswer": { "@type": "Answer", "text": "保留前 3 位和后 4 位，中间 4 位打码，如 138****5678。" } },
     { "@type": "Question", "name": "身份证 15 位旧号码能处理吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以，15 位号码同样保留前 6 位和后 4 位，中间打码，末位 X 不区分大小写。" } },
-    { "@type": "Question", "name": "掩码符号可以自定义吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持星号 *、井号 #、圆点 • 三种掩码符号，并支持复制全部、导出 TXT 或 Excel。" } }
+    { "@type": "Question", "name": "掩码符号可以自定义吗？", "acceptedAnswer": { "@type": "Answer", "text": "支持星号 *、井号 #、圆点 • 三种掩码符号，并支持复制全部、导出 TXT 或 Excel。" } },
+    { "@type": "Question", "name": "导出的 Excel 文件如何打开？", "acceptedAnswer": { "@type": "Answer", "text": "点击「导出 Excel」后下载的是 CSV 格式文件，可直接用 Excel、WPS 等办公软件打开，文件已加入 BOM 头防止中文乱码。" } },
+    { "@type": "Question", "name": "数据量很大时会影响性能吗？", "acceptedAnswer": { "@type": "Answer", "text": "一般几万条数据可在秒级内完成。超大规模数据（十万条以上）建议分批粘贴处理，避免浏览器内存占用过高。" } },
+    { "@type": "Question", "name": "可以同时对多种类型批量脱敏吗？", "acceptedAnswer": { "@type": "Answer", "text": "目前每次只能选择一种类型。如数据含多种敏感信息，建议先处理一种，复制结果后再粘贴回来处理下一种类型。" } }
   ]
 }
 </script>

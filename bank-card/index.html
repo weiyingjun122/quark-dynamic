@@ -288,7 +288,25 @@ body { padding-top: 56px !important; }
       <div class="faq-item"><b>查询支持哪些银行？</b><p>支持国内绝大多数银行发行的借记卡、信用卡、准贷记卡，例如工行、农行、中行、建行、交行、招行、兴业、浦发、光大、华夏、广发、民生、中信、平安等。</p></div>
       <div class="faq-item"><b>查询的卡号会被保存吗？</b><p>不会。本工具只把卡号发送到查询接口做 BIN 匹配，不存储、不记录任何输入的卡号信息，您随时可以放心使用。</p></div>
       <div class="faq-item"><b>结果一定准确吗？</b><p>查询结果基于公开 BIN 数据库与发卡行识别码匹配，绝大多数情况准确；个别新卡种或联名卡可能存在偏差，最终归属请以银行官方答复为准。</p></div>
+      <div class="faq-item"><b>信用卡和借记卡能一起查询吗？</b><p>可以。本工具同时支持借记卡、信用卡和准贷记卡的查询，输入任意一种卡号前 12 位即可自动识别卡类型并展示归属银行信息。</p></div>
+      <div class="faq-item"><b>输入部分卡号会泄露隐私吗？</b><p>不会。本工具采用纯前端匹配方式，卡号仅在浏览器本地进行 BIN 比对，不会上传至任何服务器，也不会被记录或存储，请放心使用。</p></div>
+      <div class="faq-item"><b>查询结果与银行实际不符怎么办？</b><p>个别新发行的卡种、联名卡或定制卡可能尚未收录至 BIN 数据库，建议直接拨打对应银行客服热线 955XX 进行核实确认。</p></div>
     </div>
+
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🎁</span><div><b>收到转账需确认来源</b><p>收到他人转账或陌生人汇款时，可通过卡号前 12 位快速识别对方所属银行，确认资金来源是否可靠，避免落入诈骗陷阱。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>企业财务对账</b><p>企业财务人员收到员工或供应商提供的银行卡信息后，可批量查询卡号归属，核对开户行与账户名是否一致，确保打款信息准确无误。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>遗失卡片信息找回</b><p>忘记自己的银行卡是哪家银行开的户？只需回忆卡号前 12 位，即可快速找回开户行信息，方便办理挂失或补卡业务。</p></div></div>
+      <div class="td-card"><span class="td-ico">🛡️</span><div><b>防范金融诈骗</b><p>遇到可疑的"中奖""退款"等通知，要求提供银行卡号时，可先用本工具查询卡号归属，核实对方提供的银行信息是否真实，有效防范金融诈骗。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt"><b>只需前 12 位</b> — 无需输入完整 16-19 位卡号，只填写前 12 位即可完成查询，既保护隐私又提高安全性。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt"><b>利用示例卡号</b> — 首次使用可点击页面上方的示例卡号按钮，快速体验查询流程，熟悉工具后再查询自己的真实卡号。</div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt"><b>复制结果归档</b> — 查询完成后点击「复制查询结果」按钮，可将银行名称、卡类型、BIN 等信息一键复制，方便粘贴到记事本或 Excel 中归档保存。</div></li>
+    </ol>
   </div>
 
 </main>
@@ -300,7 +318,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "为什么不需要输入完整卡号？", "acceptedAnswer": { "@type": "Answer", "text": "卡号前 6 位即 BIN（发卡行识别码）已能锁定开户银行，前 12 位用于更精确匹配。不输入完整卡号可有效避免卡号泄露风险，保护个人财务信息安全。" } },
     { "@type": "Question", "name": "查询支持哪些银行？", "acceptedAnswer": { "@type": "Answer", "text": "支持国内绝大多数银行发行的借记卡、信用卡、准贷记卡，例如工行、农行、中行、建行、交行、招行、兴业、浦发、光大、华夏、广发、民生、中信、平安等。" } },
     { "@type": "Question", "name": "查询的卡号会被保存吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。本工具只把卡号发送到查询接口做 BIN 匹配，不存储、不记录任何输入的卡号信息。" } },
-    { "@type": "Question", "name": "结果一定准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "查询结果基于公开 BIN 数据库与发卡行识别码匹配，绝大多数情况准确；个别新卡种或联名卡可能存在偏差，最终归属请以银行官方答复为准。" } }
+    { "@type": "Question", "name": "结果一定准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "查询结果基于公开 BIN 数据库与发卡行识别码匹配，绝大多数情况准确；个别新卡种或联名卡可能存在偏差，最终归属请以银行官方答复为准。" } },
+    { "@type": "Question", "name": "信用卡和借记卡能一起查询吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。本工具同时支持借记卡、信用卡和准贷记卡的查询，输入任意一种卡号前 12 位即可自动识别卡类型并展示归属银行信息。" } },
+    { "@type": "Question", "name": "输入部分卡号会泄露隐私吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。本工具采用纯前端匹配方式，卡号仅在浏览器本地进行 BIN 比对，不会上传至任何服务器，也不会被记录或存储，请放心使用。" } },
+    { "@type": "Question", "name": "查询结果与银行实际不符怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "个别新发行的卡种、联名卡或定制卡可能尚未收录至 BIN 数据库，建议直接拨打对应银行客服热线 955XX 进行核实确认。" } }
   ]
 }
 </script>

@@ -319,12 +319,30 @@ body { padding-top: 56px !important; }
       <div class="td-card"><span class="td-ico">🔒</span><div><b>隐私安全</b><p>全部数据只留在您的浏览器中，关闭页面即清除，不上传服务器。</p></div></div>
     </div>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>企业客户分拣</b><p>客服团队批量导入客户手机号，快速识别运营商归属，按省份自动分拣，精准分配给对应区域的销售人员，提升沟通效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">📢</span><div><b>营销短信群发</b><p>群发营销短信前批量校验号码有效性，过滤空号和无效号段，避免短信资源浪费，同时按运营商分组发送优惠信息。</p></div></div>
+      <div class="td-card"><span class="td-ico">🔍</span><div><b>数据清洗复核</b><p>从 Excel 或数据库导出的手机号列表中快速筛出异常号码，核对号码归属地与用户填写地区是否一致，提高数据质量。</p></div></div>
+      <div class="td-card"><span class="td-ico">📦</span><div><b>物流配送辅助</b><p>电商平台批量查询订单手机号归属地，辅助判断收件人所在区域，为仓储调拨和物流路线规划提供参考依据。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>快速粘贴批量号码</b><p>从 Excel 复制号码列后直接粘贴到输入框，工具自动识别空格、逗号、分号等分隔符，无需手动逐行输入。</p></div></div>
+      <div class="td-card"><span class="td-ico">🧹</span><div><b>善用去重与过滤</b><p>勾选「号码去重」避免重复查询，勾选「过滤无效号码」自动排除非11位手机号，确保导出结果干净准确。</p></div></div>
+      <div class="td-card"><span class="td-ico">📊</span><div><b>开启统计功能</b><p>勾选「结果显示运营商/省份统计」，查询完成后页面底部会自动生成运营商分布和省份分布卡片，一目了然。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>一次最多能查询多少个号码？</b><p>单次最多支持 500 个号码，可自动识别空格、逗号、分号或换行分隔，一次粘贴多行号码直接查询。</p></div>
       <div class="faq-item"><b>查询结果准确吗？</b><p>工具基于开源手机号段归属地库在本地完成查询，返回运营商、省份、城市、区号、邮编等信息，库会定期更新，不同版本库的行政区划命名可能存在差异。</p></div>
       <div class="faq-item"><b>号码会上传服务器吗？</b><p>不会。所有查询都在浏览器本地完成，号码不上传任何服务器，关闭页面即全部清除。</p></div>
       <div class="faq-item"><b>结果怎么导出？</b><p>支持导出 TXT 与 CSV 两种格式，CSV 可直接用 Excel/WPS 打开，方便续进行号码分拣、运营统计。</p></div>
+      <div class="faq-item"><b>为什么有些号码查不到归属地？</b><p>可能原因有三种：号码为最新放号号段尚未收录；号码属于虚拟运营商（170/171 等号段），部分版本号段库未覆盖；输入的号码并非标准 11 位手机号格式。建议检查号码是否为 1 开头的 11 位数字。</p></div>
+      <div class="faq-item"><b>号段库多久更新一次？</b><p>本工具基于开源手机号段归属地库，会随着上游开源项目的更新同步更新。如遇到新增号段查询不到的情况，建议关注开源项目获取最新版本号段库。</p></div>
+      <div class="faq-item"><b>能查询携号转网后的运营商吗？</b><p>号段库反映的是号码原始归属运营商信息。携号转网后用户的实际运营商可能已变更，本工具提示的运营商为号码号段的初始分配运营商，仅供参考。</p></div>
     </div>
   </div>
 </main>
@@ -337,7 +355,10 @@ body { padding-top: 56px !important; }
     { "@type": "Question", "name": "一次最多能查询多少个号码？", "acceptedAnswer": { "@type": "Answer", "text": "单次最多支持 500 个号码，可自动识别空格、逗号、分号或换行分隔。" } },
     { "@type": "Question", "name": "手机号查询结果准确吗？", "acceptedAnswer": { "@type": "Answer", "text": "基于开源手机号段归属地库本地查询，返回运营商、省份、城市、区号、邮编等信息。" } },
     { "@type": "Question", "name": "号码会上传服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。全部查询在浏览器本地完成，不上传服务器，隐私安全。" } },
-    { "@type": "Question", "name": "结果怎么导出？", "acceptedAnswer": { "@type": "Answer", "text": "支持导出 TXT 与 CSV 格式，CSV 可直接用 Excel 打开，方便分拣与统计。" } }
+    { "@type": "Question", "name": "结果怎么导出？", "acceptedAnswer": { "@type": "Answer", "text": "支持导出 TXT 与 CSV 格式，CSV 可直接用 Excel 打开，方便分拣与统计。" } },
+    { "@type": "Question", "name": "为什么有些号码查不到归属地？", "acceptedAnswer": { "@type": "Answer", "text": "可能原因：号码为最新放号号段尚未收录；号码属于虚拟运营商号段，部分版本号段库未覆盖；输入的号码并非标准11位手机号格式。" } },
+    { "@type": "Question", "name": "号段库多久更新一次？", "acceptedAnswer": { "@type": "Answer", "text": "本工具基于开源手机号段归属地库，会随上游开源项目更新同步更新。" } },
+    { "@type": "Question", "name": "能查询携号转网后的运营商吗？", "acceptedAnswer": { "@type": "Answer", "text": "号段库反映号码原始归属运营商信息，携号转网后实际运营商可能已变更，本工具提示的运营商为号码号段的初始分配运营商，仅供参考。" } }
   ]
 }
 </script>
