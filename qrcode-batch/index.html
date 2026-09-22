@@ -222,12 +222,30 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">查看生成的二维码网格，可点击「全部下载 ZIP」打包下载所有图片。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🛒</span><div><b>电商商品管理</b><p>为每个商品生成独立的二维码，贴在商品包装或货架上，顾客扫码即可查看商品详情、价格和评价，提升购物体验和管理效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>活动签到管理</b><p>为参会人员批量生成个人专属签到二维码，打印在胸牌或邀请函上，签到时扫码快速完成登记，大幅缩短排队等待时间。</p></div></div>
+      <div class="td-card"><span class="td-ico">📶</span><div><b>WiFi热点分享</b><p>为办公室、店铺、会议室等不同场所生成WiFi连接二维码，访客扫码即可自动连接网络，无需手动输入密码，既方便又安全。</p></div></div>
+      <div class="td-card"><span class="td-ico">📁</span><div><b>文档资料归档</b><p>为重要文件、合同、报告等生成二维码标签，贴在纸质文档或文件夹上，扫码即可查看电子版或相关信息，实现纸质与数字档案的无缝对接。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <ol class="td-steps">
+      <li class="td-step"><span class="step-num">1</span><div class="step-txt"><b>控制批量数量</b>：建议每次生成不超过100个二维码，数量过多可能导致浏览器响应变慢。如需生成更多，可分批次操作，确保流畅体验。</div></li>
+      <li class="td-step"><span class="step-num">2</span><div class="step-txt"><b>内容简洁优先</b>：二维码内容越短，生成速度越快，扫描识别率也越高。建议将长链接使用短网址服务压缩，或只包含最关键的信息。</div></div></li>
+      <li class="td-step"><span class="step-num">3</span><div class="step-txt"><b>按用途选尺寸</b>：手机屏幕展示选200×200即可；打印在A4纸上建议300×300；贴在商品小标签上可用150×150，兼顾清晰度与空间。</div></li>
+    </ol>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>最多支持多少个？</b><p>理论上没有限制，但建议单次不超过500个，以确保浏览器运行流畅。过多可能影响页面性能。</p></div>
       <div class="faq-item"><b>下载的ZIP里是什么格式？</b><p>ZIP压缩包内为PNG格式的二维码图片，每张图片以内容前20个字符命名，方便识别区分。</p></div>
       <div class="faq-item"><b>可以单独下载某个二维码吗？</b><p>可以。鼠标右键点击任意一个二维码图片，选择「图片另存为」即可单独保存。</p></div>
       <div class="faq-item"><b>生成的二维码会被上传吗？</b><p>不会。所有二维码生成均在浏览器本地完成，数据不经过任何服务器，可放心使用。</p></div>
+      <div class="faq-item"><b>支持中文内容吗？</b><p>完全支持。中文、英文、数字、特殊符号等均可生成二维码，中文内容会自动编码，扫描后可正确显示原始文字。</p></div>
+      <div class="faq-item"><b>生成的二维码有效期是多久？</b><p>二维码本身永久有效，但链接类内容取决于目标网址是否有效。如果是纯文本信息，则永远不会失效。</p></div>
+      <div class="faq-item"><b>可以自定义二维码颜色吗？</b><p>当前版本暂不支持自定义颜色，默认为黑白配色。如需彩色二维码，可使用专业设计软件后期处理。</p></div>
     </div>
   </div>
 </main>
@@ -240,7 +258,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     { "@type": "Question", "name": "最多支持多少个？", "acceptedAnswer": { "@type": "Answer", "text": "理论上没有限制，但建议单次不超过500个，以确保浏览器运行流畅。" } },
     { "@type": "Question", "name": "下载的ZIP里是什么格式？", "acceptedAnswer": { "@type": "Answer", "text": "ZIP压缩包内为PNG格式的二维码图片，每张图片以内容前20个字符命名。" } },
     { "@type": "Question", "name": "可以单独下载某个二维码吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。鼠标右键点击任意一个二维码图片，选择「图片另存为」即可单独保存。" } },
-    { "@type": "Question", "name": "生成的二维码会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有二维码生成均在浏览器本地完成，数据不经过任何服务器。" } }
+    { "@type": "Question", "name": "生成的二维码会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有二维码生成均在浏览器本地完成，数据不经过任何服务器。" } },
+    { "@type": "Question", "name": "支持中文内容吗？", "acceptedAnswer": { "@type": "Answer", "text": "完全支持。中文、英文、数字、特殊符号等均可生成二维码，中文内容会自动编码，扫描后可正确显示原始文字。" } },
+    { "@type": "Question", "name": "生成的二维码有效期是多久？", "acceptedAnswer": { "@type": "Answer", "text": "二维码本身永久有效，但链接类内容取决于目标网址是否有效。纯文本信息永远不会失效。" } },
+    { "@type": "Question", "name": "可以自定义二维码颜色吗？", "acceptedAnswer": { "@type": "Answer", "text": "当前版本暂不支持自定义颜色，默认为黑白配色。如需彩色二维码，可使用专业设计软件后期处理。" } }
   ]
 }
 </script>

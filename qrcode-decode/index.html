@@ -212,12 +212,30 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">查看识别结果，支持一键复制内容或直接打开链接。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🛒</span><div><b>商品信息查询</b><p>扫描商品包装上的二维码，快速获取产品详情、生产日期、防伪验证等信息，购物更放心。</p></div></div>
+      <div class="td-card"><span class="td-ico">📇</span><div><b>名片信息提取</b><p>扫描他人名片上的二维码，一键获取联系方式、公司信息，告别手动输入的繁琐。</p></div></div>
+      <div class="td-card"><span class="td-ico">📶</span><div><b>WiFi密码分享</b><p>扫描朋友分享的WiFi二维码，无需手动输入密码即可快速连接无线网络。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎫</span><div><b>活动报名签到</b><p>扫描会议海报或活动传单上的二维码，直接跳转报名页面或完成签到，方便快捷。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">✂️</span><div><b>裁剪优化识别</b><p>如果图片中二维码较小或周围有干扰内容，建议先裁剪图片只保留二维码区域，可以大幅提升识别成功率。</p></div></div>
+      <div class="td-card"><span class="td-ico">☀️</span><div><b>调整图片对比度</b><p>对于颜色较浅或模糊的二维码图片，可以使用图片编辑工具适当提高对比度和亮度，让二维码更加清晰。</p></div></div>
+      <div class="td-card"><span class="td-ico">📐</span><div><b>保持适当尺寸</b><p>上传的图片分辨率不宜过低，建议二维码部分至少占图片宽度的三分之一，确保每个模块都能被清晰识别。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>图片会上传到服务器吗？</b><p>不会。所有识别处理均在浏览器本地完成，图片不经过任何服务器，可放心使用。</p></div>
       <div class="faq-item"><b>识别不了怎么办？</b><p>请确保图片清晰、二维码部分完整。可以尝试裁剪图片只保留二维码区域，或使用更高分辨率的图片。</p></div>
       <div class="faq-item"><b>支持哪些二维码格式？</b><p>支持标准QR Code格式的二维码，包含文字、网址、WiFi信息、电子名片等多种内容。</p></div>
       <div class="faq-item"><b>识别结果是乱码怎么办？</b><p>部分特殊编码的二维码可能显示为乱码，这是编码格式问题，内容本身是正确的。可以复制内容后在其他工具中解析。</p></div>
+      <div class="faq-item"><b>可以识别图片中的多个二维码吗？</b><p>目前仅支持识别图片中的单个二维码。如果图片中有多个二维码，建议先裁剪图片，每次只保留一个二维码进行识别。</p></div>
+      <div class="faq-item"><b>手机截图可以识别吗？</b><p>可以。只要是清晰的二维码图片，无论是截图、照片还是下载的图片，都可以上传识别。截图时请确保二维码部分完整不被裁切。</p></div>
+      <div class="faq-item"><b>识别速度慢是什么原因？</b><p>识别速度与图片大小和设备性能有关。建议上传适当大小的图片（不超过5MB），关闭不必要的浏览器标签页可以加快处理速度。</p></div>
     </div>
   </div>
 </main>
@@ -230,7 +248,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     { "@type": "Question", "name": "图片会上传到服务器吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有识别处理均在浏览器本地完成，图片不经过任何服务器。" } },
     { "@type": "Question", "name": "识别不了怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "请确保图片清晰、二维码部分完整。可以尝试裁剪图片只保留二维码区域，或使用更高分辨率的图片。" } },
     { "@type": "Question", "name": "支持哪些二维码格式？", "acceptedAnswer": { "@type": "Answer", "text": "支持标准QR Code格式的二维码，包含文字、网址、WiFi信息、电子名片等多种内容。" } },
-    { "@type": "Question", "name": "识别结果是乱码怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "部分特殊编码的二维码可能显示为乱码，这是编码格式问题，可以复制内容后在其他工具中解析。" } }
+    { "@type": "Question", "name": "识别结果是乱码怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "部分特殊编码的二维码可能显示为乱码，这是编码格式问题，可以复制内容后在其他工具中解析。" } },
+    { "@type": "Question", "name": "可以识别图片中的多个二维码吗？", "acceptedAnswer": { "@type": "Answer", "text": "目前仅支持识别图片中的单个二维码。如果图片中有多个二维码，建议先裁剪图片，每次只保留一个二维码进行识别。" } },
+    { "@type": "Question", "name": "手机截图可以识别吗？", "acceptedAnswer": { "@type": "Answer", "text": "可以。只要是清晰的二维码图片，无论是截图、照片还是下载的图片，都可以上传识别。截图时请确保二维码部分完整不被裁切。" } },
+    { "@type": "Question", "name": "识别速度慢是什么原因？", "acceptedAnswer": { "@type": "Answer", "text": "识别速度与图片大小和设备性能有关。建议上传适当大小的图片（不超过5MB），关闭不必要的浏览器标签页可以加快处理速度。" } }
   ]
 }
 </script>

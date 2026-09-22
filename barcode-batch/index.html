@@ -251,12 +251,30 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">查看生成的条形码网格，可点击「全部下载 ZIP」打包下载所有图片。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🏭</span><div><b>仓库库存管理</b><p>为仓库中的每件商品或物料批量生成唯一编码的条形码标签，粘贴在货架或包装上，配合扫码枪快速完成入库、出库和盘点操作，大幅提高仓储效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🛒</span><div><b>电商商品上架</b><p>电商卖家在新品上架时需要为每个SKU生成条形码，用于商品标签打印、物流发货单以及仓库分拣。批量生成节省大量重复操作时间。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>企业资产管理</b><p>为企业内部的电脑、办公家具、设备等固定资产批量生成条形码标签，贴在资产表面后通过扫码快速查询资产信息，方便日常管理和定期盘点。</p></div></div>
+      <div class="td-card"><span class="td-ico">📚</span><div><b>图书馆与档案管理</b><p>图书馆或档案室需要为大量书籍、文件建立索引条码，方便读者借阅和管理员检索。批量生成一次性解决数百本书的编码需求。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>选择合适的格式</b><p>通用场景推荐CODE128，商品零售用EAN-13或UPC-A，物流包装用ITF-14。选错格式会导致编码无法生成，务必先确认使用场景再选择。</p></div></div>
+      <div class="td-card"><span class="td-ico">🎨</span><div><b>调整线条粗细与高度</b><p>打印尺寸较小时选择「1（细）」，打印大幅标签时选择「3（粗）」。条形码高度建议不低于60像素，确保扫码枪能正常识别。</p></div></div>
+      <div class="td-card"><span class="td-ico">📋</span><div><b>批量导入的编码规范</b><p>每行一个编码，避免空行和多余空格。EAN-13和UPC只接受纯数字，CODE128支持字母和符号。编码长度适中，过长会影响扫码识别率。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>批量生成有数量限制吗？</b><p>理论上没有限制，但建议单次不超过300个，以确保浏览器运行流畅。过多可能影响页面性能。</p></div>
       <div class="faq-item"><b>下载的ZIP里是什么格式？</b><p>ZIP压缩包内为SVG格式的条形码图片，矢量格式放大不失真，适合打印使用。</p></div>
       <div class="faq-item"><b>EAN13格式输入数字不对怎么办？</b><p>EAN-13需要12或13位纯数字，最后一位校验位会自动计算。如位数不对会提示错误。</p></div>
       <div class="faq-item"><b>生成的条形码会被上传吗？</b><p>不会。所有条形码生成均在浏览器本地完成，编码不经过任何服务器，可放心使用。</p></div>
+      <div class="faq-item"><b>CODE128和CODE39有什么区别？</b><p>CODE128支持全部ASCII字符（字母、数字、符号），编码密度更高，是目前最通用的条码格式。CODE39仅支持大写字母、数字和少量符号，编码较宽，适合工业环境。日常使用推荐CODE128。</p></div>
+      <div class="faq-item"><b>SVG格式怎么转换成PNG或JPG？</b><p>SVG是矢量格式，可用在线工具（如svgtopng.com）或设计软件（如Adobe Illustrator、Inkscape）转换为PNG/JPG。转换时建议设置300 DPI以上以保证打印清晰度。</p></div>
+      <div class="faq-item"><b>为什么有的条形码扫码枪扫不出来？</b><p>常见原因有：线条宽度太细、条形码高度不足、编码格式不匹配、打印模糊。建议使用标准宽度（2）和足够高度（80以上），确保打印分辨率不低于200 DPI，并确认扫码枪支持当前条码格式。</p></div>
     </div>
   </div>
 </main>
@@ -269,7 +287,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     { "@type": "Question", "name": "批量生成有数量限制吗？", "acceptedAnswer": { "@type": "Answer", "text": "理论上没有限制，但建议单次不超过300个，以确保浏览器运行流畅。" } },
     { "@type": "Question", "name": "下载的ZIP里是什么格式？", "acceptedAnswer": { "@type": "Answer", "text": "ZIP压缩包内为SVG格式的条形码图片，矢量格式放大不失真，适合打印使用。" } },
     { "@type": "Question", "name": "EAN13格式输入数字不对怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "EAN-13需要12或13位纯数字，最后一位校验位会自动计算，位数不对会提示错误。" } },
-    { "@type": "Question", "name": "生成的条形码会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有条形码生成均在浏览器本地完成，编码不经过任何服务器。" } }
+    { "@type": "Question", "name": "生成的条形码会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有条形码生成均在浏览器本地完成，编码不经过任何服务器。" } },
+    { "@type": "Question", "name": "CODE128和CODE39有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "CODE128支持全部ASCII字符，编码密度更高，是目前最通用的条码格式。CODE39仅支持大写字母、数字和少量符号，编码较宽。日常使用推荐CODE128。" } },
+    { "@type": "Question", "name": "SVG格式怎么转换成PNG或JPG？", "acceptedAnswer": { "@type": "Answer", "text": "SVG是矢量格式，可用在线工具或设计软件转换为PNG/JPG，转换时建议设置300 DPI以上以保证打印清晰度。" } },
+    { "@type": "Question", "name": "为什么有的条形码扫码枪扫不出来？", "acceptedAnswer": { "@type": "Answer", "text": "常见原因有线条宽度太细、条形码高度不足、编码格式不匹配、打印模糊。建议使用标准宽度和足够高度，确保打印分辨率不低于200 DPI。" } }
   ]
 }
 </script>

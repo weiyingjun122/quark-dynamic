@@ -246,12 +246,30 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
       <li class="td-step"><span class="step-num">3</span><div class="step-txt">点击「生成条形码」，可下载SVG或PNG格式的条形码图片。</div></li>
     </ol>
 
+    <h3>使用场景</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">🛒</span><div><b>商品零售标签</b><p>为零售商品生成EAN-13或UPC-A条形码，粘贴在商品包装上，方便超市和商店进行扫码收银与库存管理。适用于个体商户、小型超市、便利店等场景。</p></div></div>
+      <div class="td-card"><span class="td-ico">📦</span><div><b>物流仓储管理</b><p>使用CODE128或ITF-14格式为物流包裹生成条形码，便于仓库入库、出库和分拣环节的快速扫描识别，提升物流运转效率。</p></div></div>
+      <div class="td-card"><span class="td-ico">🏢</span><div><b>企业资产管理</b><p>为公司设备、办公用品、固定资产等生成唯一编号条形码，配合资产管理系统进行快速盘点、登记和追踪，减少人工记录错误。</p></div></div>
+      <div class="td-card"><span class="td-ico">📚</span><div><b>图书与档案管理</b><p>图书馆、档案室可使用CODE39或CODE128为书籍、文件生成条形码，实现借还登记、档案检索的自动化，提高管理效率。</p></div></div>
+    </div>
+
+    <h3>使用技巧</h3>
+    <div class="td-grid">
+      <div class="td-card"><span class="td-ico">💡</span><div><b>选择合适的格式</b><p>零售商品首选EAN-13或UPC-A；物流场景用CODE128或ITF-14；内部管理用CODE39。格式选错会导致扫描设备无法识别。</p></div></div>
+      <div class="td-card"><span class="td-ico">🖨️</span><div><b>打印前先预览</b><p>下载SVG格式后再放大预览，确认条形码清晰无模糊再打印。印刷品建议使用矢量SVG格式，避免PNG缩放后出现锯齿。</p></div></div>
+      <div class="td-card"><span class="td-ico">📏</span><div><b>控制编码长度</b><p>条形码越长扫描所需时间越久，建议在满足业务需求的前提下尽量缩短编码长度，提高扫描速度和识别准确率。</p></div></div>
+    </div>
+
     <h3>常见问题</h3>
     <div class="faq-list">
       <div class="faq-item"><b>EAN-13和CODE128有什么区别？</b><p>EAN-13是商品条码标准，必须是13位数字，常用于零售商品；CODE128是通用条码，支持所有ASCII字符，适用于物流、仓储等场景。</p></div>
       <div class="faq-item"><b>生成的条形码会被上传吗？</b><p>不会。所有条形码生成均在浏览器本地完成，数据不经过任何服务器，可放心使用。</p></div>
       <div class="faq-item"><b>SVG和PNG有什么区别？</b><p>SVG是矢量格式，放大不失真，适合印刷和高质量输出；PNG是位图格式，适合日常使用和屏幕显示。</p></div>
       <div class="faq-item"><b>如何选择合适的条形码格式？</b><p>零售商品用EAN13/UPC，物流仓储用CODE128，内部管理用CODE39，根据实际需求选择。</p></div>
+      <div class="faq-item"><b>条形码可以包含中文吗？</b><p>大部分条形码格式不支持中文字符。CODE128支持ASCII字符但中文需特殊编码，EAN/UPC仅支持数字。如需包含中文信息，建议将中文转为数字编号后再生成条形码。</p></div>
+      <div class="faq-item"><b>生成的条形码打印后扫不出来怎么办？</b><p>首先检查打印分辨率是否足够，建议使用300dpi以上。其次确认条形码尺寸是否过小，建议最小宽度不低于2cm。最后检查扫描设备是否支持所选条形码格式。</p></div>
+      <div class="faq-item"><b>如何批量生成条形码？</b><p>本工具支持单个生成，如需批量生成可使用本站的「批量条形码」工具，支持导入Excel或CSV文件批量生成并打包下载。</p></div>
     </div>
   </div>
 </main>
@@ -264,7 +282,10 @@ footer.site-footer a { color: #2563eb; text-decoration: none; }
     { "@type": "Question", "name": "EAN-13和CODE128有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "EAN-13是商品条码标准，必须是13位数字；CODE128是通用条码，支持所有ASCII字符。" } },
     { "@type": "Question", "name": "生成的条形码会被上传吗？", "acceptedAnswer": { "@type": "Answer", "text": "不会。所有条形码生成均在浏览器本地完成，数据不经过任何服务器。" } },
     { "@type": "Question", "name": "SVG和PNG有什么区别？", "acceptedAnswer": { "@type": "Answer", "text": "SVG是矢量格式，放大不失真；PNG是位图格式，适合日常使用。" } },
-    { "@type": "Question", "name": "如何选择合适的条形码格式？", "acceptedAnswer": { "@type": "Answer", "text": "零售商品用EAN13/UPC，物流仓储用CODE128，内部管理用CODE39。" } }
+    { "@type": "Question", "name": "如何选择合适的条形码格式？", "acceptedAnswer": { "@type": "Answer", "text": "零售商品用EAN13/UPC，物流仓储用CODE128，内部管理用CODE39。" } },
+    { "@type": "Question", "name": "条形码可以包含中文吗？", "acceptedAnswer": { "@type": "Answer", "text": "大部分条形码格式不支持中文字符，建议将中文转为数字编号后再生成。" } },
+    { "@type": "Question", "name": "生成的条形码打印后扫不出来怎么办？", "acceptedAnswer": { "@type": "Answer", "text": "检查打印分辨率、条形码尺寸以及扫描设备是否支持对应格式。" } },
+    { "@type": "Question", "name": "如何批量生成条形码？", "acceptedAnswer": { "@type": "Answer", "text": "可使用本站的批量条形码工具，支持导入Excel或CSV文件批量生成。" } }
   ]
 }
 </script>
