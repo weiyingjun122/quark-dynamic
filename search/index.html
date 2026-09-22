@@ -422,7 +422,8 @@ function doSearch(q) {
         var infoEl = document.getElementById('rateLimitInfo');
         infoEl.style.display = 'block';
         infoEl.innerHTML = '<span style="color:#ef4444;">' + (err.data.message || '今日搜索次数已用完') + '</span>';
-        var loginLink = token ? '' : ' <a href="/search/profile/" style="color:#2563eb;">去登录</a>';
+        var hasToken = localStorage.getItem(TOKEN_KEY);
+        var loginLink = hasToken ? '' : ' <a href="/search/profile/" style="color:#2563eb;text-decoration:underline;">去登录</a>';
         resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">🚫</div><div class="empty-text">' + (err.data.message || '今日搜索次数已用完') + loginLink + '</div></div>';
         return;
       }
@@ -457,7 +458,9 @@ function clickResource(id, link) {
       return r.json().then(function(data) {
         var infoEl = document.getElementById('rateLimitInfo');
         infoEl.style.display = 'block';
-        infoEl.innerHTML = '<span style="color:#ef4444;">' + (data.message || '今日使用次数已用完') + '</span>';
+        var hasToken = localStorage.getItem(TOKEN_KEY);
+        var loginLink = hasToken ? '' : ' <a href="/search/profile/" style="color:#2563eb;text-decoration:underline;">去登录</a>';
+        infoEl.innerHTML = '<span style="color:#ef4444;">' + (data.message || '今日使用次数已用完') + loginLink + '</span>';
         return null;
       });
     }
