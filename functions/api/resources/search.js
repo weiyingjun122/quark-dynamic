@@ -71,7 +71,6 @@ export async function onRequestGet(context) {
 
     const remaining = maxLimit - usedCount - 1;
 
-  try {
     let results = [];
     let total = 0;
 
