@@ -94,12 +94,13 @@ export async function onRequestPost(context) {
   const submittedBy = `ip:${ip}`;
 
   try {
+    // 检查链接是否已存在（永久查重）
     const existing = await env.RESOURCES_DB.prepare(
-      "SELECT id FROM resources WHERE link = ? AND created_at > datetime('now', '-1 day')"
+      "SELECT id FROM resources WHERE link = ?"
     ).bind(link).first();
 
     if (existing) {
-      return Response.json({ success: false, error: '该链接已有人提交过，请勿重复提交' }, { status: 400 });
+      return Response.json({ success: false, error: '该链接已存在，请勿重复提交' }, { status: 400 });
     }
 
     const result = await env.RESOURCES_DB.prepare(
