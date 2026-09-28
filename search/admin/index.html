@@ -182,7 +182,7 @@ function loadList(status) {
             '<span class="card-title">' + esc(item.title) + '</span>' +
             '<span class="status-badge status-' + item.status + '">' + statusLabel(item.status) + '</span>' +
           '</div>' +
-          '<div class="card-meta">类型: ' + esc(item.type || '-') + ' · 提交者: ' + esc(item.submitted_by || '-') + ' · ' + date + '</div>' +
+          '<div class="card-meta">类型: ' + esc(item.type || '-') + (item.player_count ? ' · ' + esc(item.player_count) + '人本' : '') + (item.genre ? ' · ' + esc(item.genre) : '') + ' · 提交者: ' + esc(item.submitted_by || '-') + ' · ' + date + '</div>' +
           '<a class="card-link" href="' + esc(item.link) + '" target="_blank">' + esc(item.link) + '</a>' +
           '<div class="card-actions">' +
             (status !== 'approved' ? '<button class="btn btn-approve" onclick="updateStatus(' + item.id + ',\'approved\')">✓ 通过</button>' : '') +

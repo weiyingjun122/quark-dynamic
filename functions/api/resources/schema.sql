@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS resources (
   submitted_by TEXT DEFAULT '',
   email TEXT DEFAULT '',
   view_count INTEGER DEFAULT 0,
+  player_count INTEGER,
+  genre TEXT,
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now'))
 );

@@ -26,7 +26,7 @@ export async function onRequestGet(context) {
 
   try {
     const results = await env.RESOURCES_DB.prepare(
-      "SELECT id, title, link, type, source, status, submitted_by, email, created_at FROM resources WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?"
+        "SELECT id, title, link, type, source, status, submitted_by, email, player_count, genre, created_at FROM resources WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?"
     ).bind(status, limit, offset).all();
 
     const countResult = await env.RESOURCES_DB.prepare(

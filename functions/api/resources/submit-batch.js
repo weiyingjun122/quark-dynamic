@@ -130,7 +130,7 @@ export async function onRequestPost(context) {
   const results = [];
 
   for (const item of items) {
-    const { title, link, type } = item;
+    const { title, link, type, genre } = item;
 
     if (!title || !link) {
       results.push({ title: title || link || '?', success: false, error: '缺少名称或链接' });
@@ -144,6 +144,17 @@ export async function onRequestPost(context) {
       results.push({ title, success: false, error: '链接格式不正确' });
       continue;
     }
+
+    let playerCount = null;
+    if (item.player_count !== undefined && item.player_count !== null && String(item.player_count).trim() !== '') {
+      const rawCount = String(item.player_count).trim();
+      playerCount = /^\d+$/.test(rawCount) ? parseInt(rawCount, 10) : NaN;
+      if (!Number.isInteger(playerCount) || playerCount < 1 || playerCount > 10) {
+        results.push({ title, success: false, error: '人数必须是1-10之间的整数' });
+        continue;
+      }
+    }
+    const parsedGenre = genre ? String(genre).trim().slice(0, 20) : null;
 
     if (!skipCheck) {
       const linkCheck = await checkLink(link);
@@ -169,8 +180,8 @@ export async function onRequestPost(context) {
       }
 
       await env.RESOURCES_DB.prepare(
-        "INSERT INTO resources (title, link, type, source, status, submitted_by) VALUES (?, ?, ?, 'user', 'pending', ?)"
-      ).bind(title, link, type || '其他', submittedBy).run();
+        "INSERT INTO resources (title, link, type, source, status, submitted_by, player_count, genre) VALUES (?, ?, ?, 'user', 'pending', ?, ?, ?)"
+      ).bind(title, link, type || '其他', submittedBy, playerCount, parsedGenre).run();
       results.push({ title, success: true });
     } catch (err) {
       results.push({ title, success: false, error: '提交失败' });
