@@ -55,10 +55,10 @@ export async function onRequestPost(context) {
   }
 
   // 验证player_count
-  const validPlayerCounts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const validPlayerCounts = Array.from({ length: 20 }, (_, i) => i + 1);
   const parsedPlayerCount = player_count ? parseInt(player_count) : null;
   if (parsedPlayerCount && !validPlayerCounts.includes(parsedPlayerCount)) {
-    return Response.json({ success: false, error: '人数必须是1-10之间的整数' }, { status: 400 });
+    return Response.json({ success: false, error: '人数必须是1-20之间的整数' }, { status: 400 });
   }
 
   // 检查链接有效性
