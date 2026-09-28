@@ -149,7 +149,7 @@ export async function onRequestPost(context) {
     if (item.player_count !== undefined && item.player_count !== null && String(item.player_count).trim() !== '') {
       const rawCount = String(item.player_count).trim();
       playerCount = /^\d+$/.test(rawCount) ? parseInt(rawCount, 10) : NaN;
-      if (!Number.isInteger(playerCount) || playerCount < 1 || playerCount > 10) {
+      if (!Number.isInteger(playerCount) || playerCount < 1 || playerCount > 20) {
         results.push({ title, success: false, error: '人数必须是1-20之间的整数' });
         continue;
       }
