@@ -112,7 +112,7 @@ export async function onRequestPost(context) {
       await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'reply welcome' });
       return replyText(userId, ghId,
         '欢迎关注实用资源整理站！\n\n' +
-        '回复资源名称（如：考研英语、蝴蝶效应）即可获取网盘链接；\n' +
+        '回复资源名称（如：考研英语、教资、手抄报）即可获取网盘链接；\n' +
         '全站资源搜索：https://www.weiyingjun.top/search/?ch=wechat-welcome\n' +
         '（链接可复制到浏览器打开）');
     }
