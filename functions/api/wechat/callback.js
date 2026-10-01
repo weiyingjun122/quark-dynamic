@@ -113,7 +113,8 @@ export async function onRequestPost(context) {
       return replyText(userId, ghId,
         '欢迎关注实用资源整理站！\n\n' +
         '回复资源名称（如：考研英语、剧本杀、红宝书）即可获取网盘链接；\n' +
-        '也可以点击公众号菜单栏【找资源】进入搜索站，全站资源自由检索。');
+        '全站资源搜索：https://www.weiyingjun.top/search/?ch=wechat-welcome\n' +
+        '（链接可复制到浏览器打开）');
     }
     await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'empty event=' + event });
     return replyEmpty();
