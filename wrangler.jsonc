@@ -5,12 +5,10 @@
   "observability": {
     "enabled": true
   },
-  "assets": {
-    "directory": "."
-  },
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "pages_build_output_dir": ".",
   "d1_databases": [
     {
       "binding": "DB",
