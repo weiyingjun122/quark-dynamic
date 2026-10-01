@@ -58,22 +58,19 @@ function replyText(to, from, content) {
   return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 }
 
-function replyNews(to, from, items) {
-  let articles = '';
-  for (const it of items) {
-    articles += '<item>' +
-      '<Title><![CDATA[' + it.title + ']]></Title>' +
-      (it.description ? '<Description><![CDATA[' + it.description + ']]></Description>' : '') +
-      '<Url><![CDATA[' + it.url + ']]></Url>' +
-      '</item>';
-  }
+function replyNews(to, from, item) {
   const xml = '<xml>' +
     '<ToUserName><![CDATA[' + to + ']]></ToUserName>' +
     '<FromUserName><![CDATA[' + from + ']]></FromUserName>' +
     '<CreateTime>' + Math.floor(Date.now() / 1000) + '</CreateTime>' +
     '<MsgType><![CDATA[news]]></MsgType>' +
-    '<ArticleCount>' + items.length + '</ArticleCount>' +
-    '<Articles>' + articles + '</Articles>' +
+    '<ArticleCount>1</ArticleCount>' +
+    '<Articles><item>' +
+    '<Title><![CDATA[' + item.title + ']]></Title>' +
+    '<Description><![CDATA[' + item.description + ']]></Description>' +
+    '<PicUrl><![CDATA[' + item.picUrl + ']]></PicUrl>' +
+    '<Url><![CDATA[' + item.url + ']]></Url>' +
+    '</item></Articles>' +
     '</xml>';
   return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 }
@@ -145,18 +142,22 @@ export async function onRequestPost(context) {
     ).bind('%' + q + '%', '%' + q + '%').all();
     const list = rs.results || [];
 
-    const items = [];
-    for (const r of list.slice(0, 3)) {
-      items.push({ title: r.title, description: r.type || '资源', url: r.link });
+    if (list.length === 0) {
+      await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'reply text miss' });
+      return replyText(to, from, '没有找到「' + q + '」相关资源。去搜索站试试：' + searchUrl);
     }
-    items.push({
-      title: list.length > 3 ? '更多结果 → 资源搜索站' : '🔍 全站搜索 · 实用资源整理站',
-      description: '输入关键词检索全部资源',
-      url: searchUrl
-    });
 
-    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'reply news=' + items.length + ' hits=' + list.length });
-    return replyNews(to, from, items);
+    // 回复文本消息时微信只允许1条图文，且 PicUrl 必填
+    const top = list[0];
+    const more = list.slice(1).map(r => r.title).join('；');
+    const desc = (more ? '更多：' + more + '｜' : '') + '完整列表 ' + searchUrl;
+    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'reply news=1 hits=' + list.length });
+    return replyNews(to, from, {
+      title: top.title,
+      description: desc.slice(0, 500),
+      picUrl: 'https://www.weiyingjun.top/static/logo.png',
+      url: top.link
+    });
   } catch (err) {
     await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'query error: ' + (err && err.message) });
     return replyText(to, from, '查询失败，请稍后再试');
