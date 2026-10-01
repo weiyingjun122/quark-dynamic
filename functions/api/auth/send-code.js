@@ -1,7 +1,7 @@
 // functions/api/auth/send-code.js
 // POST /api/auth/send-code {email} - 发送注册验证码（Resend 代发）
 const COOLDOWN_SECONDS = 60;
-const DAILY_LIMIT_EMAIL = 5;
+const DAILY_LIMIT_EMAIL = 3;
 const DAILY_LIMIT_IP = 10;
 const CODE_TTL_SECONDS = 600; // 10分钟
 
@@ -73,7 +73,7 @@ export async function onRequestPost(context) {
       return json({ success: false, error: '发送太频繁，请' + (COOLDOWN_SECONDS - (now - Number(last.ts))) + '秒后再试' }, 429);
     }
 
-    // 每邮箱每天5封（北京时间）
+    // 每邮箱每天3封（北京时间）
     const emailCount = await env.RESOURCES_DB.prepare(
       "SELECT COUNT(*) AS c FROM email_codes WHERE email = ? AND date(created_at, '+8 hours') = date('now', '+8 hours')"
     ).bind(email).first();
