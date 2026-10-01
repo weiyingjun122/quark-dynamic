@@ -102,35 +102,36 @@ export async function onRequestPost(context) {
     return new Response('fail', { status: 403 });
   }
 
-  const to = getXmlTag(xml, 'ToUserName');
+  const ghId = getXmlTag(xml, 'ToUserName');       // 公众号原始ID
+  const userId = getXmlTag(xml, 'FromUserName');   // 用户openid
   const content = (getXmlTag(xml, 'Content') || '').trim();
 
   if (msgType === 'event') {
     const event = getXmlTag(xml, 'Event');
     if (event === 'subscribe') {
-      await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'reply welcome' });
-      return replyText(to, from,
+      await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'reply welcome' });
+      return replyText(userId, ghId,
         '欢迎关注实用资源整理站！\n\n' +
         '回复资源名称（如：考研英语、剧本杀、红宝书）即可获取网盘链接；\n' +
         '也可以点击公众号菜单栏【找资源】进入搜索站，全站资源自由检索。');
     }
-    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'empty event=' + event });
+    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'empty event=' + event });
     return replyEmpty();
   }
 
   if (msgType !== 'text' || !content) {
-    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'empty non-text' });
+    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'empty non-text' });
     return replyEmpty();
   }
 
   if (!env.RESOURCES_DB) {
-    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'no db binding' });
-    return replyText(to, from, '系统繁忙，请稍后再试');
+    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'no db binding' });
+    return replyText(userId, ghId, '系统繁忙，请稍后再试');
   }
 
   const q = content.replace(/[<>[\]]/g, '').slice(0, 24);
   if (!q) {
-    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'empty q' });
+    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'empty q' });
     return replyEmpty();
   }
 
@@ -143,23 +144,23 @@ export async function onRequestPost(context) {
     const list = rs.results || [];
 
     if (list.length === 0) {
-      await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'reply text miss' });
-      return replyText(to, from, '没有找到「' + q + '」相关资源。去搜索站试试：' + searchUrl);
+      await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'reply text miss' });
+      return replyText(userId, ghId, '没有找到「' + q + '」相关资源。去搜索站试试：' + searchUrl);
     }
 
     // 回复文本消息时微信只允许1条图文，且 PicUrl 必填
     const top = list[0];
     const more = list.slice(1).map(r => r.title).join('；');
     const desc = (more ? '更多：' + more + '｜' : '') + '完整列表 ' + searchUrl;
-    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'reply news=1 hits=' + list.length });
-    return replyNews(to, from, {
+    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'reply news=1 hits=' + list.length });
+    return replyNews(userId, ghId, {
       title: top.title,
       description: desc.slice(0, 500),
       picUrl: 'https://www.weiyingjun.top/static/logo.png',
       url: top.link
     });
   } catch (err) {
-    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: from, body: xml, note: 'query error: ' + (err && err.message) });
-    return replyText(to, from, '查询失败，请稍后再试');
+    await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'query error: ' + (err && err.message) });
+    return replyText(userId, ghId, '查询失败，请稍后再试');
   }
 }
