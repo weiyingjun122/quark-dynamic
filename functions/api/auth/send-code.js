@@ -2,7 +2,7 @@
 // POST /api/auth/send-code {email} - 发送注册验证码（Resend 代发）
 const COOLDOWN_SECONDS = 60;
 const DAILY_LIMIT_EMAIL = 3;
-const DAILY_LIMIT_IP = 10;
+const DAILY_LIMIT_IP = 5;
 const CODE_TTL_SECONDS = 600; // 10分钟
 
 function json(data, status) {
@@ -81,7 +81,7 @@ export async function onRequestPost(context) {
       return json({ success: false, error: '该邮箱今日发送次数已达上限' }, 429);
     }
 
-    // 每IP每天10封
+    // 每IP每天5封
     const ipCount = await env.RESOURCES_DB.prepare(
       "SELECT COUNT(*) AS c FROM email_codes WHERE ip = ? AND date(created_at, '+8 hours') = date('now', '+8 hours')"
     ).bind(ip).first();
