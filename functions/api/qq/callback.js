@@ -148,6 +148,30 @@ async function searchResources(env, q) {
   return rs.results || [];
 }
 
+// 发送失败时抓真实出口 IP（须用非 CF 托管的回显服务，否则抓到 CF 内部地址；QQ API 是纯 IPv4）
+async function myEgressIp() {
+  let v4 = '?';
+  let v6 = '?';
+  try {
+    v4 = (await (await fetch('https://v4.ident.me', { cache: 'no-store' })).text()).trim().slice(0, 45);
+  } catch (e) {
+    v4 = 'fail';
+  }
+  try {
+    v6 = (await (await fetch('https://v6.ident.me', { cache: 'no-store' })).text()).trim().slice(0, 45);
+  } catch (e) {
+    v6 = 'fail';
+  }
+  return 'v4=' + v4 + ' v6=' + v6;
+}
+
+function sendNote(res) {
+  if (!res) return 'send=null';
+  const code = res.err_code !== undefined ? res.err_code : 'ok';
+  const msg = res.message || res.msg || '';
+  return 'send=' + String(code).slice(0, 40) + (msg ? ' m=' + String(msg).slice(0, 60) : '');
+}
+
 function buildReply(q, list) {
   const searchUrl = 'https://www.weiyingjun.top/search/?q=' + encodeURIComponent(q) + '&ch=qq-group';
   if (list.length === 0) {
@@ -190,10 +214,11 @@ async function dispatch(env, payload, raw) {
       } else {
         res = await sendGroup(env, d.group_openid, d.id, text, searchUrl);
       }
-      await logEvent(env, 'msg', {
-        sigOk: 1, event, fromUser: from, body: raw,
-        note: 'q=' + q + ' hits=' + list.length + ' send=' + String(res && res.err_code !== undefined ? res.err_code : 'ok').slice(0, 40) + ' ' + note0
-      });
+      let note = 'q=' + q + ' hits=' + list.length + ' ' + sendNote(res) + ' ' + note0;
+      if (res && res.err_code) {
+        note += ' egress=' + await myEgressIp();
+      }
+      await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note });
     } catch (e) {
       await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'error: ' + (e && e.message) + ' ' + note0 });
     }
@@ -207,11 +232,12 @@ async function dispatch(env, payload, raw) {
       '欢迎进群！我是资源小助手。\n\n' +
       '回复资源关键词（如：考研英语、教资、手抄报）即可获取网盘链接；\n' +
       '也可以 @我 + 关键词 直接搜索。\n' +
-      '全站资源：https://www.weiyingjun.top/?ch=qq-group';
+      '全站资源搜索：https://www.weiyingjun.top/search/?ch=qq-group';
     if (gid && outerId) {
       try {
         const res = await qqPost(env, '/v2/groups/' + gid + '/messages', { msg_type: 0, content: welcome, event_id: outerId });
-        note += ' send=' + String(res && res.err_code !== undefined ? res.err_code : 'ok').slice(0, 40);
+        note += ' ' + sendNote(res);
+        if (res && res.err_code) note += ' egress=' + await myEgressIp();
       } catch (e) {
         note += ' sendErr=' + (e && e.message);
       }
