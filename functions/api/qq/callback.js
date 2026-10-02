@@ -270,15 +270,27 @@ async function handleAd(env, d, from, raw) {
   }
 
   if (count >= 5) {
-    // 踢人+拉黑（需白名单权限，11253 表示未开通）
+    // 踢人+拉黑：接口内邀中/无白名单(11253)时降级为禁言24小时，接口开放后自动恢复
+    let kicked = false;
     try {
       const res = await qqPost(env, '/v2/groups/' + gid + '/batch_remove_members', {
         member_openids: [from],
         add_to_member_blacklist: true
       });
-      parts.push('kick ' + sendNote(res));
+      kicked = !!(res && res.remove_members_result === 'success');
+      parts.push('kick ' + (kicked ? 'ok' : sendNote(res)));
     } catch (e) {
       parts.push('kickErr=' + (e && e.message));
+    }
+    if (!kicked) {
+      try {
+        const res = await qqPost(env, '/v2/groups/' + gid + '/restrict_chat_setting', {
+          members: [{ op: 'add', member_openid: from, mute_expire_at: new Date(Date.now() + 24 * 3600 * 1000).toISOString() }]
+        });
+        parts.push('mute24 ' + sendNote(res));
+      } catch (e) {
+        parts.push('mute24Err=' + (e && e.message));
+      }
     }
   } else if (count >= 3) {
     // 禁言10分钟（需机器人是群管理员）
