@@ -146,7 +146,7 @@ export async function onRequestPost(context) {
 
     if (list.length === 0) {
       await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'reply text miss' });
-      return replyText(userId, ghId, '没有找到「' + q + '」相关资源。去搜索站试试：' + searchUrl);
+      return replyText(userId, ghId, '没有找到「' + q + '」相关资源。\n去搜索站：' + searchUrl + '\n也可以加QQ求资源群 389630567，进群 @机器人 说资源名，帮你找！');
     }
 
     // 回复文本消息时微信只允许1条图文，且 PicUrl 必填
