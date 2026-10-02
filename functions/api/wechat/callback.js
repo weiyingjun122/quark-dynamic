@@ -79,6 +79,11 @@ function replyEmpty() {
   return new Response('', { status: 200 });
 }
 
+// 渠道归因中转链接
+function wrapGo(ch, target) {
+  return 'https://www.weiyingjun.top/api/resources/go?ch=' + ch + '&u=' + encodeURIComponent(target);
+}
+
 export async function onRequestGet(context) {
   const { env, request } = context;
   const url = new URL(request.url);
@@ -113,7 +118,7 @@ export async function onRequestPost(context) {
       return replyText(userId, ghId,
         '欢迎关注实用资源整理站！\n\n' +
         '回复资源名称（如：考研英语、教资、手抄报）即可获取网盘链接；\n' +
-        '全站资源搜索：https://www.weiyingjun.top/search/?ch=wechat-welcome\n' +
+        '全站资源搜索：' + wrapGo('wechat-welcome', 'https://www.weiyingjun.top/search/?ch=wechat-welcome') + '\n' +
         '（链接可复制到浏览器打开）');
     }
     await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'empty event=' + event });
@@ -136,7 +141,7 @@ export async function onRequestPost(context) {
     return replyEmpty();
   }
 
-  const searchUrl = 'https://www.weiyingjun.top/search/?q=' + encodeURIComponent(q) + '&ch=wechat-kw';
+  const searchUrl = wrapGo('wechat-kw', 'https://www.weiyingjun.top/search/?q=' + encodeURIComponent(q) + '&ch=wechat-kw');
 
   try {
     const rs = await env.RESOURCES_DB.prepare(
@@ -158,7 +163,7 @@ export async function onRequestPost(context) {
       title: top.title,
       description: desc.slice(0, 500),
       picUrl: 'https://www.weiyingjun.top/static/logo.png',
-      url: top.link
+      url: wrapGo('wechat-kw', top.link)
     });
   } catch (err) {
     await logEvent(env, 'post', { sigOk: 1, msgType, fromUser: userId, body: xml, note: 'query error: ' + (err && err.message) });

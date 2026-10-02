@@ -172,12 +172,17 @@ function sendNote(res) {
   return 'send=' + String(code).slice(0, 40) + (msg ? ' m=' + String(msg).slice(0, 60) : '');
 }
 
+// 渠道归因中转链接
+function wrapGo(ch, target) {
+  return 'https://www.weiyingjun.top/api/resources/go?ch=' + ch + '&u=' + encodeURIComponent(target);
+}
+
 function buildReply(q, list) {
-  const searchUrl = 'https://www.weiyingjun.top/search/?q=' + encodeURIComponent(q) + '&ch=qq-group';
+  const searchUrl = wrapGo('qq-group', 'https://www.weiyingjun.top/search/?q=' + encodeURIComponent(q) + '&ch=qq-group');
   if (list.length === 0) {
     return { text: '没有找到「' + q + '」相关资源，去搜索站试试：\n' + searchUrl, searchUrl };
   }
-  const lines = list.map((r, i) => (i + 1) + '. ' + r.title + '\n' + r.link);
+  const lines = list.map((r, i) => (i + 1) + '. ' + r.title + '\n' + wrapGo('qq-group', r.link));
   return { text: '找到 ' + list.length + ' 个「' + q + '」相关资源：\n' + lines.join('\n') + '\n完整列表：' + searchUrl, searchUrl };
 }
 
@@ -232,7 +237,7 @@ async function dispatch(env, payload, raw) {
       '欢迎进群！我是资源小助手。\n\n' +
       '回复资源关键词（如：考研英语、教资、手抄报）即可获取网盘链接；\n' +
       '也可以 @我 + 关键词 直接搜索。\n' +
-      '全站资源搜索：https://www.weiyingjun.top/search/?ch=qq-group';
+      '全站资源搜索：' + wrapGo('qq-welcome', 'https://www.weiyingjun.top/search/?ch=qq-welcome');
     if (gid && outerId) {
       try {
         const res = await qqPost(env, '/v2/groups/' + gid + '/messages', { msg_type: 0, content: welcome, event_id: outerId });

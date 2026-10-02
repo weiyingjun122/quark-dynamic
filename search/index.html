@@ -617,6 +617,15 @@ if (initQ || initType) {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/search/sw.js').catch(function() {});
 }
+
+// 渠道归因：ch 曝光上报（覆盖带 ch 参数的落地链接，含老推文）
+(function () {
+  var ch = new URLSearchParams(location.search).get('ch');
+  if (ch && /^[\w-]{1,32}$/.test(ch)) {
+    var img = new Image(1, 1);
+    img.src = '/api/track/ch?ch=' + encodeURIComponent(ch) + '&p=' + encodeURIComponent(location.pathname + location.search);
+  }
+})();
 </script>
 </body>
 </html>
