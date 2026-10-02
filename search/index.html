@@ -374,7 +374,14 @@ function doSearch(q) {
     .then(function(data) {
       if (!data.success || !data.results || data.results.length === 0) {
         var msg = q ? '没有找到相关资源，试试其他关键词？' : '暂无该类型资源';
-        resultsEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">' + msg + '</div></div>';
+        var ask = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">' + msg + '</div>';
+        if (q) {
+          ask += '<div style="margin-top:14px;font-size:14px;color:#4b5563;line-height:1.7">想要的资源没找到？加入QQ求资源群，进群后发资源名，帮你找！' +
+            '<div style="margin-top:8px"><img src="/static/qrcode_1790949131605.jpg" alt="QQ求资源群二维码" style="width:170px;height:170px;object-fit:contain;border:1px solid #e5e7eb;border-radius:8px"></div>' +
+            '<div style="font-size:12px;color:#9ca3af;margin-top:4px">手机QQ扫码进群</div></div>';
+        }
+        ask += '</div>';
+        resultsEl.innerHTML = ask;
         return;
       }
       var html = '';

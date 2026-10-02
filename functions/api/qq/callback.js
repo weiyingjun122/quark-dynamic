@@ -175,7 +175,7 @@ function sendNote(res) {
 function buildReply(q, list) {
   const searchUrl = 'https://www.weiyingjun.top/search/?q=' + encodeURIComponent(q) + '&ch=qq-group';
   if (list.length === 0) {
-    return { text: '没有找到「' + q + '」相关资源，去搜索站试试：\n' + searchUrl, searchUrl };
+    return { text: '没有找到「' + q + '」相关资源。\n本群就是求资源群——直接发你要的资源名，看到会补；也可以稍后再 @我 搜一次，或去搜索站：\n' + searchUrl, searchUrl };
   }
   const lines = list.map((r, i) => (i + 1) + '. ' + r.title + '\n' + r.link);
   return { text: '找到 ' + list.length + ' 个「' + q + '」相关资源：\n' + lines.join('\n') + '\n完整列表：' + searchUrl, searchUrl };
