@@ -305,6 +305,7 @@ async function dispatch(env, payload, raw) {
 
   // 全量群消息：仅广告检测，不回复搜索（否则每句闲聊都会触发回复）
   if (event === 'GROUP_MESSAGE_CREATE') {
+    await logEvent(env, 'gmc', { sigOk: 1, event, fromUser: from, body: raw, note: 'gmc peek id=' + String(d.id || '').slice(0, 40) });
     await handleAd(env, d, from, raw);
     return;
   }
