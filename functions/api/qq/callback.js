@@ -3,7 +3,8 @@
 // op:13  回调地址验证（Bot Secret 派生 Ed25519 签名）
 // op:0   事件推送（校验 X-Signature-Ed25519 头）
 // 回包   {d:{}, op:12} HTTP Callback ACK
-// 群@消息/全量群消息/单聊 → 查 D1 resources → 被动回复网盘链接
+// @消息/单聊 → 查 D1 resources → 被动回复网盘链接
+// GROUP_MESSAGE_CREATE 全量群消息 → 广告检测（撤回+计数，3次禁言10分钟，5次踢人+拉黑）
 // 日志落 qq_logs 表
 
 const enc = new TextEncoder();
@@ -106,6 +107,19 @@ async function qqPost(env, path, body) {
   return r.json();
 }
 
+async function qqDelete(env, path) {
+  const tok = await getAccessToken(env);
+  const r = await fetch('https://api.bot.qq.com' + path, {
+    method: 'DELETE',
+    headers: { Authorization: 'QQBot ' + tok }
+  });
+  try {
+    return await r.json();
+  } catch (e) {
+    return { http: r.status };
+  }
+}
+
 function keyboard(searchUrl) {
   return {
     content: {
@@ -181,6 +195,107 @@ function buildReply(q, list) {
   return { text: '找到 ' + list.length + ' 个「' + q + '」相关资源：\n' + lines.join('\n') + '\n完整列表：' + searchUrl, searchUrl };
 }
 
+// ---- 广告检测（保守词表，宁漏勿误杀；机器人自己回复含站点域名直接豁免）----
+const AD_WORDS = [
+  '加微信', '加薇', '加v信', '薇信', 'vx号', 'vx加',
+  '兼职', '刷单', '日赚', '躺赚', '网赚', '代开发票', '招代理', '一手货源',
+  '推广返利', '低价代', '资源群免费进'
+];
+const AD_REGEXES = [
+  /(?:vx?|wx|weixin)[\s:：]*[a-zA-Z0-9_-]{6,}/i,
+  /微(?:信|信号)[\s:：]*[a-zA-Z0-9_-]{6,}/,
+  /https?:\/\/(?:t\.cn|dwz\.[a-z]+|url\.cn|sina\.cn|qq\.com\/[a-z])\//i
+];
+
+function adHit(text) {
+  const t = text.toLowerCase();
+  for (const w of AD_WORDS) {
+    if (t.includes(w.toLowerCase())) return w;
+  }
+  for (const re of AD_REGEXES) {
+    const m = text.match(re);
+    if (m) return m[0];
+  }
+  return null;
+}
+
+function msgText(d) {
+  const c = d.content;
+  if (typeof c === 'string') return c;
+  if (Array.isArray(c)) return c.map(x => (x && x.text) || '').join('');
+  return '';
+}
+
+async function handleAd(env, d, from, raw) {
+  const content = msgText(d).trim();
+  const note0 = 'id=' + (d.id || '').slice(0, 40);
+  if (!content || !from || !d.group_openid) return;
+
+  // 豁免：机器人自己的回复（都带站点域名）及我们自己的固定文案
+  if (content.includes('weiyingjun.top') || content.includes('求资源群')) return;
+
+  const hit = adHit(content);
+  if (!hit) return; // 未命中不写日志，避免全量消息写放大
+
+  const gid = d.group_openid;
+  let count = 0;
+  let lastMsg = '';
+  try {
+    const row = await env.RESOURCES_DB.prepare(
+      'SELECT count, last_msg FROM qq_ad_warns WHERE group_openid = ? AND member_openid = ?'
+    ).bind(gid, from).first();
+    // 同一条消息可能被重复推送（@事件与全量事件重叠），防双计
+    if (row && row.last_msg && row.last_msg === d.id) {
+      await logEvent(env, 'ad', { sigOk: 1, event: 'GROUP_MESSAGE_CREATE', fromUser: from, body: content, note: 'dup skip ' + note0 });
+      return;
+    }
+    count = ((row && row.count) || 0) + 1;
+    await env.RESOURCES_DB.prepare(
+      'INSERT INTO qq_ad_warns (group_openid, member_openid, count, last_msg, updated_at) VALUES (?, ?, ?, ?, ?) ' +
+      'ON CONFLICT(group_openid, member_openid) DO UPDATE SET count = ?, last_msg = ?, updated_at = ?'
+    ).bind(gid, from, count, d.id, new Date().toISOString(), count, d.id, new Date().toISOString()).run();
+  } catch (e) {
+    await logEvent(env, 'ad', { sigOk: 1, event: 'GROUP_MESSAGE_CREATE', fromUser: from, body: content, note: 'warn upsert fail: ' + (e && e.message) });
+    return;
+  }
+
+  const parts = ['hit=' + String(hit).slice(0, 30), 'warn=' + count];
+
+  // 撤回广告消息（需机器人是群管理员）
+  try {
+    const res = await qqDelete(env, '/v2/groups/' + gid + '/messages/' + d.id);
+    parts.push('recall ' + sendNote(res));
+  } catch (e) {
+    parts.push('recallErr=' + (e && e.message));
+  }
+
+  if (count >= 5) {
+    // 踢人+拉黑（需白名单权限，11253 表示未开通）
+    try {
+      const res = await qqPost(env, '/v2/groups/' + gid + '/batch_remove_members', {
+        member_openids: [from],
+        add_to_member_blacklist: true
+      });
+      parts.push('kick ' + sendNote(res));
+    } catch (e) {
+      parts.push('kickErr=' + (e && e.message));
+    }
+  } else if (count >= 3) {
+    // 禁言10分钟（需机器人是群管理员）
+    try {
+      const res = await qqPost(env, '/v2/groups/' + gid + '/restrict_chat_setting', {
+        members: [{ op: 'add', member_openid: from, mute_expire_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() }]
+      });
+      parts.push('mute ' + sendNote(res));
+    } catch (e) {
+      parts.push('muteErr=' + (e && e.message));
+    }
+  }
+
+  parts.push(note0);
+  await logEvent(env, 'ad', { sigOk: 1, event: 'GROUP_MESSAGE_CREATE', fromUser: from, body: content.slice(0, 400), note: parts.join(' ') });
+}
+
 async function dispatch(env, payload, raw) {
   const d = payload.d || {};
   const event = typeof payload.t === 'string' ? payload.t : '';
@@ -188,7 +303,13 @@ async function dispatch(env, payload, raw) {
   const author = d.author || {};
   const from = author.member_openid || author.user_openid || author.id || '';
 
-  if (event === 'GROUP_AT_MESSAGE_CREATE' || event === 'GROUP_MESSAGE_CREATE' || event === 'C2C_MESSAGE_CREATE') {
+  // 全量群消息：仅广告检测，不回复搜索（否则每句闲聊都会触发回复）
+  if (event === 'GROUP_MESSAGE_CREATE') {
+    await handleAd(env, d, from, raw);
+    return;
+  }
+
+  if (event === 'GROUP_AT_MESSAGE_CREATE' || event === 'C2C_MESSAGE_CREATE') {
     const content = (d.content || '').trim();
     const note0 = 'id=' + (d.id || '').slice(0, 40);
     if (!content) {
