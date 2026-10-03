@@ -9,11 +9,13 @@ export async function onRequestGet(context) {
 
   const DAILY_LIMIT_UNLOGGED = 3;
   const DAILY_LIMIT_LOGGED = 5;
+  const VIP_LIMITS = { weiyingjun: 100 };
   const now = new Date(Date.now() + 8 * 3600 * 1000);
   const today = now.toISOString().split('T')[0];
 
   let identifier = '';
   let isLogged = false;
+  let username = '';
   const authHeader = request.headers.get('Authorization');
   if (authHeader && authHeader.startsWith('Bearer ')) {
     try {
@@ -23,6 +25,7 @@ export async function onRequestGet(context) {
         const payload = JSON.parse(atob(parts[1]));
         if (payload.id) {
           identifier = 'user:' + payload.id;
+          username = payload.username || '';
           isLogged = true;
         }
       }
@@ -32,7 +35,7 @@ export async function onRequestGet(context) {
     identifier = 'ip:' + (request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown');
   }
 
-  const maxLimit = isLogged ? DAILY_LIMIT_LOGGED : DAILY_LIMIT_UNLOGGED;
+  const maxLimit = isLogged ? (VIP_LIMITS[username] || DAILY_LIMIT_LOGGED) : DAILY_LIMIT_UNLOGGED;
 
   try {
     const used = await env.RESOURCES_DB.prepare(
