@@ -240,13 +240,13 @@ async function muteMember(env, gid, openid, minutes) {
 async function handleAd(env, d, from, raw) {
   const content = msgText(d).trim();
   const note0 = 'id=' + (d.id || '').slice(0, 40);
-  if (!content || !from || !d.group_openid) return;
+  if (!content || !from || !d.group_openid) return false;
 
   // 豁免：机器人自己的回复（都带站点域名）及我们自己的固定文案
-  if (content.includes('weiyingjun.top') || content.includes('求资源群')) return;
+  if (content.includes('weiyingjun.top') || content.includes('求资源群')) return false;
 
   const hit = adHit(content);
-  if (!hit) return; // 未命中不写日志，避免全量消息写放大
+  if (!hit) return false; // 未命中不写日志，避免全量消息写放大
 
   const gid = d.group_openid;
   let count = 0;
@@ -258,7 +258,7 @@ async function handleAd(env, d, from, raw) {
     // 同一条消息可能被重复推送（@事件与全量事件重叠），防双计
     if (row && row.last_msg && row.last_msg === d.id) {
       await logEvent(env, 'ad', { sigOk: 1, event: 'GROUP_MESSAGE_CREATE', fromUser: from, body: content, note: 'dup skip ' + note0 });
-      return;
+      return true;
     }
     count = ((row && row.count) || 0) + 1;
     await env.RESOURCES_DB.prepare(
@@ -267,7 +267,7 @@ async function handleAd(env, d, from, raw) {
     ).bind(gid, from, count, d.id, new Date().toISOString(), count, d.id, new Date().toISOString()).run();
   } catch (e) {
     await logEvent(env, 'ad', { sigOk: 1, event: 'GROUP_MESSAGE_CREATE', fromUser: from, body: content, note: 'warn upsert fail: ' + (e && e.message) });
-    return;
+    return false;
   }
 
   const parts = ['hit=' + String(hit).slice(0, 30), 'warn=' + count];
@@ -302,6 +302,44 @@ async function handleAd(env, d, from, raw) {
 
   parts.push(note0);
   await logEvent(env, 'ad', { sigOk: 1, event: 'GROUP_MESSAGE_CREATE', fromUser: from, body: content.slice(0, 400), note: parts.join(' ') });
+  return true;
+}
+
+async function searchReply(env, event, d, from, raw) {
+  // 全量消息模式下 content 可能带 <@机器人id> 标记，先剥离再取关键词
+  const content = String(d.content || '').replace(/<@[^>]*>/g, '').trim();
+  const note0 = 'id=' + (d.id || '').slice(0, 40);
+  if (!content) {
+    await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'empty content ' + note0 });
+    return;
+  }
+  const q = content.replace(/[<>[\]]/g, '').slice(0, 24).trim();
+  if (!q) {
+    await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'empty q ' + note0 });
+    return;
+  }
+  if (!env.RESOURCES_DB) {
+    await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'no db binding ' + note0 });
+    return;
+  }
+  try {
+    const list = await searchResources(env, q);
+    const { text, searchUrl } = buildReply(q, list);
+    let res;
+    if (event === 'C2C_MESSAGE_CREATE') {
+      const uid = (d.author && (d.author.user_openid || d.author.id)) || from;
+      res = await sendC2C(env, uid, d.id, text, searchUrl);
+    } else {
+      res = await sendGroup(env, d.group_openid, d.id, text, searchUrl);
+    }
+    let note = 'q=' + q + ' hits=' + list.length + ' ' + sendNote(res) + ' ' + note0;
+    if (res && res.err_code) {
+      note += ' egress=' + await myEgressIp();
+    }
+    await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note });
+  } catch (e) {
+    await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'error: ' + (e && e.message) + ' ' + note0 });
+  }
 }
 
 async function dispatch(env, payload, raw) {
@@ -311,47 +349,21 @@ async function dispatch(env, payload, raw) {
   const author = d.author || {};
   const from = author.member_openid || author.user_openid || author.id || '';
 
-  // 全量群消息：仅广告检测，不回复搜索（否则每句闲聊都会触发回复）
+  // 全量群消息：@机器人 → 搜索回复；其余 → 广告检测（不回复搜索，防刷屏）
   if (event === 'GROUP_MESSAGE_CREATE') {
-    await logEvent(env, 'gmc', { sigOk: 1, event, fromUser: from, body: raw, note: 'gmc peek id=' + String(d.id || '').slice(0, 40) });
-    await handleAd(env, d, from, raw);
+    const mentions = Array.isArray(d.mentions) ? d.mentions : [];
+    const atBot = mentions.some(m => m && (m.bot === true || m.bot === 'true'));
+    if (atBot) {
+      const isAd = await handleAd(env, d, from, raw);
+      if (!isAd) await searchReply(env, event, d, from, raw);
+    } else {
+      await handleAd(env, d, from, raw);
+    }
     return;
   }
 
   if (event === 'GROUP_AT_MESSAGE_CREATE' || event === 'C2C_MESSAGE_CREATE') {
-    const content = (d.content || '').trim();
-    const note0 = 'id=' + (d.id || '').slice(0, 40);
-    if (!content) {
-      await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'empty content ' + note0 });
-      return;
-    }
-    const q = content.replace(/[<>[\]]/g, '').slice(0, 24).trim();
-    if (!q) {
-      await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'empty q ' + note0 });
-      return;
-    }
-    if (!env.RESOURCES_DB) {
-      await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'no db binding ' + note0 });
-      return;
-    }
-    try {
-      const list = await searchResources(env, q);
-      const { text, searchUrl } = buildReply(q, list);
-      let res;
-      if (event === 'C2C_MESSAGE_CREATE') {
-        const uid = author.user_openid || author.id;
-        res = await sendC2C(env, uid, d.id, text, searchUrl);
-      } else {
-        res = await sendGroup(env, d.group_openid, d.id, text, searchUrl);
-      }
-      let note = 'q=' + q + ' hits=' + list.length + ' ' + sendNote(res) + ' ' + note0;
-      if (res && res.err_code) {
-        note += ' egress=' + await myEgressIp();
-      }
-      await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note });
-    } catch (e) {
-      await logEvent(env, 'msg', { sigOk: 1, event, fromUser: from, body: raw, note: 'error: ' + (e && e.message) + ' ' + note0 });
-    }
+    await searchReply(env, event, d, from, raw);
     return;
   }
 
