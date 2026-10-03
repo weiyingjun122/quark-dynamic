@@ -32,7 +32,7 @@ export async function onRequestGet(context) {
           params.push(hobby);
         } else {
           conditions.push("type IN (?, ?, ?, ?, ?)");
-          params.push('摄影剪辑', '付费课程', '编程开发', '媒体运营', '学习攻略');
+          params.push('摄影剪辑', '付费课程', '编程开发', '媒体运营', '学习攻略', '实用资源');
         }
       } else if (type === '语文阅读') {
         const reading = url.searchParams.get('keywords') || '';
