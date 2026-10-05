@@ -1,11 +1,71 @@
 // functions/api/wechat/logs.js
-// 查询机器人收发记录（含回复内容）
-// GET /api/wechat/logs?q=关键词&kind=post&limit=50&page=1
+// 查询机器人收发记录（含回复内容），返回解析好的中文字段
+// GET /api/wechat/logs?q=关键词&kind=post&from=openid&limit=50&page=1
 
 function checkAuth(request) {
   const authHeader = request.headers.get('Authorization');
   const adminToken = 'wyj122731';
   return authHeader === `Bearer ${adminToken}`;
+}
+
+function getXmlTag(xml, tag) {
+  let m = xml.match(new RegExp('<' + tag + '><!\\[CDATA\\[([\\s\\S]*?)\\]\\]></' + tag + '>'));
+  if (!m) m = xml.match(new RegExp('<' + tag + '>([\\s\\S]*?)</' + tag + '>'));
+  return m ? m[1] : '';
+}
+
+function noteLabel(note, kind) {
+  const n = note || '';
+  if (n === 'verify ok') return '服务器验证通过';
+  if (n === 'bad signature') return '签名错误';
+  if (n === 'reply welcome') return '关注欢迎语';
+  let m = n.match(/^reply news=1 hits=(\d+)$/);
+  if (m) return '图文卡片（候选' + m[1] + '条）';
+  if (n === 'reply text miss') return '未命中·文字引导';
+  if (n.startsWith('query error')) return '查询失败';
+  if (n.startsWith('empty event=')) {
+    const ev = n.slice('empty event='.length);
+    if (ev === 'subscribe') return '事件·关注';
+    if (ev === 'unsubscribe') return '事件·取消关注';
+    return '事件·' + ev;
+  }
+  if (n === 'empty non-text') return '非文本消息·无回复';
+  if (n === 'empty q') return '空内容·无回复';
+  if (n === 'no db binding') return '数据库未配置';
+  if (kind === 'get') return '服务器验证';
+  return n || '-';
+}
+
+function userMsgOf(body, note) {
+  if (!body) return '';
+  const content = getXmlTag(body, 'Content');
+  if (content) return content;
+  const ev = getXmlTag(body, 'Event');
+  if (ev) return '[' + ev + ']';
+  return noteLabel(note);
+}
+
+function bjTime(s) {
+  if (!s) return '';
+  const t = Date.parse(String(s).replace(' ', 'T') + 'Z');
+  if (isNaN(t)) return s;
+  const d = new Date(t + 8 * 3600 * 1000);
+  const p = n => String(n).padStart(2, '0');
+  return d.getUTCFullYear() + '-' + p(d.getUTCMonth() + 1) + '-' + p(d.getUTCDate()) +
+    ' ' + p(d.getUTCHours()) + ':' + p(d.getUTCMinutes()) + ':' + p(d.getUTCSeconds());
+}
+
+function shape(r) {
+  return {
+    id: r.id,
+    time: bjTime(r.created_at),
+    from_user: r.from_user || '',
+    user_msg: userMsgOf(r.body || '', r.note),
+    reply_type: noteLabel(r.note, r.kind),
+    reply: r.reply || '',
+    sig_ok: r.sig_ok,
+    kind: r.kind
+  };
 }
 
 export async function onRequestGet(context) {
@@ -46,7 +106,7 @@ export async function onRequestGet(context) {
     ).bind(...params).first();
     return Response.json({
       success: true,
-      results: rows.results || [],
+      results: (rows.results || []).map(shape),
       total: countRow?.total || 0,
       page,
       limit

@@ -15,6 +15,8 @@ on:
       - 'privacy.html'
       - 'contact.html'
       - '404.html'
+      - 'wechat.html'
+      - 'wechat-logs.html'
       - 'check-word/**'
       - 'ip/**'
       - 'phone-batch/**'
