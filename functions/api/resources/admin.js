@@ -105,10 +105,12 @@ export async function onRequestPost(context) {
       if (cnt && cnt.c > 0) {
         return err('分类表已有数据，未执行初始化');
       }
+      let topIndex = 0;
       for (const tab of DEFAULT_TABS) {
+        topIndex++;
         await env.RESOURCES_DB.prepare(
           "INSERT INTO resource_types (name, parent, grp, sort, enabled) VALUES (?, '', ?, ?, 1)"
-        ).bind(tab.name, tab.grp || 1, 0).run();
+        ).bind(tab.name, tab.grp || 1, topIndex).run();
         let i = 0;
         for (const child of tab.children) {
           i++;
@@ -189,6 +191,25 @@ export async function onRequestPost(context) {
       }
       invalidateTypes();
       return Response.json({ success: true, message: '分类已更新' });
+    }
+
+    if (action === 'type_reorder') {
+      const ids = (Array.isArray(body.ids) ? body.ids : [])
+        .map(x => parseInt(x, 10)).filter(Number.isFinite);
+      if (ids.length === 0) return err('缺少排序列表');
+      const rows = await env.RESOURCES_DB.prepare(
+        `SELECT id, parent FROM resource_types WHERE id IN (${ids.map(() => '?').join(', ')})`
+      ).bind(...ids).all();
+      const list = rows.results || [];
+      if (list.length !== ids.length) return err('排序列表包含无效分类');
+      if (list.some(r => r.parent !== list[0].parent)) return err('只能在同一层级内排序');
+      await env.RESOURCES_DB.batch(
+        ids.map((id, i) => env.RESOURCES_DB.prepare(
+          "UPDATE resource_types SET sort = ?, updated_at = datetime('now') WHERE id = ?"
+        ).bind(i + 1, id))
+      );
+      invalidateTypes();
+      return Response.json({ success: true, message: '排序已更新' });
     }
 
     if (action === 'type_delete') {

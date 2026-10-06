@@ -69,6 +69,11 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
 .type-chip.off{opacity:.45;text-decoration:line-through}
 .type-chip b{cursor:pointer;color:#94a3b8;font-weight:400;padding:0 1px}
 .type-chip b:hover{color:#2563eb}
+.type-card[draggable="true"]{cursor:grab;user-select:none}
+.type-card.dragging,.type-chip.dragging{opacity:.4}
+.type-card.drag-over-top{box-shadow:0 -3px 0 0 #2563eb}
+.type-card.drag-over-bottom{box-shadow:0 3px 0 0 #2563eb}
+.type-chip.drag-over{border-color:#2563eb;box-shadow:0 0 0 2px #bfdbfe;background:#eff6ff}
 
 .empty{text-align:center;padding:60px 20px;color:#94a3b8}
 .loading{text-align:center;padding:40px;color:#94a3b8}
@@ -105,7 +110,7 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
         <input id="newTypeSort" placeholder="排序(可选)" style="width:90px">
         <input id="newTypeGrp" placeholder="分组(可选)" style="width:90px">
         <button class="btn btn-approve" onclick="addTopType()">新增顶级分类</button>
-        <span style="font-size:12px;color:#94a3b8">修改后约1分钟内全站生效</span>
+        <span style="font-size:12px;color:#94a3b8">可拖动卡片/标签排序，或用 ▲▼ 按钮；修改后约1分钟内全站生效</span>
       </div>
       <div id="typesList"></div>
     </div>
@@ -377,20 +382,25 @@ function loadTypes() {
     }
     el.innerHTML = tops.map(function(t) {
       var kids = typeRows.filter(function(r) { return r.parent === t.name; });
-      var chips = kids.map(function(k) {
-        return '<span class="type-chip' + (k.enabled ? '' : ' off') + '">' + esc(k.name) +
+      var chips = kids.map(function(k, idx) {
+        return '<span class="type-chip' + (k.enabled ? '' : ' off') + '" draggable="true" data-id="' + k.id + '">' + esc(k.name) +
+          (idx > 0 ? ' <b onclick="moveChild(' + k.id + ',-1)" title="前移">◀</b>' : '') +
+          (idx < kids.length - 1 ? ' <b onclick="moveChild(' + k.id + ',1)" title="后移">▶</b>' : '') +
           ' <b onclick="toggleType(' + k.id + ',' + (k.enabled ? 0 : 1) + ')" title="启用/停用">' + (k.enabled ? '○' : '●') + '</b>' +
           ' <b onclick="renameType(' + k.id + ')" title="改名">✎</b>' +
           ' <b onclick="deleteType(' + k.id + ')" title="删除">×</b></span>';
       }).join('') +
       '<span class="type-chip" style="cursor:pointer;background:#eff6ff;border-color:#bfdbfe;color:#2563eb" onclick="addChild(this.dataset.p)" data-p="' + esc(t.name) + '" title="添加子标签">＋ 子标签</span>';
-      return '<div class="type-card">' +
+      var ti = tops.indexOf(t);
+      return '<div class="type-card" draggable="true" data-id="' + t.id + '">' +
         '<div class="card-header">' +
           '<span class="card-title">' + esc(t.name) +
             ' <span class="status-badge ' + (t.enabled ? 'status-approved' : 'status-off') + '">' + (t.enabled ? '启用' : '停用') + '</span></span>' +
           '<span class="card-meta" style="margin:0">分组 ' + t.grp + ' · 排序 ' + t.sort + ' · 子标签 ' + kids.length + '</span>' +
         '</div>' +
         '<div class="card-actions">' +
+          (ti > 0 ? '<button class="btn" style="background:#eff6ff;color:#2563eb" onclick="moveType(' + t.id + ',-1)">▲ 上移</button>' : '') +
+          (ti < tops.length - 1 ? '<button class="btn" style="background:#eff6ff;color:#2563eb" onclick="moveType(' + t.id + ',1)">▼ 下移</button>' : '') +
           '<button class="btn" style="background:#f1f5f9;color:#64748b" onclick="renameType(' + t.id + ')">改名</button>' +
           '<button class="btn" style="background:#f1f5f9;color:#64748b" onclick="setSort(' + t.id + ')">排序</button>' +
           '<button class="btn" style="background:#f1f5f9;color:#64748b" onclick="setGrp(' + t.id + ')">分组</button>' +
@@ -400,6 +410,7 @@ function loadTypes() {
         '<div class="kids">' + (chips || '<span style="font-size:12px;color:#94a3b8">无子标签</span>') + '</div>' +
       '</div>';
     }).join('');
+    bindTypeDrag();
   }).catch(function(e) {
     el.innerHTML = '<div class="empty">网络错误: ' + esc(e.message) + '</div>';
   });
@@ -468,8 +479,129 @@ function initTypes() {
   typeAction({ action: 'type_init' });
 }
 
+// ---------- 分类排序：拖拽 + 上移下移 ----------
+var dragInfo = null;
+
+function clearDragOver() {
+  document.querySelectorAll('.drag-over-top,.drag-over-bottom,.drag-over').forEach(function(el) {
+    el.classList.remove('drag-over-top', 'drag-over-bottom', 'drag-over');
+  });
+}
+
+function findRow(id) {
+  for (var i = 0; i < typeRows.length; i++) {
+    if (typeRows[i].id === id) return typeRows[i];
+  }
+  return null;
+}
+
+function reorderScope(scope, parentName, fromId, toId, after) {
+  var list = scope === 'top'
+    ? typeRows.filter(function(r) { return !r.parent; })
+    : typeRows.filter(function(r) { return r.parent === parentName; });
+  var ids = list.map(function(r) { return r.id; });
+  var fi = ids.indexOf(fromId);
+  if (fi < 0) return;
+  ids.splice(fi, 1);
+  var ti = ids.indexOf(toId);
+  if (ti < 0) return;
+  ids.splice(after ? ti + 1 : ti, 0, fromId);
+  typeAction({ action: 'type_reorder', ids: ids });
+}
+
+function moveType(id, dir) {
+  var tops = typeRows.filter(function(r) { return !r.parent; });
+  var ids = tops.map(function(r) { return r.id; });
+  var i = ids.indexOf(id);
+  var j = i + dir;
+  if (i < 0 || j < 0 || j >= ids.length) return;
+  var tmp = ids[i]; ids[i] = ids[j]; ids[j] = tmp;
+  typeAction({ action: 'type_reorder', ids: ids });
+}
+
+function moveChild(id, dir) {
+  var row = findRow(id);
+  if (!row) return;
+  var kids = typeRows.filter(function(r) { return r.parent === row.parent; });
+  var ids = kids.map(function(r) { return r.id; });
+  var i = ids.indexOf(id);
+  var j = i + dir;
+  if (i < 0 || j < 0 || j >= ids.length) return;
+  var tmp = ids[i]; ids[i] = ids[j]; ids[j] = tmp;
+  typeAction({ action: 'type_reorder', ids: ids });
+}
+
+function setDragData(e, id) {
+  if (!e.dataTransfer) return;
+  e.dataTransfer.effectAllowed = 'move';
+  try { e.dataTransfer.setData('text/plain', String(id)); } catch (err) {}
+}
+
+function bindTypeDrag() {
+  document.querySelectorAll('.type-card[draggable]').forEach(function(card) {
+    card.addEventListener('dragstart', function(e) {
+      dragInfo = { scope: 'top', id: parseInt(card.dataset.id, 10) };
+      card.classList.add('dragging');
+      setDragData(e, card.dataset.id);
+    });
+    card.addEventListener('dragend', function() {
+      card.classList.remove('dragging'); clearDragOver(); dragInfo = null;
+    });
+    card.addEventListener('dragover', function(e) {
+      if (!dragInfo || dragInfo.scope !== 'top') return;
+      e.preventDefault();
+      var r = card.getBoundingClientRect();
+      var below = (e.clientY - r.top) > r.height / 2;
+      clearDragOver();
+      card.classList.add(below ? 'drag-over-bottom' : 'drag-over-top');
+    });
+    card.addEventListener('dragleave', function() {
+      card.classList.remove('drag-over-top', 'drag-over-bottom');
+    });
+    card.addEventListener('drop', function(e) {
+      if (!dragInfo || dragInfo.scope !== 'top') return;
+      e.preventDefault(); e.stopPropagation();
+      var r = card.getBoundingClientRect();
+      var below = (e.clientY - r.top) > r.height / 2;
+      var fromId = dragInfo.id, toId = parseInt(card.dataset.id, 10);
+      clearDragOver(); dragInfo = null;
+      if (toId !== fromId) reorderScope('top', '', fromId, toId, below);
+    });
+  });
+
+  document.querySelectorAll('.type-chip[data-id]').forEach(function(chip) {
+    chip.addEventListener('dragstart', function(e) {
+      e.stopPropagation();
+      dragInfo = { scope: 'child', id: parseInt(chip.dataset.id, 10) };
+      chip.classList.add('dragging');
+      setDragData(e, chip.dataset.id);
+    });
+    chip.addEventListener('dragend', function() {
+      chip.classList.remove('dragging'); clearDragOver(); dragInfo = null;
+    });
+    chip.addEventListener('dragover', function(e) {
+      if (!dragInfo || dragInfo.scope !== 'child') return;
+      e.preventDefault(); e.stopPropagation();
+      clearDragOver();
+      chip.classList.add('drag-over');
+    });
+    chip.addEventListener('dragleave', function() { chip.classList.remove('drag-over'); });
+    chip.addEventListener('drop', function(e) {
+      if (!dragInfo || dragInfo.scope !== 'child') return;
+      e.preventDefault(); e.stopPropagation();
+      var fromId = dragInfo.id, toId = parseInt(chip.dataset.id, 10);
+      var src = findRow(fromId), dst = findRow(toId);
+      clearDragOver(); dragInfo = null;
+      if (!src || !dst || fromId === toId || src.parent !== dst.parent) return;
+      var r = chip.getBoundingClientRect();
+      var after = (e.clientX - r.left) > r.width / 2;
+      reorderScope('child', src.parent, fromId, toId, after);
+    });
+  });
+}
+
 function statusLabel(s) { return { pending: '待审核', approved: '已通过', rejected: '已拒绝' }[s] || s; }
-function esc(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s) { if (s === null || s === undefined || s === '') return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 if (adminToken) {
   document.getElementById('loginView').style.display = 'none';
