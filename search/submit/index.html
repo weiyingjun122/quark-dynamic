@@ -157,7 +157,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
       <h2>批量提交资源</h2>
       <div class="batch-hint">
         <strong>格式说明：</strong>每行一个资源，格式为 <code>资源名称 | 链接 | 类型</code><br>
-        类型可选：少儿、小学、初中、高中、专升本、大学、四六级、考研、教资、剧本杀、语文阅读一区、语文阅读二区、英汉双语阅读、半小时漫画、知乎盐选、四大名著、豆瓣畅销书、百科全书、摄影剪辑、付费课程、编程开发、媒体运营、学习攻略、实用资源、其他（默认"其他"）<br>
+        <span id="typeHint">类型可选：少儿、小学、初中、高中、专升本、大学、四六级、考研、教资、剧本杀、语文阅读一区、语文阅读二区、英汉双语阅读、半小时漫画、知乎盐选、四大名著、豆瓣畅销书、百科全书、哲学宗教、文学、教育学习、摄影剪辑、付费课程、编程开发、媒体运营、学习攻略、实用资源、其他（默认"其他"）</span><br>
         剧本杀可加两个可选字段：<code>资源名称 | 链接 | 剧本杀 | 人数 | 题材</code>（人数为 1-20，题材如 情感、恐怖、推理、欢乐、机制、还原、古风）<br>
         也可直接粘贴链接，会自动识别
       </div>
@@ -407,6 +407,16 @@ function checkLogin() {
       else localStorage.removeItem(TOKEN_KEY);
     }).catch(function() {});
 }
+
+// 类型说明动态取自分类配置（失败沿用页面内置文案）
+fetch('/api/resources/types')
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d && d.success && d.types && d.types.length) {
+      document.getElementById('typeHint').textContent = '类型可选：' + d.types.join('、') + '（默认"其他"）';
+    }
+  })
+  .catch(function() {});
 
 checkLogin();
 </script>

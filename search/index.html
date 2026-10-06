@@ -115,22 +115,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     <button id="searchBtn">搜索</button>
   </div>
 
-  <div class="tabs" id="typeTabs">
-    <span class="tab" data-type="少儿" onclick="setType(this)">少儿</span>
-    <span class="tab" data-type="小学" onclick="setType(this)">小学</span>
-    <span class="tab" data-type="初中" onclick="setType(this)">初中</span>
-    <span class="tab" data-type="高中" onclick="setType(this)">高中</span>
-    <span class="tab" data-type="专升本" onclick="setType(this)">专升本</span>
-    <span class="tab" data-type="大学" onclick="setType(this)">大学</span>
-    <span class="tab" data-type="四六级" onclick="setType(this)">四六级</span>
-    <span class="tab" data-type="考研" onclick="setType(this)">考研</span>
-    <span class="tab" data-type="教资" onclick="setType(this)">教资</span>
-    <span class="tab-divider"></span>
-    <span class="tab" data-type="剧本杀" onclick="setType(this)">剧本杀</span>
-    <span class="tab" data-type="语文阅读" onclick="setType(this)">语文阅读</span>
-    <span class="tab-divider"></span>
-    <span class="tab" data-type="兴趣技能" onclick="setType(this)">兴趣技能</span>
-  </div>
+  <div class="tabs" id="typeTabs"></div>
 
   <div class="sub-tabs" id="subTabs">
     <div class="sub-tab-row">
@@ -177,33 +162,7 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     </div>
   </div>
 
-  <div class="sub-tabs" id="hobbySubTabs">
-    <div class="sub-tab-row">
-      <span class="sub-tab-label">兴趣技能</span>
-      <span class="sub-tab active" data-hobby="全部" onclick="setHobby(this)">全部</span>
-      <span class="sub-tab" data-hobby="摄影剪辑" onclick="setHobby(this)">摄影剪辑</span>
-      <span class="sub-tab" data-hobby="付费课程" onclick="setHobby(this)">付费课程</span>
-      <span class="sub-tab" data-hobby="编程开发" onclick="setHobby(this)">编程开发</span>
-      <span class="sub-tab" data-hobby="媒体运营" onclick="setHobby(this)">媒体运营</span>
-      <span class="sub-tab" data-hobby="学习攻略" onclick="setHobby(this)">学习攻略</span>
-      <span class="sub-tab" data-hobby="实用资源" onclick="setHobby(this)">实用资源</span>
-    </div>
-  </div>
-
-  <div class="sub-tabs" id="readingSubTabs">
-    <div class="sub-tab-row">
-      <span class="sub-tab-label">语文阅读</span>
-      <span class="sub-tab active" data-reading="全部" onclick="setReading(this)">全部</span>
-      <span class="sub-tab" data-reading="语文阅读一区" onclick="setReading(this)">语文阅读一区</span>
-      <span class="sub-tab" data-reading="语文阅读二区" onclick="setReading(this)">语文阅读二区</span>
-      <span class="sub-tab" data-reading="英汉双语阅读" onclick="setReading(this)">英汉双语阅读</span>
-      <span class="sub-tab" data-reading="半小时漫画" onclick="setReading(this)">半小时漫画</span>
-      <span class="sub-tab" data-reading="知乎盐选" onclick="setReading(this)">知乎盐选</span>
-      <span class="sub-tab" data-reading="四大名著" onclick="setReading(this)">四大名著</span>
-      <span class="sub-tab" data-reading="豆瓣畅销书" onclick="setReading(this)">豆瓣畅销书</span>
-      <span class="sub-tab" data-reading="百科全书" onclick="setReading(this)">百科全书</span>
-    </div>
-  </div>
+  <div id="dynSubTabs"></div>
 
   <div id="rateLimitInfo" class="rate-limit-bar" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px;margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#64748b;">
     <span id="limitIcon">📊</span>
@@ -239,11 +198,27 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 <div class="toast" id="toast"></div>
 
 <script>
+// 分类配置兜底默认值（与 /api/resources/types 一致；接口可用时以接口返回为准）
+var DEFAULT_TABS = [
+  { name: '少儿', grp: 1, children: [] },
+  { name: '小学', grp: 1, children: [] },
+  { name: '初中', grp: 1, children: [] },
+  { name: '高中', grp: 1, children: [] },
+  { name: '专升本', grp: 1, children: [] },
+  { name: '大学', grp: 1, children: [] },
+  { name: '四六级', grp: 1, children: [] },
+  { name: '考研', grp: 1, children: [] },
+  { name: '教资', grp: 1, children: [] },
+  { name: '剧本杀', grp: 2, children: [] },
+  { name: '语文阅读', grp: 2, children: ['语文阅读一区', '语文阅读二区', '英汉双语阅读', '半小时漫画', '知乎盐选', '四大名著', '豆瓣畅销书', '百科全书'] },
+  { name: '电子书', grp: 2, children: ['哲学宗教', '文学', '教育学习'] },
+  { name: '兴趣技能', grp: 3, children: ['摄影剪辑', '付费课程', '编程开发', '媒体运营', '学习攻略', '实用资源'] }
+];
+var TYPE_TABS = DEFAULT_TABS;
 var currentType = '';
 var currentPlayer = '全部';
 var currentGenre = '全部';
-var currentHobby = '全部';
-var currentReading = '全部';
+var currentChild = '全部';
 
 function toast(msg) {
   var el = document.getElementById('toast');
@@ -251,6 +226,52 @@ function toast(msg) {
   el.classList.add('show');
   clearTimeout(toast._t);
   toast._t = setTimeout(function () { el.classList.remove('show'); }, 2000);
+}
+
+function childrenOf(name) {
+  for (var i = 0; i < TYPE_TABS.length; i++) {
+    if (TYPE_TABS[i].name === name) return TYPE_TABS[i].children || [];
+  }
+  return [];
+}
+
+function renderTabs() {
+  var html = '';
+  var lastGrp = null;
+  TYPE_TABS.forEach(function(t) {
+    if (lastGrp !== null && t.grp !== lastGrp) html += '<span class="tab-divider"></span>';
+    html += '<span class="tab' + (t.name === currentType ? ' active' : '') + '" data-type="' + escapeHtml(t.name) + '" onclick="setType(this)">' + escapeHtml(t.name) + '</span>';
+    lastGrp = t.grp;
+  });
+  document.getElementById('typeTabs').innerHTML = html;
+}
+
+function renderChildRows() {
+  var html = '';
+  TYPE_TABS.forEach(function(t) {
+    if (!t.children || t.children.length === 0 || t.name === '剧本杀') return;
+    var show = currentType === t.name;
+    var active = show ? currentChild : '全部';
+    html += '<div class="sub-tabs' + (show ? ' show' : '') + '" data-childrow="' + escapeHtml(t.name) + '">';
+    html += '<div class="sub-tab-row"><span class="sub-tab-label">' + escapeHtml(t.name) + '</span>';
+    ['全部'].concat(t.children).forEach(function(c) {
+      html += '<span class="sub-tab' + (c === active ? ' active' : '') + '" data-child="' + escapeHtml(c) + '" onclick="setChild(this)">' + escapeHtml(c) + '</span>';
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('dynSubTabs').innerHTML = html;
+}
+
+// 按 currentType 显示对应子标签行（剧本杀人数/题材行独立处理）
+function syncSubRows() {
+  document.getElementById('subTabs').classList.toggle('show', currentType === '剧本杀');
+  document.querySelectorAll('[data-childrow]').forEach(function(row) {
+    var match = row.dataset.childrow === currentType;
+    row.classList.toggle('show', match);
+    row.querySelectorAll('[data-child]').forEach(function(c) {
+      c.classList.toggle('active', c.dataset.child === (match ? currentChild : '全部'));
+    });
+  });
 }
 
 function setType(el) {
@@ -262,39 +283,25 @@ function setType(el) {
     el.classList.add('active');
     currentType = el.dataset.type;
   }
-  // 显示/隐藏子标签
-  var subTabs = document.getElementById('subTabs');
-  var hobbySubTabs = document.getElementById('hobbySubTabs');
-  var readingSubTabs = document.getElementById('readingSubTabs');
-  if (currentType === '剧本杀') {
-    subTabs.classList.add('show');
-    hobbySubTabs.classList.remove('show');
-    readingSubTabs.classList.remove('show');
-    currentPlayer = '全部';
-    currentGenre = '全部';
-    resetSubTabs();
-  } else if (currentType === '兴趣技能') {
-    hobbySubTabs.classList.add('show');
-    subTabs.classList.remove('show');
-    readingSubTabs.classList.remove('show');
-    currentHobby = '全部';
-    resetHobbySubTabs();
-  } else if (currentType === '语文阅读') {
-    readingSubTabs.classList.add('show');
-    subTabs.classList.remove('show');
-    hobbySubTabs.classList.remove('show');
-    currentReading = '全部';
-    resetReadingSubTabs();
-  } else {
-    subTabs.classList.remove('show');
-    hobbySubTabs.classList.remove('show');
-    readingSubTabs.classList.remove('show');
-    currentPlayer = '全部';
-    currentGenre = '全部';
-    currentHobby = '全部';
-    currentReading = '全部';
-    resetSubTabs();
-  }
+  currentChild = '全部';
+  currentPlayer = '全部';
+  currentGenre = '全部';
+  resetSubTabs();
+  syncSubRows();
+  currentPage = 1;
+  doSearch(document.getElementById('searchInput').value.trim());
+}
+
+function setChild(el) {
+  var row = el.closest('[data-childrow]');
+  if (!row) return;
+  currentType = row.dataset.childrow;
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.classList.toggle('active', t.dataset.type === currentType);
+  });
+  document.querySelectorAll('[data-child]').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  currentChild = el.dataset.child;
   currentPage = 1;
   doSearch(document.getElementById('searchInput').value.trim());
 }
@@ -322,32 +329,6 @@ function resetSubTabs() {
   document.querySelector('[data-genre="全部"]').classList.add('active');
 }
 
-function setHobby(el) {
-  document.querySelectorAll('[data-hobby]').forEach(function(t) { t.classList.remove('active'); });
-  el.classList.add('active');
-  currentHobby = el.dataset.hobby;
-  currentPage = 1;
-  doSearch(document.getElementById('searchInput').value.trim());
-}
-
-function resetHobbySubTabs() {
-  document.querySelectorAll('[data-hobby]').forEach(function(t) { t.classList.remove('active'); });
-  document.querySelector('[data-hobby="全部"]').classList.add('active');
-}
-
-function setReading(el) {
-  document.querySelectorAll('[data-reading]').forEach(function(t) { t.classList.remove('active'); });
-  el.classList.add('active');
-  currentReading = el.dataset.reading;
-  currentPage = 1;
-  doSearch(document.getElementById('searchInput').value.trim());
-}
-
-function resetReadingSubTabs() {
-  document.querySelectorAll('[data-reading]').forEach(function(t) { t.classList.remove('active'); });
-  document.querySelector('[data-reading="全部"]').classList.add('active');
-}
-
 var currentPage = 1;
 var TOKEN_KEY = 'user_auth_token';
 
@@ -362,11 +343,8 @@ function doSearch(q) {
     if (currentPlayer && currentPlayer !== '全部') url += 'player_count=' + encodeURIComponent(currentPlayer) + '&';
     if (currentGenre && currentGenre !== '全部') url += 'genre=' + encodeURIComponent(currentGenre) + '&';
   }
-  if (currentType === '兴趣技能') {
-    if (currentHobby && currentHobby !== '全部') url += 'keywords=' + encodeURIComponent(currentHobby) + '&';
-  }
-  if (currentType === '语文阅读') {
-    if (currentReading && currentReading !== '全部') url += 'keywords=' + encodeURIComponent(currentReading) + '&';
+  if (currentChild && currentChild !== '全部' && childrenOf(currentType).length) {
+    url += 'keywords=' + encodeURIComponent(currentChild) + '&';
   }
   url += 'page=' + currentPage + '&limit=20';
 
@@ -537,68 +515,57 @@ var initQ = urlParams.get('q');
 var initType = urlParams.get('type');
 var initPlayer = urlParams.get('player_count');
 var initGenre = urlParams.get('genre');
-var initHobby = urlParams.get('hobby');
-var initReading = urlParams.get('reading');
+// 子标签深链参数（兼容旧参数名 hobby/reading/ebook）
+var initChild = urlParams.get('child') || urlParams.get('hobby') || urlParams.get('reading') || urlParams.get('ebook') || '';
+
 if (initQ) {
   document.getElementById('searchInput').value = initQ;
 }
 if (initType) {
-  document.querySelectorAll('.tab').forEach(function(t) {
-    if (t.dataset.type === initType) {
-      t.classList.add('active');
-      currentType = initType;
-    }
-  });
-  if (initType === '剧本杀') {
-    document.getElementById('subTabs').classList.add('show');
-    if (initPlayer) {
-      currentPlayer = initPlayer;
-      document.querySelectorAll('[data-player]').forEach(function(t) {
-        if (t.dataset.player === initPlayer) {
-          t.classList.add('active');
-        } else {
-          t.classList.remove('active');
-        }
-      });
-    }
-    if (initGenre) {
-      currentGenre = initGenre;
-      document.querySelectorAll('[data-genre]').forEach(function(t) {
-        if (t.dataset.genre === initGenre) {
-          t.classList.add('active');
-        } else {
-          t.classList.remove('active');
-        }
-      });
-    }
-  }
-  if (initType === '兴趣技能') {
-    document.getElementById('hobbySubTabs').classList.add('show');
-    if (initHobby) {
-      currentHobby = initHobby;
-      document.querySelectorAll('[data-hobby]').forEach(function(t) {
-        if (t.dataset.hobby === initHobby) {
-          t.classList.add('active');
-        } else {
-          t.classList.remove('active');
-        }
-      });
-    }
-  }
-  if (initType === '语文阅读') {
-    document.getElementById('readingSubTabs').classList.add('show');
-    if (initReading) {
-      currentReading = initReading;
-      document.querySelectorAll('[data-reading]').forEach(function(t) {
-        if (t.dataset.reading === initReading) {
-          t.classList.add('active');
-        } else {
-          t.classList.remove('active');
-        }
-      });
-    }
-  }
+  currentType = initType;
+  if (initChild && initType !== '剧本杀') currentChild = initChild;
+  if (initPlayer) currentPlayer = initPlayer;
+  if (initGenre) currentGenre = initGenre;
 }
+
+function setActiveByKey(sel, key, val) {
+  document.querySelectorAll(sel).forEach(function(t) {
+    t.classList.toggle('active', t.dataset[key] === val);
+  });
+}
+
+// 初始渲染（默认配置）并应用深链状态
+renderTabs();
+renderChildRows();
+syncSubRows();
+if (currentType === '剧本杀') {
+  setActiveByKey('[data-player]', 'player', currentPlayer);
+  setActiveByKey('[data-genre]', 'genre', currentGenre);
+}
+
+// 拉取服务端分类配置（失败沿用默认配置），完成后执行首次搜索
+function loadTaxonomy(done) {
+  fetch('/api/resources/types')
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d && d.success && d.tabs && d.tabs.length && JSON.stringify(d.tabs) !== JSON.stringify(DEFAULT_TABS)) {
+        TYPE_TABS = d.tabs;
+        renderTabs();
+        renderChildRows();
+        syncSubRows();
+        if (currentType === '剧本杀') {
+          setActiveByKey('[data-player]', 'player', currentPlayer);
+          setActiveByKey('[data-genre]', 'genre', currentGenre);
+        }
+      }
+      done();
+    })
+    .catch(function() { done(); });
+}
+
+loadTaxonomy(function() {
+  if (initQ || currentType) doSearch(initQ || '');
+});
 
 var quotes = [
   '学而不思则罔，思而不学则殆 —— 孔子',
@@ -616,10 +583,6 @@ var quotes = [
 ];
 var today = new Date().getDate();
 document.getElementById('dailyQuote').textContent = quotes[today % quotes.length];
-
-if (initQ || initType) {
-  doSearch(initQ || '');
-}
 
 // 注册 Service Worker
 if ('serviceWorker' in navigator) {

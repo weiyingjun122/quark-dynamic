@@ -1,5 +1,7 @@
 // functions/api/resources/search.js
-// GET /api/resources/search?q=关键词&type=类型&player_count=人数&genre=类型&page=1&limit=20
+// GET /api/resources/search?q=关键词&type=类型&player_count=人数&genre=类型&keywords=子标签&page=1&limit=20
+import { getTaxonomy, childrenMapOf } from './_types.js';
+
 export async function onRequestGet(context) {
   const { env, request } = context;
 
@@ -25,23 +27,16 @@ export async function onRequestGet(context) {
     let params = [];
 
     if (type && type !== '全部') {
-      if (type === '兴趣技能') {
-        const hobby = url.searchParams.get('keywords') || '';
-        if (hobby && hobby !== '全部') {
+      const children = childrenMapOf(await getTaxonomy(env))[type];
+      if (children) {
+        // 带子标签的分类（语文阅读/兴趣技能/电子书）：指定子标签则精确匹配，否则聚合全部子标签
+        const child = url.searchParams.get('keywords') || '';
+        if (child && child !== '全部' && children.includes(child)) {
           conditions.push("type = ?");
-          params.push(hobby);
+          params.push(child);
         } else {
-          conditions.push("type IN (?, ?, ?, ?, ?)");
-          params.push('摄影剪辑', '付费课程', '编程开发', '媒体运营', '学习攻略', '实用资源');
-        }
-      } else if (type === '语文阅读') {
-        const reading = url.searchParams.get('keywords') || '';
-        if (reading && reading !== '全部') {
-          conditions.push("type = ?");
-          params.push(reading);
-        } else {
-          conditions.push("type IN (?, ?, ?, ?, ?, ?, ?, ?)");
-          params.push('语文阅读一区', '语文阅读二区', '英汉双语阅读', '半小时漫画', '知乎盐选', '四大名著', '豆瓣畅销书', '百科全书');
+          conditions.push(`type IN (${children.map(() => '?').join(', ')})`);
+          params.push(...children);
         }
       } else {
         conditions.push("type = ?");

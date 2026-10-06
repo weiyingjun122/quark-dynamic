@@ -58,6 +58,17 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
 .status-pending{background:#fef3c7;color:#92400e}
 .status-approved{background:#d1fae5;color:#065f46}
 .status-rejected{background:#fee2e2;color:#991b1b}
+.status-off{background:#f1f5f9;color:#64748b}
+
+.type-add{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;border-radius:12px;padding:12px 16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.type-add input{padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:13px;width:140px;outline:none}
+.type-add input:focus{border-color:#2563eb}
+.type-card{background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.type-card .kids{margin-top:10px;padding-top:10px;border-top:1px dashed #e2e8f0}
+.type-chip{display:inline-flex;align-items:center;gap:4px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:12px;padding:3px 8px;font-size:12px;color:#334155;margin:0 6px 6px 0}
+.type-chip.off{opacity:.45;text-decoration:line-through}
+.type-chip b{cursor:pointer;color:#94a3b8;font-weight:400;padding:0 1px}
+.type-chip b:hover{color:#2563eb}
 
 .empty{text-align:center;padding:60px 20px;color:#94a3b8}
 .loading{text-align:center;padding:40px;color:#94a3b8}
@@ -86,6 +97,17 @@ body{font-family:"Microsoft YaHei",-apple-system,Arial,sans-serif;background:#f5
       <div class="tab active" data-status="pending" onclick="switchTab(this)">待审核 <span class="count" id="tabPending">0</span></div>
       <div class="tab" data-status="approved" onclick="switchTab(this)">已通过 <span class="count" id="tabApproved">0</span></div>
       <div class="tab" data-status="rejected" onclick="switchTab(this)">已拒绝 <span class="count" id="tabRejected">0</span></div>
+      <div class="tab" data-status="types" onclick="switchTab(this)">分类管理</div>
+    </div>
+    <div id="typesView" style="display:none">
+      <div class="type-add">
+        <input id="newTypeName" placeholder="分类名称（1-20字）" maxlength="20">
+        <input id="newTypeSort" placeholder="排序(可选)" style="width:90px">
+        <input id="newTypeGrp" placeholder="分组(可选)" style="width:90px">
+        <button class="btn btn-approve" onclick="addTopType()">新增顶级分类</button>
+        <span style="font-size:12px;color:#94a3b8">修改后约1分钟内全站生效</span>
+      </div>
+      <div id="typesList"></div>
     </div>
     <div class="batch-bar" id="batchBar">
       <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;color:#64748b">
@@ -141,7 +163,16 @@ function switchTab(el) {
   currentStatus = el.dataset.status;
   selectedIds.clear();
   updateBatchBar();
-  loadList(currentStatus);
+  if (currentStatus === 'types') {
+    document.getElementById('batchBar').classList.remove('show');
+    document.getElementById('list').style.display = 'none';
+    document.getElementById('typesView').style.display = '';
+    loadTypes();
+  } else {
+    document.getElementById('typesView').style.display = 'none';
+    document.getElementById('list').style.display = '';
+    loadList(currentStatus);
+  }
 }
 
 function loadList(status) {
@@ -316,6 +347,127 @@ function deleteItem(id) {
 }
 
 function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ---------- 分类管理 ----------
+var typeRows = [];
+
+function typeName(id) {
+  for (var i = 0; i < typeRows.length; i++) {
+    if (typeRows[i].id === id) return typeRows[i].name;
+  }
+  return '';
+}
+
+function loadTypes() {
+  var el = document.getElementById('typesList');
+  el.innerHTML = '<div class="loading">加载中...</div>';
+  fetch('/api/resources/admin?list=types', {
+    headers: { 'Authorization': 'Bearer ' + adminToken }
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    if (!d.success) { el.innerHTML = '<div class="empty">' + esc(d.error || '加载失败') + '</div>'; return; }
+    typeRows = d.results || [];
+    var tops = typeRows.filter(function(r) { return !r.parent; });
+    if (typeRows.length === 0) {
+      el.innerHTML = '<div class="empty">分类表为空，当前使用内置默认分类<br><br><button class="btn btn-approve" onclick="initTypes()">载入默认配置到数据库</button></div>';
+      return;
+    }
+    if (tops.length === 0) {
+      el.innerHTML = '<div class="empty">没有顶级分类，请先在上方新增</div>';
+      return;
+    }
+    el.innerHTML = tops.map(function(t) {
+      var kids = typeRows.filter(function(r) { return r.parent === t.name; });
+      var chips = kids.map(function(k) {
+        return '<span class="type-chip' + (k.enabled ? '' : ' off') + '">' + esc(k.name) +
+          ' <b onclick="toggleType(' + k.id + ',' + (k.enabled ? 0 : 1) + ')" title="启用/停用">' + (k.enabled ? '○' : '●') + '</b>' +
+          ' <b onclick="renameType(' + k.id + ')" title="改名">✎</b>' +
+          ' <b onclick="deleteType(' + k.id + ')" title="删除">×</b></span>';
+      }).join('') +
+      '<span class="type-chip" style="cursor:pointer;background:#eff6ff;border-color:#bfdbfe;color:#2563eb" onclick="addChild(this.dataset.p)" data-p="' + esc(t.name) + '" title="添加子标签">＋ 子标签</span>';
+      return '<div class="type-card">' +
+        '<div class="card-header">' +
+          '<span class="card-title">' + esc(t.name) +
+            ' <span class="status-badge ' + (t.enabled ? 'status-approved' : 'status-off') + '">' + (t.enabled ? '启用' : '停用') + '</span></span>' +
+          '<span class="card-meta" style="margin:0">分组 ' + t.grp + ' · 排序 ' + t.sort + ' · 子标签 ' + kids.length + '</span>' +
+        '</div>' +
+        '<div class="card-actions">' +
+          '<button class="btn" style="background:#f1f5f9;color:#64748b" onclick="renameType(' + t.id + ')">改名</button>' +
+          '<button class="btn" style="background:#f1f5f9;color:#64748b" onclick="setSort(' + t.id + ')">排序</button>' +
+          '<button class="btn" style="background:#f1f5f9;color:#64748b" onclick="setGrp(' + t.id + ')">分组</button>' +
+          '<button class="btn" style="background:#f1f5f9;color:#64748b" onclick="toggleType(' + t.id + ',' + (t.enabled ? 0 : 1) + ')">' + (t.enabled ? '停用' : '启用') + '</button>' +
+          '<button class="btn btn-delete" onclick="deleteType(' + t.id + ')">删除</button>' +
+        '</div>' +
+        '<div class="kids">' + (chips || '<span style="font-size:12px;color:#94a3b8">无子标签</span>') + '</div>' +
+      '</div>';
+    }).join('');
+  }).catch(function(e) {
+    el.innerHTML = '<div class="empty">网络错误: ' + esc(e.message) + '</div>';
+  });
+}
+
+function typeAction(body, refresh) {
+  fetch('/api/resources/admin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
+    body: JSON.stringify(body)
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    toast(d.message || d.error || (d.success ? '操作成功' : '操作失败'));
+    if (d.success && refresh !== false) loadTypes();
+  }).catch(function() { toast('网络错误'); });
+}
+
+function addTopType() {
+  var name = document.getElementById('newTypeName').value.trim();
+  if (!name) { toast('请输入分类名称'); return; }
+  var body = { action: 'type_add', name: name, parent: '' };
+  var sort = document.getElementById('newTypeSort').value.trim();
+  var grp = document.getElementById('newTypeGrp').value.trim();
+  if (sort !== '') body.sort = sort;
+  if (grp !== '') body.grp = grp;
+  typeAction(body);
+  document.getElementById('newTypeName').value = '';
+}
+
+function addChild(parent) {
+  var name = prompt('在「' + parent + '」下新增子标签名称：');
+  if (!name || !name.trim()) return;
+  typeAction({ action: 'type_add', name: name.trim(), parent: parent });
+}
+
+function renameType(id) {
+  var name = prompt('新的分类名称：', typeName(id));
+  if (!name || !name.trim() || name.trim() === typeName(id)) return;
+  typeAction({ action: 'type_update', id: id, name: name.trim() });
+}
+
+function setSort(id) {
+  var v = prompt('排序号（越小越靠前）：', String((typeRows.find(function(r) { return r.id === id; }) || {}).sort || 0));
+  if (v === null || v.trim() === '') return;
+  typeAction({ action: 'type_update', id: id, sort: v.trim() });
+}
+
+function setGrp(id) {
+  var v = prompt('分组号（相邻不同分组间显示分隔线）：', String((typeRows.find(function(r) { return r.id === id; }) || {}).grp || 1));
+  if (v === null || v.trim() === '') return;
+  typeAction({ action: 'type_update', id: id, grp: v.trim() });
+}
+
+function toggleType(id, enabled) {
+  typeAction({ action: 'type_update', id: id, enabled: enabled });
+}
+
+function deleteType(id) {
+  var row = typeRows.find(function(r) { return r.id === id; });
+  var extra = row && !row.parent && typeRows.some(function(r) { return r.parent === row.name; }) ? '，其下子标签将一并删除' : '';
+  if (!confirm('确定删除「' + typeName(id) + '」' + extra + '？')) return;
+  typeAction({ action: 'type_delete', id: id });
+}
+
+function initTypes() {
+  if (!confirm('将默认分类写入数据库？（仅在表为空时执行）')) return;
+  typeAction({ action: 'type_init' });
+}
+
 function statusLabel(s) { return { pending: '待审核', approved: '已通过', rejected: '已拒绝' }[s] || s; }
 function esc(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
