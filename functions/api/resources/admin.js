@@ -223,6 +223,61 @@ export async function onRequestPost(context) {
       return Response.json({ success: true, message: '已删除分类' + (row.parent ? '' : '及其子标签') });
     }
 
+    // ---- 批量导入（本地工具入库，按 link 去重，单次最多 200 条）----
+    if (action === 'import') {
+      const rows = Array.isArray(body.items) ? body.items : [];
+      if (rows.length === 0) return err('缺少 items');
+      if (rows.length > 200) return err('单次最多 200 条，当前 ' + rows.length + ' 条');
+
+      const bad = [];
+      const norm = rows.map((r, i) => {
+        const title = String(r.title || '').trim();
+        const link = String(r.link || '').trim();
+        const type = String(r.type || '其他').trim() || '其他';
+        const status = ['approved', 'rejected', 'pending'].includes(r.status)
+          ? r.status : 'approved';
+        if (!title || title.length > 200) bad.push(`#${i + 1} 标题为空或超过200字符`);
+        if (!/^https?:\/\//.test(link)) bad.push(`#${i + 1} 链接非法`);
+        if (type.length > 20) bad.push(`#${i + 1} 分类超过20字符`);
+        return {
+          title: title.slice(0, 200),
+          link,
+          type,
+          status,
+          keywords: String(r.keywords || '').slice(0, 500),
+          source: String(r.source || 'user').slice(0, 20) || 'user',
+          submitted_by: String(r.submitted_by || 'weiyingjun').slice(0, 50),
+        };
+      });
+      if (bad.length) return err('数据校验失败：' + bad.slice(0, 5).join('；'));
+
+      // 按 link 去重（跳过库里已有的链接）
+      const links = norm.map(r => r.link);
+      const existed = await env.RESOURCES_DB.prepare(
+        `SELECT link FROM resources WHERE link IN (${links.map(() => '?').join(',')})`
+      ).bind(...links).all();
+      const dupSet = new Set(((existed && existed.results) || []).map(r => r.link));
+      const todo = norm.filter(r => !dupSet.has(r.link));
+
+      if (todo.length > 0) {
+        const insertStmt = env.RESOURCES_DB.prepare(
+          'INSERT INTO resources (title, link, type, keywords, source, status, submitted_by, ' +
+          'created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, datetime(\'now\'), datetime(\'now\'))'
+        );
+        await env.RESOURCES_DB.batch(todo.map(r => insertStmt.bind(
+          r.title, r.link, r.type, r.keywords, r.source, r.status, r.submitted_by
+        )));
+      }
+
+      return Response.json({
+        success: true,
+        received: norm.length,
+        inserted: todo.length,
+        skipped: dupSet.size,
+        skipped_links: [...dupSet].slice(0, 500),
+      });
+    }
+
     // ---- 资源审核 ----
     if (action === 'update_status' && status) {
       if (!['approved', 'rejected', 'pending'].includes(status)) {
