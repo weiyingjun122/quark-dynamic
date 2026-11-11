@@ -77,6 +77,25 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 .result-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
 .result-tag{font-size:11px;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:8px}
 
+/* 资源二维码弹窗 */
+.qr-mask{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,23,42,.55)}
+.qr-mask.show{display:flex}
+.qr-box{position:relative;width:100%;max-width:340px;padding:24px;background:#fff;border-radius:16px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25);animation:qrIn .18s ease-out}
+@keyframes qrIn{from{transform:translateY(8px);opacity:.6}to{transform:translateY(0);opacity:1}}
+.qr-close{position:absolute;top:8px;right:10px;width:32px;height:32px;border:none;background:transparent;color:#94a3b8;font-size:24px;line-height:1;cursor:pointer}
+.qr-close:hover{color:#334155}
+.qr-title{font-size:16px;font-weight:600;color:#1f2d3d;line-height:1.5;margin:0 24px 16px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#qrCanvas{display:flex;align-items:center;justify-content:center;min-height:280px;padding:10px;background:#fff;border-radius:8px}
+#qrCanvas canvas,#qrCanvas img{display:block;width:260px;height:260px;background:#fff}
+#qrCanvas .qr-fallback{font-size:13px;color:#64748b;line-height:1.8;padding:20px}
+.qr-tip{font-size:14px;color:#1f2d3d;line-height:1.7;margin-top:14px}
+.qr-sub{font-size:12px;color:#94a3b8;line-height:1.6;margin-top:6px}
+.qr-actions{display:flex;gap:10px;margin-top:18px}
+.qr-actions button{flex:1;padding:10px 8px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#2563eb;font-size:13px;cursor:pointer;transition:all .2s}
+.qr-actions button:hover{border-color:#2563eb}
+.qr-actions button.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.qr-actions button.primary:hover{background:#1d4ed8}
+
 /* 响应式样式 */
 @media (max-width: 600px) {
   .navbar-links{gap:14px;font-size:13px}
@@ -197,6 +216,21 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 
 <div class="toast" id="toast"></div>
 
+<div id="qrModal" class="qr-mask" onclick="closeQrModal(event)">
+  <div class="qr-box" onclick="event.stopPropagation()">
+    <button class="qr-close" type="button" aria-label="关闭" onclick="hideQrModal()">×</button>
+    <div class="qr-title" id="qrTitle"></div>
+    <div id="qrCanvas"></div>
+    <p class="qr-tip" id="qrTip">打开手机上的夸克 App 扫描二维码，即可查看并保存资源</p>
+    <p class="qr-sub">扫码后请在夸克中点击「保存到网盘」，移动端转存才会被记录</p>
+    <div class="qr-actions">
+      <button class="primary" type="button" onclick="openPcLink()">在电脑上直接打开</button>
+      <button type="button" onclick="copyQrLink()">复制链接</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/qrcode.min.js"></script>
 <script>
 // 分类配置兜底默认值（与 /api/resources/types 一致；接口可用时以接口返回为准）
 var DEFAULT_TABS = [
@@ -367,8 +401,9 @@ function doSearch(q) {
       data.results.forEach(function(item) {
         var date = item.created_at ? item.created_at.substring(0, 10) : '';
         var link = escapeHtml(item.link);
+        var title = escapeHtml(item.title);
         var id = item.id;
-        html += '<div class="result-item" onclick="clickResource(' + id + ',\'' + link + '\')">';
+        html += '<div class="result-item" data-id="' + id + '" data-link="' + link + '" data-title="' + title + '" onclick="clickResource(this)">';
         html += '<div class="result-info">';
         html += '<div class="result-title">' + escapeHtml(item.title) + '</div>';
         html += '<div class="result-meta">' + escapeHtml(item.type || '') + (date ? ' · ' + date : '') + (item.view_count ? ' · ' + item.view_count + '次查看' : '') + '</div>';
@@ -462,7 +497,21 @@ function loadLimitInfo() {
 
 loadLimitInfo();
 
-function clickResource(id, link) {
+var currentQrLink = '';
+
+function isMobileDevice() {
+  var ua = navigator.userAgent || '';
+  if (/Android|iPhone|iPod|Mobile|HarmonyOS|Windows Phone/i.test(ua)) return true;
+  if (/iPad/i.test(ua)) return true;
+  // iPadOS 13+ 默认使用桌面 UA，用触摸点和窗口宽度兜底判断
+  return navigator.maxTouchPoints > 1 && window.innerWidth < 900;
+}
+
+function clickResource(el) {
+  var id = el.dataset.id;
+  var link = el.dataset.link;
+  var title = el.dataset.title || '资源二维码';
+
   var headers = {};
   var token = localStorage.getItem(TOKEN_KEY);
   if (token) headers['Authorization'] = 'Bearer ' + token;
@@ -491,14 +540,109 @@ function clickResource(id, link) {
     if (data && data.remaining !== undefined) {
       updateLimitBar(data.remaining, data.limit);
     }
-    if (data && data.success !== false) {
-      window.open(link, '_blank');
+    if (!data || data.success === false) return;
+
+    // 手机端直接打开：手机用户没必要扫自己屏幕，直接跳转同样算移动转存
+    if (isMobileDevice()) {
+      window.location.href = link;
+      return;
     }
+    showQrModal(title, link);
   })
   .catch(function() {
-    window.open(link, '_blank');
+    // 次数接口异常时不要阻断用户访问资源
+    if (isMobileDevice()) {
+      window.location.href = link;
+    } else {
+      showQrModal(title, link);
+    }
   });
 }
+
+function showQrModal(title, link) {
+  currentQrLink = link || '';
+  document.getElementById('qrTitle').textContent = title;
+
+  var isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+  document.getElementById('qrTip').textContent = isWeChat
+    ? '请用手机上的夸克 App 扫描二维码；若在微信内打不开，请点右上角「…」→「在浏览器打开」，或复制链接到夸克 App'
+    : '打开手机上的夸克 App 扫描二维码，即可查看并保存资源';
+
+  var box = document.getElementById('qrCanvas');
+  box.innerHTML = '';
+
+  if (!currentQrLink) {
+    box.innerHTML = '<div class="qr-fallback">资源链接为空，请稍后重试</div>';
+  } else if (typeof QRCode === 'undefined') {
+    box.innerHTML = '<div class="qr-fallback">二维码组件加载失败<br>请点击下方「复制链接」到夸克 App 打开</div>';
+  } else {
+    try {
+      new QRCode(box, {
+        text: currentQrLink,
+        width: 520,
+        height: 520,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      // 按 520px 生成、按窗口宽度缩放显示，保证手机扫码清晰
+      var displaySize = Math.max(180, Math.min(260, window.innerWidth - 96));
+      box.style.minHeight = (displaySize + 20) + 'px';
+      var nodes = box.querySelectorAll('canvas, img');
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].style.width = displaySize + 'px';
+        nodes[i].style.height = displaySize + 'px';
+      }
+    } catch (e) {
+      box.innerHTML = '<div class="qr-fallback">二维码生成失败<br>请点击下方「复制链接」到夸克 App 打开</div>';
+    }
+  }
+
+  document.getElementById('qrModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function hideQrModal() {
+  document.getElementById('qrModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function closeQrModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  hideQrModal();
+}
+
+function openPcLink() {
+  if (currentQrLink) window.open(currentQrLink, '_blank', 'noopener');
+}
+
+function copyQrLink() {
+  if (!currentQrLink) return;
+  var done = function() { toast('链接已复制，请打开夸克 App 粘贴访问'); };
+  var fallback = function() {
+    var ta = document.createElement('textarea');
+    ta.value = currentQrLink;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      done();
+    } catch (e) {
+      toast('复制失败，请长按链接手动复制');
+    }
+    document.body.removeChild(ta);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(currentQrLink).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') hideQrModal();
+});
 
 document.getElementById('searchBtn').addEventListener('click', function() {
   doSearch(document.getElementById('searchInput').value.trim());
