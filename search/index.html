@@ -89,12 +89,6 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
 #qrCanvas canvas,#qrCanvas img{display:block;width:260px;height:260px;background:#fff}
 #qrCanvas .qr-fallback{font-size:13px;color:#64748b;line-height:1.8;padding:20px}
 .qr-tip{font-size:14px;color:#1f2d3d;line-height:1.7;margin-top:14px}
-.qr-sub{font-size:12px;color:#94a3b8;line-height:1.6;margin-top:6px}
-.qr-actions{display:flex;gap:10px;margin-top:18px}
-.qr-actions button{flex:1;padding:10px 8px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#2563eb;font-size:13px;cursor:pointer;transition:all .2s}
-.qr-actions button:hover{border-color:#2563eb}
-.qr-actions button.primary{background:#2563eb;border-color:#2563eb;color:#fff}
-.qr-actions button.primary:hover{background:#1d4ed8}
 
 /* 响应式样式 */
 @media (max-width: 600px) {
@@ -222,11 +216,6 @@ footer.site-footer a{color:#2563eb;text-decoration:none}
     <div class="qr-title" id="qrTitle"></div>
     <div id="qrCanvas"></div>
     <p class="qr-tip" id="qrTip">打开手机上的夸克 App 扫描二维码，即可查看并保存资源</p>
-    <p class="qr-sub">扫码后请在夸克中点击「保存到网盘」，移动端转存才会被记录</p>
-    <div class="qr-actions">
-      <button class="primary" type="button" onclick="openPcLink()">在电脑上直接打开</button>
-      <button type="button" onclick="copyQrLink()">复制链接</button>
-    </div>
   </div>
 </div>
 
@@ -562,11 +551,7 @@ function clickResource(el) {
 function showQrModal(title, link) {
   currentQrLink = link || '';
   document.getElementById('qrTitle').textContent = title;
-
-  var isWeChat = /MicroMessenger/i.test(navigator.userAgent);
-  document.getElementById('qrTip').textContent = isWeChat
-    ? '请用手机上的夸克 App 扫描二维码；若在微信内打不开，请点右上角「…」→「在浏览器打开」，或复制链接到夸克 App'
-    : '打开手机上的夸克 App 扫描二维码，即可查看并保存资源';
+  document.getElementById('qrTip').textContent = '打开手机上的夸克 App 扫描二维码，即可查看并保存资源';
 
   var box = document.getElementById('qrCanvas');
   box.innerHTML = '';
@@ -574,7 +559,7 @@ function showQrModal(title, link) {
   if (!currentQrLink) {
     box.innerHTML = '<div class="qr-fallback">资源链接为空，请稍后重试</div>';
   } else if (typeof QRCode === 'undefined') {
-    box.innerHTML = '<div class="qr-fallback">二维码组件加载失败<br>请点击下方「复制链接」到夸克 App 打开</div>';
+    box.innerHTML = '<div class="qr-fallback">二维码组件加载失败<br>请刷新页面后重试</div>';
   } else {
     try {
       new QRCode(box, {
@@ -592,7 +577,7 @@ function showQrModal(title, link) {
         nodes[i].style.height = displaySize + 'px';
       }
     } catch (e) {
-      box.innerHTML = '<div class="qr-fallback">二维码生成失败<br>请点击下方「复制链接」到夸克 App 打开</div>';
+      box.innerHTML = '<div class="qr-fallback">二维码生成失败<br>请刷新页面后重试</div>';
     }
   }
 
@@ -608,36 +593,6 @@ function hideQrModal() {
 function closeQrModal(e) {
   if (e && e.target !== e.currentTarget) return;
   hideQrModal();
-}
-
-function openPcLink() {
-  if (currentQrLink) window.open(currentQrLink, '_blank', 'noopener');
-}
-
-function copyQrLink() {
-  if (!currentQrLink) return;
-  var done = function() { toast('链接已复制，请打开夸克 App 粘贴访问'); };
-  var fallback = function() {
-    var ta = document.createElement('textarea');
-    ta.value = currentQrLink;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    try {
-      document.execCommand('copy');
-      done();
-    } catch (e) {
-      toast('复制失败，请长按链接手动复制');
-    }
-    document.body.removeChild(ta);
-  };
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(currentQrLink).then(done).catch(fallback);
-  } else {
-    fallback();
-  }
 }
 
 document.addEventListener('keydown', function(e) {
